@@ -2,11 +2,8 @@ package com.wp.domain.auth.service;
 
 import com.wp.domain.auth.entity.JwtToken;
 import com.wp.domain.auth.repository.JwtTokenRepository;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

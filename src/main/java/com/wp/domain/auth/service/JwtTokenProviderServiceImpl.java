@@ -6,26 +6,25 @@ import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.security.Key;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Slf4j
-@Component
+@Service
 @Transactional(readOnly = true)
-public class JwtTokenProvider implements InitializingBean {
+public class JwtTokenProviderServiceImpl implements JwtTokenProviderService {
 
     @Autowired
-    private AuthRedisServiceImpl authRedisServiceImpl;
-    private static final String AUTHORITIES_KEY = "role";
-    private static final String EMAIL_KEY = "email";
+    private AuthRedisService authRedisServiceImpl;
+    private static final String AUTHORITIES_KEY = "auth";
+    private static final String USER_ID = "userId";
+    private static final String PASSWORD = "password";
     private static final String AUTHORIZATION_HEADER = "Authorization";
     private static final String BEARER_PREFIX = "Bearer ";
 
@@ -43,7 +42,7 @@ public class JwtTokenProvider implements InitializingBean {
     }
 
     @Transactional
-    public List<String> createToken(String email, String authorities){
+    public Map<String, String> createToken(String userId, String password, String auth){
         Long now = System.currentTimeMillis();
         Long accessTokenValidityInMilliseconds = tokenValidityInMilliseconds * 1000;
         String accessToken = Jwts.builder()
@@ -51,8 +50,9 @@ public class JwtTokenProvider implements InitializingBean {
                 .setHeaderParam("alg", "HS512")
                 .setExpiration(new Date(now + accessTokenValidityInMilliseconds))
                 .setSubject("access-token")
-                .claim(EMAIL_KEY, email)
-                .claim(AUTHORITIES_KEY, authorities)
+                .claim(USER_ID, userId)
+                .claim(PASSWORD, password)
+                .claim(AUTHORITIES_KEY, auth)
                 .signWith(signingKey, SignatureAlgorithm.HS512)
                 .compact();
 
@@ -65,10 +65,10 @@ public class JwtTokenProvider implements InitializingBean {
                 .signWith(signingKey, SignatureAlgorithm.HS512)
                 .compact();
 
-        List<String> tokens = new ArrayList<>();
-        tokens.add(accessToken);
-        tokens.add(refreshToken);
-        authRedisServiceImpl.registRefreshToken(email, refreshToken);
+        Map<String, String> tokens = new HashMap<>();
+        tokens.put("accessToken", accessToken);
+        tokens.put("refreshToken", refreshToken);
+        authRedisServiceImpl.registRefreshToken(userId, refreshToken);
         return tokens;
     }
 
