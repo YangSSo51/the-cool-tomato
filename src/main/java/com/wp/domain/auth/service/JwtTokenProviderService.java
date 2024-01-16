@@ -4,7 +4,6 @@ import io.jsonwebtoken.Claims;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.InitializingBean;
 
-import java.util.List;
 import java.util.Map;
 
 public interface JwtTokenProviderService extends InitializingBean {
