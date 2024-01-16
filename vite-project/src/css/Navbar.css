@@ -1,0 +1,27 @@
+#root {
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+.LogoImage {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.MainBorder {
+    border-bottom: 2px solid rgb(18, 111, 84);
+}
+
+.NavRight {
+    margin: 8px;
+    
+}
+
+.NavFont {
+    font-family: "GmarketSansMedium";
+    margin-left:20px;
+    margin-right:20px;
+    font-size: 1rem;
+    font-weight: bold;
+}
