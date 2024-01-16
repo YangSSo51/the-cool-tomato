@@ -16,7 +16,8 @@
 @font-face {
     font-family: 'GmarketSansMedium';
     font-weight: normal;
-    src: url('./fonts/GmarketSansTTFMedium.ttf') format('ttf');
+    font-display: swap;
+    src: url('./fonts/GmarketSansTTFMedium.ttf') format('truetype');
 }
 
 .card {
