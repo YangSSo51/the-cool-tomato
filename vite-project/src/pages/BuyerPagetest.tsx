@@ -1,13 +1,13 @@
 import { Button } from "@chakra-ui/react";
-import { Box, Flex, Text,Center } from "@chakra-ui/layout";
+import { Box, Flex, Text } from "@chakra-ui/layout";
 import { Avatar, Divider, List, ListItem } from "@chakra-ui/react";
 
-export default function BuyerPage() {
+export default function BuyerPagetest() {
   return (
     <Box bg="#126F54" minH="100vh">
-      <Flex m="auto" bg="black" w="90vw">
-        <Box bg="blue" maxW="4xl" mx="auto" px="4">
-          <Flex bg="orange">
+      <Flex>
+        <Box maxW="4xl" mx="auto" px="4">
+          <Flex>
             <Box w="1/4" pr="4">
               <Box w="full" bg="white" rounded="lg" overflow="hidden">
                 <Flex direction="column" align="center" py="6">

@@ -14,10 +14,10 @@
 }
 
 @font-face {
-    font-family: 'GmarketSansMedium';
-    font-weight: normal;
-    font-display: swap;
-    src: url('./fonts/GmarketSansTTFMedium.ttf') format('truetype');
+    font-family: 'GmarketSansTTFMedium';
+    src: url('https://cdn.jsdelivr.net/gh/wizfile/font/GmarketSansTTFMedium.eot');
+    src:url('https://cdn.jsdelivr.net/gh/wizfile/font/GmarketSansTTFMedium.woff') format('woff');
+    font-style: normal;
 }
 
 .card {
