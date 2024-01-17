@@ -4,7 +4,6 @@ import { Avatar, List, ListItem } from "@chakra-ui/react";
 import { useNavigate, useParams } from "react-router-dom";
 // import { useParams } from "react-router-dom"
 
-
 import Recent from "../components/mypage/recent";
 
 export default function BuyerPage() {
