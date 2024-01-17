@@ -1,4 +1,4 @@
-package global.config;
+package com.wp.product.global.config;
 
 import org.springframework.context.annotation.Configuration;
 
