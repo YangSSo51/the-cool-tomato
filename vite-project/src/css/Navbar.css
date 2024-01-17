@@ -1,6 +1,11 @@
-#root {
+.TopNavFont {
+    font-size: 12px;
+}
+
+.paddingNavBar {
     margin: 0 auto;
-    padding: 2rem;
+    padding: 1rem;
+    width: 1280px;
 }
 
 .LogoImage {
@@ -9,19 +14,20 @@
     object-fit: cover;
 }
 
-.MainBorder {
-    border-bottom: 2px solid rgb(18, 111, 84);
-}
-
 .NavRight {
     margin: 8px;
-    
+}
+
+hr {
+    margin-top: 8px;
+    background-color: #126F54;
 }
 
 .NavFont {
     font-family: "GmarketSansMedium";
-    margin-left:20px;
-    margin-right:20px;
+    margin-left:18px;
+    margin-right:18px;
     font-size: 1rem;
-    font-weight: bold;
+    font-weight: 600;
+    
 }

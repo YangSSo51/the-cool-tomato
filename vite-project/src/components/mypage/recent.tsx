@@ -1,0 +1,87 @@
+import { Button } from "@chakra-ui/react";
+import { Box, Flex, Text, Center } from "@chakra-ui/layout";
+import { Avatar, List, ListItem } from "@chakra-ui/react";
+import { useNavigate } from "react-router-dom";
+
+export default function Recent() {
+    let navigate = useNavigate()
+
+    return (
+        <Box bg="#126F54" minH="100vh">
+
+            <Box>
+                <Center>
+                    최근상품 목ㄹ고
+                </Center>
+            </Box>
+
+            <Flex m="auto" bg="black" rounded="lg" w="90vw" minH="90vh">
+                <Flex m="auto" bg="blue" rounded="lg" w="80vw" minH="80vh" px="2">
+
+                    <Box w="25%" pr="4">
+
+                    <Box w="full" bg="white" rounded="lg" overflow="hidden">
+                        <Flex direction="column" align="center" py="6">
+
+                        <Button onClick={()=>{ navigate('/v1/seller') }}>
+                            판매자 정보 보기
+                        </Button>
+
+                        <Avatar mt="4" size="xl" bg="gray.200" />
+
+                        <Button mt="4" onClick={()=>{ navigate('/v1/userinfo') }}>
+                            계정정보수정
+                        </Button>
+
+                        <Box w="full"  mt="6" pt="6">
+                            <List spacing="4">
+                            <ListItem>
+                                최근 본 상품
+                            </ListItem>
+                            <ListItem>
+                                팔로잉 목록
+                            </ListItem>
+                            <ListItem>
+                                작성 가능한 리뷰
+                            </ListItem>
+                            <ListItem>
+                                작성한 리뷰
+                            </ListItem>
+                            <ListItem>
+                                내가 한 문의
+                            </ListItem>
+                            <ListItem>
+                                판매자 신청
+                            </ListItem>
+                            </List>
+                        </Box>
+
+                        </Flex>
+                    </Box>
+                    </Box>
+                    
+                    <Box w="75%" bg="white" rounded="lg" overflow="hidden">
+                    <Box h="full" pl="4">
+                        <Flex justify="center" align="center" h="full">
+                        <Text color="gray.400">Content goes here</Text>
+                        </Flex>
+                    </Box>
+                    </Box>
+                </Flex>
+
+        </Flex>
+        </Box>
+    );
+}
+
+function Card(props) {
+    console.log(props)
+    return (
+      <div>
+        <Link to={"/detail/" + (props.i)}>
+        <img src={process.env.PUBLIC_URL + "/shop" + (props.i+1) + ".jpg"} width="80%" alt="상품 이미지" /></Link>
+          <h4>{props.products.title}</h4>
+          <p>{props.products.price}</p>
+      </div>
+    )
+  }
