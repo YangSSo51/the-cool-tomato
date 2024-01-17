@@ -11,7 +11,7 @@ import {
     FormHelperText,
 } from "@chakra-ui/react";
 
-function onSubmit() {
+function onSubmit(): void {
     alert("submitted");
 }
 
@@ -22,7 +22,11 @@ function LoginForm() {
     return (
         <form onSubmit={onSubmit} style={{ width: "100%" }}>
             <FormControl py={1}>
-                <Input focusBorderColor="#126F54" placeholder="ID" size="md" />
+                <Input
+                    focusBorderColor="themeGreen.500"
+                    placeholder="ID"
+                    size="md"
+                />
             </FormControl>
             <FormControl>
                 <InputGroup size="md">
@@ -30,13 +34,15 @@ function LoginForm() {
                         pr="4.5rem"
                         type={show ? "text" : "password"}
                         placeholder="Password"
-                        focusBorderColor="#126F54"
+                        focusBorderColor="themeGreen.500"
                     />
                     <InputRightElement width="4.5rem">
                         <Button
                             h="1.75rem"
                             size="sm"
                             colorScheme="themeGreen"
+                            variant="outline"
+                            color="themeGreen.500"
                             onClick={handleClick}
                             borderRadius="lg"
                         >
