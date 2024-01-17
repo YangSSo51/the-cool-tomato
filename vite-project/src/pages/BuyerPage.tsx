@@ -11,7 +11,7 @@ export default function BuyerPage() {
     // let {userId} = useParams();
 
     return (
-        <Box bg="var(--our-green)" minH="100vh">
+        <Box bg="yellow" minH="100vh">
             <Box>
                 <Center>마이페이지</Center>
             </Box>
