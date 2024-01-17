@@ -5,7 +5,7 @@ import { Global } from '@emotion/react';
     styles={`
       @font-face {
         font-family: 'GmkBold';
-        font-weight: 700;
+        font-weight: 400;
         font-display: swap;
         src: url("/fonts/GmarketSansTTFBold.ttf");
       }

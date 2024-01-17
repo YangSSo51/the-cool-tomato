@@ -1,7 +1,6 @@
 import "../../css/Navbar.css";
 import { Search2Icon, BellIcon } from "@chakra-ui/icons";
 import {
-    ChakraProvider,
     Image,
     Box,
     Flex,
@@ -15,7 +14,7 @@ function NavBar() {
     const navigate = useNavigate();
 
     return (
-        <ChakraProvider>
+        <Box className="paddingNavBar">
             <Flex minWidth="max-content" alignItems="center" gap="2">
                 <Box />
                 <Spacer />
@@ -104,7 +103,7 @@ function NavBar() {
             </Flex>
             <hr />
             <Outlet />
-        </ChakraProvider>
+        </Box>
     );
 }
 
