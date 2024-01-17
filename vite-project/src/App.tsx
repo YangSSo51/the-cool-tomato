@@ -1,13 +1,23 @@
 import { Routes, Route } from 'react-router-dom';
 import { ChakraProvider } from '@chakra-ui/react';
 import NavBar from './components/common/Navbar';
+import Search from './pages/Search'
+import LiveList from './pages/LiveList'
+import ItemList from './pages/ItemList'
+import Calendar from './pages/Calendar'
+import BuyerMypage from './pages/BuyerMypage'
 
 function App() {
   return (
     <>
     <ChakraProvider>
       <Routes>
-        <Route path="/v1/*" element={<NavBar />}>
+        <Route path="/v1" element={<NavBar />}>
+            <Route path='search' element={<Search />} />
+            <Route path='live/list' element={<LiveList />} />
+            <Route path='items/list' element={<ItemList />} />
+            <Route path='calendar' element={<Calendar />} />
+            <Route path='buyer/' element={<BuyerMypage />} />
           {/* <Route path="" element={<Home />}  /> */}
           {/* <Route path="/login" element={<Home />}  /> */}
           {/* <Route path="/findid" element={<Home />}  />
