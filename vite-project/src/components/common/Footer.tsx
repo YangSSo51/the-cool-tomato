@@ -1,5 +1,4 @@
-import { Box, Flex, Spacer, VStack } from "@chakra-ui/react";
-import { BsJustify } from "react-icons/bs";
+import { Box, Flex, VStack } from "@chakra-ui/react";
 
 export default function FooterComponent() {
     return (

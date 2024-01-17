@@ -1,24 +1,28 @@
 import "../../css/Navbar.css";
-import { Search2Icon, BellIcon } from "@chakra-ui/icons";
-import { Image, Box, Flex, Spacer, Avatar } from "@chakra-ui/react";
+import { Image, Box, Flex, Spacer } from "@chakra-ui/react";
+import { useState } from "react";
+import LoginComponent from "./NavComponent/LoginComponent";
+import LogoutComponent from "./NavComponent/LogoutComponent";
 
 import { useNavigate } from "react-router-dom";
+import SellerComponent from "./NavComponent/SellerComponent";
+import BuyerComponent from "./NavComponent/BuyerComponent";
+import ProfileBuyerComponent from "./NavComponent/NavBuyerProfileComponent";
+import ProfileSellerComponent from "./NavComponent/NavSellerProfileComponent";
+import LogoutProfileComponent from "./NavComponent/LogoutProfileComponent";
 
 function NavBar() {
     const navigate = useNavigate();
+    const [loginlogout, LoginState] = useState(true);
+    const [BuyerSeller, BuyerSellerState] = useState(false);
+    const [profile, ProfileState] = useState();
 
     return (
         <Box className="paddingNavBar">
             <Flex minWidth="max-content" alignItems="center" gap="2">
                 <Box />
                 <Spacer />
-                <Flex alignItems="center" gap="3">
-                    <Box className="TopNavFont">회원가입</Box>
-                    <br />
-                    <Box className="TopNavFont">로그인</Box>
-                    <br />
-                    <Box className="TopNavFont">고객센터</Box>
-                </Flex>
+                {loginlogout ? <LoginComponent /> : <LogoutComponent />}
             </Flex>
             <Flex
                 minWidth="max-content"
@@ -26,7 +30,14 @@ function NavBar() {
                 gap="3"
                 className="NavBottom"
             >
-                <Box width={"13"} height={"10"} overflow={"hidden"} onClick={() => {navigate('./')}}>
+                <Box
+                    width={"13"}
+                    height={"10"}
+                    overflow={"hidden"}
+                    onClick={() => {
+                        navigate("./");
+                    }}
+                >
                     <Image
                         width={"100%"}
                         height={"100%"}
@@ -36,62 +47,9 @@ function NavBar() {
                 </Box>
 
                 <Spacer />
-                <Box>
-                    <Flex minWidth="max-content" alignItems="center" gap="3">
-                        <Box
-                            onClick={() => {
-                                navigate("/v1/live/list");
-                            }}
-                            color={"black"}
-                            _hover={{ color: "#126F54" }}
-                            className="NavFont"
-                        >
-                            라이브
-                        </Box>
-                        <Spacer />
-                        <Box
-                            onClick={() => {
-                                navigate("/v1/items/list");
-                            }}
-                            color={"black"}
-                            _hover={{ color: "#126F54" }}
-                            className="NavFont"
-                        >
-                            상품 목록
-                        </Box>
-                        <Spacer />
-                        <Box
-                            onClick={() => {
-                                navigate("/v1/calendar");
-                            }}
-                            color={"black"}
-                            _hover={{ color: "#126F54" }}
-                            className="NavFont"
-                        >
-                            라이브 달력
-                        </Box>
-                    </Flex>
-                </Box>
+                {BuyerSeller ? <BuyerComponent /> : <SellerComponent />}
                 <Spacer />
-                <Box>
-                    <Flex minWidth="max-content" alignItems="center" gap="4">
-                        <Search2Icon
-                            onClick={() => {
-                                navigate("/v1/search");
-                            }}
-                            color={"#126F54"}
-                            boxSize={6}
-                        />
-                        <BellIcon color={"#126F54"} boxSize={6} />
-                        <Avatar
-                            onClick={() => {
-                                navigate("/v1/buyer");
-                            }}
-                            size="sm"
-                            src="https://bit.ly/broken-link"
-                        />
-                    </Flex>
-                </Box>
+                {(loginlogout && BuyerSeller) ? <ProfileBuyerComponent /> : (loginlogout && !BuyerSeller) ? <ProfileSellerComponent /> : <LogoutProfileComponent />}
             </Flex>
             <hr />
         </Box>
