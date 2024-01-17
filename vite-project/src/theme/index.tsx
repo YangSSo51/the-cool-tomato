@@ -6,6 +6,9 @@ const theme = extendTheme({
         body: {
             fontFamily: 'GmkMedium',
         },
+        footer: {
+            fontFamily: 'FooterLight',
+        },
         html: {
             fontFamily: 'GmkLight',
         }

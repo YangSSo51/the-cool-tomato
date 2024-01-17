@@ -1,6 +1,6 @@
 import { Routes, Route } from "react-router-dom";
 import { ChakraProvider } from "@chakra-ui/react";
-import NavBar from "./components/common/Navbar";
+import LayOut from "./components/common/Layout";
 import Search from "./pages/Search";
 import LiveList from "./pages/LiveList";
 import ItemList from "./pages/ItemList";
@@ -15,7 +15,7 @@ function App() {
             <ChakraProvider theme={theme}>
                 <Fonts />
                 <Routes>
-                    <Route path="/v1" element={<NavBar />}>
+                    <Route path="/v1" element={<LayOut />}>
                         <Route path="search" element={<Search />} />
                         <Route path="live/list" element={<LiveList />} />
                         <Route path="items/list" element={<ItemList />} />

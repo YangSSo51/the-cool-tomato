@@ -23,6 +23,13 @@ import { Global } from '@emotion/react';
         font-display: swap;
         src: url("/fonts/GmarketSansTTFLight.ttf");
       }
+
+      @font-face {
+        font-family: 'FooterLight';
+        font-weight: 100;
+        font-display: swap;
+        src: url("/fonts/GmarketSansTTFMedium.ttf");
+      }
     `}
   />
 );
