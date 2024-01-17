@@ -18,6 +18,7 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     // 회원가입
+    @Override
     @Transactional
     public void saveUser(JoinRequest joinRequest) {
 
@@ -42,5 +43,11 @@ public class UserServiceImpl implements UserService {
 
         // 회원 저장
         userRepository.save(user);
+    }
+
+    // 로그인 ID 중복 확인
+    @Override
+    public boolean existUserByLoginId(String loginId) {
+        return userRepository.existsByLoginId(loginId);
     }
 }
