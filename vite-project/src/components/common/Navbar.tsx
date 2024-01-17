@@ -1,14 +1,8 @@
 import "../../css/Navbar.css";
 import { Search2Icon, BellIcon } from "@chakra-ui/icons";
-import {
-    Image,
-    Box,
-    Flex,
-    Spacer,
-    Avatar,
-} from "@chakra-ui/react";
+import { Image, Box, Flex, Spacer, Avatar } from "@chakra-ui/react";
 
-import { useNavigate, Outlet } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 function NavBar() {
     const navigate = useNavigate();
@@ -32,16 +26,14 @@ function NavBar() {
                 gap="3"
                 className="NavBottom"
             >
-                <Image
-                    onClick={() => {
-                        navigate("/v1");
-                    }}
-                    boxSize="50px"
-                    ml={"10"}
-                    mr={"10"}
-                    objectFit={"cover"}
-                    src="/img/main_logo.png"
-                ></Image>
+                <Box width={"13"} height={"10"} overflow={"hidden"}>
+                    <Image
+                        width={"100%"}
+                        height={"100%"}
+                        objectFit={"cover"}
+                        src="/img/main_logo.png"
+                    ></Image>
+                </Box>
 
                 <Spacer />
                 <Box>
@@ -102,7 +94,6 @@ function NavBar() {
                 </Box>
             </Flex>
             <hr />
-            <Outlet />
         </Box>
     );
 }
