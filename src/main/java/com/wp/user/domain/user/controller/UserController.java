@@ -26,7 +26,7 @@ public class UserController {
     @Operation(summary = "회원가입", description = "사용자는 회원 정보를 입력하여 회원가입을 합니다.")
     public ResponseEntity<?> createUser(@Valid @RequestBody JoinRequest joinRequest) {
         userService.saveUser(joinRequest);
-        final ApiResponse response = new ApiResponse(SuccessCode.INSERT_SUCCESS.getCode(), SuccessCode.INSERT_SUCCESS.getStatus(), SuccessCode.INSERT_SUCCESS.getMessage());
+        final ApiResponse<?> response = new ApiResponse<>(SuccessCode.INSERT_SUCCESS.getStatus(), SuccessCode.INSERT_SUCCESS.getMessage());
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
