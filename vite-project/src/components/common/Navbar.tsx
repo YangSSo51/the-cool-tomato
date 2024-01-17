@@ -26,7 +26,7 @@ function NavBar() {
                 gap="3"
                 className="NavBottom"
             >
-                <Box width={"13"} height={"10"} overflow={"hidden"}>
+                <Box width={"13"} height={"10"} overflow={"hidden"} onClick={() => {navigate('./')}}>
                     <Image
                         width={"100%"}
                         height={"100%"}

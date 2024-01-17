@@ -3,6 +3,10 @@ import { Box, Flex, Text, Center } from "@chakra-ui/layout";
 import { Avatar, List, ListItem } from "@chakra-ui/react";
 import { useNavigate, useParams } from "react-router-dom";
 // import { useParams } from "react-router-dom"
+<<<<<<< HEAD
+=======
+import { primary } from "../theme/colors";
+>>>>>>> 2b0ea0a892207069fc8aa4df3d65aa8cf529473a
 
 import Recent from "../components/mypage/recent";
 
