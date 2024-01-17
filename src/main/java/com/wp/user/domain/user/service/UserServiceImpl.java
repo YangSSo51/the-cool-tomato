@@ -19,6 +19,10 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public void saveUser(JoinRequest joinRequest) {
 
+        if(userRepository.existsByEmail(joinRequest.getEmail())) {
+            
+        }
+
         User user = User.builder()
                 .auth(Auth.BUYER)
                 .loginId(joinRequest.getLoginId())

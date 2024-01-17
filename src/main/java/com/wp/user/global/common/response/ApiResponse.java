@@ -21,7 +21,7 @@ public class ApiResponse<T> {
     private String resultMsg;
 
     /**
-     * ApiResponse 생성자-1
+     * ApiResponse 생성자
      *
      * @param result Response Object
      * @param resultCode SuccessCode
@@ -30,18 +30,6 @@ public class ApiResponse<T> {
     @Builder
     public ApiResponse(final T result, final int resultCode, final String resultMsg) {
         this.result = result;
-        this.resultCode = resultCode;
-        this.resultMsg = resultMsg;
-    }
-
-    /**
-     * ApiResponse 생성자-2
-     *
-     * @param resultCode SuccessCode
-     * @param resultMsg SuccessMessage
-     */
-    @Builder
-    public ApiResponse(final int resultCode, final String resultMsg) {
         this.resultCode = resultCode;
         this.resultMsg = resultMsg;
     }
