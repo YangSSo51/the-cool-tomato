@@ -1,15 +1,15 @@
 import "../../css/Navbar.css";
 import { Image, Box, Flex, Spacer } from "@chakra-ui/react";
 import { useState } from "react";
-import LoginComponent from "./NavComponent/LoginComponent";
-import LogoutComponent from "./NavComponent/LogoutComponent";
+import LoginComponent from "./navcomponent/LoginComponent";
+import LogoutComponent from "./navcomponent/LogoutComponent";
 
 import { useNavigate } from "react-router-dom";
-import SellerComponent from "./NavComponent/SellerComponent";
-import BuyerComponent from "./NavComponent/BuyerComponent";
-import ProfileBuyerComponent from "./NavComponent/NavBuyerProfileComponent";
-import ProfileSellerComponent from "./NavComponent/NavSellerProfileComponent";
-import LogoutProfileComponent from "./NavComponent/LogoutProfileComponent";
+import SellerComponent from "./navcomponent/SellerComponent";
+import BuyerComponent from "./navcomponent/BuyerComponent";
+import ProfileBuyerComponent from "./navcomponent/NavBuyerProfileComponent";
+import ProfileSellerComponent from "./navcomponent/NavSellerProfileComponent";
+import LogoutProfileComponent from "./navcomponent/LogoutProfileComponent";
 
 function NavBar() {
     const navigate = useNavigate();
