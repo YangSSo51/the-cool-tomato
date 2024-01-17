@@ -1,73 +1,100 @@
 import "../../css/Navbar.css";
 import { Search2Icon, BellIcon } from "@chakra-ui/icons";
-import {
-    Button,
-    ChakraProvider,
-    Center,
-    Grid,
-    GridItem,
-    Flex,
-} from "@chakra-ui/react";
+import { Image, Box, Flex, Spacer, Avatar } from "@chakra-ui/react";
+
+import { useNavigate } from "react-router-dom";
 
 function NavBar() {
+    const navigate = useNavigate();
+
     return (
-        <ChakraProvider>
-            <Center>
-                <Grid
-                    className="MainBorder"
-                    templateColumns="repeat(3, 10fr)"
-                    gap={100}
-                >
-                    <GridItem w="100%" h="20">
-                        <img src="img/image.png" className="LogoImage"></img>
-                    </GridItem>
-                    <Flex align="center" justify="center" w="100%" h="10">
-                        <Flex align="center" justify="center">
-                            <Flex className="NavFont">
-                                라이브
-                            </Flex>
-                            <Flex className="NavFont">
-                                상품 목록
-                            </Flex>
-                            <Flex className="NavFont">
-                                라이브 달력
-                            </Flex>
-                        </Flex>
+        <Box className="paddingNavBar">
+            <Flex minWidth="max-content" alignItems="center" gap="2">
+                <Box />
+                <Spacer />
+                <Flex alignItems="center" gap="3">
+                    <Box className="TopNavFont">회원가입</Box>
+                    <br />
+                    <Box className="TopNavFont">로그인</Box>
+                    <br />
+                    <Box className="TopNavFont">고객센터</Box>
+                </Flex>
+            </Flex>
+            <Flex
+                minWidth="max-content"
+                alignItems="center"
+                gap="3"
+                className="NavBottom"
+            >
+                <Box width={"13"} height={"10"} overflow={"hidden"}>
+                    <Image
+                        width={"100%"}
+                        height={"100%"}
+                        objectFit={"cover"}
+                        src="/img/main_logo.png"
+                    ></Image>
+                </Box>
+
+                <Spacer />
+                <Box>
+                    <Flex minWidth="max-content" alignItems="center" gap="3">
+                        <Box
+                            onClick={() => {
+                                navigate("/v1/live/list");
+                            }}
+                            color={"black"}
+                            _hover={{ color: "#126F54" }}
+                            className="NavFont"
+                        >
+                            라이브
+                        </Box>
+                        <Spacer />
+                        <Box
+                            onClick={() => {
+                                navigate("/v1/items/list");
+                            }}
+                            color={"black"}
+                            _hover={{ color: "#126F54" }}
+                            className="NavFont"
+                        >
+                            상품 목록
+                        </Box>
+                        <Spacer />
+                        <Box
+                            onClick={() => {
+                                navigate("/v1/calendar");
+                            }}
+                            color={"black"}
+                            _hover={{ color: "#126F54" }}
+                            className="NavFont"
+                        >
+                            라이브 달력
+                        </Box>
                     </Flex>
-                    <GridItem w="190%" h="10">
-                        <Search2Icon className="NavRight" boxSize={5} />
-                        <BellIcon className="NavRight" boxSize={5} />
-                        <Button
-                            className="NavRight"
-                            color="#126F54"
-                            borderColor="#126F54"
-                            _hover={{ borderColor: "#126F54" }}
-                            _active={{
-                                bg: "#126F54",
-                                transform: "scale(0.98)",
-                                borderColor: "#126F54",
+                </Box>
+                <Spacer />
+                <Box>
+                    <Flex minWidth="max-content" alignItems="center" gap="4">
+                        <Search2Icon
+                            onClick={() => {
+                                navigate("/v1/search");
                             }}
-                            width="30"
-                        >
-                            마이페이지
-                        </Button>
-                        <Button
-                            className="NavRight"
-                            bg="#126F54"
-                            colorScheme="#000000"
-                            borderColor="#126F54"
-                            _active={{
-                                bg: "#ffffff",
-                                transform: "scale(0.98)",
-                                borderColor: "#ffffff",
+                            color={"#126F54"}
+                            boxSize={6}
+                        />
+                        <BellIcon color={"#126F54"} boxSize={6} />
+                        <Avatar
+                            onClick={() => {
+                                navigate("/v1/buyer");
                             }}
-                        >
-                            회원가입
-                        </Button>
-                    </GridItem>
-                </Grid>
-            </Center>
-        </ChakraProvider>
+                            size="sm"
+                            src="https://bit.ly/broken-link"
+                        />
+                    </Flex>
+                </Box>
+            </Flex>
+            <hr />
+        </Box>
     );
 }
 
