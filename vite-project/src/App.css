@@ -13,13 +13,6 @@
   }
 }
 
-@font-face {
-    font-family: 'GmarketSansTTFMedium';
-    src: url('https://cdn.jsdelivr.net/gh/wizfile/font/GmarketSansTTFMedium.eot');
-    src:url('https://cdn.jsdelivr.net/gh/wizfile/font/GmarketSansTTFMedium.woff') format('woff');
-    font-style: normal;
-}
-
 .card {
   padding: 2em;
 }

@@ -4,7 +4,7 @@ const theme = extendTheme({
   styles: {
     global: {
         body: {
-            fontFamily: 'GmkBold',
+            fontFamily: 'GmkMedium',
         },
         html: {
             fontFamily: 'GmkMedium',
@@ -13,12 +13,3 @@ const theme = extendTheme({
 }})
     
 export default theme
-
-    //     fonts: {
-//     heading: 'GmkBold',
-//     body: 'GmkMedium',
-//   },
-//   fonts: {
-//     heading: 'GmkBold',
-//     body: 'GmkMedium',
-//   },

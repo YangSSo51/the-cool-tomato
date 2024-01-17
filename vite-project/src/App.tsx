@@ -1,23 +1,32 @@
 import { Routes, Route } from 'react-router-dom';
 import { ChakraProvider } from '@chakra-ui/react';
 import NavBar from './components/common/Navbar';
-import Search from './pages/Search'
-import LiveList from './pages/LiveList'
-import ItemList from './pages/ItemList'
-import Calendar from './pages/Calendar'
-import BuyerMypage from './pages/BuyerMypage'
+import Search from './pages/Search';
+import LiveList from './pages/LiveList';
+import ItemList from './pages/ItemList';
+import Calendar from './pages/Calendar';
+import BuyerPage from './pages/BuyerPage';
+import SellerPage from './pages/SellerPage';
+import UserinfoPage from './pages/UserinfoPage';
+import theme from './theme/index';
+import Fonts from './theme/fonts';
+import Recent from './components/mypage/recent';
 
 function App() {
   return (
     <>
-    <ChakraProvider>
-      <Routes>
+    <ChakraProvider theme={theme}>
+        <Fonts />
+        <Routes>
         <Route path="/v1" element={<NavBar />}>
             <Route path='search' element={<Search />} />
             <Route path='live/list' element={<LiveList />} />
             <Route path='items/list' element={<ItemList />} />
             <Route path='calendar' element={<Calendar />} />
-            <Route path='buyer/' element={<BuyerMypage />} />
+            <Route path='buyer' element={<BuyerPage />} />
+            <Route path='buyer/recent' element={<Recent />} />
+            <Route path='seller/' element={<SellerPage />} />
+            <Route path='userinfo/' element={<UserinfoPage />} />
           {/* <Route path="" element={<Home />}  /> */}
           {/* <Route path="/login" element={<Home />}  /> */}
           {/* <Route path="/findid" element={<Home />}  />
