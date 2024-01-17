@@ -1,5 +1,6 @@
 package com.wp.domain.auth.service;
 
+import com.wp.domain.auth.dto.response.TokenResponseDto;
 import com.wp.domain.auth.entity.JwtToken;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.security.Key;
+import java.sql.Array;
 import java.util.*;
 
 @Slf4j
@@ -41,7 +43,7 @@ public class JwtTokenProviderServiceImpl implements JwtTokenProviderService {
     }
 
     @Transactional
-    public Map<String, String> createToken(String userId, String password, String auth){
+    public TokenResponseDto createToken(String userId, String password, String auth){
         Long now = System.currentTimeMillis();
         Long accessTokenValidityInMilliseconds = tokenValidityInMilliseconds * 1000;
         String accessToken = Jwts.builder()
@@ -64,11 +66,9 @@ public class JwtTokenProviderServiceImpl implements JwtTokenProviderService {
                 .signWith(signingKey, SignatureAlgorithm.HS512)
                 .compact();
 
-        Map<String, String> tokens = new HashMap<>();
-        tokens.put("accessToken", accessToken);
-        tokens.put("refreshToken", refreshToken);
+        TokenResponseDto tokenResponseDto = TokenResponseDto.builder().accessToken(accessToken).refreshToken(refreshToken).build();
         authRedisServiceImpl.registRefreshToken(userId, refreshToken);
-        return tokens;
+        return tokenResponseDto;
     }
 
     public boolean deleteRefreshToken(String email){
@@ -144,6 +144,21 @@ public class JwtTokenProviderServiceImpl implements JwtTokenProviderService {
                     .getBody();
         } catch (ExpiredJwtException e) { // Access Token
             return e.getClaims();
+        }
+    }
+
+    public List<String> getInfo(String token, List<String> infos) {
+        try {
+            Claims claims = getClaims(token);
+            List<String> result = new ArrayList<>();
+
+            for (String info : infos) {
+                result.add((String) claims.get(info));
+            }
+
+            return result;
+        } catch (ExpiredJwtException e) { // Access Token
+            return null;
         }
     }
 }

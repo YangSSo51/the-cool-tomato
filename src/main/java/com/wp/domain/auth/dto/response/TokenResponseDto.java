@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Data
 @Builder
-public class AuthFailDto implements ResponseDto{
-    Integer status;
-    String message;
+public class TokenResponseDto {
+    private String accessToken;
+    private String refreshToken;
 }
