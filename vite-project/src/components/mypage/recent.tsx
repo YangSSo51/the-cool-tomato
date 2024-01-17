@@ -4,7 +4,7 @@ import { Avatar, List, ListItem } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 
 export default function Recent() {
-    let navigate = useNavigate()
+    const navigate = useNavigate()
 
     return (
         <Box bg="#126F54" minH="100vh">
