@@ -24,7 +24,7 @@ public class User {
     private Long id;
 
     @Column(length = 10, nullable = false)
-    private String auth;
+    private Auth auth;
 
     @Column(length = 50, nullable = false, unique = true)
     private String loginId;
@@ -33,16 +33,16 @@ public class User {
     @JsonIgnore
     private String password;
 
-    @Column(length = 100, unique = true)
+    @Column(length = 100, nullable = false, unique = true)
     private String email;
 
-
-    @Column(length = 50)
+    @Column(nullable = false, length = 50)
     private String nickname;
 
-    @Column(columnDefinition = "TINYINT", length = 1)
+    @Column(nullable = false, columnDefinition = "TINYINT", length = 1)
     private Sex sex;
 
+    @Column(nullable = false)
     private LocalDate birthday;
 
     private String profileImg;
