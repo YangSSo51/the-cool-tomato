@@ -7,7 +7,7 @@ const theme = extendTheme({
             fontFamily: 'GmkMedium',
         },
         html: {
-            fontFamily: 'GmkMedium',
+            fontFamily: 'GmkLight',
         }
     }
 }})

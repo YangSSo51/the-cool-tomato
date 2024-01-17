@@ -1,7 +1,6 @@
 import "../../css/Navbar.css";
 import { Search2Icon, BellIcon } from "@chakra-ui/icons";
 import {
-    ChakraProvider,
     Image,
     Box,
     Flex,
@@ -15,7 +14,18 @@ function NavBar() {
     const navigate = useNavigate();
 
     return (
-        <ChakraProvider>
+        <Box className="paddingNavBar">
+            <Flex minWidth="max-content" alignItems="center" gap="2">
+                <Box />
+                <Spacer />
+                <Flex alignItems="center" gap="3">
+                    <Box className="TopNavFont">회원가입</Box>
+                    <br />
+                    <Box className="TopNavFont">로그인</Box>
+                    <br />
+                    <Box className="TopNavFont">고객센터</Box>
+                </Flex>
+            </Flex>
             <Flex
                 minWidth="max-content"
                 alignItems="center"
@@ -80,10 +90,7 @@ function NavBar() {
                             color={"#126F54"}
                             boxSize={6}
                         />
-                        <BellIcon
-                            color={"#126F54"}
-                            boxSize={6}
-                        />
+                        <BellIcon color={"#126F54"} boxSize={6} />
                         <Avatar
                             onClick={() => {
                                 navigate("/v1/buyer");
@@ -96,7 +103,7 @@ function NavBar() {
             </Flex>
             <hr />
             <Outlet />
-        </ChakraProvider>
+        </Box>
     );
 }
 
