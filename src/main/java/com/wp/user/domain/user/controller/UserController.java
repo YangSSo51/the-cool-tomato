@@ -2,6 +2,8 @@ package com.wp.user.domain.user.controller;
 
 import com.wp.user.domain.user.dto.request.JoinRequest;
 import com.wp.user.domain.user.service.UserService;
+import com.wp.user.global.common.code.SuccessCode;
+import com.wp.user.global.common.response.ApiResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -24,7 +26,8 @@ public class UserController {
     @Operation(summary = "회원가입", description = "사용자는 회원 정보를 입력하여 회원가입을 합니다.")
     public ResponseEntity<?> createUser(@Valid @RequestBody JoinRequest joinRequest) {
         userService.saveUser(joinRequest);
-        return new ResponseEntity<>(HttpStatus.OK);
+        final ApiResponse response = new ApiResponse(SuccessCode.INSERT_SUCCESS.getCode(), SuccessCode.INSERT_SUCCESS.getStatus(), SuccessCode.INSERT_SUCCESS.getMessage());
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
 }

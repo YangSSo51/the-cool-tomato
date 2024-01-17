@@ -7,6 +7,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -16,6 +17,7 @@ import java.time.LocalDateTime;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@EntityListeners(AuditingEntityListener.class)
 // 회원 기본 정보
 public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,6 +26,7 @@ public class User {
     private Long id;
 
     @Column(length = 10, nullable = false)
+    @Enumerated(value = EnumType.STRING)
     private Auth auth;
 
     @Column(length = 50, nullable = false, unique = true)
@@ -39,7 +42,8 @@ public class User {
     @Column(nullable = false, length = 50)
     private String nickname;
 
-    @Column(nullable = false, columnDefinition = "TINYINT", length = 1)
+    @Column(nullable = false, length = '1')
+    @Enumerated(value = EnumType.STRING)
     private Sex sex;
 
     @Column(nullable = false)
@@ -48,5 +52,6 @@ public class User {
     private String profileImg;
 
     @CreatedDate
+    @Column(updatable = false)
     private LocalDateTime joinDate;
 }
