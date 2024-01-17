@@ -1,38 +1,22 @@
-import { Routes, Route } from 'react-router-dom';
-import { ChakraProvider } from '@chakra-ui/react';
-import NavBar from './components/common/Navbar';
+import { Routes, Route } from "react-router-dom";
+import { ChakraProvider } from "@chakra-ui/react";
+import NavBar from "./components/common/Navbar";
+import Home from "./pages/Home";
+import LoginPage from "./pages/LoginPage";
+import { theme } from "./components/util/Theme";
 
 function App() {
-  return (
-    <>
-    <ChakraProvider>
-      <Routes>
-        <Route path="/v1/*" element={<NavBar />}>
-          {/* <Route path="" element={<Home />}  /> */}
-          {/* <Route path="/login" element={<Home />}  /> */}
-          {/* <Route path="/findid" element={<Home />}  />
-          <Route path="/" element={<Home />}  />
-          {/* <Route path="/login" element={<Home />}  />
-          <Route path="/findid" element={<Home />}  />
-          <Route path="/pwdrecover" element={<Home />}  />
-          <Route path="/logout" element={<Home />}  />
-          <Route path="/signup" element={<Home />}  />
-          <Route path="/sign" element={<Home />}  />
-          <Route path="/user" element={<Home />}  />
-          <Route path="/buyer" element={<Home />}  />
-          <Route path="/seller" element={<Home />}  />
-          <Route path="/data" element={<Home />}  />
-          <Route path="/live" element={<Home />}  />
-          <Route path="/broadcast" element={<Home />}  />
-          <Route path="/items" element={<Home />}  />
-          <Route path="/search" element={<Home />}  />
-          <Route path="/board" element={<Home />}  />
-        <Route path="/admin" element={<Home />}  /> */}
-        </Route>
-      </Routes>
-    </ChakraProvider>
-    </>
-  )
+    return (
+        <>
+            <ChakraProvider theme={theme}>
+                <NavBar />
+                <Routes>
+                    <Route path="/" element={<Home />}></Route>
+                    <Route path="/v1/login" element={<LoginPage />}></Route>
+                </Routes>
+            </ChakraProvider>
+        </>
+    );
 }
 
-export default App
+export default App;
