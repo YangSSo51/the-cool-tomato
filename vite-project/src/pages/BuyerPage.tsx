@@ -1,18 +1,17 @@
-import { Button } from "@chakra-ui/react";
-import { Box, Flex, Text, Center } from "@chakra-ui/layout";
-import { Avatar, List, ListItem } from "@chakra-ui/react";
+import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-// import { useParams } from "react-router-dom"
-<<<<<<< HEAD
-=======
-import { primary } from "../theme/colors";
->>>>>>> 2b0ea0a892207069fc8aa4df3d65aa8cf529473a
+import { Box, Flex, Text, Center } from "@chakra-ui/layout";
+import { Button, Avatar, List, ListItem } from "@chakra-ui/react";
 
-import Recent from "../components/mypage/recent";
+// import Recent from "../components/mypage/recent";
 
 export default function BuyerPage() {
-    let navigate = useNavigate();
-    // let {userId} = useParams();
+
+    const navigate = useNavigate();
+    const { userId } = useParams();
+    const [ tab, setTab ] = useState(0);
+
+
 
     return (
         <Box bg="yellow" minH="100vh">

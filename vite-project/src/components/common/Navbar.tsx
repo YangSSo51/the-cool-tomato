@@ -88,7 +88,7 @@ function NavBar() {
                                 navigate("/v1/buyer");
                             }}
                             size="sm"
-                            src="https://bit.ly/broken-link"
+                            
                         />
                     </Flex>
                 </Box>
