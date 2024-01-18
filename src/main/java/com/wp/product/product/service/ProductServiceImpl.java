@@ -4,6 +4,7 @@ import com.wp.product.global.common.code.ErrorCode;
 import com.wp.product.global.exception.BusinessExceptionHandler;
 import com.wp.product.product.dto.request.ProductCreateRequest;
 import com.wp.product.product.dto.request.ProductUpdateRequest;
+import com.wp.product.product.dto.response.ProductFindResponse;
 import com.wp.product.product.entity.Product;
 import com.wp.product.product.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
@@ -20,10 +21,34 @@ public class ProductServiceImpl implements ProductService{
     private final ProductRepository productRepository;
 
     @Override
+    public ProductFindResponse findProductById(Long productId) {
+        Optional<Product> result = productRepository.findById(productId);
+        Product product = result
+                            .orElseThrow(()->new BusinessExceptionHandler("상품이 존재하지 않습니다",ErrorCode.NO_ELEMENT_ERROR));
+
+        ProductFindResponse response = ProductFindResponse.builder()
+                                        .productId(product.getProductId())
+                                        .sellerId(product.getSellerId())
+                                        .sellerName(product.getSellerId())
+                                        .categoryId(product.getCategoryId())
+                                        .productName(product.getProductName())
+                                        .productContent(product.getProductContent())
+                                        .paymentLink(product.getPaymentLink())
+                                        .price(product.getPrice())
+                                        .deliveryCharge(product.getDeliveryCharge())
+                                        .quantity(product.getQuantity())
+                                        .registerDate(product.getRegisterDate())
+                                        .build();
+
+        return response;
+    }
+
+    @Override
     public void saveProduct(ProductCreateRequest productRequest){
         Product product = Product.builder()
+                         .categoryId(productRequest.getCategoryId())
                         .productName(productRequest.getProductName())
-                        .productName(productRequest.getProductName())
+                        .productContent(productRequest.getProductContent())
                         .paymentLink(productRequest.getPaymentLink())
                         .price(productRequest.getPrice())
                         .deliveryCharge(productRequest.getDeliveryCharge())

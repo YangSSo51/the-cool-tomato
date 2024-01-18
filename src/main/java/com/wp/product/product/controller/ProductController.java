@@ -5,6 +5,7 @@ import com.wp.product.global.common.response.ErrorResponse;
 import com.wp.product.global.common.response.SuccessResponse;
 import com.wp.product.product.dto.request.ProductCreateRequest;
 import com.wp.product.product.dto.request.ProductUpdateRequest;
+import com.wp.product.product.dto.response.ProductFindResponse;
 import com.wp.product.product.service.ProductService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -26,6 +27,18 @@ import org.springframework.web.bind.annotation.*;
 public class ProductController {
 
     private final ProductService productService;
+
+    @GetMapping("/{productId}")
+    public ResponseEntity<?> findProduct(@PathVariable Long productId){
+        ProductFindResponse productById = productService.findProductById(productId);
+
+        SuccessResponse response = SuccessResponse.builder()
+                                    .data(productById)
+                                    .status(SuccessCode.SELECT_SUCCESS.getStatus())
+                                    .message(SuccessCode.SELECT_SUCCESS.getMessage()).build();
+
+        return new ResponseEntity<>(response,HttpStatus.OK);
+    }
 
     @PostMapping
     @Operation(summary = "상품 등록",description = "판매자가 상품을 등록함", responses ={

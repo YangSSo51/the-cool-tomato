@@ -2,8 +2,11 @@ package com.wp.product.product.service;
 
 import com.wp.product.product.dto.request.ProductCreateRequest;
 import com.wp.product.product.dto.request.ProductUpdateRequest;
+import com.wp.product.product.dto.response.ProductFindResponse;
 
 public interface ProductService {
+    ProductFindResponse findProductById(Long productId);
+
     void saveProduct(ProductCreateRequest productRequest);
 
     void updateProduct(ProductUpdateRequest productRequest);
