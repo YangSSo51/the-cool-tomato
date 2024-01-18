@@ -27,7 +27,7 @@ import java.io.IOException;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-    private final HttpStatus HTTP_STATUS_OK = HttpStatus.OK;
+    private final HttpStatus HTTP_STATUS_OK = HttpStatus.BAD_REQUEST;
 
     /**
      * [Exception] API 호출 시 '객체' 혹은 '파라미터' 데이터 값이 유효하지 않은 경우
