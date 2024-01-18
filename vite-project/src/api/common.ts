@@ -1,6 +1,6 @@
 import axios, { AxiosInstance } from 'axios';
 
-const SERVER_ADDRESS = '/api';
+const SERVER_ADDRESS = '/v1/api';
 
 export const authAxios: AxiosInstance = axios.create({
     baseURL: `${SERVER_ADDRESS}`,
