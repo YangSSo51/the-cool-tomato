@@ -1,7 +1,6 @@
 package com.wp.product.product.dto.request;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.validation.constraints.Min;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -9,9 +8,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Schema(description = "상품 등록 위한 요청 객체")
 public class ProductRequest {
+    @Schema(description = "상품 번호를 입력해주세요")
+    private Long productId;
 
     @Schema(defaultValue = "1",description = "카테고리 코드를 입력해주세요")
-    private int categoryId;
+    private Long categoryId;
 
     @Schema(description = "상품명을 입력해주세요")
     private String productName;

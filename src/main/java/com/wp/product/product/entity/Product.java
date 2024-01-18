@@ -1,12 +1,11 @@
 package com.wp.product.product.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.wp.product.product.dto.request.ProductRequest;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
 
@@ -25,5 +24,18 @@ public class Product {
     private int price;
     private int deliveryCharge;
     private int quantity;
+
+    @CreationTimestamp
+    @Column(updatable = false)
     private LocalDateTime registerDate;
+
+    public void change(ProductRequest productRequest) {
+        this.categoryId = productRequest.getCategoryId();
+        this.productName = productRequest.getProductName();
+        this.productContent = productRequest.getProductContent();
+        this.paymentLink = productRequest.getPaymentLink();
+        this.price = productRequest.getPrice();
+        this.deliveryCharge = productRequest.getDeliveryCharge();
+        this.quantity = productRequest.getQuantity();
+    }
 }

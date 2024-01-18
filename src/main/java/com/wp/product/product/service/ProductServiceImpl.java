@@ -6,6 +6,7 @@ import com.wp.product.product.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import java.util.Optional;
 
 @Slf4j
 @Service
@@ -24,6 +25,18 @@ public class ProductServiceImpl implements ProductService{
                         .deliveryCharge(productRequest.getDeliveryCharge())
                         .quantity(productRequest.getQuantity())
                         .build();
+        productRepository.save(product);
+    }
+
+    @Override
+    public void updateProduct(ProductRequest productRequest) {
+         Long productId = productRequest.getProductId();
+
+        Optional<Product> result = productRepository.findById(productId);
+
+        Product product = result.orElseThrow();
+        product.change(productRequest);
+
         productRepository.save(product);
     }
 }
