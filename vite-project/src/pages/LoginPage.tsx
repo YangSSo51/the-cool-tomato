@@ -7,12 +7,17 @@ function LoginPage() {
     return (
         <>
             <Center>
-                <Container pt={3} m={0} maxW="50%" centerContent>
+                <Container
+                    pt={3}
+                    m={0}
+                    maxW={{ xl: "35%", lg: "75%", sm: "90%" }}
+                    centerContent
+                >
                     <Text
                         pb={3}
                         fontSize="4xl"
                         fontWeight="bold"
-                        color="#0E3E30"
+                        color="themeFontGreen.500"
                     >
                         Login
                     </Text>
