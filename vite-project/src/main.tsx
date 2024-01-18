@@ -1,28 +1,20 @@
-import React from 'react'
-import ReactDOM from 'react-dom/client'
-import { BrowserRouter } from 'react-router-dom'
-import { ChakraProvider } from '@chakra-ui/react';
-// import { persistStore } from "redux-persist";
-// import { PersistGate } from "redux-persist/integration/react";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
-const queryClient = new QueryClient()   //2번
+import ReactDOM from "react-dom/client";
+import App from "./App.tsx";
+import { BrowserRouter } from "react-router-dom";
+import { ChakraProvider } from "@chakra-ui/react";
+import { Provider } from "react-redux";
+import { PersistGate } from "redux-persist/integration/react";
+import { store, persistor } from "./redux/stores/store";
 
-
-import App from './App.tsx'
-// import store from './reducers/store';
-
-// const persistor = persistStore(store)
-
-ReactDOM.createRoot(document.getElementById('root')!).render(
-    <QueryClientProvider client={queryClient}>
-    <ChakraProvider>
-    {/* <ChakraProvider store={store}> */}
-        {/* <PersistGate loading={null} persistor={persistor}> */}
-            <BrowserRouter>
-                <App />
-            </BrowserRouter>
-        {/* </PersistGate> */}
-    </ChakraProvider>
-    </QueryClientProvider>
-)
-
+ReactDOM.createRoot(document.getElementById("root")!).render(
+    <Provider store={store}>
+        {/* PersisGate를 통해 리액트가 로딩되기 전에 반드시 로딩되어야 할 컴포넌트가 있는 경우 loading에 해당 컴포넌트를 넣어준다 */}
+        <PersistGate loading={null} persistor={persistor}>
+            <ChakraProvider>
+                <BrowserRouter>
+                    <App />
+                </BrowserRouter>
+            </ChakraProvider>
+        </PersistGate>
+    </Provider>
+);
