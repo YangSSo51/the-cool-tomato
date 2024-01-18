@@ -14,20 +14,11 @@
     object-fit: cover;
 }
 
-.NavRight {
-    margin: 8px;
-}
-
-hr {
-    margin-top: 8px;
-    background-color: #126F54;
-}
-
 .NavFont {
-    font-family: "GmarketSansMedium";
-    margin-left:18px;
-    margin-right:18px;
-    font-size: 1rem;
-    font-weight: 600;
+    font-family: "GmkLight";
+    margin-left: 20px;
+    margin-right: 20px;
+    font-size: large;
+    font-weight: bold;
     
 }

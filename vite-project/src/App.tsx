@@ -9,12 +9,12 @@ import BuyerPage from "./pages/BuyerPage";
 import SellerPage from "./pages/SellerPage";
 import UserinfoPage from "./pages/UserinfoPage";
 import LoginPage from "./pages/LoginPage";
-import { theme, Fonts } from "./theme/Theme";
+import { Theme, Fonts } from "./theme/Theme";
 
 function App() {
     return (
         <>
-            <ChakraProvider theme={theme}>
+            <ChakraProvider theme={Theme}>
                 <Fonts />
                 <Routes>
                     <Route path="/v1" element={<LayOut />}>
