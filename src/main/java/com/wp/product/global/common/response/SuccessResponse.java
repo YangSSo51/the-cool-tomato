@@ -24,5 +24,4 @@ public class SuccessResponse<T> {
         this.status = status;
         this.message = message;
     }
-
 }
