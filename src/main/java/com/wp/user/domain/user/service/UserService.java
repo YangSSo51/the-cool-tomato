@@ -2,8 +2,15 @@ package com.wp.user.domain.user.service;
 
 
 import com.wp.user.domain.user.dto.request.JoinRequest;
+import com.wp.user.domain.user.dto.request.LoginRequest;
+import com.wp.user.domain.user.dto.response.DuplicateLoginIdResponse;
+import com.wp.user.domain.user.dto.response.LoginResponse;
+import jakarta.servlet.http.HttpServletRequest;
+
 
 public interface UserService {
     void saveUser(JoinRequest joinRequest);
-    boolean existUserByLoginId(String loginId);
+    DuplicateLoginIdResponse existUserByLoginId(String loginId);
+    LoginResponse login(LoginRequest logInRequest);
+    void logout(HttpServletRequest httpServletRequest);
 }
