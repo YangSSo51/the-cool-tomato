@@ -21,7 +21,7 @@ const Fonts = () => (
 
       @font-face {
         font-family: 'GmkLight';
-        font-weight: 400;
+        font-weight: 200;
         font-display: swap;
         src: url("/fonts/GmarketSansTTFLight.ttf");
       }
@@ -37,7 +37,7 @@ const Fonts = () => (
 );
 
 const { primary, utility } = colors;
-const theme = extendTheme({
+const Theme = extendTheme({
     colors: {
         themeGreen: { 500: primary.ourgreen },
         themeRed: { 500: primary.ourred },
@@ -49,7 +49,7 @@ const theme = extendTheme({
     styles: {
         global: {
             body: {
-                fontFamily: "GmkMedium",
+                fontFamily: "GmkLight",
             },
             footer: {
                 fontFamily: "FooterLight",
@@ -61,4 +61,4 @@ const theme = extendTheme({
     },
 });
 
-export { theme, Fonts };
+export { Theme, Fonts };
