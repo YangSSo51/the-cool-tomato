@@ -6,6 +6,7 @@ export default function SellerComponent() {
     return (
         <Box>
             <Flex minWidth="max-content" alignItems="center" gap="3">
+                <div />
                 <Link
                     onClick={() => {
                         navigate("/v1/live/list");
@@ -38,6 +39,7 @@ export default function SellerComponent() {
                 >
                     라이브 달력
                 </Link>
+                <div />
             </Flex>
         </Box>
     );

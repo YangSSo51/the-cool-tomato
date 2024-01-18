@@ -14,7 +14,7 @@ import LogoutProfileComponent from "./navcomponent/LogoutProfileComponent";
 function NavBar() {
     const navigate = useNavigate();
     const [loginlogout, LoginState] = useState(true);
-    const [BuyerSeller, BuyerSellerState] = useState(false);
+    const [BuyerSeller, BuyerSellerState] = useState(true);
     const [profile, ProfileState] = useState();
 
     return (
@@ -24,12 +24,7 @@ function NavBar() {
                 <Spacer />
                 {loginlogout ? <LoginComponent /> : <LogoutComponent />}
             </Flex>
-            <Flex
-                minWidth="max-content"
-                alignItems="center"
-                gap="3"
-                className="NavBottom"
-            >
+            <Flex minWidth="max-content" alignItems="center" gap="3">
                 <Box
                     width={"13"}
                     height={"10"}
@@ -49,9 +44,14 @@ function NavBar() {
                 <Spacer />
                 {BuyerSeller ? <BuyerComponent /> : <SellerComponent />}
                 <Spacer />
-                {(loginlogout && BuyerSeller) ? <ProfileBuyerComponent /> : (loginlogout && !BuyerSeller) ? <ProfileSellerComponent /> : <LogoutProfileComponent />}
+                {loginlogout && BuyerSeller ? (
+                    <ProfileBuyerComponent />
+                ) : loginlogout && !BuyerSeller ? (
+                    <ProfileSellerComponent />
+                ) : (
+                    <LogoutProfileComponent />
+                )}
             </Flex>
-            <hr />
         </Box>
     );
 }

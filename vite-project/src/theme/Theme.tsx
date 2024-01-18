@@ -1,4 +1,3 @@
-import { defineStyle } from "@chakra-ui/react";
 import { extendTheme } from "@chakra-ui/react";
 import { Global } from "@emotion/react";
 
@@ -21,7 +20,7 @@ const Fonts = () => (
 
       @font-face {
         font-family: 'GmkLight';
-        font-weight: 400;
+        font-weight: 200;
         font-display: swap;
         src: url("/fonts/GmarketSansTTFLight.ttf");
       }
@@ -36,7 +35,7 @@ const Fonts = () => (
     />
 );
 
-const theme = extendTheme({
+const Theme = extendTheme({
     colors: {
         themeGreen: { 500: "#126F54" },
         themeRed: { 500: "#E34140" },
@@ -48,7 +47,7 @@ const theme = extendTheme({
     styles: {
         global: {
             body: {
-                fontFamily: "GmkMedium",
+                fontFamily: "GmkLight",
             },
             footer: {
                 fontFamily: "FooterLight",
@@ -60,4 +59,4 @@ const theme = extendTheme({
     },
 });
 
-export { theme, Fonts };
+export { Theme, Fonts };
