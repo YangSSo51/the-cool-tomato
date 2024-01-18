@@ -1,5 +1,6 @@
 import { extendTheme } from "@chakra-ui/react";
 import { Global } from "@emotion/react";
+import colors from "./colors";
 
 const Fonts = () => (
     <Global
@@ -35,14 +36,15 @@ const Fonts = () => (
     />
 );
 
+const { primary, utility } = colors;
 const Theme = extendTheme({
     colors: {
-        themeGreen: { 500: "#126F54" },
-        themeRed: { 500: "#E34140" },
-        themeWhite: { 500: "#FFFAF4" },
-        themeLightGreen: { 500: "#C1D8B5" },
-        themePink: { 500: "#FFE0DD" },
-        themeFontGreen: { 500: "#0E3E30" },
+        themeGreen: { 500: primary.ourgreen },
+        themeRed: { 500: primary.ourred },
+        themeWhite: { 500: primary.ourwhite },
+        themeLightGreen: { 500: primary.ourlightgreen },
+        themePink: { 500: primary.ourpink },
+        themeFontGreen: { 500: utility.greenfont },
     },
     styles: {
         global: {

@@ -7,7 +7,7 @@ const primary = {
   };
   
   const utility = {
-    greenfont: '#OE3E3O',
+    greenfont: '#0E3E30',
     darkBG: '#000000',
   };
   
