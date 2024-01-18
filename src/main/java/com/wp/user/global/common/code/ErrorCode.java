@@ -67,6 +67,8 @@ public enum ErrorCode {
      */
     BUSINESS_EXCEPTION_ERROR(200, "B999", "Business Exception Error"),
     ALREADY_REGISTERED_EMAIL(409, "B001", "이미 회원가입된 이메일입니다."),
+    NOT_FOUND_USER(409, "B002", "가입된 아이디가 아닙니다."),
+    NOT_VALID_PASSWORD(409, "B003", "비밀번호가 일치하지 않습니다."),
 
     /**
      * ******************************* Custom Error CodeList ***************************************
