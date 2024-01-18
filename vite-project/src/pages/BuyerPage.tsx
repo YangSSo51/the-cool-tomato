@@ -4,7 +4,7 @@ import { Box, Flex, Center } from "@chakra-ui/layout";
 import { Button, Avatar, List, ListItem } from "@chakra-ui/react";
 import axios from "axios";
 
-import Recent from "../components/mypage/recent";
+import Recent from "../components/mypage/Recent";
 import Following from "../components/mypage/Following";
 import Reviews from "../components/mypage/Reviews";
 import Reviewed from "../components/mypage/Reviewed";
@@ -16,7 +16,6 @@ export default function BuyerPage() {
   const navigate = useNavigate();
   const { userId } = useParams();
   const [ userInfo, setUserInfo ] = useState([]);
-  console.log(userInfo)
   const [ tab, setTab ] = useState(0);
   const categoryTabs = [
     { id: 0, name: '최근 본 상품', component: <Recent userId={userId} /> },
@@ -38,9 +37,6 @@ export default function BuyerPage() {
                 // }
                 );
             setUserInfo(response.data);
-            console.log(response.data[0].profile_img)
-            console.log(typeof(response.data))
-            // console.log(JSON.stringify(userInfo, ['profile_img']))
             } catch (error) {
             console.error("Error fetching user data:", error);
             }
@@ -67,7 +63,7 @@ export default function BuyerPage() {
                 >판매자 정보 보기
                 </Button>
 
-                <Avatar mt="4" size="xl" src={JSON.stringify(userInfo, ['profile_img'])} />
+                <Avatar mt="4" size="xl" src={stringify(userInfo, 'profile_img')} />
 
                 <Button
                   mt="4"
