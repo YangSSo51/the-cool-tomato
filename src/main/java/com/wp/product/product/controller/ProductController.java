@@ -53,4 +53,18 @@ public class ProductController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    @DeleteMapping("/{productId}")
+    @Operation(summary = "상품 삭제",description = "판매자가 상품을 삭제함", responses ={
+            @ApiResponse(responseCode = "200", description = "상품 삭제 성공" ),
+            @ApiResponse(responseCode = "400", description = "상품 삭제 실패",content =
+                    { @Content(mediaType = "application/json", schema =
+                    @Schema(implementation = ErrorResponse.class))})})
+    public ResponseEntity<?> deleteProduct(@PathVariable Long productId){
+        productService.deleteProduct(productId);
+
+        SuccessResponse response = SuccessResponse.builder()
+                .status(SuccessCode.DELETE_SUCCESS.getStatus())
+                .message(SuccessCode.DELETE_SUCCESS.getMessage()).build();
+        return new ResponseEntity<>(response,HttpStatus.OK);
+    }
 }

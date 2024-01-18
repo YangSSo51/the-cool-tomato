@@ -52,4 +52,12 @@ public class ProductServiceImpl implements ProductService{
             throw new BusinessExceptionHandler("상품 수정에 실패했습니다",ErrorCode.UPDATE_ERROR);
         }
     }
+
+    @Override
+    public void deleteProduct(Long productId) {
+            productRepository.findById(productId)
+                    .orElseThrow(()->new BusinessExceptionHandler("상품이 존재하지 않습니다",ErrorCode.NO_ELEMENT_ERROR));
+
+            productRepository.deleteById(productId);
+    }
 }
