@@ -1,6 +1,5 @@
 package com.wp.user.domain.user.service;
 
-import com.wp.user.domain.user.dto.request.FindPasswordRequest;
 import com.wp.user.domain.user.dto.request.JoinRequest;
 import com.wp.user.domain.user.dto.request.LoginRequest;
 import com.wp.user.domain.user.dto.response.DuplicateLoginIdResponse;
