@@ -37,6 +37,7 @@ export default function BuyerPage() {
                 // }
                 );
             setUserInfo(response.data);
+            console.log(userInfo[0])
             } catch (error) {
             console.error("Error fetching user data:", error);
             }
@@ -63,7 +64,7 @@ export default function BuyerPage() {
                 >판매자 정보 보기
                 </Button>
 
-                <Avatar mt="4" size="xl" src={stringify(userInfo, 'profile_img')} />
+                <Avatar mt="4" size="xl" src="https://raw.githubusercontent.com/printilikepenguin/forUserContent/master/profile.png" />
 
                 <Button
                   mt="4"
