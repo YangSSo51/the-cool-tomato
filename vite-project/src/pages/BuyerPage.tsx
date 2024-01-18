@@ -3,7 +3,7 @@ import { Box, Flex, Text, Center } from "@chakra-ui/layout";
 import { Avatar, List, ListItem } from "@chakra-ui/react";
 import { useNavigate, useParams } from "react-router-dom";
 // import { useParams } from "react-router-dom"
-import { primary } from "../theme/color/colors";
+import { primary } from "../theme/colors";
 
 import Recent from "../components/mypage/recent";
 
