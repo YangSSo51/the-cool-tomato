@@ -1,16 +1,15 @@
 package com.wp.product.product.dto.request;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor
-@Schema(description = "상품 등록 위한 요청 객체")
-public class ProductRequest {
-    @Schema(description = "상품 번호를 입력해주세요")
-    private Long productId;
-
+@Schema(description = "상품 등록을 위한 요청 객체")
+public class ProductCreateRequest {
+    @NotNull
     @Schema(defaultValue = "1",description = "카테고리 코드를 입력해주세요")
     private Long categoryId;
 
@@ -31,5 +30,4 @@ public class ProductRequest {
 
     @Schema(defaultValue = "0",description = "상품 수량을 입력해주세요")
     private int quantity;
-    
 }

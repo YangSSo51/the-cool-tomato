@@ -1,6 +1,6 @@
 package com.wp.product.product.entity;
 
-import com.wp.product.product.dto.request.ProductRequest;
+import com.wp.product.product.dto.request.ProductUpdateRequest;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -29,7 +29,7 @@ public class Product {
     @Column(updatable = false)
     private LocalDateTime registerDate;
 
-    public void change(ProductRequest productRequest) {
+    public void change(ProductUpdateRequest productRequest) {
         this.categoryId = productRequest.getCategoryId();
         this.productName = productRequest.getProductName();
         this.productContent = productRequest.getProductContent();

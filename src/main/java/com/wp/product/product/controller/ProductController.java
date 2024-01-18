@@ -3,7 +3,8 @@ package com.wp.product.product.controller;
 import com.wp.product.global.common.code.SuccessCode;
 import com.wp.product.global.common.response.ErrorResponse;
 import com.wp.product.global.common.response.SuccessResponse;
-import com.wp.product.product.dto.request.ProductRequest;
+import com.wp.product.product.dto.request.ProductCreateRequest;
+import com.wp.product.product.dto.request.ProductUpdateRequest;
 import com.wp.product.product.service.ProductService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -30,7 +31,7 @@ public class ProductController {
     @Operation(summary = "상품 등록",description = "판매자가 상품을 등록함", responses ={
             @ApiResponse(responseCode = "200", description = "상품 등록 성공" ),
             @ApiResponse(responseCode = "400", description = "상품 등록 실패")})
-    public ResponseEntity<?> saveProduct(@RequestBody @Valid ProductRequest productRequest){
+    public ResponseEntity<?> saveProduct(@RequestBody @Valid ProductCreateRequest productRequest){
         productService.saveProduct(productRequest);
         SuccessResponse response = SuccessResponse.builder()
                                     .status(SuccessCode.INSERT_SUCCESS.getStatus())
@@ -44,7 +45,7 @@ public class ProductController {
             @ApiResponse(responseCode = "400", description = "상품 수정 실패",content =
                     { @Content(mediaType = "application/json", schema =
                     @Schema(implementation = ErrorResponse.class))})})
-    public ResponseEntity<?> updateProduct(@RequestBody @Valid ProductRequest productRequest){
+    public ResponseEntity<?> updateProduct(@RequestBody @Valid ProductUpdateRequest productRequest){
         productService.updateProduct(productRequest);
         SuccessResponse response = SuccessResponse.builder()
                 .status(SuccessCode.UPDATE_SUCCESS.getStatus())
