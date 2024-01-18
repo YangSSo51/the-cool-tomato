@@ -6,7 +6,6 @@ import {
     Button,
     Center,
     FormControl,
-    FormLabel,
     FormErrorMessage,
     FormHelperText,
 } from "@chakra-ui/react";
@@ -26,6 +25,7 @@ function LoginForm() {
                     focusBorderColor="themeGreen.500"
                     placeholder="ID"
                     size="md"
+                    autoComplete="username"
                 />
             </FormControl>
             <FormControl>
@@ -35,6 +35,7 @@ function LoginForm() {
                         type={show ? "text" : "password"}
                         placeholder="Password"
                         focusBorderColor="themeGreen.500"
+                        autoComplete="current-password"
                     />
                     <InputRightElement width="4.5rem">
                         <Button
