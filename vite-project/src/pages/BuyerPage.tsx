@@ -88,7 +88,7 @@ export default function BuyerPage() {
                                         <ListItem
                                         key={category.id}
                                         onClick={() => setTab(category.id)}
-                                        _hover={{ color: "themeRed.500" }}
+                                        _hover={{ color: "themeRed.500", cursor:"pointer" }}
                                         >{category.name}
                                         </ListItem>
                                     ))}
