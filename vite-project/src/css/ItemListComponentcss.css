@@ -30,25 +30,8 @@
     font-weight: bold;
 }
 
-.crousel-wrapper {
-    width: 250px;
-    height: 325px;
-}
-
-.crousel-wrapper > .carousel {
-    transform: translate3d(0, 0, 0);
-    transition: transform 0.2s;
-    @keyframes autoPlay {
-        0% {
-            transition: translateX(0);
-        }
-        100% {
-            transform:  translateX(calc(-250px * ))
-        }
-    }
-}
-
-.crousel-wrapper > .carousel > .carousel_img {
-    width: 250px;
-    height: 325px;
+hr {
+    width: 70%;
+    height: 5px;
+    background-color: #000000;
 }
