@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { Box, Flex, Center, Heading } from "@chakra-ui/layout";
+import { Box, Flex, Center, Text } from "@chakra-ui/layout";
 import { Button, Avatar, List, ListItem } from "@chakra-ui/react";
 import axios from "axios";
 
@@ -52,9 +52,11 @@ export default function BuyerPage() {
         <Box minH="100vh" mb="10">
 
             <Flex mt="10" mb="10" justify="center">
-                <Center w="30vw" bgImage="url('/icons/up_ttl.svg')" bgRepeat="no-repeat" bgSize="cover">
-                    <Heading>마이페이지</Heading>
-                </Center>
+                {/* <Center w="30vw" bgImage="url('/icons/up_ttl.svg')" bgRepeat="no-repeat" bgSize="cover"> */}
+                    <Text as="b" fontSize="6xl" color={"themeGreen.500"}>
+                        마이페이지
+                    </Text>
+                
             </Flex>
 
             <Flex m="auto" border="1px" borderColor="green" rounded="lg" w="85vw" minH="85vh">
@@ -65,12 +67,13 @@ export default function BuyerPage() {
 
                                 <Button
                                     onClick={() => {
-                                    navigate("/v1/seller");
+                                    navigate("/v1/seller/" + {userId});
                                     }}
                                 >판매자 정보 보기
                                 </Button>
 
                                 {userInfo ? <Avatar mt="4" size="xl" src={userInfo.profile_img} /> : 로딩중 }
+
                                 <Button
                                     mt="4"
                                     onClick={() => {
@@ -85,6 +88,7 @@ export default function BuyerPage() {
                                         <ListItem
                                         key={category.id}
                                         onClick={() => setTab(category.id)}
+                                        _hover={{ color: "themeRed.500" }}
                                         >{category.name}
                                         </ListItem>
                                     ))}
@@ -96,7 +100,7 @@ export default function BuyerPage() {
 
                     <Box w="75%" bg="white" rounded="lg" overflow="hidden">
                         <Box h="full" pl="4">
-                            <Flex _hover={{ color: "themeGreen.500" }} justify="center" align="center" h="full">
+                            <Flex justify="center" align="center" h="full">
                             {categoryTabs[tab].component}
                             </Flex>
                         </Box>

@@ -1,4 +1,5 @@
 import { Box, Flex, Text } from "@chakra-ui/layout";
+import { Card, Image, Stack, CardBody, Heading, CardFooter, Button } from "@chakra-ui/react";
 import { useState } from "react";
 // import { useQuery } from "@tanstack/react-query";
 // import axios from "axios";
@@ -43,10 +44,33 @@ export default function Recent() {
     })
 
     return (
+
         <Box w="75%" bg="white" rounded="lg" overflow="hidden">
             <Box h="full" pl="4">
-                <Flex justify="center" align="center" h="full">
-                { testData ? testData : <Text color="gray.400">Content goes here</Text> }
+                <Flex flexDir="column" h="full">
+                { testData ? testData : <Text color="gray.400">최근 본 상품이 없습니다! 상품 구경하러 가기</Text> }
+                <Card
+                direction={{ base: 'column', sm: 'row' }}
+                overflow='hidden'
+                variant='outline'
+                >
+                    <Image
+                        objectFit='cover'
+                        maxW={{ base: '100%', sm: '200px' }}
+                        src='https://d3cpiew7rze14b.cloudfront.net/assets/mission/potato.png'
+                        alt='Caffe Latte'
+                    />
+                        <Stack>
+                            <CardBody>
+                                <Heading size='md'>맛있는감자</Heading>
+                            </CardBody>
+                            <CardFooter>
+                                <Button variant='solid' colorScheme='green'>
+                                    Buy Latte
+                                </Button>
+                            </CardFooter>
+                        </Stack>
+                    </Card>
                 </Flex>
             </Box>
         </Box>
