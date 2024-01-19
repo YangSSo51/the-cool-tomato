@@ -8,7 +8,7 @@ import org.springframework.http.HttpStatusCode;
  * [공통] API Response 결과의 반환 값을 관리
  */
 @Getter
-public class SuccessResponse<T> implements HttpStatusCode {
+public class SuccessResponse<T> {
 
     // API 응답 결과 Response
     private T data;

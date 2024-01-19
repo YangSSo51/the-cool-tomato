@@ -58,6 +58,18 @@ public enum ErrorCode {
     // @RequestBody 및 @RequestParam, @PathVariable 값이 유효하지 않음
     NOT_VALID_HEADER_ERROR(404, "G012", "Header에 데이터가 존재하지 않는 경우 "),
 
+    // Token 기간 만료
+    EXPIRED_TOKEN_ERROR(401, "G013", "Expired Token Exception"),
+
+    // 잘못된 Token
+    SECURITY_TOKEN_ERROR(401, "G014", "Security Token Exception"),
+
+    // 지원하지 않은 Token
+    UNSUPPORTED_TOKEN_ERROR(401, "G015", "Unsupported Token Exception"),
+
+    // 잘못된 Token
+    WRONG_TOKEN_ERROR(401, "G016", "Wrong Token Exception"),
+
     // 서버가 처리 할 방법을 모르는 경우 발생
     INTERNAL_SERVER_ERROR(500, "G999", "Internal Server Error Exception"),
 

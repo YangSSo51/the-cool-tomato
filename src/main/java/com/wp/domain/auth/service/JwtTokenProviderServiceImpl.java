@@ -2,18 +2,18 @@ package com.wp.domain.auth.service;
 
 import com.wp.domain.auth.dto.response.TokenResponseDto;
 import com.wp.domain.auth.entity.JwtToken;
+import com.wp.global.common.code.ErrorCode;
+import com.wp.global.exception.BusinessExceptionHandler;
 import io.jsonwebtoken.*;
-import io.jsonwebtoken.io.Decoders;
-import io.jsonwebtoken.security.Keys;
-import jakarta.servlet.http.HttpServletRequest;
+import jakarta.xml.bind.DatatypeConverter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.crypto.spec.SecretKeySpec;
 import java.security.Key;
-import java.sql.Array;
 import java.util.*;
 
 @Slf4j
@@ -38,12 +38,12 @@ public class JwtTokenProviderServiceImpl implements JwtTokenProviderService {
 
     @Override
     public void afterPropertiesSet() throws Exception {
-        byte[] secretKeyBytes = Decoders.BASE64.decode(secretKey);
-        signingKey = Keys.hmacShaKeyFor(secretKeyBytes);
+        byte[] secretKeyBytes = DatatypeConverter.parseBase64Binary(secretKey);
+        signingKey = new SecretKeySpec(secretKeyBytes, SignatureAlgorithm.HS512.getJcaName());
     }
 
     @Transactional
-    public TokenResponseDto createToken(String userId, String password, String auth){
+    public TokenResponseDto createToken(String userId, String auth){
         Long now = System.currentTimeMillis();
         Long accessTokenValidityInMilliseconds = tokenValidityInMilliseconds * 1000;
         String accessToken = Jwts.builder()
@@ -52,9 +52,8 @@ public class JwtTokenProviderServiceImpl implements JwtTokenProviderService {
                 .setExpiration(new Date(now + accessTokenValidityInMilliseconds))
                 .setSubject("access-token")
                 .claim(USER_ID, userId)
-                .claim(PASSWORD, password)
                 .claim(AUTHORITIES_KEY, auth)
-                .signWith(signingKey, SignatureAlgorithm.HS512)
+                .signWith(SignatureAlgorithm.HS512, signingKey)
                 .compact();
 
         Long refreshTokenValidityInMilliseconds = tokenValidityInMilliseconds * 1000 * 2 * 24;
@@ -63,7 +62,7 @@ public class JwtTokenProviderServiceImpl implements JwtTokenProviderService {
                 .setHeaderParam("alg", "HS512")
                 .setExpiration(new Date(now + refreshTokenValidityInMilliseconds))
                 .setSubject("refresh-token")
-                .signWith(signingKey, SignatureAlgorithm.HS512)
+                .signWith(SignatureAlgorithm.HS512, signingKey)
                 .compact();
 
         TokenResponseDto tokenResponseDto = TokenResponseDto.builder().accessToken(accessToken).refreshToken(refreshToken).build();
@@ -71,66 +70,52 @@ public class JwtTokenProviderServiceImpl implements JwtTokenProviderService {
         return tokenResponseDto;
     }
 
-    public boolean deleteRefreshToken(String email){
-        return authRedisServiceImpl.removeRefreshToken(email);
+    public boolean deleteRefreshToken(String userId){
+        return authRedisServiceImpl.removeRefreshToken(userId);
     }
 
     public boolean validateAccessToken(String accessToken) {
         try {
+            accessToken = resolveToken(accessToken);
             Jwts.parserBuilder()
-                    .setSigningKey(signingKey)
+                    .setSigningKey(DatatypeConverter.parseBase64Binary(secretKey))
                     .build()
                     .parseClaimsJws(accessToken);
             return true;
         } catch(ExpiredJwtException e) {
-            return true; // => ???
-        } catch (Exception e) {
-            return false;
+            throw new BusinessExceptionHandler("만료된 JWT 토큰입니다.", ErrorCode.EXPIRED_TOKEN_ERROR);
+        } catch (io.jsonwebtoken.security.SecurityException | MalformedJwtException e) {
+            throw new BusinessExceptionHandler("보안 정책에 위배되는 JWT 토큰입니다.", ErrorCode.SECURITY_TOKEN_ERROR);
+        } catch (UnsupportedJwtException e) {
+            throw new BusinessExceptionHandler("지원되지 않는 JWT 토큰입니다.", ErrorCode.UNSUPPORTED_TOKEN_ERROR);
+        } catch (Exception e){
+            throw new BusinessExceptionHandler("잘못된 JWT 토큰입니다", ErrorCode.WRONG_TOKEN_ERROR);
         }
     }
 
     public boolean validateRefreshToken(String refreshToken){
-        JwtToken jwtToken = authRedisServiceImpl.getRefreshToken(refreshToken);
-        if (jwtToken != null) {
-            return false;
-        }
-
         try {
+            refreshToken = resolveToken(refreshToken);
             Jwts.parserBuilder()
-                    .setSigningKey(signingKey)
+                    .setSigningKey(DatatypeConverter.parseBase64Binary(secretKey))
                     .build()
                     .parseClaimsJws(refreshToken);
             return true;
-        } catch (io.jsonwebtoken.security.SecurityException | MalformedJwtException e) {
-            log.error("잘못된 JWT 토큰입니다: " + jwtToken.getId());
-        } catch (ExpiredJwtException e) {
-            log.error("만료된 JWT 토큰입니다: " + jwtToken.getId());
-        } catch (UnsupportedJwtException e) {
-            log.error("지원되지 않는 JWT 토큰입니다: " + jwtToken.getId());
-        } catch (IllegalArgumentException e) {
-            log.error("JWT claims이 비어있습니다: " + jwtToken.getId());
-        } catch (NullPointerException e){
-            log.error("JWT 토큰이 비어있습니다" + jwtToken.getId());
-        }
-        return false;
-    }
-
-    public boolean validateAccessTokenOnlyExpired(String accessToken) {
-        try {
-            return getClaims(accessToken)
-                    .getExpiration()
-                    .before(new Date());
         } catch(ExpiredJwtException e) {
-            return true;
-        } catch (Exception e) {
-            return false;
+            throw new BusinessExceptionHandler("만료된 JWT 토큰입니다", ErrorCode.EXPIRED_TOKEN_ERROR);
+        } catch (io.jsonwebtoken.security.SecurityException | MalformedJwtException e) {
+            throw new BusinessExceptionHandler("보안 정책에 위배되는 JWT 토큰입니다.", ErrorCode.SECURITY_TOKEN_ERROR);
+        } catch (UnsupportedJwtException e) {
+            throw new BusinessExceptionHandler("지원되지 않는 JWT 토큰입니다", ErrorCode.UNSUPPORTED_TOKEN_ERROR);
+        } catch (Exception e){
+            throw new BusinessExceptionHandler("잘못된 JWT 토큰입니다", ErrorCode.WRONG_TOKEN_ERROR);
         }
     }
 
-    public String resolveToken(HttpServletRequest httpServletRequest) {
-        String bearerToken = httpServletRequest.getHeader(AUTHORIZATION_HEADER);
-        if (bearerToken != null && bearerToken.startsWith(BEARER_PREFIX)) {
-            return bearerToken.substring(7);
+    @Override
+    public String resolveToken(String token) {
+        if (token != null && token.startsWith(BEARER_PREFIX)){
+            return token.substring(7);
         }
         return null;
     }
@@ -147,18 +132,17 @@ public class JwtTokenProviderServiceImpl implements JwtTokenProviderService {
         }
     }
 
-    public List<String> getInfo(String token, List<String> infos) {
-        try {
-            Claims claims = getClaims(token);
-            List<String> result = new ArrayList<>();
-
-            for (String info : infos) {
-                result.add((String) claims.get(info));
-            }
-
-            return result;
-        } catch (ExpiredJwtException e) { // Access Token
-            return null;
+    public Map<String, String> getInfo(String token, List<String> infos) {
+        Claims claims = getClaims(token);
+        Map<String, String> result = new HashMap<>();
+        for (String info : infos) {
+            result.put(info, claims.get(info).toString());
         }
+        return result;
+    }
+
+    public String getUserId(String token) {
+        Claims claims = getClaims(token);
+        return claims.get("userId").toString();
     }
 }

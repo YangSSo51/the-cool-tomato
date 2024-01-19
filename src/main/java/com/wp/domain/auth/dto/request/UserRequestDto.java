@@ -9,8 +9,6 @@ import lombok.Data;
 public class UserRequestDto {
     @NotBlank(message = "userId가 입력되지 않았습니다.")
     private String userId;
-    @NotBlank(message = "password가 입력되지 않았습니다.")
-    private String password;
     @NotBlank(message = "auth가 입력되지 않았습니다.")
     private String auth;
 }
