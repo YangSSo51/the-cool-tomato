@@ -67,11 +67,12 @@ public enum ErrorCode {
      */
     BUSINESS_EXCEPTION_ERROR(200, "B999", "Business Exception Error"),
     ALREADY_REGISTERED_EMAIL(409, "B001", "이미 회원가입된 이메일입니다."),
-    NOT_FOUND_USER_LOGIN_ID(409, "B002", "가입된 아이디가 아닙니다."),
-    NOT_VALID_PASSWORD(409, "B003", "비밀번호가 일치하지 않습니다."),
-    NOT_FOUND_USER_EMAIL(409, "B005", "가입된 이메일이 아닙니다."),
-    SEND_EMAIL_ERROR(409, "B006", "이메일 전송에 실패했습니다."),
-    NOT_FOUND_USER_LOGIN_ID_EMAIL(409, "B007", "아이디와 이메일이 일치하지 않습니다."),
+    NOT_FOUND_USER_LOGIN_ID(401, "B002", "가입된 아이디가 아닙니다."),
+    NOT_VALID_PASSWORD(401, "B003", "비밀번호가 일치하지 않습니다."),
+    NOT_FOUND_USER_EMAIL(401, "B005", "가입된 이메일이 아닙니다."),
+    SEND_EMAIL_ERROR(500, "B006", "이메일 전송에 실패했습니다."),
+    NOT_FOUND_USER_LOGIN_ID_EMAIL(401, "B007", "아이디와 이메일이 일치하지 않습니다."),
+    NOT_FOUND_USER_ID(401, "B008", "회원을 찾을 수 없습니다."),
 
     /**
      * ******************************* Custom Error CodeList ***************************************
