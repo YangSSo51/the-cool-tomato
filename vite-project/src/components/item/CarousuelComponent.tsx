@@ -1,44 +1,27 @@
-import { Box, Flex } from "@chakra-ui/react";
+import { Box } from "@chakra-ui/react";
 import LiveGoods from "./LiveItemComponent";
-import dummylist from "./dummylist/dummy";
-import ItemsCarousel from "react-items-carousel";
-import { useState } from "react";
+import Carousel from 'react-bootstrap/Carousel';
+import GoodsList from "./dummylist/dummy";
 
 export default function CarouselComponent() {
-    const carousel_num = dummylist.length;
-    const [activeItemIndex, setActiveItemIndex] = useState(0);
-    const chevronWidth = 40;
-
+    const dummylist = GoodsList;
     return (
-        <Flex p={"2rem"}>
-            <div style={{ padding: `0 ${chevronWidth}px` }}>
-            <ItemsCarousel
-                requestToChangeActive={setActiveItemIndex}
-                activeItemIndex={activeItemIndex}
-                numberOfCards={8}
-                gutter={20}
-                leftChevron={<button>{"<"}</button>}
-                rightChevron={<button>{">"}</button>}
-                outsideChevron
-                chevronWidth={chevronWidth}
-            ></ItemsCarousel>
-            <Flex
-                wrap="wrap"
-                m="auto"
-                gap={3}
-            >
-                {dummylist.map((data) => (
-                    <Box
-                        key={data.id}
-                        w="calc(15% + 2rem)"
-                        p={1}
-                        className="carousel_img"
-                    >
-                        <LiveGoods img={data.img} price={data.price} />
-                    </Box>
-                ))}
-            </Flex>
-            </div>
-        </Flex>
-    );
+
+        {
+            dummylist.map((data) => (
+                <Carousel.Item interval={1000}>
+                    <Carousel.Caption>
+                        <Box
+                            w="calc(15% + 2rem)"
+                            p={1}
+                            className="carousel_img"
+                        >
+                            {data.price}
+                        </Box>
+                    </Carousel.Caption>
+                </Carousel.Item>
+            ))
+        }
+
+    )
 }

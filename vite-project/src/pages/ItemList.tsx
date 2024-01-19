@@ -3,6 +3,7 @@ import Goods from "../components/item/ItemListComponent";
 import GoodsList from "../components/item/dummylist/dummy";
 import CarouselComponent from "../components/item/CarousuelComponent";
 import "../css/ItemListComponentcss.css";
+import Carousel from 'react-bootstrap/Carousel';
 
 export default function ItemList() {
     const dummylist = GoodsList;
@@ -15,7 +16,10 @@ export default function ItemList() {
             >
                 현재 진행중인 라이브
             </Flex>
-            <CarouselComponent />
+
+            <Carousel>
+                <CarouselComponent />
+            </Carousel>
             <Flex wrap="wrap" maxW="1280px" m="auto" gap={6}>
                 {dummylist.map((data) => (
                     <Box key={data.id} w="calc(23.33%)" p={4}>
