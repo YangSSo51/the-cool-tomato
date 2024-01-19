@@ -11,12 +11,10 @@ const Goods = ({ img, price }: GoodsProps) => {
         <>
             <Box>
                 <ul>
-                    <a href="twtter.com">
-                        <div className="img">
-                            <img className="Realimage" src={img}></img>
-                        </div>
-                        <span className="tagWrap">{price}</span>
-                    </a>
+                    <div className="img">
+                        <img src={img}></img>
+                    </div>
+                    <span className="tagWrap">{price}</span>
                 </ul>
             </Box>
         </>
