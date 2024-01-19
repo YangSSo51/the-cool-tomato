@@ -16,7 +16,7 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 @Schema(description = "회원가입을 위한 요청 객체")
-public class JoinRequest {
+public class AddUserRequest {
     @NotBlank(message = "회원의 로그인 ID를 입력해주세요.")
     @Size(max = 10, message = "로그인 ID는 최대 10이어야 합니다.")
     @Schema(description = "로그인 ID를 입력해주세요." , example = "ssafy")

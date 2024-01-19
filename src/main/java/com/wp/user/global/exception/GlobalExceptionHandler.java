@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.google.gson.JsonParseException;
 import com.wp.user.global.common.code.ErrorCode;
 import com.wp.user.global.common.response.ErrorResponse;
+import jakarta.validation.ConstraintViolationException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.NoHandlerFoundException;
 import java.io.IOException;
 
@@ -44,6 +46,12 @@ public class GlobalExceptionHandler {
             stringBuilder.append(", ");
         }
         final ErrorResponse response = ErrorResponse.of(ErrorCode.NOT_VALID_ERROR, String.valueOf(stringBuilder));
+        return new ResponseEntity<>(response, HttpStatus.valueOf(ErrorCode.NOT_VALID_ERROR.getStatus()));
+    }
+
+    @ExceptionHandler(value = {ConstraintViolationException.class})
+    protected ResponseEntity<Object> handleConstraintViolation(ConstraintViolationException ex) {
+        final ErrorResponse response = ErrorResponse.of(ErrorCode.NOT_VALID_ERROR, ex.getMessage());
         return new ResponseEntity<>(response, HttpStatus.valueOf(ErrorCode.NOT_VALID_ERROR.getStatus()));
     }
 

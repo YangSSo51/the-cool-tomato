@@ -1,9 +1,9 @@
 package com.wp.user.domain.user.service;
 
-import com.wp.user.domain.user.dto.request.JoinRequest;
+import com.wp.user.domain.user.dto.request.AddUserRequest;
 import com.wp.user.domain.user.dto.request.LoginRequest;
-import com.wp.user.domain.user.dto.response.DuplicateLoginIdResponse;
-import com.wp.user.domain.user.dto.response.LoginResponse;
+import com.wp.user.domain.user.dto.request.ModifyUserRequest;
+import com.wp.user.domain.user.dto.response.*;
 import com.wp.user.domain.user.entity.Auth;
 import com.wp.user.domain.user.entity.User;
 import com.wp.user.domain.user.repository.UserRepository;
@@ -20,6 +20,9 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -34,11 +37,11 @@ public class UserServiceImpl implements UserService {
     // 회원가입
     @Override
     @Transactional
-    public void saveUser(JoinRequest joinRequest) {
+    public void addUser(AddUserRequest addUserRequest) {
 
         // 이메일 중복인 경우 강제 에러 발생
         try {
-            if(userRepository.existsByEmail(joinRequest.getEmail()))
+            if(userRepository.existsByEmail(addUserRequest.getEmail()))
                 throw new BusinessExceptionHandler(ErrorCode.ALREADY_REGISTERED_EMAIL);
         } catch (Exception e) {
             throw new BusinessExceptionHandler(ErrorCode.ALREADY_REGISTERED_EMAIL); // errorCode : B001
@@ -47,12 +50,12 @@ public class UserServiceImpl implements UserService {
         // User 엔티티 생성
         User user = User.builder()
                 .auth(Auth.BUYER)
-                .loginId(joinRequest.getLoginId())
-                .password(passwordEncoder.encode(joinRequest.getPassword()))
-                .email(joinRequest.getEmail())
-                .nickname(joinRequest.getNickname())
-                .sex(joinRequest.getSex())
-                .birthday(joinRequest.getBirthday())
+                .loginId(addUserRequest.getLoginId())
+                .password(passwordEncoder.encode(addUserRequest.getPassword()))
+                .email(addUserRequest.getEmail())
+                .nickname(addUserRequest.getNickname())
+                .sex(addUserRequest.getSex())
+                .birthday(addUserRequest.getBirthday())
                 .build();
 
         // 회원 저장
@@ -61,7 +64,7 @@ public class UserServiceImpl implements UserService {
 
     // 로그인 ID 중복 확인
     @Override
-    public DuplicateLoginIdResponse existUserByLoginId(String loginId) {
+    public DuplicateLoginIdResponse getUserByLoginId(String loginId) {
         boolean isDuplicate = userRepository.existsByLoginId(loginId);
         return DuplicateLoginIdResponse.builder().isDuplicate(isDuplicate).build();
     }
@@ -90,7 +93,7 @@ public class UserServiceImpl implements UserService {
     // 아이디 찾기
     @Override
     @Transactional
-    public void findLoginIdByEmail(String email) {
+    public void getLoginIdByEmail(String email) {
         // 이메일로 로그인 아이디 찾기
         User user = userRepository.findUserByEmail(email).orElseThrow(() -> new BusinessExceptionHandler(ErrorCode.NOT_FOUND_USER_EMAIL)); // errorCode : B005
         // 이메일 보내기
@@ -98,9 +101,9 @@ public class UserServiceImpl implements UserService {
         try {
             MimeMessageHelper helper = new MimeMessageHelper(message, false, "UTF-8");
             helper.setTo(user.getEmail());
-            helper.setSubject("[멋쟁이 토마토] 로그인 아이디 안내 이메일 입니다.");
+            helper.setSubject("[멋쟁이 토마토] 로그인 아이디 안내 이메일입니다.");
             StringBuffer sb = new StringBuffer();
-            sb.append("안녕하세요. 멋쟁이 토마토 로그인 아이디 안내 관련 이메일 입니다.");
+            sb.append("안녕하세요. 멋쟁이 토마토 로그인 아이디 안내 관련 이메일입니다.");
             sb.append(System.lineSeparator());
             sb.append("[").append(user.getNickname()).append("]님의 가입하신 아이디는 ").append(user.getLoginId()).append("입니다.");
             helper.setText(sb.toString());
@@ -113,7 +116,7 @@ public class UserServiceImpl implements UserService {
     // 비밀번호 찾기
     @Override
     @Transactional
-    public void setTempPasswordByEmail(String loginId, String email) {
+    public void getPasswordByEmail(String loginId, String email) {
         // 이메일로 회원 정보 찾기
         User user = userRepository.findUserByLoginIdAndEmail(loginId, email).orElseThrow(() -> new BusinessExceptionHandler(ErrorCode.NOT_FOUND_USER_LOGIN_ID_EMAIL)); // errorCode : B007
         // 새로운 임시 비밀번호 설정
@@ -124,9 +127,9 @@ public class UserServiceImpl implements UserService {
         try {
             MimeMessageHelper helper = new MimeMessageHelper(message, false, "UTF-8");
             helper.setTo(user.getEmail());
-            helper.setSubject("[멋쟁이 토마토] 임시 비밀번호 안내 이메일 입니다.");
+            helper.setSubject("[멋쟁이 토마토] 임시 비밀번호 안내 이메일입니다.");
             StringBuffer sb = new StringBuffer();
-            sb.append("안녕하세요. 멋쟁이 토마토 임시 비밀번호 안내 관련 이메일 입니다.");
+            sb.append("안녕하세요. 멋쟁이 토마토 임시 비밀번호 안내 관련 이메일입니다.");
             sb.append(System.lineSeparator());
             sb.append("[").append(user.getNickname()).append("]님의 임시 비밀번호는 ").append(tempPassword).append("입니다.");
             helper.setText(sb.toString());
@@ -161,6 +164,70 @@ public class UserServiceImpl implements UserService {
         // 로그아웃 처리
     }
 
+    // 개인 회원 정보 조회(미완)
+    @Override
+    public GetUserResponse getUser(HttpServletRequest httpServletRequest) {
+        // 헤더 Access Token 추출
+        String accessToken = jwtService.resolveToken(httpServletRequest);
+        // 회원 정보 추출
+
+        // 회원 아이디로 회원 정보 추출
+        User user = userRepository.findById(1L).orElseThrow(() -> new BusinessExceptionHandler(ErrorCode.NOT_FOUND_USER_ID));
+        return GetUserResponse.builder()
+                .id(user.getId())
+                .loginId(user.getLoginId())
+                .nickname(user.getNickname())
+                .sex(user.getSex())
+                .birthday(user.getBirthday())
+                .profileImg(user.getProfileImg())
+                .auth(user.getAuth())
+                .joinDate(user.getJoinDate())
+                .build();
+    }
+
+    // 개인 회원 정보 수정(미완)
+    @Override
+    @Transactional
+    public ModifyUserResponse modifyUser(HttpServletRequest httpServletRequest, MultipartFile profileImgFile, ModifyUserRequest modifyUserRequest) {
+        // 헤더 Access Token 추출
+        String accessToken = jwtService.resolveToken(httpServletRequest);
+        // 회원 정보 추출
+        User user = userRepository.findById(1L).orElseThrow(() -> new BusinessExceptionHandler(ErrorCode.NOT_FOUND_USER_ID));
+
+        // 프로필 삭제
+        if(modifyUserRequest.getProfileImg() == null) {
+            user.setProfileImg(null);
+        }
+        // 프로필 수정
+        else if(profileImgFile != null && !profileImgFile.isEmpty()) {
+            // 파일 업로드
+            user.setProfileImg("");
+        }
+        // 닉네임, 성별, 생년월일 수정
+        user.setNickname(modifyUserRequest.getNickname());
+        user.setSex(modifyUserRequest.getSex());
+        user.setBirthday(modifyUserRequest.getBirthday());
+
+        ModifyUserResponse modifyUserResponse = ModifyUserResponse.builder()
+                .profileImg(user.getProfileImg())
+                .auth(user.getAuth())
+                .build();
+        // 비밀번호 수정
+        if(modifyUserRequest.getPassword() != null && modifyUserRequest.getNewPassword() != null) {
+            try {
+                if(!passwordEncoder.matches(modifyUserRequest.getPassword(), user.getPassword()))
+                    throw new BusinessExceptionHandler(ErrorCode.NOT_VALID_PASSWORD);
+            } catch (Exception e) {
+                throw new BusinessExceptionHandler(ErrorCode.NOT_VALID_PASSWORD); // errorCode : B003
+            }
+            // 토큰 재발급
+            modifyUserResponse.setAccessToken("");
+            modifyUserResponse.setRefreshToken("");
+            user.setPassword(passwordEncoder.encode(modifyUserRequest.getNewPassword()));
+        }
+        return modifyUserResponse;
+    }
+
     // 회원 탈퇴(미완)
     @Override
     @Transactional
@@ -174,5 +241,30 @@ public class UserServiceImpl implements UserService {
         // 회원 탈퇴 처리(DB 삭제)
     }
 
+    // 전체 회원 정보 조회(미완)
+    @Override
+    public GetUserListResponse getUsers(HttpServletRequest httpServletRequest) {
+        // 헤더 Access Token 추출
+        String accessToken = jwtService.resolveToken(httpServletRequest);
+        // 권한 추출
+
+        // 회원 정보 조회
+        List<User> users = userRepository.findAllByAuthNot(Auth.ADMIN);
+
+        return GetUserListResponse.builder().users(users).build();
+    }
+
+    // 회원 강제 탈퇴(미완)
+    @Override
+    @Transactional
+    public void forceRemoveUser(HttpServletRequest httpServletRequest, Long id) {
+        // 헤더 Access Token 추출
+        String accessToken = jwtService.resolveToken(httpServletRequest);
+        // 회원 정보 추출
+
+        // 회원 탈퇴 처리(Refresh Token 삭제)
+
+        // 회원 탈퇴 처리(DB 삭제)
+    }
 
 }
