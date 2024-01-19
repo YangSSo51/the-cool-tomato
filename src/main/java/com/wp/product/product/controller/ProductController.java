@@ -3,6 +3,7 @@ package com.wp.product.product.controller;
 import com.wp.product.global.common.code.SuccessCode;
 import com.wp.product.global.common.response.SuccessResponse;
 import com.wp.product.product.dto.request.ProductCreateRequest;
+import com.wp.product.product.dto.request.ProductSearchRequest;
 import com.wp.product.product.dto.request.ProductUpdateRequest;
 import com.wp.product.product.dto.response.ProductFindResponse;
 import com.wp.product.product.service.ProductService;
@@ -15,6 +16,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @Slf4j
 @RestController
 @RequiredArgsConstructor
@@ -23,6 +26,19 @@ import org.springframework.web.bind.annotation.*;
 public class ProductController {
 
     private final ProductService productService;
+
+    @GetMapping("/list")
+    public ResponseEntity<?> searchProduct(@RequestBody ProductSearchRequest productSearchRequest){
+
+        List<ProductFindResponse> productFindResponses = productService.searchProduct(productSearchRequest);
+
+        SuccessResponse response = SuccessResponse.builder()
+                .data(productFindResponses)
+                .status(SuccessCode.SELECT_SUCCESS.getStatus())
+                .message(SuccessCode.SELECT_SUCCESS.getMessage()).build();
+
+        return new ResponseEntity<>(response,HttpStatus.OK);
+    }
 
     @GetMapping("/{productId}")
     @Operation(summary = "상품 조회",description = "판매자가 상품번호로 단일 상품을 조회함")

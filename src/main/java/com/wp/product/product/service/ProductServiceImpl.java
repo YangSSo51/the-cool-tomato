@@ -3,6 +3,7 @@ package com.wp.product.product.service;
 import com.wp.product.global.common.code.ErrorCode;
 import com.wp.product.global.exception.BusinessExceptionHandler;
 import com.wp.product.product.dto.request.ProductCreateRequest;
+import com.wp.product.product.dto.request.ProductSearchRequest;
 import com.wp.product.product.dto.request.ProductUpdateRequest;
 import com.wp.product.product.dto.response.ProductFindResponse;
 import com.wp.product.product.entity.Product;
@@ -10,6 +11,8 @@ import com.wp.product.product.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
@@ -19,6 +22,12 @@ import java.util.Optional;
 public class ProductServiceImpl implements ProductService{
 
     private final ProductRepository productRepository;
+
+    @Override
+    public List<ProductFindResponse> searchProduct(ProductSearchRequest productSearchRequest) {
+        //검색 조건에 맞는 상품 리스트 조회
+        return null;
+    }
 
     @Override
     public ProductFindResponse findProductById(Long productId) {
