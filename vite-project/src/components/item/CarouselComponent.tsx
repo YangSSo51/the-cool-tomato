@@ -11,11 +11,6 @@ export default function CarouselComponent() {
         setSlideIndex(0)
     }
 
-    const SLIDE_NUM = dummylist.length;
-    const beforeSlide = dummylist[SLIDE_NUM - 1];
-    const afterSlide = dummylist[0];
-    const copiedArr = [beforeSlide, ...dummylist, afterSlide];
-
     useEffect(() => {
         const totalSlides = dummylist.length;
         const interval = setInterval(() => {

@@ -1,29 +1,31 @@
 import { Box } from "@chakra-ui/react";
 import "../../css/ItemListComponentcss.css";
+import { Link } from "react-router-dom";
+
 
 interface GoodsProps {
+    id: number;
     img: string;
     title: string;
     price: number;
 }
 
-const Goods = ({ img, title, price }: GoodsProps) => {
+const Goods = ({ id, img, title, price }: GoodsProps) => {
     return (
-        <>
+
+        <Link to={`detail/${id}`}>
             <Box>
                 <ul>
-                    <a href="twtter.com">
-                        <div className="img">
-                            <img className="Realimage" src={img}></img>
-                        </div>
-                        <div className="Text">
-                            <h4 className="TextTitle">{title}</h4>
-                        </div>
-                        <span className="tagWrap">{price}</span>
-                    </a>
+                    <Box maxW={"25rem"} className="img">
+                        <img className="Realimage" src={img}></img>
+                    </Box>
+                    <Box className="Text">
+                        <h4 className="TextTitle">{title}</h4>
+                    </Box>
+                    <Box className="tagWrap">{price}</Box>
                 </ul>
             </Box>
-        </>
+        </Link>
     );
 };
 

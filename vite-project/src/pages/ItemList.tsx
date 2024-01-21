@@ -2,10 +2,15 @@ import { Box, Flex } from "@chakra-ui/react";
 import Goods from "../components/item/ItemListComponent";
 import GoodsList from "../components/item/dummylist/dummy";
 import CarouselComponent from "../components/item/CarouselComponent";
+// import Pagination from 'react-bootstrap/Pagination';
+// import { useState } from "react";
 import "../css/ItemListComponentcss.css";
+
 
 export default function ItemList() {
     const dummylist = GoodsList;
+    // const [PageSize, setPageSize] = useState();
+
     return (
         <>
             <Flex
@@ -20,8 +25,7 @@ export default function ItemList() {
 
             <CarouselComponent />
 
-
-            <Flex justify={"center"} p={"3rem"}>
+            <Flex justify={"center"} p={"2.5rem"}>
                 <Box
                     w={"80%"}
                     h={"1px"}
@@ -33,6 +37,7 @@ export default function ItemList() {
                 {dummylist.map((data) => (
                     <Box key={data.id} w="calc(23.33%)" p={4}>
                         <Goods
+                            id={data.id}
                             img={data.img}
                             title={data.title}
                             price={data.price}
@@ -40,6 +45,7 @@ export default function ItemList() {
                     </Box>
                 ))}
             </Flex>
+            
         </>
     );
 }

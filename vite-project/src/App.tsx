@@ -10,6 +10,7 @@ import SellerPage from "./pages/SellerPage";
 import UserinfoPage from "./pages/UserinfoPage";
 import LoginPage from "./pages/LoginPage";
 import { Theme, Fonts } from "./theme/Theme";
+import ItemDetail from "./pages/ItemDetail";
 
 function App() {
     return (
@@ -26,6 +27,8 @@ function App() {
                         <Route path="seller" element={<SellerPage />} />
                         <Route path="userinfo" element={<UserinfoPage />} />
                         <Route path="login" element={<LoginPage />} />
+                        <Route path="items/list/detail/:id" element={<ItemDetail/>} />
+
                     </Route>
                 </Routes>
             </ChakraProvider>
