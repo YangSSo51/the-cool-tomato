@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @Schema(description = "상품 조회를 위한 요청 객체")
 public class ProductSearchRequest {
 
-    @Schema(defaultValue = "1",description = "페이지 수를 입력해주세요")
+    @Schema(defaultValue = "0",description = "페이지 수를 입력해주세요")
     private int page;
 
     @Min(10)
@@ -18,10 +18,13 @@ public class ProductSearchRequest {
     private int size;
 
     @Schema(description = "상품 카테고리 코드를 입력해주세요")
-    private int category;
+    private Long categoryId;
 
     @Schema(description = "판매자가 자신의 상품 목록 조회하는 거면 seller로",example = "seller")
     private String type;
+
+    @Schema(description = "판매자 id")
+    private Long sellerId;
 
 }
 

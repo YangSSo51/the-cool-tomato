@@ -1,17 +1,20 @@
 package com.wp.product.product.service;
 
+import com.wp.product.category.entity.Category;
 import com.wp.product.global.common.code.ErrorCode;
 import com.wp.product.global.exception.BusinessExceptionHandler;
 import com.wp.product.product.dto.request.ProductCreateRequest;
+import com.wp.product.product.dto.request.ProductSearchRequest;
 import com.wp.product.product.dto.request.ProductUpdateRequest;
 import com.wp.product.product.dto.response.ProductFindResponse;
 import com.wp.product.product.entity.Product;
 import com.wp.product.product.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
-import java.util.NoSuchElementException;
-import java.util.Optional;
+import java.util.*;
 
 @Slf4j
 @Service
@@ -19,6 +22,74 @@ import java.util.Optional;
 public class ProductServiceImpl implements ProductService{
 
     private final ProductRepository productRepository;
+
+    @Override
+    public Map<String, Object> searchProduct(ProductSearchRequest productSearchRequest) {
+        //검색 조건에 맞는 상품 리스트 조회
+        Page<Product> result = productRepository.search(productSearchRequest);
+        List<ProductFindResponse> list = new ArrayList<>();
+
+        Map<String,Object> map = new HashMap<>();
+
+        result.forEach(Product -> {
+            list.add(ProductFindResponse.builder()
+                    .productId(Product.getProductId())
+                    .sellerId(Product.getSellerId())
+                    .sellerName(Product.getSellerId())
+                    .categoryId(Product.getCategory().getCategoryId())
+                    .categoryName(Product.getCategory().getCategoryContent())
+                    .productName(Product.getProductName())
+                    .productContent(Product.getProductContent())
+                    .paymentLink(Product.getPaymentLink())
+                    .price(Product.getPrice())
+                    .deliveryCharge(Product.getDeliveryCharge())
+                    .quantity(Product.getQuantity())
+                    .registerDate(Product.getRegisterDate())
+                    .build());
+        });
+
+        map.put("list" , list);
+        map.put("totalCount", result.getSize());
+
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> searchProductInMypage(List<Long> idList) {
+        //검색 조건에 맞는 상품 리스트 조회
+        Page<Product> result = null;
+        try {
+            result = productRepository.searchInMypage(idList);
+        }catch (NullPointerException e){
+            throw new NullPointerException("유효하지 않은 상품 번호입니다.");
+        }
+        List<ProductFindResponse> list = new ArrayList<>();
+
+        //반환값 매핑
+        Map<String,Object> map = new HashMap<>();
+
+        result.forEach(Product -> {
+            list.add(ProductFindResponse.builder()
+                    .productId(Product.getProductId())
+                    .sellerId(Product.getSellerId())
+                    .sellerName(Product.getSellerId())
+                    .categoryId(Product.getCategory().getCategoryId())
+                    .categoryName(Product.getCategory().getCategoryContent())
+                    .productName(Product.getProductName())
+                    .productContent(Product.getProductContent())
+                    .paymentLink(Product.getPaymentLink())
+                    .price(Product.getPrice())
+                    .deliveryCharge(Product.getDeliveryCharge())
+                    .quantity(Product.getQuantity())
+                    .registerDate(Product.getRegisterDate())
+                    .build());
+        });
+
+        map.put("list" , list);
+        map.put("totalCount", result.getSize());
+
+        return map;
+    }
 
     @Override
     public ProductFindResponse findProductById(Long productId) {
@@ -35,7 +106,7 @@ public class ProductServiceImpl implements ProductService{
                                         .productId(product.getProductId())
                                         .sellerId(product.getSellerId())
                                         .sellerName(product.getSellerId())
-                                        .categoryId(product.getCategoryId())
+                                        .categoryId(product.getCategory().getCategoryId())
                                         .productName(product.getProductName())
                                         .productContent(product.getProductContent())
                                         .paymentLink(product.getPaymentLink())
@@ -52,7 +123,8 @@ public class ProductServiceImpl implements ProductService{
     public void saveProduct(ProductCreateRequest productRequest){
         //상품 등록 객체 생성
         Product product = Product.builder()
-                         .categoryId(productRequest.getCategoryId())
+                        .category(Category.builder().categoryId(productRequest.getCategoryId()).build())
+                        .sellerId(1L)                   // TODO : 등록하는 사용자 정보로 등록
                         .productName(productRequest.getProductName())
                         .productContent(productRequest.getProductContent())
                         .paymentLink(productRequest.getPaymentLink())
@@ -63,8 +135,8 @@ public class ProductServiceImpl implements ProductService{
         try {
             //상품을 등록함
             productRepository.save(product);
-        }catch (Exception e){
-            throw new BusinessExceptionHandler("상품 등록에 실패했습니다", ErrorCode.INSERT_ERROR);
+        }catch (DataIntegrityViolationException e){
+            throw new DataIntegrityViolationException("상품 등록에 실패했습니다");
         }
     }
 
@@ -81,7 +153,7 @@ public class ProductServiceImpl implements ProductService{
             product.change(productRequest);
             productRepository.save(product);
         }catch (NoSuchElementException e){
-            throw new BusinessExceptionHandler("상품이 존재하지 않습니다",ErrorCode.NO_ELEMENT_ERROR);
+            throw new NoSuchElementException("상품이 존재하지 않습니다");
         }catch(Exception e){
             throw new BusinessExceptionHandler("상품 수정에 실패했습니다",ErrorCode.UPDATE_ERROR);
         }
