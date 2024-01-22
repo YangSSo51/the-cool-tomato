@@ -3,6 +3,7 @@ package com.wp.user.domain.seller.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.wp.user.domain.user.entity.Auth;
 import com.wp.user.domain.user.entity.Sex;
+import com.wp.user.domain.user.entity.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -26,11 +27,18 @@ public class SellerInfo {
     @Column(name = "seller_info_id")
     private Long id;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
+
     @Column(length = 100)
     private String businessNumber;
 
     @Lob
-    private String business_content;
+    private String businessContent;
+
+    @Column(length = 100)
+    private String mailOrderSalesNumber;
 
     private String businessAddress;
 
