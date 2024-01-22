@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
     Input,
     InputGroup,
@@ -6,35 +6,67 @@ import {
     Button,
     Center,
     FormControl,
-    FormLabel,
     FormErrorMessage,
-    FormHelperText,
 } from "@chakra-ui/react";
-
-function onSubmit(): void {
-    alert("submitted");
-}
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { AppDispatch, RootState } from "../../redux/stores/store";
+import { loginUserThunk } from "../../redux/thunk/user/userThunk";
 
 function LoginForm() {
     const [show, setShow] = useState(false);
+    const [id, setId] = useState("");
+    const [password, setPassword] = useState("");
+
+    const dispatch: AppDispatch = useDispatch();
+    const navigate = useNavigate();
+    const user = useSelector((state: RootState) => state.user);
+
     const handleClick = () => setShow(!show);
+    const isFail = user.auth === "FAIL";
+
+    async function onSubmit(event: React.SyntheticEvent): Promise<void> {
+        event.preventDefault();
+        console.log("LoginForm onSubmit ID: " + id);
+        console.log("LoginForm onSubmit Password: " + password);
+
+        console.log("Login Submit");
+        await dispatch(loginUserThunk({ id, password }));
+    }
+
+    useEffect(() => {
+        console.log("Login Result: " + user.auth);
+        console.log("Login Result type: " + typeof user.auth);
+        if (user.auth !== "FAIL" && user.auth !== "INIT") {
+            console.log("Login Success");
+            navigate("/v1");
+        } else if (user.auth === "FAIL") {
+            console.log("Login Fail");
+        }
+    }, [user, navigate]);
 
     return (
         <form onSubmit={onSubmit} style={{ width: "100%" }}>
-            <FormControl py={1}>
+            <FormControl py={1} isInvalid={isFail}>
                 <Input
                     focusBorderColor="themeGreen.500"
                     placeholder="ID"
                     size="md"
+                    autoComplete="username"
+                    value={id}
+                    onChange={(e) => setId(e.target.value)}
                 />
             </FormControl>
-            <FormControl>
+            <FormControl isInvalid={isFail}>
                 <InputGroup size="md">
                     <Input
                         pr="4.5rem"
                         type={show ? "text" : "password"}
                         placeholder="Password"
                         focusBorderColor="themeGreen.500"
+                        autoComplete="current-password"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
                     />
                     <InputRightElement width="4.5rem">
                         <Button
@@ -50,6 +82,9 @@ function LoginForm() {
                         </Button>
                     </InputRightElement>
                 </InputGroup>
+                <FormErrorMessage>
+                    아이디, 비밀번호를 확인해 주세요
+                </FormErrorMessage>
             </FormControl>
             <Center>
                 <Button
