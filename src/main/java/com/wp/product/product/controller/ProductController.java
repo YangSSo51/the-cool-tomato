@@ -15,8 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @RestController
@@ -27,10 +26,10 @@ public class ProductController {
 
     private final ProductService productService;
 
-    @GetMapping("/list")
+    @PostMapping("/list")
     public ResponseEntity<?> searchProduct(@RequestBody ProductSearchRequest productSearchRequest){
-
-        List<ProductFindResponse> productFindResponses = productService.searchProduct(productSearchRequest);
+        //카테고리 ID, 판매자 ID로 다중 상품 조회
+        Map<String, Object> productFindResponses = productService.searchProduct(productSearchRequest);
 
         SuccessResponse response = SuccessResponse.builder()
                 .data(productFindResponses)

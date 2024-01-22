@@ -1,11 +1,9 @@
 package com.wp.product.product.entity;
 
+import com.wp.product.category.entity.Category;
 import com.wp.product.product.dto.request.ProductUpdateRequest;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
@@ -13,12 +11,17 @@ import java.time.LocalDateTime;
 @Entity
 @Builder
 @Getter
+@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 public class Product {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long productId;
-    private Long categoryId;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="category_id")
+    private Category category;
+
     private Long sellerId;
     private String productName;
     private String productContent;
@@ -32,7 +35,6 @@ public class Product {
     private LocalDateTime registerDate;
 
     public void change(ProductUpdateRequest productRequest) {
-        this.categoryId = productRequest.getCategoryId();
         this.productName = productRequest.getProductName();
         this.productContent = productRequest.getProductContent();
         this.paymentLink = productRequest.getPaymentLink();
