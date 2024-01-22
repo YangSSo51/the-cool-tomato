@@ -66,11 +66,13 @@ export default function LiveAddForm() {
                     </Box>
                     <Box p={"3rem"}>
                         <Box
-                            h={"50vh"}
+                            minHeight={"initial"}
+                            maxH={"80vh"}
                             borderWidth={"4px"}
                             borderRadius={"30px"}
                         >
-                            <Center maxH={"50vh"}>
+                            {/* 나머지는 페이지네이션으로 넘겨라! */}
+                            <Center maxH={"100%"}>
                                 {isSelected ? <AddGoods /> : <LiveItemAdd />}
                             </Center>
                         </Box>
