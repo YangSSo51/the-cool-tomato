@@ -81,6 +81,54 @@ export default function AddGoods() {
                             <Switch size={"lg"} />
                         </Td>
                     </Tr>
+                    <Tr>
+                        <Td>면지 아조씨의 단짠단짠 고등어</Td>
+                        <Td>
+                            <FormControl
+                                variant="floating"
+                                isRequired
+                                isInvalid
+                            >
+                                <Input placeholder=" " />
+                                <FormLabel>가격을 입력해주세요</FormLabel>
+                            </FormControl>
+                        </Td>
+                        <Td>
+                            <Switch size={"lg"} />
+                        </Td>
+                    </Tr>
+                    <Tr>
+                        <Td>면지 아조씨의 단짠단짠 고등어</Td>
+                        <Td>
+                            <FormControl
+                                variant="floating"
+                                isRequired
+                                isInvalid
+                            >
+                                <Input placeholder=" " />
+                                <FormLabel>가격을 입력해주세요</FormLabel>
+                            </FormControl>
+                        </Td>
+                        <Td>
+                            <Switch size={"lg"} />
+                        </Td>
+                    </Tr>
+                    <Tr>
+                        <Td>면지 아조씨의 단짠단짠 고등어</Td>
+                        <Td>
+                            <FormControl
+                                variant="floating"
+                                isRequired
+                                isInvalid
+                            >
+                                <Input placeholder=" " />
+                                <FormLabel>가격을 입력해주세요</FormLabel>
+                            </FormControl>
+                        </Td>
+                        <Td>
+                            <Switch size={"lg"} />
+                        </Td>
+                    </Tr>
                 </Tbody>
             </Table>
         </TableContainer>
