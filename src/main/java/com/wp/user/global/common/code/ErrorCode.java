@@ -73,6 +73,7 @@ public enum ErrorCode {
     SEND_EMAIL_ERROR(500, "B006", "이메일 전송에 실패했습니다."),
     NOT_FOUND_USER_LOGIN_ID_EMAIL(401, "B007", "아이디와 이메일이 일치하지 않습니다."),
     NOT_FOUND_USER_ID(401, "B008", "회원을 찾을 수 없습니다."),
+    NOT_FOUND_SEND_EMAIL(401, "B009", "이메일 인증을 다시 시도해주세요."),
 
     /**
      * ******************************* Custom Error CodeList ***************************************

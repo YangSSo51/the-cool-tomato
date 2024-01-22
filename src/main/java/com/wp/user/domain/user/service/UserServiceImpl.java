@@ -5,7 +5,9 @@ import com.wp.user.domain.user.dto.request.LoginRequest;
 import com.wp.user.domain.user.dto.request.ModifyUserRequest;
 import com.wp.user.domain.user.dto.response.*;
 import com.wp.user.domain.user.entity.Auth;
+import com.wp.user.domain.user.entity.EmailCode;
 import com.wp.user.domain.user.entity.User;
+import com.wp.user.domain.user.repository.EmailCodeRepository;
 import com.wp.user.domain.user.repository.UserRepository;
 import com.wp.user.global.common.code.ErrorCode;
 import com.wp.user.global.common.service.JwtService;
@@ -23,6 +25,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -30,6 +33,7 @@ import java.util.List;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
+    private final EmailCodeRepository emailCodeRepository;
     private final JwtService jwtService;
     private final BCryptPasswordEncoder passwordEncoder;
     private final JavaMailSender javaMailSender;
@@ -67,6 +71,39 @@ public class UserServiceImpl implements UserService {
     public DuplicateLoginIdResponse getUserByLoginId(String loginId) {
         boolean isDuplicate = userRepository.existsByLoginId(loginId);
         return DuplicateLoginIdResponse.builder().isDuplicate(isDuplicate).build();
+    }
+
+    // 이메일 인증
+    @Override
+    @Transactional
+    public CheckEmailResponse checkEmail(String email) {
+        // 이메일 보내기
+        MimeMessage message = javaMailSender.createMimeMessage();
+        String verifyCode = UUID.randomUUID().toString().substring(0, 6); // 랜덤 인증번호 uuid를 이용
+        try {
+            MimeMessageHelper helper = new MimeMessageHelper(message, false, "UTF-8");
+            helper.setTo(email);
+            helper.setSubject("[멋쟁이 토마토] 이메일 인증 번호 안내 이메일입니다.");
+            StringBuffer sb = new StringBuffer();
+            sb.append("안녕하세요. 멋쟁이 토마토 이메일 인증 번호 안내 관련 이메일입니다.");
+            sb.append(System.lineSeparator());
+            sb.append("이메일 인증 번호는 [").append(verifyCode).append("]입니다.");
+            helper.setText(sb.toString());
+            javaMailSender.send(message);
+            EmailCode emailCode = EmailCode.builder().id(email).code(verifyCode).build();
+            emailCodeRepository.save(emailCode); // {key, value} 5분동안 저장.
+        } catch (MessagingException e) {
+            throw new BusinessExceptionHandler(ErrorCode.SEND_EMAIL_ERROR);
+        }
+        return CheckEmailResponse.builder().verifyCode(verifyCode).build();
+    }
+
+    // 이메일 인증 확인
+    @Override
+    @Transactional
+    public CheckEmailVerificationResponse checkEmailVerification(String email, String code) {
+        EmailCode emailCode = emailCodeRepository.findById(email).orElseThrow(() -> new BusinessExceptionHandler(ErrorCode.NOT_FOUND_SEND_EMAIL)); // errorCode : B009
+        return CheckEmailVerificationResponse.builder().isVerify(emailCode.getCode().equals(code)).build();
     }
 
     // 로그인(미완)

@@ -11,6 +11,8 @@ import org.springframework.web.multipart.MultipartFile;
 public interface UserService {
     void addUser(AddUserRequest addUserRequest);
     DuplicateLoginIdResponse getUserByLoginId(String loginId);
+    CheckEmailResponse checkEmail(String email);
+    CheckEmailVerificationResponse checkEmailVerification(String email, String code);
     LoginResponse login(LoginRequest logInRequest);
     void getLoginIdByEmail(String email);
     void getPasswordByEmail(String loginId, String email);
