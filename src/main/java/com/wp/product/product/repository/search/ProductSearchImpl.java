@@ -26,8 +26,8 @@ public class ProductSearchImpl extends QuerydslRepositorySupport implements Prod
         QProduct product = QProduct.product;
         QCategory category = QCategory.category;
 
-        JPQLQuery<Product> query = from(product);                              //SELECT ... FROM PRODUCT
-        query.leftJoin(category).on(product.category.eq(category));            //LEFT JOIN CATEGORY ON CATEGORY_ID
+        JPQLQuery<Product> query = from(product)                                //SELECT ... FROM PRODUCT
+                .leftJoin(category).on(product.category.eq(category));          //LEFT JOIN CATEGORY ON CATEGORY_ID
 
         if(request.getCategoryId()!=null && request.getCategoryId() != 0) {
             query.where(category.categoryId.eq(request.getCategoryId()));       //WHERE CATEGORY_ID = ?
@@ -37,9 +37,30 @@ public class ProductSearchImpl extends QuerydslRepositorySupport implements Prod
             query.where(product.sellerId.eq(request.getSellerId()));            //AND SELLER_ID = ?
         }
 
-        query.groupBy(product);
+        query.groupBy(product)
+                .orderBy(product.registerDate.desc());                          //ORDER BY REGISTER_DATE DESC
         this.getQuerydsl().applyPagination(pageable,query);                     //페이징 처리
-        query.orderBy(product.registerDate.desc());                             //ORDER BY REGISTER_DATE DESC
+
+        List<Product> list = query.fetch();                                     //쿼리 실행
+        Long count = query.fetchCount();                                        //실행 결과
+
+        return new PageImpl<>(list,pageable,count);
+    }
+
+    @Override
+    public Page<Product> searchInMypage(List<Long> idList) {
+        Pageable pageable = PageRequest.of(0,10);    //페이징
+
+        QProduct product = QProduct.product;
+        QCategory category = QCategory.category;
+
+        JPQLQuery<Product> query = from(product)                                //SELECT ... FROM PRODUCT
+                .leftJoin(category).on(product.category.eq(category))          //LEFT JOIN CATEGORY ON CATEGORY_ID
+                .where(product.productId.in(idList))                           //Product Id List
+                .groupBy(product)
+                .orderBy(product.registerDate.desc());
+
+        this.getQuerydsl().applyPagination(pageable,query);                     //페이징 처리
 
         List<Product> list = query.fetch();                                     //쿼리 실행
         Long count = query.fetchCount();                                        //실행 결과

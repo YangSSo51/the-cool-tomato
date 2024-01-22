@@ -4,10 +4,13 @@ import com.wp.product.product.dto.request.ProductCreateRequest;
 import com.wp.product.product.dto.request.ProductSearchRequest;
 import com.wp.product.product.dto.request.ProductUpdateRequest;
 import com.wp.product.product.dto.response.ProductFindResponse;
+import java.util.List;
 import java.util.Map;
 
 public interface ProductService {
     Map<String, Object> searchProduct(ProductSearchRequest productSearchRequest);
+
+    Map<String, Object> searchProductInMypage(List<Long> idList);
 
     ProductFindResponse findProductById(Long productId);
 
@@ -16,5 +19,4 @@ public interface ProductService {
     void updateProduct(ProductUpdateRequest productRequest);
 
     void deleteProduct(Long productId);
-
 }

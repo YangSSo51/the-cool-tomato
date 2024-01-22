@@ -15,6 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import java.util.List;
 import java.util.Map;
 
 @Slf4j
@@ -27,9 +28,24 @@ public class ProductController {
     private final ProductService productService;
 
     @PostMapping("/list")
+    @Operation(summary = "상품 목록 조회",description = "카테고리 ID, 판매자 ID로 상품 목록 조회 ")
     public ResponseEntity<?> searchProduct(@RequestBody ProductSearchRequest productSearchRequest){
         //카테고리 ID, 판매자 ID로 다중 상품 조회
         Map<String, Object> productFindResponses = productService.searchProduct(productSearchRequest);
+
+        SuccessResponse response = SuccessResponse.builder()
+                .data(productFindResponses)
+                .status(SuccessCode.SELECT_SUCCESS.getStatus())
+                .message(SuccessCode.SELECT_SUCCESS.getMessage()).build();
+
+        return new ResponseEntity<>(response,HttpStatus.OK);
+    }
+
+    @GetMapping("/my/list")
+    @Operation(summary = "마이페이지 상품 목록 조회",description = "마이페이지에서 상품 id로 상품 목록 조회")
+    public ResponseEntity<?> searchProductInMypage(@RequestParam(required = false, value = "idList[]") List<Long> idList){
+        //마이페이지에서 상품 id로 상품 목록 조회
+        Map<String, Object> productFindResponses = productService.searchProductInMypage(idList);
 
         SuccessResponse response = SuccessResponse.builder()
                 .data(productFindResponses)

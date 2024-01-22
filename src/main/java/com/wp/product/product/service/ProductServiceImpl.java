@@ -11,9 +11,9 @@ import com.wp.product.product.entity.Product;
 import com.wp.product.product.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
-
 import java.util.*;
 
 @Slf4j
@@ -29,6 +29,43 @@ public class ProductServiceImpl implements ProductService{
         Page<Product> result = productRepository.search(productSearchRequest);
         List<ProductFindResponse> list = new ArrayList<>();
 
+        Map<String,Object> map = new HashMap<>();
+
+        result.forEach(Product -> {
+            list.add(ProductFindResponse.builder()
+                    .productId(Product.getProductId())
+                    .sellerId(Product.getSellerId())
+                    .sellerName(Product.getSellerId())
+                    .categoryId(Product.getCategory().getCategoryId())
+                    .categoryName(Product.getCategory().getCategoryContent())
+                    .productName(Product.getProductName())
+                    .productContent(Product.getProductContent())
+                    .paymentLink(Product.getPaymentLink())
+                    .price(Product.getPrice())
+                    .deliveryCharge(Product.getDeliveryCharge())
+                    .quantity(Product.getQuantity())
+                    .registerDate(Product.getRegisterDate())
+                    .build());
+        });
+
+        map.put("list" , list);
+        map.put("totalCount", result.getSize());
+
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> searchProductInMypage(List<Long> idList) {
+        //검색 조건에 맞는 상품 리스트 조회
+        Page<Product> result = null;
+        try {
+            result = productRepository.searchInMypage(idList);
+        }catch (NullPointerException e){
+            throw new NullPointerException("유효하지 않은 상품 번호입니다.");
+        }
+        List<ProductFindResponse> list = new ArrayList<>();
+
+        //반환값 매핑
         Map<String,Object> map = new HashMap<>();
 
         result.forEach(Product -> {
@@ -98,8 +135,8 @@ public class ProductServiceImpl implements ProductService{
         try {
             //상품을 등록함
             productRepository.save(product);
-        }catch (Exception e){
-            throw new BusinessExceptionHandler("상품 등록에 실패했습니다", ErrorCode.INSERT_ERROR);
+        }catch (DataIntegrityViolationException e){
+            throw new DataIntegrityViolationException("상품 등록에 실패했습니다");
         }
     }
 
@@ -116,7 +153,7 @@ public class ProductServiceImpl implements ProductService{
             product.change(productRequest);
             productRepository.save(product);
         }catch (NoSuchElementException e){
-            throw new BusinessExceptionHandler("상품이 존재하지 않습니다",ErrorCode.NO_ELEMENT_ERROR);
+            throw new NoSuchElementException("상품이 존재하지 않습니다");
         }catch(Exception e){
             throw new BusinessExceptionHandler("상품 수정에 실패했습니다",ErrorCode.UPDATE_ERROR);
         }

@@ -17,7 +17,9 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.servlet.NoHandlerFoundException;
+import org.springframework.dao.DataIntegrityViolationException;
 import java.io.IOException;
+import java.util.NoSuchElementException;
 
 
 /**
@@ -27,7 +29,8 @@ import java.io.IOException;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-    private final HttpStatus HTTP_STATUS_OK = HttpStatus.BAD_REQUEST;
+    private final HttpStatus HTTP_STATUS_OK = HttpStatus.OK;
+    private final HttpStatus HTTP_STATUS_ERROR = HttpStatus.BAD_REQUEST;
 
     /**
      * [Exception] API 호출 시 '객체' 혹은 '파라미터' 데이터 값이 유효하지 않은 경우
@@ -129,7 +132,7 @@ public class GlobalExceptionHandler {
     protected ResponseEntity<ErrorResponse> handleNullPointerException(NullPointerException e) {
         log.error("handleNullPointerException", e);
         final ErrorResponse response = ErrorResponse.of(ErrorCode.NULL_POINT_ERROR, e.getMessage());
-        return new ResponseEntity<>(response, HTTP_STATUS_OK);
+        return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
     }
 
     /**
@@ -172,7 +175,31 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(response, HTTP_STATUS_OK);
     }
 
+    /**
+     * org.springframework.dao.DataIntegrityViolationException 내에 Exception 발생하는 경우
+     * 
+     * @param ex DataIntegrityViolationException
+     * @return ResponseEntity<ErrorResponse>
+     */
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    protected final ResponseEntity<ErrorResponse> handlerDataIntegrityViolationException(DataIntegrityViolationException ex){
+        log.error("handlerDataIntegrityViolationException", ex);
+        final ErrorResponse response = ErrorResponse.of(ErrorCode.INSERT_ERROR, ex.getMessage());
+        return new ResponseEntity<>(response, HTTP_STATUS_ERROR);
+    }
 
+    /**
+     * java.util.NoSuchElementException 내에 Exception 발생하는 경우
+     * 
+     * @param ex NoSuchElementException
+     * @return ResponseEntity<ErrorResponse>
+     */
+    @ExceptionHandler(NoSuchElementException.class)
+    protected final ResponseEntity<ErrorResponse> handlerNoSuchElementException(NoSuchElementException ex){
+        log.error("NoSuchElementException", ex);
+        final ErrorResponse response = ErrorResponse.of(ErrorCode.BAD_REQUEST_ERROR, ex.getMessage());
+        return new ResponseEntity<>(response, HTTP_STATUS_ERROR);
+    }
     // ==================================================================================================================
 
     /**
@@ -184,7 +211,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(Exception.class)
     protected final ResponseEntity<ErrorResponse> handleAllExceptions(Exception ex) {
         log.error("Exception", ex);
-        final ErrorResponse response = ErrorResponse.of(ErrorCode.INTERNAL_SERVER_ERROR, ex.getMessage());
-        return new ResponseEntity<>(response, HTTP_STATUS_OK);
+        final ErrorResponse response = ErrorResponse.of(ErrorCode.INSERT_ERROR, ex.getMessage());
+        return new ResponseEntity<>(response, HTTP_STATUS_ERROR);
     }
 }
