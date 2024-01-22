@@ -9,7 +9,7 @@ function SignUpPage() {
                 <Container
                     pt={3}
                     m={0}
-                    maxW={{ xl: "35%", lg: "75%", sm: "90%" }}
+                    maxW={{ xl: "35%", lg: "60%", sm: "90%" }}
                     centerContent
                 >
                     <Text

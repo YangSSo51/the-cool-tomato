@@ -8,6 +8,7 @@ import {
     FormControl,
     FormErrorMessage,
     Select,
+    FormLabel,
 } from "@chakra-ui/react";
 import { ViewIcon } from "@chakra-ui/icons";
 
@@ -16,6 +17,7 @@ function SignUpForm() {
     const [password, setPassword] = useState("");
     const [passwordAgain, setPasswordAgain] = useState("");
     const [email, setEmail] = useState("");
+    const [emailVerification, setEmailVerification] = useState("");
     const [nickname, setNickname] = useState("");
     const [sex, setSex] = useState("");
     const [birthday, setBirthday] = useState("");
@@ -35,8 +37,9 @@ function SignUpForm() {
     return (
         <>
             <form onSubmit={onSubmit} style={{ width: "100%" }}>
-                <FormControl mt={1} isInvalid={isUsernameValid}>
-                    <InputGroup size="lg">
+                <FormControl mt={1} isInvalid={isUsernameValid} isRequired>
+                    <FormLabel>아이디</FormLabel>
+                    <InputGroup size="md">
                         <Input
                             focusBorderColor="themeGreen.500"
                             placeholder="ID"
@@ -45,7 +48,7 @@ function SignUpForm() {
                             value={username}
                             onChange={(e) => setUsername(e.target.value)}
                         />
-                        <InputRightElement width="4.5rem">
+                        <InputRightElement width="4rem" pr={"1"}>
                             <Button
                                 h="1.75rem"
                                 size="sm"
@@ -58,13 +61,12 @@ function SignUpForm() {
                                 중복확인
                             </Button>
                         </InputRightElement>
-                        <FormErrorMessage>
-                            아이디를 확인해 주세요
-                        </FormErrorMessage>
                     </InputGroup>
+                    <FormErrorMessage>아이디를 확인해 주세요</FormErrorMessage>
                 </FormControl>
-                <FormControl my={1} isInvalid={isPasswordValid}>
-                    <InputGroup size="lg">
+                <FormControl my={1} isInvalid={isPasswordValid} isRequired>
+                    <FormLabel>비밀번호</FormLabel>
+                    <InputGroup size="md">
                         <Input
                             focusBorderColor="themeGreen.500"
                             placeholder="password"
@@ -79,7 +81,7 @@ function SignUpForm() {
                             <ViewIcon color="grey" />
                         </InputRightElement>
                     </InputGroup>
-                    <InputGroup size="lg">
+                    <InputGroup size="md">
                         <Input
                             focusBorderColor="themeGreen.500"
                             placeholder="password again"
@@ -96,18 +98,60 @@ function SignUpForm() {
                         비밀번호를 확인해 주세요
                     </FormErrorMessage>
                 </FormControl>
-                <FormControl py={1} isInvalid={isEmailValid}>
-                    <Input
-                        focusBorderColor="themeGreen.500"
-                        placeholder="email"
-                        size="md"
-                        autoComplete="email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                    ></Input>
+                <FormControl my={1} isInvalid={isEmailValid} isRequired>
+                    <FormLabel>이메일</FormLabel>
+                    <InputGroup size="md" mb={"1"}>
+                        <Input
+                            focusBorderColor="themeGreen.500"
+                            placeholder="email"
+                            size="md"
+                            autoComplete="email"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                        ></Input>
+                        <InputRightElement pr={"1"} w="3.25rem">
+                            <Button
+                                h="1.75rem"
+                                size="sm"
+                                colorScheme="themeGreen"
+                                variant="solid"
+                                // color="themeGreen.500"
+                                // onClick={}
+                                borderRadius="md"
+                            >
+                                재전송
+                            </Button>
+                        </InputRightElement>
+                    </InputGroup>
+                    <InputGroup size="md">
+                        <Input
+                            focusBorderColor="themeGreen.500"
+                            placeholder="verification code"
+                            size="md"
+                            value={emailVerification}
+                            onChange={(e) =>
+                                setEmailVerification(e.target.value)
+                            }
+                        ></Input>
+                        <InputRightElement pr={"1"}>
+                            <Button
+                                h="1.75rem"
+                                size="sm"
+                                colorScheme="themeGreen"
+                                variant="solid"
+                                // color="themeGreen.500"
+                                // onClick={}
+                                borderRadius="md"
+                            >
+                                확인
+                            </Button>
+                        </InputRightElement>
+                    </InputGroup>
+
                     <FormErrorMessage>이메일을 확인해 주세요</FormErrorMessage>
                 </FormControl>
-                <FormControl py={1} isInvalid={isNicknameValid}>
+                <FormControl my={1} isInvalid={isNicknameValid} isRequired>
+                    <FormLabel>닉네임</FormLabel>
                     <Input
                         focusBorderColor="themeGreen.500"
                         placeholder="nickname"
@@ -118,9 +162,10 @@ function SignUpForm() {
                     ></Input>
                     <FormErrorMessage>닉네임을 확인해 주세요</FormErrorMessage>
                 </FormControl>
-                <FormControl py={1} isInvalid={isSexValid}>
+                <FormControl my={1} isInvalid={isSexValid} isRequired>
+                    <FormLabel>성별</FormLabel>
                     <Select
-                        placeholder="성별"
+                        placeholder="gender"
                         value={sex}
                         onChange={(e) => setSex(e.target.value)}
                     >
@@ -129,7 +174,8 @@ function SignUpForm() {
                     </Select>
                     <FormErrorMessage>성별을 확인해 주세요</FormErrorMessage>
                 </FormControl>
-                <FormControl py={1} isInvalid={isBirthdayValid}>
+                <FormControl my={1} isInvalid={isBirthdayValid} isRequired>
+                    <FormLabel>생년월일</FormLabel>
                     <Input
                         focusBorderColor="themeGreen.500"
                         placeholder="birthday"
@@ -140,6 +186,15 @@ function SignUpForm() {
                         onChange={(e) => setBirthday(e.target.value)}
                     ></Input>
                 </FormControl>
+                <Button
+                    my={4}
+                    w="100%"
+                    colorScheme="themeGreen"
+                    type="submit"
+                    borderRadius="3xl"
+                >
+                    회원가입
+                </Button>
             </form>
         </>
     );
