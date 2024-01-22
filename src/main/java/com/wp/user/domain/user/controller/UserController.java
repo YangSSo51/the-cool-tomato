@@ -52,6 +52,17 @@ public class UserController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    @PostMapping("/find-login-id/{email}")
+    @Operation(summary = "아이디 찾기", description = "사용자는 email을 입력하여 로그인 ID를 찾습니다.")
+    public ResponseEntity<SuccessResponse<?>> findLoginId(@NotBlank(message = "이메일을 입력해주세요.") @Email(message = "이메일 형식에 맞춰 입력해주세요.") @PathVariable String email) {
+        userService.getLoginIdByEmail(email);
+        SuccessResponse<?> response = SuccessResponse.builder()
+                .status(SuccessCode.INSERT_SUCCESS.getStatus())
+                .message(SuccessCode.INSERT_SUCCESS.getMessage())
+                .build();
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
     @PostMapping("/login")
     @Operation(summary = "로그인", description = "사용자는 로그인 ID와 PASSWORD를 입력하여 로그인합니다.")
     public ResponseEntity<SuccessResponse<?>> login(@Valid @RequestBody LoginRequest loginRequest) {
@@ -64,10 +75,10 @@ public class UserController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @PostMapping("/find-login-id/{email}")
-    @Operation(summary = "아이디 찾기", description = "사용자는 email을 입력하여 로그인 ID를 찾습니다.")
-    public ResponseEntity<SuccessResponse<?>> findLoginId(@NotBlank @Email(message = "이메일을 입력해주세요.") @PathVariable String email) {
-        userService.getLoginIdByEmail(email);
+    @PostMapping("/join/check-email/{email}")
+    @Operation(summary = "이메일 인증", description = "사용자는 email을 입력하여 이메일 인증 번호를 이메일로 받습니다.")
+    public ResponseEntity<SuccessResponse<?>> checkEmail(@NotBlank(message = "이메일을 입력해주세요.") @Email(message = "이메일 형식에 맞춰 입력해주세요.") @PathVariable String email) {
+        userService.checkEmail(email);
         SuccessResponse<?> response = SuccessResponse.builder()
                 .status(SuccessCode.INSERT_SUCCESS.getStatus())
                 .message(SuccessCode.INSERT_SUCCESS.getMessage())
@@ -75,9 +86,21 @@ public class UserController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    @GetMapping("/join/check-email-verifications/{email}/{code}")
+    @Operation(summary = "이메일 인증 확인", description = "사용자는 email과 인증번호를 입력하여 이메일 인증을 완료합니다.")
+    public ResponseEntity<SuccessResponse<?>> checkEmailVerification(@NotBlank(message = "이메일을 입력해주세요.") @Email(message = "이메일 형식에 맞춰 입력해주세요.") @PathVariable String email, @NotBlank @PathVariable String code) {
+        CheckEmailVerificationResponse checkEmailVerificationResponse = userService.checkEmailVerification(email, code);
+        SuccessResponse<?> response = SuccessResponse.builder()
+                .status(SuccessCode.SELECT_SUCCESS.getStatus())
+                .message(SuccessCode.SELECT_SUCCESS.getMessage())
+                .data(checkEmailVerificationResponse)
+                .build();
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
     @PostMapping("/find-password/{login-id}/{email}")
     @Operation(summary = "비밀번호 찾기", description = "사용자는 로그인 ID와 email을 입력하여 password를 재설정합니다.")
-    public ResponseEntity<SuccessResponse<?>> findPassword(@NotBlank(message = "로그인 ID를 입력해주세요.") @PathVariable(name = "login-id") String loginId, @NotBlank(message = "이메일을 입력해주세요.") @Email @PathVariable String email) {
+    public ResponseEntity<SuccessResponse<?>> findPassword(@NotBlank(message = "로그인 ID를 입력해주세요.") @PathVariable(name = "login-id") String loginId, @NotBlank(message = "이메일을 입력해주세요.") @Email(message = "이메일 형식에 맞춰 입력해주세요.") @PathVariable String email) {
         userService.getPasswordByEmail(loginId, email);
         SuccessResponse<?> response = SuccessResponse.builder()
                 .status(SuccessCode.INSERT_SUCCESS.getStatus())
@@ -147,7 +170,7 @@ public class UserController {
 
     @DeleteMapping("/{id}")
     @Operation(summary = "회원탈퇴", description = "관리자는 강제로 회원을 탈퇴시킵니다.")
-    public ResponseEntity<SuccessResponse<?>> forceRemoveUser(HttpServletRequest request, @PathVariable Long id) {
+    public ResponseEntity<SuccessResponse<?>> forceRemoveUser(HttpServletRequest request, @NotBlank(message = "사용자의 id를 입력해주세요.") @PathVariable Long id) {
         userService.forceRemoveUser(request, id);
         SuccessResponse<?> response = SuccessResponse.builder()
                 .status(SuccessCode.DELETE_SUCCESS.getStatus())
