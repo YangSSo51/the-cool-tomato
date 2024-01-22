@@ -6,11 +6,11 @@ import axios from "axios";
 
 // import { getUserInfoAPI } from '../api/user'
 
-import Recent from "../components/mypage/Recent";
-import Following from "../components/mypage/Following";
-import Reviews from "../components/mypage/Reviews";
-import Reviewed from "../components/mypage/Reviewed";
-import Question from "../components/mypage/Question";
+import Recent from "../components/mypage/BuyerRecent";
+import Following from "../components/mypage/BuyerFollowing";
+import Reviews from "../components/mypage/BuyerReviews";
+import Reviewed from "../components/mypage/BuyerReviewed";
+import Question from "../components/mypage/BuyerQuestion";
 import Sellerform from "../components/mypage/Sellerform";
 
 export default function BuyerPage() {
@@ -19,6 +19,7 @@ export default function BuyerPage() {
     const { userId } = useParams();
     const [ userInfo, setUserInfo ] = useState([]);
     const [ tab, setTab ] = useState(0);
+    const [ isSelected, setIsSelected ] = useState(false)
     const categoryTabs = [
         { id: 0, name: '최근 본 상품', component: <Recent userId={userId} /> },
         { id: 1, name: '팔로잉 목록', component: <Following userId={userId} /> },
@@ -89,6 +90,7 @@ export default function BuyerPage() {
                                         key={category.id}
                                         onClick={() => setTab(category.id)}
                                         _hover={{ color: "themeRed.500", cursor:"pointer" }}
+                                        _active={{ color: "themeRed.500", bg: "themeRed.100" }}
                                         >{category.name}
                                         </ListItem>
                                     ))}
