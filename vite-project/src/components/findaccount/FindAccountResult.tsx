@@ -1,5 +1,5 @@
 import React from "react";
-import { Text, Center, Container } from "@chakra-ui/react";
+import { Text, Center, Container, Button } from "@chakra-ui/react";
 
 function FindAccountResult() {
     return (
@@ -20,6 +20,15 @@ function FindAccountResult() {
                     <br />
                     이메일을 확인해 주세요
                 </Text>
+                <Button
+                    mt={4}
+                    w="100%"
+                    colorScheme="themeGreen"
+                    borderRadius="3xl"
+                    py={1}
+                >
+                    메인으로
+                </Button>
             </Container>
         </>
     );

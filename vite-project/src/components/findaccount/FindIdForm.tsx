@@ -2,12 +2,9 @@ import React from "react";
 import {
     Text,
     Input,
-    InputGroup,
-    InputRightElement,
     Button,
     Center,
     FormControl,
-    FormErrorMessage,
     Container,
     FormLabel,
 } from "@chakra-ui/react";
