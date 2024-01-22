@@ -7,8 +7,6 @@ export default function ItemAdd() {
     const GoodsTitle = React.useRef(null)
     const GoodsPrice = React.useRef(null)
 
-    const goodsField = [categoryId, productName, productContent, paymentLink, price, deliveryCharge, quantity, images];
-
     return (
         <>
             <Button onClick={onOpen}>상품 등록 버튼</Button>

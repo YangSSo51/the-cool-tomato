@@ -13,6 +13,7 @@ import LoginPage from "./pages/LoginPage";
 import ItemDetail from "./pages/ItemDetail";
 import Broadcast from "./pages/BroadcastPage";
 import Live from "./pages/LivePage";
+import SignUpPage from "./pages/SignUpPage";
 
 function App() {
     return (
@@ -30,6 +31,7 @@ function App() {
                         <Route path="userinfo" element={<UserinfoPage />} />
                         <Route path="login" element={<LoginPage />} />
                         <Route path="items/list/detail/:id" element={<ItemDetail/>} />
+                        <Route path="signup" element={<SignUpPage />} />
                     </Route>
                     <Route path="broadcast" element={<Broadcast />} />
                     <Route path="live" element={<Live />} />

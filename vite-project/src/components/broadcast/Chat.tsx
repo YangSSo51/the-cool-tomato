@@ -1,4 +1,4 @@
-import { Box, Text } from "@chakra-ui/layout";
+import { Box, Text, Flex } from "@chakra-ui/layout";
 import ChatList from "./ChatList";
 
 function Chat() {
@@ -7,9 +7,9 @@ function Chat() {
       <Text fontSize="2xl" fontWeight="bold" mb={4}>
         채팅
       </Text>
-      <Box bg="gray.200" rounded="md" h="84vh">
+      <Flex bg="gray.200" rounded="md" h="84vh" flexDirection="column" justifyContent="end">
             <ChatList />
-      </Box>
+      </Flex>
     </Box>
   );
 }

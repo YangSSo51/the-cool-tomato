@@ -12,13 +12,13 @@ export type userInfo = {
 }
 
 export type goodsField = {
-    categoryId : number, 
+    categoryId : number | string, 
     productName : string, 
     productContent : string, 
     paymentLink : string, 
-    price : number, 
-    deliveryCharge : number, 
-    quantity : number, 
+    price : number| string, 
+    deliveryCharge : number| string, 
+    quantity : number| string, 
     images : string
 }
 
