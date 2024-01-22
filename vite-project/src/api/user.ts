@@ -8,6 +8,7 @@ headers.set("Content-Type", "application/json;charset=utf-8");
 const url = "/v1/users";
 
 async function loginUser(data: { id: string; password: string }) {
+    console.log("loginUser data: " + JSON.stringify(data));
     return http.post(`${url}/login`, data);
 }
 

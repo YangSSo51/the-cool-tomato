@@ -5,7 +5,7 @@ import { loginUserThunk, testUserThunk } from "../../thunk/user/userThunk";
 
 const initialState: UserState = {
     profileImg: "",
-    auth: "BUYER",
+    auth: "INIT",
     accessToken: "",
     refreshToken: "",
 };
@@ -15,15 +15,37 @@ const userSlice = createSlice({
     initialState,
     reducers: {},
     extraReducers: (builder) => {
-        builder.addCase(loginUserThunk.fulfilled, (state, action) => {
-            return action.payload.data.data;
-        }),
-            builder.addCase(testUserThunk.fulfilled, (state, action) => {
-                console.log(action.payload);
-                return action.payload;
+        builder
+            .addCase(loginUserThunk.fulfilled, (state, action) => {
+                console.log(
+                    "userSlice loginUserThunk.fulfilled action.payload: " +
+                        typeof action.payload.profileImg
+                );
+                console.log(
+                    "userSlice loginUserThunk.fulfilled action.payload: " +
+                        action.payload.profileImg
+                );
+                // state = action.payload;
+                state.profileImg = action.payload.profileImg;
+                state.auth = action.payload.auth;
+                state.accessToken = action.payload.accessToken;
+                state.refreshToken = action.payload.refreshToken;
+            })
+            .addCase(loginUserThunk.rejected, (state, action) => {
+                console.log(
+                    "userSlice loginUserThunk.rejected action: " + action.type
+                );
+                state.auth = "FAIL";
+            })
+            .addCase(testUserThunk.fulfilled, (state, action) => {
+                console.log(
+                    "userSlice testUserThunk.fulfilled action.payload: " +
+                        action.payload
+                );
+                state.accessToken = action.payload;
             });
     },
 });
 
-export const { login } = userSlice.actions;
+// export const { login } = userSlice.actions;
 export default userSlice.reducer;
