@@ -4,10 +4,8 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.google.gson.JsonParseException;
 import com.wp.global.common.code.ErrorCode;
 import com.wp.global.common.response.ErrorResponse;
-import io.jsonwebtoken.ExpiredJwtException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.BindingResult;
@@ -48,7 +46,7 @@ public class GlobalExceptionHandler {
             stringBuilder.append(", ");
         }
         final ErrorResponse response = ErrorResponse.of(ErrorCode.NOT_VALID_ERROR, String.valueOf(stringBuilder));
-        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(response, HTTP_STATUS_OK);
     }
 
     /**
@@ -92,6 +90,7 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
 
+
     /**
      * [Exception] 잘못된 서버 요청일 경우 발생한 경우
      *
@@ -105,6 +104,7 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(response, HTTP_STATUS_OK);
     }
 
+
     /**
      * [Exception] 잘못된 주소로 요청 한 경우
      *
@@ -117,6 +117,7 @@ public class GlobalExceptionHandler {
         final ErrorResponse response = ErrorResponse.of(ErrorCode.NOT_FOUND_ERROR, e.getMessage());
         return new ResponseEntity<>(response, HTTP_STATUS_OK);
     }
+
 
     /**
      * [Exception] NULL 값이 발생한 경우
@@ -143,6 +144,7 @@ public class GlobalExceptionHandler {
         final ErrorResponse response = ErrorResponse.of(ErrorCode.IO_ERROR, ex.getMessage());
         return new ResponseEntity<>(response, HTTP_STATUS_OK);
     }
+
 
     /**
      * com.google.gson 내에 Exception 발생하는 경우
@@ -171,13 +173,6 @@ public class GlobalExceptionHandler {
     }
 
 
-//    @ExceptionHandler(ExpiredJwtException.class)
-//    protected final ResponseEntity<ErrorResponse> handleExpiredJwtException(ExpiredJwtException ex) {
-//        log.error("handleExpiredJwtException", ex);
-//        final ErrorResponse response = ErrorResponse.of(ErrorCode.INTERNAL_SERVER_ERROR, ex.getMessage());
-//        return new ResponseEntity<>(response, HTTP_STATUS_OK);
-//    }
-
     // ==================================================================================================================
 
     /**
@@ -193,17 +188,9 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-
-    /**
-     * BusinessException에서 발생한 에러
-     *
-     * @param ex BusinessException
-     * @return ResponseEntity
-     */
     @ExceptionHandler(BusinessExceptionHandler.class)
     public ResponseEntity<ErrorResponse> handleCustomException(BusinessExceptionHandler ex) {
         final ErrorResponse response = ErrorResponse.of(ex.getErrorCode(), ex.getMessage());
         return new ResponseEntity<>(response, HttpStatus.valueOf(ex.getErrorCode().getStatus()));
     }
-
 }

@@ -1,7 +1,6 @@
 package com.wp.domain.auth.service;
 
 import com.wp.domain.auth.dto.response.TokenResponseDto;
-import com.wp.domain.auth.entity.JwtToken;
 import com.wp.global.common.code.ErrorCode;
 import com.wp.global.exception.BusinessExceptionHandler;
 import io.jsonwebtoken.*;
@@ -22,7 +21,7 @@ import java.util.*;
 public class JwtTokenProviderServiceImpl implements JwtTokenProviderService {
 
     @Autowired
-    private AuthRedisService authRedisServiceImpl;
+    private AuthRedisService authRedisService;
     private static final String AUTHORITIES_KEY = "auth";
     private static final String USER_ID = "userId";
     private static final String PASSWORD = "password";
@@ -34,6 +33,8 @@ public class JwtTokenProviderServiceImpl implements JwtTokenProviderService {
     @Value("${spring.jwt.token-validity-in-seconds}")
     private Long tokenValidityInMilliseconds;
 
+
+    private String tmp;
     private Key signingKey;
 
     @Override
@@ -44,6 +45,10 @@ public class JwtTokenProviderServiceImpl implements JwtTokenProviderService {
 
     @Transactional
     public TokenResponseDto createToken(String userId, String auth){
+        if(authRedisService.getRefreshToken(userId) != null){
+            throw new BusinessExceptionHandler("이미 JWT 토큰을 발행했습니다.", ErrorCode.EXIST_TOKEN_ERROR);
+        }
+
         Long now = System.currentTimeMillis();
         Long accessTokenValidityInMilliseconds = tokenValidityInMilliseconds * 1000;
         String accessToken = Jwts.builder()
@@ -66,17 +71,20 @@ public class JwtTokenProviderServiceImpl implements JwtTokenProviderService {
                 .compact();
 
         TokenResponseDto tokenResponseDto = TokenResponseDto.builder().accessToken(accessToken).refreshToken(refreshToken).build();
-        authRedisServiceImpl.registRefreshToken(userId, refreshToken);
+        authRedisService.registRefreshToken(userId, refreshToken);
         return tokenResponseDto;
     }
 
     public boolean deleteRefreshToken(String userId){
-        return authRedisServiceImpl.removeRefreshToken(userId);
+        if(authRedisService.removeRefreshToken(userId)) return true;
+        else{
+            throw new BusinessExceptionHandler("토큰을 삭제하는데 실패했습니다.", ErrorCode.INTERNAL_SERVER_ERROR);
+        }
     }
 
     public boolean validateAccessToken(String accessToken) {
         try {
-            accessToken = resolveToken(accessToken);
+//            accessToken = resolveToken(accessToken);
             Jwts.parserBuilder()
                     .setSigningKey(DatatypeConverter.parseBase64Binary(secretKey))
                     .build()
@@ -85,30 +93,36 @@ public class JwtTokenProviderServiceImpl implements JwtTokenProviderService {
         } catch(ExpiredJwtException e) {
             throw new BusinessExceptionHandler("만료된 JWT 토큰입니다.", ErrorCode.EXPIRED_TOKEN_ERROR);
         } catch (io.jsonwebtoken.security.SecurityException | MalformedJwtException e) {
-            throw new BusinessExceptionHandler("보안 정책에 위배되는 JWT 토큰입니다.", ErrorCode.SECURITY_TOKEN_ERROR);
+            throw new BusinessExceptionHandler("보안 규정에 어긋난 JWT 토큰입니다.", ErrorCode.SECURITY_TOKEN_ERROR);
         } catch (UnsupportedJwtException e) {
             throw new BusinessExceptionHandler("지원되지 않는 JWT 토큰입니다.", ErrorCode.UNSUPPORTED_TOKEN_ERROR);
-        } catch (Exception e){
-            throw new BusinessExceptionHandler("잘못된 JWT 토큰입니다", ErrorCode.WRONG_TOKEN_ERROR);
+        }
+        catch (Exception e){
+            throw new BusinessExceptionHandler("잘못된 JWT 토큰입니다.", ErrorCode.WRONG_TOKEN_ERROR);
         }
     }
 
-    public boolean validateRefreshToken(String refreshToken){
-        try {
-            refreshToken = resolveToken(refreshToken);
-            Jwts.parserBuilder()
-                    .setSigningKey(DatatypeConverter.parseBase64Binary(secretKey))
-                    .build()
-                    .parseClaimsJws(refreshToken);
-            return true;
-        } catch(ExpiredJwtException e) {
-            throw new BusinessExceptionHandler("만료된 JWT 토큰입니다", ErrorCode.EXPIRED_TOKEN_ERROR);
-        } catch (io.jsonwebtoken.security.SecurityException | MalformedJwtException e) {
-            throw new BusinessExceptionHandler("보안 정책에 위배되는 JWT 토큰입니다.", ErrorCode.SECURITY_TOKEN_ERROR);
-        } catch (UnsupportedJwtException e) {
-            throw new BusinessExceptionHandler("지원되지 않는 JWT 토큰입니다", ErrorCode.UNSUPPORTED_TOKEN_ERROR);
-        } catch (Exception e){
-            throw new BusinessExceptionHandler("잘못된 JWT 토큰입니다", ErrorCode.WRONG_TOKEN_ERROR);
+    public boolean validateRefreshToken(String refreshToken, String userId){
+        if(refreshToken.equals(authRedisService.getRefreshToken(userId).getRefreshToken())){
+            try {
+//                refreshToken = resolveToken(refreshToken);
+                Jwts.parserBuilder()
+                        .setSigningKey(DatatypeConverter.parseBase64Binary(secretKey))
+                        .build()
+                        .parseClaimsJws(refreshToken);
+                return true;
+            } catch(ExpiredJwtException e) {
+                throw new BusinessExceptionHandler("만료된 JWT 토큰입니다", ErrorCode.EXPIRED_TOKEN_ERROR);
+            } catch (io.jsonwebtoken.security.SecurityException | MalformedJwtException e) {
+                throw new BusinessExceptionHandler("보안 정책에 위배되는 JWT 토큰입니다.", ErrorCode.SECURITY_TOKEN_ERROR);
+            } catch (UnsupportedJwtException e) {
+                throw new BusinessExceptionHandler("지원되지 않는 JWT 토큰입니다", ErrorCode.UNSUPPORTED_TOKEN_ERROR);
+            } catch (Exception e){
+                throw new BusinessExceptionHandler("잘못된 JWT 토큰입니다", ErrorCode.WRONG_TOKEN_ERROR);
+            }
+        }
+        else{
+            throw new BusinessExceptionHandler("사용자의 JWT 토큰이 아닙니다.", ErrorCode.NOT_MATCH_TOKEN_ERROR);
         }
     }
 
@@ -144,5 +158,10 @@ public class JwtTokenProviderServiceImpl implements JwtTokenProviderService {
     public String getUserId(String token) {
         Claims claims = getClaims(token);
         return claims.get("userId").toString();
+    }
+
+    public String getAuth(String token) {
+        Claims claims = getClaims(token);
+        return claims.get("auth").toString();
     }
 }
