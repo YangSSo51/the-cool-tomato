@@ -11,6 +11,7 @@ import UserinfoPage from "./pages/UserinfoPage";
 import LoginPage from "./pages/LoginPage";
 import { Theme, Fonts } from "./theme/Theme";
 import ItemDetail from "./pages/ItemDetail";
+import MainPage from "./pages/MainPage";
 
 function App() {
     return (
@@ -19,6 +20,7 @@ function App() {
                 <Fonts />
                 <Routes>
                     <Route path="/v1" element={<LayOut />}>
+                        <Route path="main" element={<MainPage />}></Route>
                         <Route path="search" element={<Search />} />
                         <Route path="live/list" element={<LiveList />} />
                         <Route path="items/list" element={<ItemList />} />

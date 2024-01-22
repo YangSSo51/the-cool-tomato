@@ -14,7 +14,7 @@ import LogoutProfileComponent from "./navcomponent/LogoutProfileComponent";
 function NavBar() {
     const navigate = useNavigate();
     const [loginlogout, LoginState] = useState(true);
-    const [BuyerSeller, BuyerSellerState] = useState(true);
+    const [BuyerSeller, BuyerSellerState] = useState(false);
     const [profile, ProfileState] = useState();
 
     return (
@@ -30,7 +30,7 @@ function NavBar() {
                     height={"10"}
                     overflow={"hidden"}
                     onClick={() => {
-                        navigate("./");
+                        navigate("./main");
                     }}
                 >
                     <Image
