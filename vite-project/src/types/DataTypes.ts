@@ -11,6 +11,17 @@ export type userInfo = {
     joinData: string;
 }
 
+export type goodsField = {
+    categoryId : number, 
+    productName : string, 
+    productContent : string, 
+    paymentLink : string, 
+    price : number, 
+    deliveryCharge : number, 
+    quantity : number, 
+    images : string
+}
+
 // export type solvedData = {
 //     solved: Boolean;
 //     probNo: number;

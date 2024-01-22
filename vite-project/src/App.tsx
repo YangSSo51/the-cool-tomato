@@ -12,6 +12,7 @@ import UserinfoPage from "./pages/UserinfoPage";
 import LoginPage from "./pages/LoginPage";
 import ItemDetail from "./pages/ItemDetail";
 import Broadcast from "./pages/BroadcastPage";
+import Live from "./pages/LivePage";
 
 function App() {
     return (
@@ -31,6 +32,7 @@ function App() {
                         <Route path="items/list/detail/:id" element={<ItemDetail/>} />
                     </Route>
                     <Route path="broadcast" element={<Broadcast />} />
+                    <Route path="live" element={<Live />} />
                 </Routes>
             </ChakraProvider>
         </>

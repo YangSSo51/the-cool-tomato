@@ -5,8 +5,8 @@ import LiveInfo from "./menu/LiveInfo";
 import Feedback from "./menu/Feedback";
 import NewProduct from "./menu/NewProduct";
 import ProductList from "./menu/ProductList";
-import Prompter from "./menu/prompter";
-import Statistic from "./menu/statistic";
+import Prompter from "./menu/Prompter";
+import Statistic from "./menu/Statistic";
 
 function Menu() {
   return (

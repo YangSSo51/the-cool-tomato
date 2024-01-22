@@ -5,10 +5,10 @@ import { FaWifi } from "react-icons/fa";
 import ProfileBuyerComponent from '../common/navcomponent/NavBuyerProfileComponent';
 
 const iconData = [
-    { icon: <TimeIcon />, content: '2h 30m' },
-    { icon: <ViewIcon />, content: '1.2k viewers' },
+    { icon: <TimeIcon />, content: '2시간 30분' },
+    { icon: <ViewIcon />, content: '1,285 시청자수' },
     { icon: <CheckIcon />, content: 'Sales completed' },
-    { icon: <FaWifi />, content: 'Good bitrate' },
+    { icon: <FaWifi />, content: '통신 상태 원활' },
   ];
 
 function Header() {

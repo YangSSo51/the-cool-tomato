@@ -1,10 +1,13 @@
 import { Text, Box, Button, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, useDisclosure, Center, Flex, FormControl, Input, Textarea, Select } from "@chakra-ui/react";
 import React from "react";
+import { goodsField } from "../../types/DataTypes";
 
 export default function ItemAdd() {
     const { isOpen, onOpen, onClose } = useDisclosure()
     const GoodsTitle = React.useRef(null)
     const GoodsPrice = React.useRef(null)
+
+    const goodsField = [categoryId, productName, productContent, paymentLink, price, deliveryCharge, quantity, images];
 
     return (
         <>
