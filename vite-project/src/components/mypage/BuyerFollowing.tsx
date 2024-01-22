@@ -17,6 +17,7 @@ export default function Following() {
                     <Heading size="lg" fontWeight="bold" mb={4}>
                     팔로잉 목록
                     </Heading>
+
                     {Array.from({ length: 3 }).map((_, index) => (
                     <Box key={index} w="full" borderBottom="1px" pb={4} mb={4} >
                         <Avatar mt="4" size="xl" src="https://raw.githubusercontent.com/printilikepenguin/forUserContent/master/profile.png" />
@@ -28,6 +29,7 @@ export default function Following() {
                         </Box>
                     </Box>
                     ))}
+                    
                     <Flex>
                         <Avatar src='https://bit.ly/sage-adebayo' />
                         <Box ml='3'>
@@ -40,6 +42,7 @@ export default function Following() {
                             <Text fontSize='sm'>UI Engineer</Text>
                         </Box>
                     </Flex>
+                    
                 </Box>
             </Box>
         </Box>

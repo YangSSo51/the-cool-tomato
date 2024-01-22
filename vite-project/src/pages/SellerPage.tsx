@@ -76,6 +76,24 @@ export default function SellerPage() {
                     <Button mt="4" variant="outline" minW="70%" fontSize="1.2em" boxShadow="2px 2px 2px gray">
                         계정정보수정
                     </Button>
+
+                    {/* <Button
+                        onClick={() => {
+                        navigate("/v1/seller/" + {userId});
+                        }}
+                    >판매자 정보 보기
+                    </Button>
+
+                    {userInfo ? <Avatar mt="4" size="xl" src={userInfo.profile_img} /> : 로딩중 }
+
+                    <Button
+                        mt="4"
+                        onClick={() => {
+                        navigate("/v1/userinfo");
+                        }}
+                    >계정정보수정
+                    </Button> */}
+
                     <Box w="full"  mt="6" pt="6">
                         <List spacing="4">
                             {/* 여기 바뀜 */}
@@ -88,12 +106,12 @@ export default function SellerPage() {
                 </Box>
                 
                 <Box w="75%" bg="white" rounded="lg" overflow="hidden">
-                <Box h="full" pl="4">
-                    <Flex justify="center" align="center" h="full">
-                    {/* <Text color="gray.400">Content goes here</Text> */}
-                    <PlanList />
-                    </Flex>
-                </Box>
+                    <Box h="full" pl="4">
+                        <Flex justify="center" align="center" h="full">
+                        {/* <Text color="gray.400">Content goes here</Text> */}
+                        <PlanList />
+                        </Flex>
+                    </Box>
                 </Box>
             </Flex>
 

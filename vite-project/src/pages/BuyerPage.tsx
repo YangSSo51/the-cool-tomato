@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { Box, Flex, Center, Text } from "@chakra-ui/layout";
+import { Box, Flex, Center } from "@chakra-ui/layout";
 import { Button, Avatar, List, ListItem } from "@chakra-ui/react";
 import axios from "axios";
 
@@ -50,17 +50,13 @@ export default function BuyerPage() {
     }, []);
 
     return (
-        <Box minH="100vh" mb="10">
+        <Box minH="100vh" mb="10" paddingBlock="6rem">
 
-            <Flex mt="10" mb="10" justify="center">
-                {/* <Center w="30vw" bgImage="url('/icons/up_ttl.svg')" bgRepeat="no-repeat" bgSize="cover"> */}
-                    <Text as="b" fontSize="6xl" color={"themeGreen.500"}>
-                        마이페이지
-                    </Text>
-                
-            </Flex>
+            <Center fontFamily="GmkBold" fontSize="6rem" color={"themeGreen.500"}>
+                마이페이지
+            </Center>
 
-            <Flex m="auto" border="1px" borderColor="green" rounded="lg" w="85vw" minH="85vh">
+            <Flex m="auto" border="2px" borderColor="green" rounded="lg" w="85vw" minH="85vh">
                 <Flex m="auto" rounded="lg" w="80vw" minH="80vh" px="2">
                     <Box w="25%" pr="4">
                         <Box w="full" bg="white" rounded="lg" overflow="hidden">

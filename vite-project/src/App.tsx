@@ -1,5 +1,6 @@
 import { Routes, Route } from "react-router-dom";
 import { ChakraProvider } from "@chakra-ui/react";
+import { Theme, Fonts } from "./theme/Theme";
 import LayOut from "./components/common/Layout";
 import Search from "./pages/Search";
 import LiveList from "./pages/LiveList";
@@ -9,8 +10,8 @@ import BuyerPage from "./pages/BuyerPage";
 import SellerPage from "./pages/SellerPage";
 import UserinfoPage from "./pages/UserinfoPage";
 import LoginPage from "./pages/LoginPage";
-import { Theme, Fonts } from "./theme/Theme";
 import ItemDetail from "./pages/ItemDetail";
+import Broadcast from "./pages/BroadcastPage";
 
 function App() {
     return (
@@ -28,8 +29,8 @@ function App() {
                         <Route path="userinfo" element={<UserinfoPage />} />
                         <Route path="login" element={<LoginPage />} />
                         <Route path="items/list/detail/:id" element={<ItemDetail/>} />
-
                     </Route>
+                    <Route path="broadcast" element={<Broadcast />} />
                 </Routes>
             </ChakraProvider>
         </>

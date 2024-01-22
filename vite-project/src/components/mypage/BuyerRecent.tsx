@@ -81,12 +81,10 @@ export default function Recent() {
     ));
 
     return (
-        <Box w="75%" bg="white" rounded="lg" overflow="hidden">
-            <Box h="full" pl="4">
-                <Flex flexDir="column" h="full" overflowY="scroll">
-                    {testData.length ? testData : <Text color="gray.400">최근 본 상품이 없습니다! 상품 구경하러 가기</Text>}
-                </Flex>
-            </Box>
+        <Box flexDirection="column" w="90%" h="full" overflowY="scroll">
+            <Flex flexDir="column" h="full">
+                {testData.length ? testData : <Text color="gray.400">최근 본 상품이 없습니다! 상품 구경하러 가기</Text>}
+            </Flex>
         </Box>
     );
 }
