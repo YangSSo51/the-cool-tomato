@@ -19,16 +19,15 @@ function NavBar() {
 
     return (
         <Box className="paddingNavBar">
-            <Flex minWidth="max-content" alignItems="center" gap="2">
+            <Flex minWidth={"max-content"} alignItems="center" gap="2">
                 <Box />
                 <Spacer />
                 {loginlogout ? <LoginComponent /> : <LogoutComponent />}
             </Flex>
             <Flex minWidth="max-content" alignItems="center" gap="3">
                 <Box
-                    width={"13"}
-                    height={"10"}
-                    overflow={"hidden"}
+                    width={"4rem"}
+                    height={"4rem"}
                     onClick={() => {
                         navigate("./main");
                     }}

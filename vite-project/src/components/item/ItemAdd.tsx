@@ -27,7 +27,7 @@ export default function ItemAdd() {
     return (
         <>
             <Button ml={"1rem"} mr={"1rem"} color={"black"} _hover={{ color: "#126F54" }} onClick={onOpen} variant={"link"}>
-                <Text fontSize={"large"}>상품 등록 버튼</Text>
+                <Text fontSize={"large"}>상품 등록</Text>
             </Button>
 
             <Modal onClose={onClose} size={"4xl"} isOpen={isOpen} isCentered>

@@ -51,14 +51,6 @@ export default function SellerComponent() {
                     라이브 등록
                 </Link>
                 <Spacer />
-                {/* <Link
-                    onClick={() => {
-                        navigate("/v1/items/form");
-                    }}
-                    color={"black"}
-                    _hover={{ color: "#126F54" }}
-                    className="NavFont"
-                > */}
                 <ItemAdd />
             </Flex>
         </Box>

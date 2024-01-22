@@ -1,7 +1,7 @@
 import { Text } from "@chakra-ui/layout";
 import Carousel from "react-bootstrap/Carousel";
 
-export default function MainPage() {
+function MainCarousel() {
     return (
         <Carousel>
             <Carousel.Item interval={1000}>
@@ -14,7 +14,7 @@ export default function MainPage() {
                     </p>
                 </Carousel.Caption>
             </Carousel.Item>
-            <Carousel.Item interval={500}>
+            <Carousel.Item interval={1000}>
                 <Text>Second Slide</Text>
                 <Carousel.Caption>
                     <h3>Second slide label</h3>
@@ -23,7 +23,7 @@ export default function MainPage() {
                     </p>
                 </Carousel.Caption>
             </Carousel.Item>
-            <Carousel.Item>
+            <Carousel.Item interval={1000}>
                 <Text>Third Slide</Text>
                 <Carousel.Caption>
                     <h3>Third slide label</h3>
@@ -35,4 +35,10 @@ export default function MainPage() {
             </Carousel.Item>
         </Carousel>
     );
+}
+
+export default function MainPage() {
+    return (
+        MainCarousel()
+    )
 }
