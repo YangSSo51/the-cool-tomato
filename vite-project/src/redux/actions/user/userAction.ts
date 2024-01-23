@@ -1,8 +1,6 @@
 import { loginUser } from "../../../api/user";
 import { PayloadAction } from "@reduxjs/toolkit";
-import { UserState } from "../types";
-import { HttpStatusCode } from "axios";
-import { RootState } from "../../stores/store";
+import { UserState } from "../../../types/DataTypes";
 
 function loginUserAction(
     state: UserState,
