@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import {
     Input,
     InputGroup,
@@ -28,10 +29,15 @@ function SignUpForm() {
     const isSexValid = false;
     const isBirthdayValid = false;
 
+    const navigate = useNavigate();
+
     async function usernameDuplicateCheck(): Promise<void> {}
 
     function onSubmit(event: React.SyntheticEvent): void {
         event.preventDefault();
+        // TODO: 회원가입 비동기 통신
+
+        navigate("/v1/sign");
     }
 
     return (
