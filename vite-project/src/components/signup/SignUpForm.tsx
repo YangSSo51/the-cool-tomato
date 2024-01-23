@@ -29,6 +29,7 @@ function SignUpForm() {
     const isSexValid = false;
     const isBirthdayValid = false;
 
+
     const navigate = useNavigate();
 
     async function usernameDuplicateCheck(): Promise<void> {}

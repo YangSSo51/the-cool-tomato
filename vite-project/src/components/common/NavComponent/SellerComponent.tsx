@@ -1,5 +1,6 @@
 import { Box, Flex, Link, Spacer } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
+import ItemAdd from "../../item/ItemAdd";
 
 export default function SellerComponent() {
     const navigate = useNavigate();
@@ -50,16 +51,7 @@ export default function SellerComponent() {
                     라이브 등록
                 </Link>
                 <Spacer />
-                <Link
-                    onClick={() => {
-                        navigate("/v1/items/form");
-                    }}
-                    color={"black"}
-                    _hover={{ color: "#126F54" }}
-                    className="NavFont"
-                >
-                    상품 등록
-                </Link>
+                <ItemAdd />
             </Flex>
         </Box>
     );
