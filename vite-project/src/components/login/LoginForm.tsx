@@ -47,7 +47,7 @@ function LoginForm() {
 
     return (
         <form onSubmit={onSubmit} style={{ width: "100%" }}>
-            <FormControl py={1} isInvalid={isFail}>
+            <FormControl my={1} isInvalid={isFail}>
                 <Input
                     focusBorderColor="themeGreen.500"
                     placeholder="ID"
