@@ -10,6 +10,7 @@ function SignPage() {
                 maxW={{ xl: "35%", lg: "60%", sm: "90%" }}
                 border={"1px"}
                 borderRadius={"3xl"}
+                borderColor={"themeGreen.500"}
                 py={"3rem"}
                 centerContent
             >
