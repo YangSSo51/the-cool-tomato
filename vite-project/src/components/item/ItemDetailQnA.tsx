@@ -1,7 +1,17 @@
-import { Text } from "@chakra-ui/react"
+import { Accordion } from "@chakra-ui/react";
+import QnaAccordion from "./qna/QnaAccordion";
 
 export default function ItemDetailQnA() {
     return (
-        <Text>Hello QnA</Text>
-    )
+        <>
+            <Accordion allowMultiple w={"90%"}>
+                <QnaAccordion />
+                <QnaAccordion />
+                <QnaAccordion />
+                <QnaAccordion />
+                <QnaAccordion />
+                <QnaAccordion />
+            </Accordion>
+        </>
+    );
 }
