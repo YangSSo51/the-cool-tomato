@@ -2,8 +2,6 @@ import { Box, Flex } from "@chakra-ui/react";
 import Goods from "../components/item/ItemListComponent";
 import GoodsList from "../components/item/dummylist/dummy";
 import CarouselComponent from "../components/item/CarouselComponent";
-// import Pagination from 'react-bootstrap/Pagination';
-// import { useState } from "react";
 import "../css/ItemListComponentcss.css";
 
 
