@@ -1,6 +1,6 @@
 import { Box, Flex, VStack } from "@chakra-ui/react";
 
-export default function FooterComponent() {
+export default function FooterComponenT() {
     return (
         <footer>
             <Box bg={"#FFFAF4"} padding={"7"}>
