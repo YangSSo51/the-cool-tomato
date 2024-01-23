@@ -2,14 +2,13 @@ import { Box, Flex, Center } from "@chakra-ui/layout";
 import { Avatar, Button, List, ListItem } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
-import { ClassNames } from "@emotion/react";
 
 import PlanList from "../components/mypage/SellerPlanList"
 import "../css/SellerPage.css"
 
 
 export default function SellerPage() {
-    let navigate = useNavigate()
+    const navigate = useNavigate()
     // 여기부터
     const [ categories, setCategories ] = useState([
         {
