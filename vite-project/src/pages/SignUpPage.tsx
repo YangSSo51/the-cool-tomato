@@ -1,6 +1,7 @@
 import React from "react";
 import { Center, Container, Text } from "@chakra-ui/react";
 import SignUpForm from "../components/signup/SignUpForm";
+import SignComplete from "../components/signup/SignComplete";
 
 function SignUpPage() {
     return (

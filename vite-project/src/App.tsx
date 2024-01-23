@@ -10,6 +10,7 @@ import SellerPage from "./pages/SellerPage";
 import UserinfoPage from "./pages/UserinfoPage";
 import LoginPage from "./pages/LoginPage";
 import SignUpPage from "./pages/SignUpPage";
+import SignPage from "./pages/SignPage";
 import { Theme, Fonts } from "./theme/Theme";
 
 function App() {
@@ -28,6 +29,7 @@ function App() {
                         <Route path="userinfo" element={<UserinfoPage />} />
                         <Route path="login" element={<LoginPage />} />
                         <Route path="signup" element={<SignUpPage />} />
+                        <Route path="sign" element={<SignPage />} />
                     </Route>
                 </Routes>
             </ChakraProvider>
