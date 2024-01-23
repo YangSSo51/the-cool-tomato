@@ -35,6 +35,10 @@ function App() {
                             path="pwdrecover"
                             element={<FindAccountPage type="password" />}
                         />
+                        <Route
+                            path="findaccount"
+                            element={<FindAccountPage type="result" />}
+                        />
                     </Route>
                 </Routes>
             </ChakraProvider>

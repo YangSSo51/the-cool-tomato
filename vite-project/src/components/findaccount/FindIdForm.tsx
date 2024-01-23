@@ -1,4 +1,5 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import {
     Text,
     Input,
@@ -10,9 +11,11 @@ import {
 } from "@chakra-ui/react";
 
 function FindIdForm() {
+    const navigate = useNavigate();
+
     function onSubmit(event: React.SyntheticEvent): void {
         event.preventDefault();
-        alert("FindIdForm onSubmit");
+        navigate("/v1/findaccount", { replace: false });
     }
 
     return (

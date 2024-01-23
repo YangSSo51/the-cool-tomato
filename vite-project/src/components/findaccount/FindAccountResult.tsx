@@ -2,6 +2,9 @@ import React from "react";
 import { Text, Center, Container, Button } from "@chakra-ui/react";
 
 function FindAccountResult() {
+    function onClick(): void {
+        alert("FindAccountResult onClick");
+    }
     return (
         <>
             <Container
@@ -26,6 +29,7 @@ function FindAccountResult() {
                     colorScheme="themeGreen"
                     borderRadius="3xl"
                     py={1}
+                    onClick={onClick}
                 >
                     메인으로
                 </Button>
