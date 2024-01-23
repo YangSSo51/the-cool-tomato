@@ -14,6 +14,7 @@ import ItemDetail from "./pages/ItemDetail";
 import Broadcast from "./pages/BroadcastPage";
 import Live from "./pages/LivePage";
 import SignUpPage from "./pages/SignUpPage";
+import FindAccountPage from "./pages/FindAccountPage";
 
 function App() {
     return (
@@ -32,6 +33,14 @@ function App() {
                         <Route path="login" element={<LoginPage />} />
                         <Route path="items/list/detail/:id" element={<ItemDetail/>} />
                         <Route path="signup" element={<SignUpPage />} />
+                        <Route
+                            path="findid"
+                            element={<FindAccountPage type="username" />}
+                        />
+                        <Route
+                            path="pwdrecover"
+                            element={<FindAccountPage type="password" />}
+                        />
                     </Route>
                     <Route path="broadcast" element={<Broadcast />} />
                     <Route path="live" element={<Live />} />
