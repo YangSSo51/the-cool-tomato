@@ -1,14 +1,20 @@
-import React from 'react'
-import ReactDOM from 'react-dom/client'
-import App from './App.tsx'
-import './index.css'
-import { BrowserRouter } from 'react-router-dom'
+import ReactDOM from "react-dom/client";
+import App from "./App.tsx";
+import { BrowserRouter } from "react-router-dom";
+import { ChakraProvider } from "@chakra-ui/react";
+import { Provider } from "react-redux";
+import { PersistGate } from "redux-persist/integration/react";
+import { store, persistor } from "./redux/stores/store";
 
-ReactDOM.createRoot(document.getElementById('root')!).render(
-  <React.StrictMode>
-    <BrowserRouter>
-      <App />
-    </BrowserRouter>
-  </React.StrictMode>,
-)
-
+ReactDOM.createRoot(document.getElementById("root")!).render(
+    <Provider store={store}>
+        {/* PersisGate를 통해 리액트가 로딩되기 전에 반드시 로딩되어야 할 컴포넌트가 있는 경우 loading에 해당 컴포넌트를 넣어준다 */}
+        <PersistGate loading={null} persistor={persistor}>
+            <ChakraProvider>
+                <BrowserRouter>
+                    <App />
+                </BrowserRouter>
+            </ChakraProvider>
+        </PersistGate>
+    </Provider>
+);

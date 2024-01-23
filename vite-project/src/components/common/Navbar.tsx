@@ -1,73 +1,57 @@
 import "../../css/Navbar.css";
-import { Search2Icon, BellIcon } from "@chakra-ui/icons";
-import {
-    Button,
-    ChakraProvider,
-    Center,
-    Grid,
-    GridItem,
-    Flex,
-} from "@chakra-ui/react";
+import { Image, Box, Flex, Spacer } from "@chakra-ui/react";
+import { useState } from "react";
+import LoginComponent from "./navcomponent/LoginComponent";
+import LogoutComponent from "./navcomponent/LogoutComponent";
+
+import { useNavigate } from "react-router-dom";
+import SellerComponent from "./navcomponent/SellerComponent";
+import BuyerComponent from "./navcomponent/BuyerComponent";
+import ProfileBuyerComponent from "./navcomponent/NavBuyerProfileComponent";
+import ProfileSellerComponent from "./navcomponent/NavSellerProfileComponent";
+import LogoutProfileComponent from "./navcomponent/LogoutProfileComponent";
 
 function NavBar() {
+    const navigate = useNavigate();
+    const [loginlogout, LoginState] = useState(true);
+    const [BuyerSeller, BuyerSellerState] = useState(false);
+    const [profile, ProfileState] = useState();
+
     return (
-        <ChakraProvider>
-            <Center>
-                <Grid
-                    className="MainBorder"
-                    templateColumns="repeat(3, 10fr)"
-                    gap={100}
+        <Box className="paddingNavBar">
+            <Flex minWidth={"max-content"} alignItems="center" gap="2">
+                <Box />
+                <Spacer />
+                {loginlogout ? <LoginComponent /> : <LogoutComponent />}
+            </Flex>
+            <Flex minWidth="max-content" alignItems="center" gap="3">
+                <Box
+                    width={"4rem"}
+                    height={"4rem"}
+                    onClick={() => {
+                        navigate("./main");
+                    }}
                 >
-                    <GridItem w="100%" h="20">
-                        <img src="img/image.png" className="LogoImage"></img>
-                    </GridItem>
-                    <Flex align="center" justify="center" w="100%" h="10">
-                        <Flex align="center" justify="center">
-                            <Flex className="NavFont">
-                                라이브
-                            </Flex>
-                            <Flex className="NavFont">
-                                상품 목록
-                            </Flex>
-                            <Flex className="NavFont">
-                                라이브 달력
-                            </Flex>
-                        </Flex>
-                    </Flex>
-                    <GridItem w="190%" h="10">
-                        <Search2Icon className="NavRight" boxSize={5} />
-                        <BellIcon className="NavRight" boxSize={5} />
-                        <Button
-                            className="NavRight"
-                            color="#126F54"
-                            borderColor="#126F54"
-                            _hover={{ borderColor: "#126F54" }}
-                            _active={{
-                                bg: "#126F54",
-                                transform: "scale(0.98)",
-                                borderColor: "#126F54",
-                            }}
-                            width="30"
-                        >
-                            마이페이지
-                        </Button>
-                        <Button
-                            className="NavRight"
-                            bg="#126F54"
-                            colorScheme="#000000"
-                            borderColor="#126F54"
-                            _active={{
-                                bg: "#ffffff",
-                                transform: "scale(0.98)",
-                                borderColor: "#ffffff",
-                            }}
-                        >
-                            회원가입
-                        </Button>
-                    </GridItem>
-                </Grid>
-            </Center>
-        </ChakraProvider>
+                    <Image
+                        width={"100%"}
+                        height={"100%"}
+                        objectFit={"cover"}
+                        src="/img/main_logo.png"
+                    ></Image>
+                </Box>
+
+                <Spacer />
+                {BuyerSeller ? <BuyerComponent /> : <SellerComponent />}
+                <Spacer />
+                {loginlogout && BuyerSeller ? (
+                    <ProfileBuyerComponent />
+                ) : loginlogout && !BuyerSeller ? (
+                    <ProfileSellerComponent />
+                ) : (
+                    <LogoutProfileComponent />
+                )}
+            </Flex>
+        </Box>
     );
 }
 

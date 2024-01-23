@@ -1,27 +1,80 @@
-#root {
-    margin: 0 auto;
-    padding: 2rem;
+/* Small devices (phones, 600px and down) */
+@media only screen and (max-width: 600px) {
+    .TopNavFont {
+        font-size: 6px;
+    }
+
+    .paddingNavBar {
+        margin: 0 auto;
+        padding: 0.3rem;
+        width: 100%;
+    }
+
+    .LogoImage {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .NavFont {
+        font-family: "GmkLight";
+        margin-left: 0.3rem;
+        margin-right: 0.3rem;
+        font-size: large;
+        font-weight: bold;
+    }
 }
 
-.LogoImage {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+/* Medium devices (tablets, 600px to 768px) */
+@media only screen and (min-width: 601px) and (max-width: 768px) {
+    .TopNavFont {
+        font-size: 9px;
+    }
+
+    .paddingNavBar {
+        margin: 0 auto;
+        padding: 0.5rem;
+        width: 90%;
+    }
+
+    .LogoImage {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .NavFont {
+        font-family: "GmkLight";
+        margin-left: 0.5rem;
+        margin-right: 0.5rem;
+        font-size: large;
+        font-weight: bold;
+    }
 }
 
-.MainBorder {
-    border-bottom: 2px solid rgb(18, 111, 84);
-}
+/* Large devices (laptops/desktops, 769px and up) */
+@media only screen and (min-width: 769px) {
+    .TopNavFont {
+        font-size: 12px;
+    }
 
-.NavRight {
-    margin: 8px;
-    
-}
+    .paddingNavBar {
+        margin: 0 auto;
+        padding: 1rem;
+        width: 70%;
+    }
 
-.NavFont {
-    font-family: "GmarketSansMedium";
-    margin-left:20px;
-    margin-right:20px;
-    font-size: 1rem;
-    font-weight: bold;
+    .LogoImage {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .NavFont {
+        font-family: "GmkLight";
+        margin-left: 1rem;
+        margin-right: 1rem;
+        font-size: large;
+        font-weight: bold;
+    }
 }
