@@ -1,5 +1,5 @@
 import { Box, Flex } from "@chakra-ui/react";
-import GoodsList from "./dummylist/dummy";
+import GoodsList from "../item/dummylist/dummy";
 import "../../css/ItemListComponentcss.css";
 import { useEffect, useState } from "react";
 
@@ -15,9 +15,9 @@ export default function CarouselComponent() {
         const totalSlides = dummylist.length;
         const interval = setInterval(() => {
             setSlideIndex((currentIndex) => (currentIndex + 1) % totalSlides);
-        }, 2000);
+        }, 3000);
 
-        return () => clearInterval(interval); // Clear the interval when the component unmounts
+        return () => clearInterval(interval);
     }, [dummylist.length]);
 
     return (
@@ -26,8 +26,8 @@ export default function CarouselComponent() {
                 overflowX={"hidden"}
                 wrap={"nowrap"}
                 style={{
-                    width: `${24 * dummylist.length}vw`,
-                    transition: "all 2000ms ease-in-out",
+                    width: `${26 * dummylist.length}vw`,
+                    transition: "all 1000ms ease-in-out",
                     transform: `translateX(${
                         -1 * ((100 / dummylist.length) * slideIndex)
                     }%)`,
@@ -43,6 +43,9 @@ export default function CarouselComponent() {
                             ></img>
                         </Box>
                         <Box className="tagWrap" mt={"1rem"}>
+                            {data.title}
+                        </Box>
+                        <Box className="tagWrap" mt={"0.5rem"}>
                             {data.price}
                         </Box>
                     </Box>
