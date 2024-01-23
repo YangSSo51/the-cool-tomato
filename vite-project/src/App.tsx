@@ -11,6 +11,7 @@ import UserinfoPage from "./pages/UserinfoPage";
 import LoginPage from "./pages/LoginPage";
 import SignUpPage from "./pages/SignUpPage";
 import SignPage from "./pages/SignPage";
+import FindAccountPage from "./pages/FindAccountPage";
 import { Theme, Fonts } from "./theme/Theme";
 
 function App() {
@@ -30,6 +31,18 @@ function App() {
                         <Route path="login" element={<LoginPage />} />
                         <Route path="signup" element={<SignUpPage />} />
                         <Route path="sign" element={<SignPage />} />
+                        <Route
+                            path="findid"
+                            element={<FindAccountPage type="username" />}
+                        />
+                        <Route
+                            path="pwdrecover"
+                            element={<FindAccountPage type="password" />}
+                        />
+                        <Route
+                            path="findaccount"
+                            element={<FindAccountPage type="result" />}
+                        />
                     </Route>
                 </Routes>
             </ChakraProvider>
