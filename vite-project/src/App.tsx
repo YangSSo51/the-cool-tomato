@@ -13,7 +13,6 @@ import LoginPage from "./pages/LoginPage";
 import ItemDetail from "./pages/ItemDetail";
 import Broadcast from "./pages/BroadcastPage";
 import SignUpPage from "./pages/SignUpPage";
-import SignUpPage from "./pages/SignUpPage";
 import SignPage from "./pages/SignPage";
 import FindAccountPage from "./pages/FindAccountPage";
 import MainPage from "./pages/MainPage";
@@ -36,7 +35,10 @@ function App() {
                         <Route path="seller" element={<SellerPage />} />
                         <Route path="userinfo" element={<UserinfoPage />} />
                         <Route path="login" element={<LoginPage />} />
-                        <Route path="items/list/detail/:id" element={<ItemDetail/>} />
+                        <Route
+                            path="items/list/detail/:id"
+                            element={<ItemDetail />}
+                        />
                         <Route path="signup" element={<SignUpPage />} />
                         <Route path="signup" element={<SignUpPage />} />
                         <Route path="sign" element={<SignPage />} />
@@ -48,8 +50,11 @@ function App() {
                             path="pwdrecover"
                             element={<FindAccountPage type="password" />}
                         />
-                        <Route path="live/form" element={<LiveAddForm/>} />
-                        <Route path="live/:roomId" element={<BuyerLive />}></Route>
+                        <Route path="live/form" element={<LiveAddForm />} />
+                        <Route
+                            path="live/:roomId"
+                            element={<BuyerLive />}
+                        ></Route>
                         <Route
                             path="findaccount"
                             element={<FindAccountPage type="result" />}
