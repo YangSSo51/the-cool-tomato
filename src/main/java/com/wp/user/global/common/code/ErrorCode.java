@@ -79,6 +79,7 @@ public enum ErrorCode {
     NOT_FOUND_SELLER(401, "B0010", "판매자 정보를 찾을 수 없습니다."),
     ALREADY_APPROVE_SELLER(409, "B0011", "이미 판매자 전환 신청이 승인되었습니다."),
     ALREADY_CANCEL_SELLER(409, "B0012", "이미 판매자 전환 신청이 철회되었습니다."),
+    NOT_SELLER(401, "B0013", "판매자가 아닙니다."),
 
     /**
      * ******************************* Custom Error CodeList ***************************************

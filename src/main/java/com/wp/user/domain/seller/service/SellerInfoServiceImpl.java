@@ -33,6 +33,13 @@ public class SellerInfoServiceImpl implements SellerInfoService {
     @Override
     public GetSellerResponse getSeller(Long sellerId) {
         User user = userRepository.findById(sellerId).orElseThrow(() -> new BusinessExceptionHandler(ErrorCode.NOT_FOUND_USER_ID));
+        try {
+            if(!user.getAuth().equals(Auth.SELLER)) {
+                throw new BusinessExceptionHandler(ErrorCode.NOT_SELLER);
+            }
+        } catch (Exception e) {
+            throw new BusinessExceptionHandler(ErrorCode.NOT_SELLER);
+        }
         return GetSellerResponse.builder()
                 .id(user.getId())
                 .loginId(user.getLoginId())
@@ -53,8 +60,8 @@ public class SellerInfoServiceImpl implements SellerInfoService {
 
         // 권한이 관리자일 경우만 조회
 
-        List<SellerInfo> sellerInfoList = sellerInfoRepository.findAllByApprovalStatus(true);
-        return GetSellerInfoListResponse.builder().build();
+        List<SellerInfo> sellerInfoList = sellerInfoRepository.findAll();
+        return GetSellerInfoListResponse.from(sellerInfoList);
     }
 
     // 판매자 전환 신청 상세 조회

@@ -2,6 +2,7 @@ package com.wp.user.domain.seller.controller;
 
 import com.wp.user.domain.seller.dto.request.AddSellerInfoRequest;
 import com.wp.user.domain.seller.dto.response.GetSellerInfoListResponse;
+import com.wp.user.domain.seller.dto.response.GetSellerInfoResponse;
 import com.wp.user.domain.seller.dto.response.GetSellerResponse;
 import com.wp.user.domain.seller.service.SellerInfoService;
 import com.wp.user.domain.user.dto.request.AddUserRequest;
@@ -12,6 +13,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,7 +31,7 @@ public class SellerInfoController {
 
     @GetMapping("/{seller-id}")
     @Operation(summary = "판매자 상세 정보 조회", description = "사용자는 판매자 상세 정보를 조회합니다.")
-    public ResponseEntity<SuccessResponse<?>> getSeller(@NotBlank(message = "판매자 회원 ID를 입력해 주세요.") @PathVariable(name = "seller-id") Long sellerId) {
+    public ResponseEntity<SuccessResponse<?>> getSeller(@NotNull(message = "판매자 회원 ID를 입력해 주세요.") @PathVariable(name = "seller-id") Long sellerId) {
         GetSellerResponse getSellerResponse = sellerInfoService.getSeller(sellerId);
         SuccessResponse<?> response = SuccessResponse.builder()
                 .status(SuccessCode.SELECT_SUCCESS.getStatus())
@@ -51,13 +53,14 @@ public class SellerInfoController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @GetMapping("/{seller-info-id}")
+    @GetMapping("/admin-sellers/{seller-info-id}")
     @Operation(summary = "판매자 전환 신청 상세 조회", description = "관리자와 구매자는 판매자 전환 신청 목록을 조회합니다.")
-    public ResponseEntity<SuccessResponse<?>> getSellerInfo(HttpServletRequest httpServletRequest, @NotBlank(message = "판매자 정보 ID를 입력해 주세요.") @PathVariable(name = "seller-info-id") Long sellerInfoId) {
-        sellerInfoService.modifySellerStatusTrue(httpServletRequest, sellerInfoId);
+    public ResponseEntity<SuccessResponse<?>> getSellerInfo(HttpServletRequest httpServletRequest, @NotNull(message = "판매자 정보 ID를 입력해 주세요.") @PathVariable(name = "seller-info-id") Long sellerInfoId) {
+        GetSellerInfoResponse getSellerInfoResponse = sellerInfoService.getSellerInfo(httpServletRequest, sellerInfoId);
         SuccessResponse<?> response = SuccessResponse.builder()
                 .status(SuccessCode.SELECT_SUCCESS.getStatus())
                 .message(SuccessCode.SELECT_SUCCESS.getMessage())
+                .data(getSellerInfoResponse)
                 .build();
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
@@ -75,7 +78,7 @@ public class SellerInfoController {
 
     @PutMapping("/admin/approve/{seller-info-id}")
     @Operation(summary = "판매자 전환 승인", description = "관리자는 판매자 정보 id로 판매자 전환 신청을 승인합니다.")
-    public ResponseEntity<SuccessResponse<?>> approveSeller(HttpServletRequest httpServletRequest, @NotBlank(message = "판매자 정보 ID를 입력해 주세요.") @PathVariable(name = "seller-info-id") Long sellerInfoId) {
+    public ResponseEntity<SuccessResponse<?>> approveSeller(HttpServletRequest httpServletRequest, @NotNull(message = "판매자 정보 ID를 입력해 주세요.") @PathVariable(name = "seller-info-id") Long sellerInfoId) {
         sellerInfoService.modifySellerStatusTrue(httpServletRequest, sellerInfoId);
         SuccessResponse<?> response = SuccessResponse.builder()
                 .status(SuccessCode.UPDATE_SUCCESS.getStatus())
@@ -86,7 +89,7 @@ public class SellerInfoController {
 
     @PutMapping("/admin/cancel/{seller-info-id}")
     @Operation(summary = "판매자 전환 철회", description = "관리자는 판매자 정보 id로 판매자 전환을 철회합니다.")
-    public ResponseEntity<SuccessResponse<?>> cancelSeller(HttpServletRequest httpServletRequest, @NotBlank(message = "판매자 정보 ID를 입력해 주세요.") @PathVariable(name = "seller-info-id") Long sellerInfoId) {
+    public ResponseEntity<SuccessResponse<?>> cancelSeller(HttpServletRequest httpServletRequest, @NotNull(message = "판매자 정보 ID를 입력해 주세요.") @PathVariable(name = "seller-info-id") Long sellerInfoId) {
         sellerInfoService.modifySellerStatusFalse(httpServletRequest, sellerInfoId);
         SuccessResponse<?> response = SuccessResponse.builder()
                 .status(SuccessCode.UPDATE_SUCCESS.getStatus())
