@@ -1,8 +1,6 @@
 package com.wp.user.domain.user.controller;
 
-import com.wp.user.domain.user.dto.request.AddUserRequest;
-import com.wp.user.domain.user.dto.request.LoginRequest;
-import com.wp.user.domain.user.dto.request.ModifyUserRequest;
+import com.wp.user.domain.user.dto.request.*;
 import com.wp.user.domain.user.dto.response.*;
 import com.wp.user.domain.user.service.UserService;
 import com.wp.user.global.common.code.SuccessCode;
@@ -52,33 +50,10 @@ public class UserController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @PostMapping("/find-login-id/{email}")
-    @Operation(summary = "아이디 찾기", description = "사용자는 email을 입력하여 로그인 ID를 찾습니다.")
-    public ResponseEntity<SuccessResponse<?>> findLoginId(@NotBlank(message = "이메일을 입력해주세요.") @Email(message = "이메일 형식에 맞춰 입력해주세요.") @PathVariable String email) {
-        userService.getLoginIdByEmail(email);
-        SuccessResponse<?> response = SuccessResponse.builder()
-                .status(SuccessCode.INSERT_SUCCESS.getStatus())
-                .message(SuccessCode.INSERT_SUCCESS.getMessage())
-                .build();
-        return new ResponseEntity<>(response, HttpStatus.OK);
-    }
-
-    @PostMapping("/login")
-    @Operation(summary = "로그인", description = "사용자는 로그인 ID와 PASSWORD를 입력하여 로그인합니다.")
-    public ResponseEntity<SuccessResponse<?>> login(@Valid @RequestBody LoginRequest loginRequest) {
-        LoginResponse loginResponse = userService.login(loginRequest);
-        SuccessResponse<?> response = SuccessResponse.builder()
-                .status(SuccessCode.INSERT_SUCCESS.getStatus())
-                .message(SuccessCode.INSERT_SUCCESS.getMessage())
-                .data(loginResponse)
-                .build();
-        return new ResponseEntity<>(response, HttpStatus.OK);
-    }
-
-    @PostMapping("/join/check-email/{email}")
+    @PostMapping("/join/check-email")
     @Operation(summary = "이메일 인증", description = "사용자는 email을 입력하여 이메일 인증 번호를 이메일로 받습니다.")
-    public ResponseEntity<SuccessResponse<?>> checkEmail(@NotBlank(message = "이메일을 입력해주세요.") @Email(message = "이메일 형식에 맞춰 입력해주세요.") @PathVariable String email) {
-        userService.checkEmail(email);
+    public ResponseEntity<SuccessResponse<?>> checkEmail(@Valid @RequestBody CheckEmailRequest checkEmailRequest) {
+        userService.checkEmail(checkEmailRequest);
         SuccessResponse<?> response = SuccessResponse.builder()
                 .status(SuccessCode.INSERT_SUCCESS.getStatus())
                 .message(SuccessCode.INSERT_SUCCESS.getMessage())
@@ -98,10 +73,33 @@ public class UserController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @PostMapping("/find-password/{login-id}/{email}")
+    @PostMapping("/login")
+    @Operation(summary = "로그인", description = "사용자는 로그인 ID와 PASSWORD를 입력하여 로그인합니다.")
+    public ResponseEntity<SuccessResponse<?>> login(@Valid @RequestBody LoginRequest loginRequest) {
+        LoginResponse loginResponse = userService.login(loginRequest);
+        SuccessResponse<?> response = SuccessResponse.builder()
+                .status(SuccessCode.INSERT_SUCCESS.getStatus())
+                .message(SuccessCode.INSERT_SUCCESS.getMessage())
+                .data(loginResponse)
+                .build();
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @GetMapping("/find-login-id/{email}")
+    @Operation(summary = "아이디 찾기", description = "사용자는 email을 입력하여 로그인 ID를 찾습니다.")
+    public ResponseEntity<SuccessResponse<?>> findLoginId(@NotBlank(message = "이메일을 입력해주세요.") @Email(message = "이메일 형식에 맞춰 입력해주세요.") @PathVariable String email) {
+        userService.getLoginIdByEmail(email);
+        SuccessResponse<?> response = SuccessResponse.builder()
+                .status(SuccessCode.SELECT_SUCCESS.getStatus())
+                .message(SuccessCode.SELECT_SUCCESS.getMessage())
+                .build();
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @PostMapping("/find-password")
     @Operation(summary = "비밀번호 찾기", description = "사용자는 로그인 ID와 email을 입력하여 password를 재설정합니다.")
-    public ResponseEntity<SuccessResponse<?>> findPassword(@NotBlank(message = "로그인 ID를 입력해주세요.") @PathVariable(name = "login-id") String loginId, @NotBlank(message = "이메일을 입력해주세요.") @Email(message = "이메일 형식에 맞춰 입력해주세요.") @PathVariable String email) {
-        userService.getPasswordByEmail(loginId, email);
+    public ResponseEntity<SuccessResponse<?>> findPassword(@Valid @RequestBody FindPasswordRequest findPasswordRequest) {
+        userService.getPasswordByEmail(findPasswordRequest);
         SuccessResponse<?> response = SuccessResponse.builder()
                 .status(SuccessCode.INSERT_SUCCESS.getStatus())
                 .message(SuccessCode.INSERT_SUCCESS.getMessage())

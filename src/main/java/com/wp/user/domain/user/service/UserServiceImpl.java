@@ -1,8 +1,6 @@
 package com.wp.user.domain.user.service;
 
-import com.wp.user.domain.user.dto.request.AddUserRequest;
-import com.wp.user.domain.user.dto.request.LoginRequest;
-import com.wp.user.domain.user.dto.request.ModifyUserRequest;
+import com.wp.user.domain.user.dto.request.*;
 import com.wp.user.domain.user.dto.response.*;
 import com.wp.user.domain.user.entity.Auth;
 import com.wp.user.domain.user.entity.EmailCode;
@@ -13,6 +11,7 @@ import com.wp.user.global.common.code.ErrorCode;
 import com.wp.user.global.common.service.JwtService;
 import com.wp.user.global.exception.BusinessExceptionHandler;
 import jakarta.mail.MessagingException;
+import jakarta.mail.internet.InternetAddress;
 import jakarta.mail.internet.MimeMessage;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -24,6 +23,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.UnsupportedEncodingException;
 import java.util.List;
 import java.util.UUID;
 
@@ -76,25 +76,16 @@ public class UserServiceImpl implements UserService {
     // 이메일 인증
     @Override
     @Transactional
-    public CheckEmailResponse checkEmail(String email) {
+    public CheckEmailResponse checkEmail(CheckEmailRequest checkEmailRequest) {
         // 이메일 보내기
-        MimeMessage message = javaMailSender.createMimeMessage();
         String verifyCode = UUID.randomUUID().toString().substring(0, 6); // 랜덤 인증번호 uuid를 이용
-        try {
-            MimeMessageHelper helper = new MimeMessageHelper(message, false, "UTF-8");
-            helper.setTo(email);
-            helper.setSubject("[멋쟁이 토마토] 이메일 인증 번호 안내 이메일입니다.");
-            StringBuffer sb = new StringBuffer();
-            sb.append("안녕하세요. 멋쟁이 토마토 이메일 인증 번호 안내 관련 이메일입니다.");
-            sb.append(System.lineSeparator());
-            sb.append("이메일 인증 번호는 [").append(verifyCode).append("]입니다.");
-            helper.setText(sb.toString());
-            javaMailSender.send(message);
-            EmailCode emailCode = EmailCode.builder().id(email).code(verifyCode).build();
-            emailCodeRepository.save(emailCode); // {key, value} 5분동안 저장.
-        } catch (MessagingException e) {
-            throw new BusinessExceptionHandler(ErrorCode.SEND_EMAIL_ERROR);
-        }
+        StringBuffer sb = new StringBuffer();
+        sb.append("안녕하세요. 멋쟁이 토마토 이메일 인증 번호 안내 관련 이메일입니다.");
+        sb.append(System.lineSeparator());
+        sb.append("이메일 인증 번호는 [").append(verifyCode).append("]입니다.");
+        sendEmail(checkEmailRequest.getEmail(), "이메일 인증 번호", sb);
+        EmailCode emailCode = EmailCode.builder().id(checkEmailRequest.getEmail()).code(verifyCode).build();
+        emailCodeRepository.save(emailCode); // {key, value} 5분동안 저장.
         return CheckEmailResponse.builder().verifyCode(verifyCode).build();
     }
 
@@ -134,46 +125,28 @@ public class UserServiceImpl implements UserService {
         // 이메일로 로그인 아이디 찾기
         User user = userRepository.findUserByEmail(email).orElseThrow(() -> new BusinessExceptionHandler(ErrorCode.NOT_FOUND_USER_EMAIL)); // errorCode : B005
         // 이메일 보내기
-        MimeMessage message = javaMailSender.createMimeMessage();
-        try {
-            MimeMessageHelper helper = new MimeMessageHelper(message, false, "UTF-8");
-            helper.setTo(user.getEmail());
-            helper.setSubject("[멋쟁이 토마토] 로그인 아이디 안내 이메일입니다.");
-            StringBuffer sb = new StringBuffer();
-            sb.append("안녕하세요. 멋쟁이 토마토 로그인 아이디 안내 관련 이메일입니다.");
-            sb.append(System.lineSeparator());
-            sb.append("[").append(user.getNickname()).append("]님의 가입하신 아이디는 ").append(user.getLoginId()).append("입니다.");
-            helper.setText(sb.toString());
-            javaMailSender.send(message);
-        } catch (MessagingException e) {
-            throw new BusinessExceptionHandler(ErrorCode.SEND_EMAIL_ERROR);
-        }
+        StringBuffer sb = new StringBuffer();
+        sb.append("안녕하세요. 멋쟁이 토마토 로그인 아이디 안내 관련 이메일입니다.");
+        sb.append(System.lineSeparator());
+        sb.append("[").append(user.getNickname()).append("]님의 가입하신 아이디는 ").append(user.getLoginId()).append("입니다.");
+        sendEmail(email, "로그인 아이디", sb);
     }
 
     // 비밀번호 찾기
     @Override
     @Transactional
-    public void getPasswordByEmail(String loginId, String email) {
+    public void getPasswordByEmail(FindPasswordRequest findPasswordRequest) {
         // 이메일로 회원 정보 찾기
-        User user = userRepository.findUserByLoginIdAndEmail(loginId, email).orElseThrow(() -> new BusinessExceptionHandler(ErrorCode.NOT_FOUND_USER_LOGIN_ID_EMAIL)); // errorCode : B007
+        User user = userRepository.findUserByLoginIdAndEmail(findPasswordRequest.getLoginId(), findPasswordRequest.getEmail()).orElseThrow(() -> new BusinessExceptionHandler(ErrorCode.NOT_FOUND_USER_LOGIN_ID_EMAIL)); // errorCode : B007
         // 새로운 임시 비밀번호 설정
         String tempPassword = getTempPassword();
         user.setPassword(passwordEncoder.encode(tempPassword));
         // 이메일 보내기
-        MimeMessage message = javaMailSender.createMimeMessage();
-        try {
-            MimeMessageHelper helper = new MimeMessageHelper(message, false, "UTF-8");
-            helper.setTo(user.getEmail());
-            helper.setSubject("[멋쟁이 토마토] 임시 비밀번호 안내 이메일입니다.");
-            StringBuffer sb = new StringBuffer();
-            sb.append("안녕하세요. 멋쟁이 토마토 임시 비밀번호 안내 관련 이메일입니다.");
-            sb.append(System.lineSeparator());
-            sb.append("[").append(user.getNickname()).append("]님의 임시 비밀번호는 ").append(tempPassword).append("입니다.");
-            helper.setText(sb.toString());
-            javaMailSender.send(message);
-        } catch (MessagingException e) {
-            throw new BusinessExceptionHandler(ErrorCode.SEND_EMAIL_ERROR);
-        }
+        StringBuffer sb = new StringBuffer();
+        sb.append("안녕하세요. 멋쟁이 토마토 임시 비밀번호 안내 관련 이메일입니다.");
+        sb.append(System.lineSeparator());
+        sb.append("[").append(user.getNickname()).append("]님의 임시 비밀번호는 ").append(tempPassword).append("입니다.");
+        sendEmail(user.getEmail(), "임시 비밀번호", sb);
     }
 
     // 임시 비밀번호 생성
@@ -302,6 +275,23 @@ public class UserServiceImpl implements UserService {
         // 회원 탈퇴 처리(Refresh Token 삭제)
 
         // 회원 탈퇴 처리(DB 삭제)
+    }
+
+    @Override
+    @Transactional
+    public void sendEmail(String email, String title, StringBuffer sb) {
+        // 이메일 보내기
+        MimeMessage message = javaMailSender.createMimeMessage();
+        try {
+            MimeMessageHelper helper = new MimeMessageHelper(message, false, "UTF-8");
+            helper.setTo(email);
+            message.setFrom(new InternetAddress("hyeseung2000@gmail.com", "멋쟁이 토마토"));
+            helper.setSubject("[멋쟁이 토마토] " + title + " 안내 이메일입니다.");
+            helper.setText(sb.toString());
+            javaMailSender.send(message);
+        } catch (MessagingException | UnsupportedEncodingException e) {
+            throw new BusinessExceptionHandler(ErrorCode.SEND_EMAIL_ERROR);
+        }
     }
 
 }
