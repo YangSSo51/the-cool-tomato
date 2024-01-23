@@ -9,6 +9,7 @@ import BuyerPage from "./pages/BuyerPage";
 import SellerPage from "./pages/SellerPage";
 import UserinfoPage from "./pages/UserinfoPage";
 import LoginPage from "./pages/LoginPage";
+import FindAccountPage from "./pages/FindAccountPage";
 import { Theme, Fonts } from "./theme/Theme";
 
 function App() {
@@ -26,6 +27,18 @@ function App() {
                         <Route path="seller" element={<SellerPage />} />
                         <Route path="userinfo" element={<UserinfoPage />} />
                         <Route path="login" element={<LoginPage />} />
+                        <Route
+                            path="findid"
+                            element={<FindAccountPage type="username" />}
+                        />
+                        <Route
+                            path="pwdrecover"
+                            element={<FindAccountPage type="password" />}
+                        />
+                        <Route
+                            path="findaccount"
+                            element={<FindAccountPage type="result" />}
+                        />
                     </Route>
                 </Routes>
             </ChakraProvider>
