@@ -12,8 +12,13 @@ import UserinfoPage from "./pages/UserinfoPage";
 import LoginPage from "./pages/LoginPage";
 import ItemDetail from "./pages/ItemDetail";
 import Broadcast from "./pages/BroadcastPage";
-import Live from "./pages/LivePage";
 import SignUpPage from "./pages/SignUpPage";
+import SignUpPage from "./pages/SignUpPage";
+import SignPage from "./pages/SignPage";
+import FindAccountPage from "./pages/FindAccountPage";
+import MainPage from "./pages/MainPage";
+import LiveAddForm from "./pages/LiveAddForm";
+import BuyerLive from "./pages/BuyerLive";
 
 function App() {
     return (
@@ -22,6 +27,7 @@ function App() {
                 <Fonts />
                 <Routes>
                     <Route path="/v1" element={<LayOut />}>
+                        <Route path="main" element={<MainPage />}></Route>
                         <Route path="search" element={<Search />} />
                         <Route path="live/list" element={<LiveList />} />
                         <Route path="items/list" element={<ItemList />} />
@@ -32,9 +38,24 @@ function App() {
                         <Route path="login" element={<LoginPage />} />
                         <Route path="items/list/detail/:id" element={<ItemDetail/>} />
                         <Route path="signup" element={<SignUpPage />} />
+                        <Route path="signup" element={<SignUpPage />} />
+                        <Route path="sign" element={<SignPage />} />
+                        <Route
+                            path="findid"
+                            element={<FindAccountPage type="username" />}
+                        />
+                        <Route
+                            path="pwdrecover"
+                            element={<FindAccountPage type="password" />}
+                        />
+                        <Route path="live/form" element={<LiveAddForm/>} />
+                        <Route path="live/:roomId" element={<BuyerLive />}></Route>
+                        <Route
+                            path="findaccount"
+                            element={<FindAccountPage type="result" />}
+                        />
                     </Route>
                     <Route path="broadcast" element={<Broadcast />} />
-                    <Route path="live" element={<Live />} />
                 </Routes>
             </ChakraProvider>
         </>

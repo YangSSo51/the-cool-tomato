@@ -16,9 +16,11 @@ export default function ItemAdd() {
         images:''
     }
     const [goodsInput, setGoodsInput] = useState([goods]) 
-    const saveGoodsInput = e => {
+    const saveGoodsInput = (e, index) => {
         const { value, name } = e.target;
-        setGoodsInput({ ...goodsInput, [name]: value});
+        const goodsInputCopy = [...goodsInput]
+        goodsInputCopy[index] = {...goodsInputCopy[index], [name]: value}
+        setGoodsInput(goodsInputCopy);
     }
     
     return (

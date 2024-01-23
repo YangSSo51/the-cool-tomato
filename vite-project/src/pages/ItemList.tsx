@@ -19,7 +19,7 @@ export default function ItemList() {
                 color={"themeGreen.500"}
                 mt={"0.5rem"}
             >
-                현재 진행중인 라이브
+                현재 라이브 중인 상품
             </Flex>
 
 

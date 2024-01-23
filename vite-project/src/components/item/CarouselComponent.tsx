@@ -21,9 +21,9 @@ export default function CarouselComponent() {
     }, [dummylist.length]);
 
     return (
-        <Box display={"block"} p={"1rem"}>
+        <Box display={"block"} p={"1rem"} overflowX={"hidden"}>
             <Flex
-                overflowX={"auto"}
+                overflowX={"hidden"}
                 wrap={"nowrap"}
                 style={{
                     width: `${24 * dummylist.length}vw`,

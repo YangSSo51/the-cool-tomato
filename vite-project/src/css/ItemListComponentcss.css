@@ -18,7 +18,7 @@
 .TextTitle {
     font-size: large;
     font-weight: bold;
-    margin-bottom: 3px;
+    margin-bottom: 1rem;
 }
 
 .TextContent {
@@ -32,6 +32,6 @@
 
 hr {
     width: 70%;
-    height: 5px;
+    height: 1rem;
     background-color: #000000;
 }

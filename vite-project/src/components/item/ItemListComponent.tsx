@@ -15,7 +15,7 @@ const Goods = ({ id, img, title, price }: GoodsProps) => {
 
         <Link to={`detail/${id}`}>
             <Box>
-                <ul>
+                <Box>
                     <Box maxW={"25rem"} className="img">
                         <img className="Realimage" src={img}></img>
                     </Box>
@@ -23,7 +23,7 @@ const Goods = ({ id, img, title, price }: GoodsProps) => {
                         <h4 className="TextTitle">{title}</h4>
                     </Box>
                     <Box className="tagWrap">{price}</Box>
-                </ul>
+                </Box>
             </Box>
         </Link>
     );
