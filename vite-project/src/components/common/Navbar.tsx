@@ -14,23 +14,22 @@ import LogoutProfileComponent from "./navcomponent/LogoutProfileComponent";
 function NavBar() {
     const navigate = useNavigate();
     const [loginlogout, LoginState] = useState(true);
-    const [BuyerSeller, BuyerSellerState] = useState(true);
+    const [BuyerSeller, BuyerSellerState] = useState(false);
     const [profile, ProfileState] = useState();
 
     return (
         <Box className="paddingNavBar">
-            <Flex minWidth="max-content" alignItems="center" gap="2">
+            <Flex minWidth={"max-content"} alignItems="center" gap="2">
                 <Box />
                 <Spacer />
                 {loginlogout ? <LoginComponent /> : <LogoutComponent />}
             </Flex>
             <Flex minWidth="max-content" alignItems="center" gap="3">
                 <Box
-                    width={"13"}
-                    height={"10"}
-                    overflow={"hidden"}
+                    width={"4rem"}
+                    height={"4rem"}
                     onClick={() => {
-                        navigate("./");
+                        navigate("./main");
                     }}
                 >
                     <Image

@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { Box, Flex, Center } from "@chakra-ui/layout";
+import { Box, Flex, Center, Text } from "@chakra-ui/layout";
 import { Button, Avatar, List, ListItem } from "@chakra-ui/react";
 import axios from "axios";
 import "../css/SellerPage.css"

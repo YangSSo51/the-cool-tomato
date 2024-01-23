@@ -14,6 +14,9 @@ import ItemDetail from "./pages/ItemDetail";
 import Broadcast from "./pages/BroadcastPage";
 import SignUpPage from "./pages/SignUpPage";
 import FindAccountPage from "./pages/FindAccountPage";
+import MainPage from "./pages/MainPage";
+import LiveAddForm from "./pages/LiveAddForm";
+import BuyerLive from "./pages/BuyerLive";
 
 function App() {
     return (
@@ -22,6 +25,7 @@ function App() {
                 <Fonts />
                 <Routes>
                     <Route path="/v1" element={<LayOut />}>
+                        <Route path="main" element={<MainPage />}></Route>
                         <Route path="search" element={<Search />} />
                         <Route path="live/list" element={<LiveList />} />
                         <Route path="items/list" element={<ItemList />} />
@@ -40,6 +44,8 @@ function App() {
                             path="pwdrecover"
                             element={<FindAccountPage type="password" />}
                         />
+                        <Route path="live/form" element={<LiveAddForm/>} />
+                        <Route path="live/:roomId" element={<BuyerLive />}></Route>
                     </Route>
                     <Route path="broadcast" element={<Broadcast />} />
                 </Routes>
