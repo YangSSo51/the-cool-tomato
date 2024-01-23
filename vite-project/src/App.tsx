@@ -13,7 +13,6 @@ import LoginPage from "./pages/LoginPage";
 import ItemDetail from "./pages/ItemDetail";
 import Broadcast from "./pages/BroadcastPage";
 import SignUpPage from "./pages/SignUpPage";
-import SignUpPage from "./pages/SignUpPage";
 import SignPage from "./pages/SignPage";
 import FindAccountPage from "./pages/FindAccountPage";
 import MainPage from "./pages/MainPage";
