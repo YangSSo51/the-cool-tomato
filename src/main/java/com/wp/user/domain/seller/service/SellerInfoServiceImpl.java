@@ -1,5 +1,6 @@
 package com.wp.user.domain.seller.service;
 
+import com.wp.user.domain.follow.service.FollowManageService;
 import com.wp.user.domain.seller.dto.request.AddSellerInfoRequest;
 import com.wp.user.domain.seller.dto.response.GetSellerInfoListResponse;
 import com.wp.user.domain.seller.dto.response.GetSellerInfoResponse;
@@ -28,11 +29,14 @@ public class SellerInfoServiceImpl implements SellerInfoService {
     private final SellerInfoRepository sellerInfoRepository;
     private final UserRepository userRepository;
     private final JwtService jwtService;
+    private final FollowManageService followManageService;
 
     // 판매자 상세 정보 조회
     @Override
     public GetSellerResponse getSeller(Long sellerId) {
-        User user = userRepository.findById(sellerId).orElseThrow(() -> new BusinessExceptionHandler(ErrorCode.NOT_FOUND_USER_ID));
+        User user = userRepository.findById(sellerId).orElseThrow(() -> new BusinessExceptionHandler(ErrorCode.NOT_FOUND_SELLER_ID));
+        SellerInfo sellerInfo = sellerInfoRepository.findSellerInfoByUserId(sellerId).orElseThrow(() -> new BusinessExceptionHandler(ErrorCode.NOT_FOUND_SELLER));
+        Long followerCount = followManageService.getFollowerCount(sellerId);
         try {
             if(!user.getAuth().equals(Auth.SELLER)) {
                 throw new BusinessExceptionHandler(ErrorCode.NOT_SELLER);
@@ -41,13 +45,15 @@ public class SellerInfoServiceImpl implements SellerInfoService {
             throw new BusinessExceptionHandler(ErrorCode.NOT_SELLER);
         }
         return GetSellerResponse.builder()
-                .id(user.getId())
+                .userId(user.getId())
+                .sellerInfoId(sellerInfo.getId())
                 .loginId(user.getLoginId())
                 .nickname(user.getNickname())
                 .sex(user.getSex())
                 .birthday(user.getBirthday())
                 .profileImg(user.getProfileImg())
                 .auth(user.getAuth())
+                .followerCount(followerCount)
                 .joinDate(user.getJoinDate()).build();
     }
 
@@ -74,7 +80,7 @@ public class SellerInfoServiceImpl implements SellerInfoService {
         // 권한이 관리자 & 구매자일 경우만 조회
         SellerInfo sellerInfo = sellerInfoRepository.findById(sellerInfoId).orElseThrow(() -> new BusinessExceptionHandler(ErrorCode.NOT_FOUND_SELLER));
         return GetSellerInfoResponse.builder()
-                .businessInfoId(sellerInfo.getId())
+                .sellerInfoId(sellerInfo.getId())
                 .userId(sellerInfo.getUser().getId())
                 .businessNumber(sellerInfo.getBusinessNumber())
                 .businessContent(sellerInfo.getBusinessContent())
@@ -117,7 +123,7 @@ public class SellerInfoServiceImpl implements SellerInfoService {
         String accessToken = jwtService.resolveToken(httpServletRequest);
         // 회원 정보 추출
 
-        // 권한이 관리자일 경우만 저장
+        // 권한이 관리자일 경우만 승인
 
         SellerInfo sellerInfo = sellerInfoRepository.findById(sellerInfoId).orElseThrow(() -> new BusinessExceptionHandler(ErrorCode.NOT_FOUND_SELLER));
         // 이미 승인된 경우
@@ -147,7 +153,7 @@ public class SellerInfoServiceImpl implements SellerInfoService {
         String accessToken = jwtService.resolveToken(httpServletRequest);
         // 회원 정보 추출
 
-        // 권한이 관리자일 경우만 저장
+        // 권한이 관리자일 경우만 철회
 
         SellerInfo sellerInfo = sellerInfoRepository.findById(sellerInfoId).orElseThrow(() -> new BusinessExceptionHandler(ErrorCode.NOT_FOUND_SELLER));
         // 이미 철회된 경우

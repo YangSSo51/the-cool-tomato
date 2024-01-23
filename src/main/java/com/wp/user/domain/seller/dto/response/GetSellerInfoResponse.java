@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @Builder
 @Schema(description = "판매자 전환 신청 상세 조회를 위한 응답 객체")
 public class GetSellerInfoResponse {
-    Long businessInfoId;
+    Long sellerInfoId;
     Long userId;
     String businessNumber;
     String businessContent;
