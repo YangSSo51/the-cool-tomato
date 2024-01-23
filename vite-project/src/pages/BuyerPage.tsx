@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { Box, Flex, Text } from "@chakra-ui/layout";
+import { Box, Flex, Center, Text } from "@chakra-ui/layout";
 import { Button, Avatar, List, ListItem } from "@chakra-ui/react";
 import axios from "axios";
+import "../css/SellerPage.css"
 
 // import { getUserInfoAPI } from '../api/user'
 
@@ -19,15 +20,24 @@ export default function BuyerPage() {
     const { userId } = useParams();
     const [ userInfo, setUserInfo ] = useState([]);
     const [ tab, setTab ] = useState(0);
-    const [ isSelected, setIsSelected ] = useState(false)
-    const categoryTabs = [
-        { id: 0, name: '최근 본 상품', component: <Recent userId={userId} /> },
-        { id: 1, name: '팔로잉 목록', component: <Following userId={userId} /> },
-        { id: 2, name: '작성 가능한 리뷰', component: <Reviews userId={userId} /> },
-        { id: 3, name: '작성한 리뷰', component: <Reviewed userId={userId} /> },
-        { id: 4, name: '내가 한 문의', component: <Question userId={userId} /> },
-        { id: 5, name: '판매자 신청', component: <Sellerform userId={userId} /> },
-    ];
+    const [ categoryTabs, setCategoryTabs ] = useState([
+        { id: 0, isSelected: true , name: '최근 본 상품', component: <Recent userId={userId} /> },
+        { id: 1, isSelected: false , name: '팔로잉 목록', component: <Following userId={userId} /> },
+        { id: 2, isSelected: false , name: '작성 가능한 리뷰', component: <Reviews userId={userId} /> },
+        { id: 3, isSelected: false , name: '작성한 리뷰', component: <Reviewed userId={userId} /> },
+        { id: 4, isSelected: false , name: '내가 한 문의', component: <Question userId={userId} /> },
+        { id: 5, isSelected: false , name: '판매자 신청', component: <Sellerform userId={userId} /> },
+    ]);
+    const changeSelect = (e) => {
+        setTab(e.target.value)
+        setCategoryTabs(categoryTabs.map((item, index) => {
+            return {
+              ...item,
+              isSelected: e.target.value == index,
+            };
+          })
+        );
+    }
 
     useEffect(() => {
         const fetchData = async () => {
@@ -50,18 +60,14 @@ export default function BuyerPage() {
     }, []);
 
     return (
-        <Box minH="100vh" mb="10">
+        <Box minH="100vh" mb="10" paddingBlock="6rem">
 
-            <Flex mt="10" mb="10" justify="center">
-                {/* <Center w="30vw" bgImage="url('/icons/up_ttl.svg')" bgRepeat="no-repeat" bgSize="cover"> */}
-                    <Text as="b" fontSize="6xl" color={"themeGreen.500"}>
-                        마이페이지
-                    </Text>
-                
-            </Flex>
+            <Center fontFamily="GmkBold" fontSize="6rem" color={"themeGreen.500"}>
+                마이페이지
+            </Center>
 
-            <Flex m="auto" border="1px" borderColor="green" rounded="lg" w="85vw" minH="85vh">
-                <Flex m="auto" rounded="lg" w="80vw" minH="80vh" px="2">
+            <Flex m="auto" border="2px" borderColor="green" rounded="lg" w="85vw" minH="85vh">
+                <Flex m="auto" rounded="lg" w="80vw" maxH="80vh" px="2">
                     <Box w="25%" pr="4">
                         <Box w="full" bg="white" rounded="lg" overflow="hidden">
                             <Flex direction="column" align="center" py="6">
@@ -88,7 +94,9 @@ export default function BuyerPage() {
                                     {categoryTabs.map((category) => (
                                         <ListItem
                                         key={category.id}
-                                        onClick={() => setTab(category.id)}
+                                        value={category.id}
+                                        className={category.isSelected ? "active" : null}
+                                        onClick={(e) => changeSelect(e)}
                                         _hover={{ color: "themeRed.500", cursor:"pointer" }}
                                         _active={{ color: "themeRed.500", bg: "themeRed.100" }}
                                         >{category.name}

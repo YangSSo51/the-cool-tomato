@@ -81,12 +81,10 @@ export default function Recent() {
     ));
 
     return (
-        <Box w="75%" bg="white" rounded="lg" overflow="hidden">
-            <Box h="full" pl="4">
-                <Flex flexDir="column" h="full" overflowY="scroll">
-                    {testData.length ? testData : <Text color="gray.400">최근 본 상품이 없습니다! 상품 구경하러 가기</Text>}
-                </Flex>
-            </Box>
+        <Box flexDirection="column" w="90%" h="full">
+            <Flex flexDir="column" h="full" overflowY="scroll">
+                {testData.length ? testData : <Text color="gray.400">최근 본 상품이 없습니다! 상품 구경하러 가기</Text>}
+            </Flex>
         </Box>
     );
 }
@@ -95,26 +93,27 @@ function CardItem({ product }) {
     return (
         <Card
             direction={{ base: 'column', sm: 'row' }}
-            overflow='hidden'
             variant='outline'
         >
-            <Image
-                objectFit='cover'
-                maxW={{ base: '100%', sm: '200px' }}
-                src={product.product_img}
-                alt={product.product_name}
-            />
-            <Stack>
-                <CardBody>
-                    <Heading size='md'>{product.product_name}</Heading>
-                    <Text>가격 : {product.price}</Text>
-                </CardBody>
-                <CardFooter>
-                    <Button variant='solid' colorScheme='green'>
-                        {`${product.product_name} 사러가기`}
-                    </Button>
-                </CardFooter>
-            </Stack>
+            <Flex w="100%">
+                <Image
+                    objectFit='contain'
+                    maxW={{ base: '20%', sm: '100px' }}
+                    src={product.product_img}
+                    alt={product.product_name}
+                />
+                <Stack>
+                    <CardBody>
+                        <Heading size='md'>{product.product_name}</Heading>
+                        <Text>가격 : {product.price}</Text>
+                    </CardBody>
+                    <CardFooter>
+                        <Button variant='solid' colorScheme='green'>
+                            {`${product.product_name} 사러가기`}
+                        </Button>
+                    </CardFooter>
+                </Stack>
+            </Flex>
         </Card>
     );
 }

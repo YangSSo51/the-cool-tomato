@@ -1,7 +1,7 @@
 import { Box, Flex } from "@chakra-ui/react";
 import Goods from "../components/item/ItemListComponent";
 import GoodsList from "../components/item/dummylist/dummy";
-import CarouselComponent from "../components/item/CarouselComponent";
+import CarouselComponent from "../components/common/CarouselComponent";
 // import Pagination from 'react-bootstrap/Pagination';
 // import { useState } from "react";
 import "../css/ItemListComponentcss.css";
@@ -19,7 +19,7 @@ export default function ItemList() {
                 color={"themeGreen.500"}
                 mt={"0.5rem"}
             >
-                현재 진행중인 라이브
+                현재 라이브 중인 상품
             </Flex>
 
 

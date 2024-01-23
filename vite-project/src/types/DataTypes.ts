@@ -9,7 +9,18 @@ export type userInfo = {
     profileImg: string;
     auth: string;
     joinData: string;
-}
+};
+
+export type goodsField = {
+    categoryId: number | string;
+    productName: string;
+    productContent: string;
+    paymentLink: string;
+    price: number | string;
+    deliveryCharge: number | string;
+    quantity: number | string;
+    images: string;
+};
 
 // export type solvedData = {
 //     solved: Boolean;
@@ -18,3 +29,10 @@ export type userInfo = {
 //     time_sort_list?: userSolvedData[];
 //     memory_sort_list?: userSolvedData[];
 //   };
+
+export type UserState = {
+    profileImg: string;
+    auth: "BUYER" | "SELLER" | "ADMIN" | "FAIL" | "INIT";
+    accessToken: string;
+    refreshToken: string;
+};

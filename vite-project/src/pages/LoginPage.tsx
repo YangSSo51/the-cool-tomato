@@ -1,4 +1,3 @@
-import React from "react";
 import { Text, Center, Container } from "@chakra-ui/react";
 import LoginForm from "../components/login/LoginForm";
 import LoginNavigate from "../components/login/LoginNavigate";
@@ -6,9 +5,9 @@ import LoginNavigate from "../components/login/LoginNavigate";
 function LoginPage() {
     return (
         <>
-            <Center>
+            <Center my="auto" h={"90vh"} w={"100%"}>
                 <Container
-                    pt={3}
+                    // pt={3}
                     m={0}
                     maxW={{ xl: "35%", lg: "75%", sm: "90%" }}
                     centerContent
