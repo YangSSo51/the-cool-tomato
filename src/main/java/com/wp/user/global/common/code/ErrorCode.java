@@ -65,6 +65,7 @@ public enum ErrorCode {
     /**
      * ******************************* Business Error CodeList ***************************************
      */
+    // 회원 관리
     BUSINESS_EXCEPTION_ERROR(200, "B999", "Business Exception Error"),
     ALREADY_REGISTERED_EMAIL(409, "B001", "이미 회원가입된 이메일입니다."),
     NOT_FOUND_USER_LOGIN_ID(401, "B002", "가입된 아이디가 아닙니다."),
@@ -74,6 +75,11 @@ public enum ErrorCode {
     NOT_FOUND_USER_LOGIN_ID_EMAIL(401, "B007", "아이디와 이메일이 일치하지 않습니다."),
     NOT_FOUND_USER_ID(401, "B008", "회원을 찾을 수 없습니다."),
     NOT_FOUND_SEND_EMAIL(401, "B009", "이메일 인증을 다시 시도해주세요."),
+    // 판매자
+    NOT_FOUND_SELLER(401, "B0010", "판매자 정보를 찾을 수 없습니다."),
+    ALREADY_APPROVE_SELLER(409, "B0011", "이미 판매자 전환 신청이 승인되었습니다."),
+    ALREADY_CANCEL_SELLER(409, "B0012", "이미 판매자 전환 신청이 철회되었습니다."),
+    NOT_SELLER(401, "B0013", "판매자가 아닙니다."),
 
     /**
      * ******************************* Custom Error CodeList ***************************************
