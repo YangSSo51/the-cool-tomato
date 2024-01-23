@@ -5,4 +5,6 @@ import java.util.List;
 
 public interface LiveProductService {
     void saveLiveProduct(List<LiveProductCreateRequest> liveProductRequestList);
+
+    void deleteLiveProduct(Long liveId);
 }

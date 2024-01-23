@@ -16,6 +16,8 @@ public class LiveProduct {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long liveProductId;
 
+    private Long liveId;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id")
     private Product product;

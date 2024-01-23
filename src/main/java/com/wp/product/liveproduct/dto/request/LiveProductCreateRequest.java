@@ -14,6 +14,10 @@ public class LiveProductCreateRequest {
     @Schema(description = "상품 번호를 입력해주세요")
     private Long productId;
 
+    @NotNull
+    @Schema(description = "라이브 방송 번호를 입력해주세요")
+    private Long liveId;
+
     @Schema(defaultValue = "0",description = "라이브 정액 가격을 입력해주세요")
     private int liveFlatPrice;
 

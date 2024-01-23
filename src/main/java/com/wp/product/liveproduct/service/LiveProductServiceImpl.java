@@ -7,6 +7,7 @@ import com.wp.product.liveproduct.dto.request.LiveProductCreateRequest;
 import com.wp.product.liveproduct.entity.LiveProduct;
 import com.wp.product.liveproduct.repository.LiveProductRepository;
 import com.wp.product.product.entity.Product;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -22,12 +23,13 @@ public class LiveProductServiceImpl implements LiveProductService{
 
     @Override
     public void saveLiveProduct(List<LiveProductCreateRequest> liveProductRequestList) {
-
         List<LiveProduct> liveProductList = new ArrayList<>();
 
+        //라이브 상품 리스트 요청을 엔터티로 매핑
         liveProductRequestList.forEach(liveProductCreateRequest -> {
             liveProductList.add(LiveProduct.builder()
                     .product(Product.builder().productId(liveProductCreateRequest.getProductId()).build())
+                    .liveId(liveProductCreateRequest.getLiveId())
                     .liveFlatPrice(liveProductCreateRequest.getLiveFlatPrice())
                     .liveRatePrice(liveProductCreateRequest.getLiveRatePrice())
                     .livePriceStartDate(DateUtil.stringToLocalDateTime(liveProductCreateRequest.getLivePriceStartDate()))
@@ -37,9 +39,28 @@ public class LiveProductServiceImpl implements LiveProductService{
         });
 
         try {
+            //방송 상품 저장
             liveProductRepository.saveAll(liveProductList);
         }catch (Exception e){
-            throw new BusinessExceptionHandler("라이브 상품 등록에 실패했습니다. ", ErrorCode.INSERT_ERROR);
+            throw new BusinessExceptionHandler("라이브 상품 등록에 실패했습니다.", ErrorCode.INSERT_ERROR);
+        }
+    }
+
+    @Override
+    @Transactional
+    public void deleteLiveProduct(Long liveId) {
+        //라이브 방송 아이디로 방송상품 조회
+        List<LiveProduct> productList = liveProductRepository.findByLiveId(liveId);
+        //조회된 리스트가 없는 경우
+        if(productList.size() == 0) {
+            throw new BusinessExceptionHandler("존재하지 않는 방송 아이디입니다", ErrorCode.NO_ELEMENT_ERROR);
+        }
+
+        try {
+            //방송 상품 삭제
+            liveProductRepository.deleteByLiveId(liveId);
+        }catch (Exception e){
+            throw new BusinessExceptionHandler("방송 상품 삭제 중 에러 발생",ErrorCode.DELETE_ERROR);
         }
     }
 }
