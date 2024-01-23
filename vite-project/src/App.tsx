@@ -12,7 +12,6 @@ import UserinfoPage from "./pages/UserinfoPage";
 import LoginPage from "./pages/LoginPage";
 import ItemDetail from "./pages/ItemDetail";
 import Broadcast from "./pages/BroadcastPage";
-import Live from "./pages/LivePage";
 import SignUpPage from "./pages/SignUpPage";
 import FindAccountPage from "./pages/FindAccountPage";
 
@@ -43,7 +42,6 @@ function App() {
                         />
                     </Route>
                     <Route path="broadcast" element={<Broadcast />} />
-                    <Route path="live" element={<Live />} />
                 </Routes>
             </ChakraProvider>
         </>
