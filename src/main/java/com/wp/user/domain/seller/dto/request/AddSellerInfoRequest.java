@@ -1,6 +1,7 @@
 package com.wp.user.domain.seller.dto.request;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -11,7 +12,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Schema(description = "판매자 전환 신청을 위한 요청 객체")
 public class AddSellerInfoRequest {
-    @Size(max = 100, message = "사업자 번호는 최대 10이어야 합니다.")
+    @NotEmpty
     @Schema(description = "사업자 번호를 입력해주세요." , example = "123-45-67890")
     private String businessNumber;
 
