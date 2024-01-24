@@ -7,11 +7,11 @@ import "../css/SellerPage.css"
 
 // import { getUserInfoAPI } from '../api/user'
 
-import Recent from "../components/mypage/BuyerRecent";
-import Following from "../components/mypage/BuyerFollowing";
-import Reviews from "../components/mypage/BuyerReviews";
-import Reviewed from "../components/mypage/BuyerReviewed";
-import Question from "../components/mypage/BuyerQuestion";
+import Recent from "../components/mypage/buyer/BuyerRecent";
+import Following from "../components/mypage/buyer/BuyerFollowing";
+import Reviews from "../components/mypage/buyer/BuyerReviews";
+import Reviewed from "../components/mypage/buyer/BuyerReviewed";
+import Question from "../components/mypage/buyer/BuyerQuestion";
 import Sellerform from "../components/mypage/Sellerform";
 
 export default function BuyerPage() {
@@ -66,8 +66,8 @@ export default function BuyerPage() {
                 마이페이지
             </Center>
 
-            <Flex m="auto" border="2px" borderColor="green" rounded="lg" w="85vw" minH="85vh">
-                <Flex m="auto" rounded="lg" w="80vw" maxH="80vh" px="2">
+            <Flex m="auto" rounded="lg" w="85vw" minH="85vh">
+                <Flex m="auto" border="2px" borderColor="green"  rounded="lg" w="80vw" maxH="80vh" px="2">
                     <Box w="25%" pr="4">
                         <Box w="full" bg="white" rounded="lg" overflow="hidden">
                             <Flex direction="column" align="center" py="6">
