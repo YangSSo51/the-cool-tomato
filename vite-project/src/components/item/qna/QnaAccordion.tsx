@@ -6,6 +6,7 @@ import {
     Text,
     AccordionPanel,
     AccordionIcon,
+    Tag,
 } from "@chakra-ui/react";
 
 function QnaAccordion() {
@@ -57,6 +58,14 @@ function QnaAccordion() {
                     // backgroundColor={"#f7f8fa"}
                 >
                     <Text
+                        fontWeight={"bold"}
+                        fontSize={"xl"}
+                        color={"themeGreen.500"}
+                    >
+                        Q
+                    </Text>
+                    <Text
+                        mt={"2"}
                         fontSize={"sm"}
                         lineHeight={"200%"}
                         letterSpacing={".1em"}
@@ -69,6 +78,13 @@ function QnaAccordion() {
                 </AccordionPanel>
                 <AccordionPanel py={7}>
                     <Box>
+                        <Text
+                            fontWeight={"bold"}
+                            fontSize={"xl"}
+                            color={"themeRed.500"}
+                        >
+                            A
+                        </Text>
                         <Text
                             fontSize={"sm"}
                             lineHeight={"200%"}
