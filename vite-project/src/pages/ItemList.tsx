@@ -4,7 +4,6 @@ import GoodsList from "../components/item/dummylist/dummy";
 import CarouselComponent from "../components/item/CarouselComponent";
 import "../css/ItemListComponentcss.css";
 
-
 export default function ItemList() {
     const dummylist = GoodsList;
     // const [PageSize, setPageSize] = useState();
@@ -31,7 +30,7 @@ export default function ItemList() {
                 ></Box>
             </Flex>
 
-            <Flex wrap="wrap" maxW="1280px" m="auto" gap={6}>
+            <Flex wrap="wrap" maxW="80%" m="auto" gap={6}>
                 {dummylist.map((data) => (
                     <Box key={data.id} w="calc(23.33%)" p={4}>
                         <Goods
