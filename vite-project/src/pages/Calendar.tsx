@@ -1,60 +1,90 @@
-import { Button } from "react-bootstrap";
+import { Box, Button, Flex, Text, Image, Container, Tabs, TabList, Tab, TabPanels, TabPanel } from "@chakra-ui/react";
+import dummylivelist from "../components/item/dummylist/dummylivelist";
 
 export default function Calendar() {
-  return (
+    const dummylive = dummylivelist;
+    const today = new Date();
+    
 
-    <div className="bg-[#1e1e1e] min-h-screen">
-      <div className="flex items-center justify-between px-4 py-2 text-white">
-        <div className="flex items-center space-x-4">
-          <div className="flex space-x-1">
-            <Button className="bg-red-600 text-xs">LIVE</Button>
-            <span className="text-xs">실시간</span>
-          </div>
-        </div>
-        <div className="flex items-center space-x-4">
-          <MicroscopeIcon className="text-white" />
-          <BellIcon className="text-white" />
-          <UserCircleIcon className="text-white" />
-        </div>
-      </div>
-      <div className="px-4 py-2 space-y-4">
-        <div className="bg-[#333] p-4 rounded-md">
-          <div className="flex items-start space-x-4">
-            <Avatar>
-              <AvatarImage alt="User live" src="/placeholder.svg?height=100&width=100" />
-              <AvatarFallback>CN</AvatarFallback>
-            </Avatar>
-            <div>
-              <div className="text-xs text-[#aaa] mb-1">Monday</div>
-              <div className="text-sm text-white mb-1">99.9%가 구입 후 재구매 - 주문 즉시, 일일 배송 시작</div>
-              <div className="text-xs text-[#aaa]">
-                무료 배송 | 구매 후기 7만개 | 믿을 수 있는 100% 국내가공 | HSSP-9500R
-              </div>
-              <div className="flex items-center mt-2">
-                <div className="text-xs text-[#e33] mr-2">46%</div>
-                <div className="text-sm text-white">239,000원</div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div className="bg-[#333] p-4 rounded-md">
-          <div className="flex items-start space-x-4">
-            <Avatar>
-              <AvatarImage alt="User live" src="/placeholder.svg?height=100&width=100" />
-              <AvatarFallback>CN</AvatarFallback>
-            </Avatar>
-            <div>
-              <div className="text-xs text-[#aaa] mb-1">Tuesday</div>
-              <div className="text-sm text-white mb-1">자연에서 온 친환경 라텍스 베개 50% 할인 프로모션</div>
-              <div className="text-xs text-[#aaa]">무료 배송 | 구매 후기 20만개 | 직접 체험한 제품 리뷰 | KDM 87N</div>
-              <div className="flex items-center mt-2">
-                <div className="text-xs text-[#e33] mr-2">29%</div>
-                <div className="text-sm text-white">79,000원</div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  )
+    return (
+        <Container maxW={"7xl"} minH={"100vh"} p={"2rem"}>
+            <Tabs variant="unstyled">
+                <TabList>
+                    <Tab _selected={{ color: "white", bg: "themeRed.500" }}>
+                        <Text></Text>
+                    </Tab>
+                    <Tab _selected={{ color: "white", bg: "green.400" }}>
+                        Tab 2
+                    </Tab>
+                </TabList>
+                <TabPanels>
+                    <TabPanel>
+                        <p>one!</p>
+                    </TabPanel>
+                    <TabPanel>
+                        <p>two!</p>
+                    </TabPanel>
+                </TabPanels>
+            </Tabs>
+            <Flex
+                alignItems={"center"}
+                px={"6"}
+                py={"6"}
+                justify={"space-between"}
+            >
+                <Flex alignItems={"center"} gap={"4"}>
+                    <Flex direction={"row"} gap={"1"}>
+                        <Button backgroundColor={"themeRed.500"}>
+                            <Text color={"white"}>LIVE</Text>
+                        </Button>
+                    </Flex>
+                </Flex>
+                <Flex alignItems={"center"} gap={"4"}>
+                    카테고리 항목
+                </Flex>
+            </Flex>
+            <Flex
+                direction={"column"}
+                px={"6"}
+                py={"2"}
+                gap={"4"}
+                overflowY={"hidden"}
+            >
+                {dummylive.map((data, index) => (
+                    <Flex alignItems={"center"} gap={"4"}>
+                        <Box w={"12rem"} h={"100%"}>
+                            <Image
+                                src={`${dummylive[data.id].img}`}
+                                objectFit={"cover"}
+                            />
+                        </Box>
+                        <Flex
+                            direction={"column"}
+                            justifyContent={"flex-start"}
+                            key={index}
+                        >
+                            <Text
+                                fontSize={"xl"}
+                                mb={"1"}
+                                as={"b"}
+                                color={"themeGreen.500"}
+                            >
+                                Monday
+                            </Text>
+                            <Text fontSize={"2xl"} mb={"1"} as={"b"}>
+                                {data.title}
+                            </Text>
+                            <Text fontSize={"lg"}>{data.content}</Text>
+                            <Flex alignItems={"center"} mt={"2"}>
+                                <Text fontSize={"lg"} mr={"2"}>
+                                    46%
+                                </Text>
+                                <Text fontSize={"md"}>{data.price}</Text>
+                            </Flex>
+                        </Flex>
+                    </Flex>
+                ))}
+            </Flex>
+        </Container>
+    );
 }
