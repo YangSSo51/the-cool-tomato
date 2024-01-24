@@ -1,10 +1,17 @@
 import { Accordion } from "@chakra-ui/react";
 import QnaAccordion from "./qna/QnaAccordion";
+import { useParams } from "react-router-dom";
 
-export default function ItemDetailQnA() {
+function ItemDetailQnA() {
+    const { id } = useParams();
+
     return (
         <>
-            <Accordion allowMultiple w={"90%"}>
+            <Accordion
+                allowMultiple
+                w={"90%"}
+                borderColor={"themeLightGreen.500"}
+            >
                 <QnaAccordion />
                 <QnaAccordion />
                 <QnaAccordion />
@@ -15,3 +22,5 @@ export default function ItemDetailQnA() {
         </>
     );
 }
+
+export default ItemDetailQnA;
