@@ -34,7 +34,7 @@ export default function MainCarouselComponent() {
     }, [dummylist.length]);
 
     return (
-        <Box p={"1rem"} overflowX={"hidden"} position={"relative"}>
+        <Box overflowX={"hidden"} position={"relative"}>
             <Flex
                 overflowX={"hidden"}
                 wrap={"nowrap"}
@@ -42,20 +42,17 @@ export default function MainCarouselComponent() {
                     width: `${100 * dummylist.length}vw`,
                     transition: "all 500ms ease-in-out",
                     transitionDuration: "1s",
-                    transform: `translateX(${
-                        -1 * ((100 / dummylist.length) * slideIndex)
-                    }%)`,
+                    transform: `translateX(${-1 * ((100 / dummylist.length) * slideIndex)
+                        }%)`,
                 }}
+
             >
                 {dummylist.map((data, index) => (
-                    <Box key={index} p={2}>
-                        <Box w={"100%"}>
-                            <img
-                                className="img"
-                                src={data.img}
-                                alt={`Item ${index}`}
-                            ></img>
-                        </Box>
+                    <Box key={index} p={2} w={"100%"}>
+                        <img
+                            className="img"
+                            src={data.img}
+                        ></img>
                     </Box>
                 ))}
             </Flex>
