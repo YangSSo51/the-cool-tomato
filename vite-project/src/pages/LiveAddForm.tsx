@@ -9,7 +9,7 @@ import {
     Textarea,
     Button,
 } from "@chakra-ui/react";
-import LiveItemAdd from "../components/item/LiveItemAdd";
+import LiveItemAdd from "../components/broadcast/LiveItemAdd";
 import { useState } from "react";
 import AddGoods from "../components/item/AddGoods";
 
