@@ -18,6 +18,7 @@ function QnaAccordion() {
                         color={"grey"}
                         fontSize={"sm"}
                         fontWeight={"bold"}
+                        letterSpacing={".1em"}
                     >
                         미답변
                     </Text>
@@ -30,15 +31,19 @@ function QnaAccordion() {
                         borderLeft={"1px"}
                         borderLeftColor={"lightgrey"}
                         fontWeight={"bold"}
+                        letterSpacing={".1em"}
                     >
-                        현종 아조씨의 고구마는 정품인가요?
+                        <Box as="span" pr={"2"}>
+                            현종 아조씨의 고구마는 정품인가요?
+                        </Box>
+                        <DeleteIcon color={"lightgrey"} />
                     </Box>
-                    <DeleteIcon />
                     <Text
                         pr={"2"}
                         color={"grey"}
                         fontSize={"xs"}
                         fontWeight={"bold"}
+                        letterSpacing={".1em"}
                     >
                         2024.01.24
                     </Text>
@@ -51,7 +56,11 @@ function QnaAccordion() {
                     borderColor={"themeLightGreen.500"}
                     // backgroundColor={"#f7f8fa"}
                 >
-                    <Text fontSize={"sm"} lineHeight={"150%"}>
+                    <Text
+                        fontSize={"sm"}
+                        lineHeight={"200%"}
+                        letterSpacing={".1em"}
+                    >
                         질문 내용 질문 내용 상품에 대한 질문을 하고 있습니다.
                         저는 이 상품이 매우 궁금하며, 앞으로 알아볼 열의를 갖고
                         있습니다. 과연 이 상품은 무엇일까요?? 그건 앞으로
@@ -60,7 +69,11 @@ function QnaAccordion() {
                 </AccordionPanel>
                 <AccordionPanel py={7}>
                     <Box>
-                        <Text fontSize={"sm"}>
+                        <Text
+                            fontSize={"sm"}
+                            lineHeight={"200%"}
+                            letterSpacing={".1em"}
+                        >
                             Lorem ipsum dolor sit amet, consectetur adipiscing
                             elit, sed do eiusmod tempor incididunt ut labore et
                             dolore magna aliqua. Ut enim ad minim veniam, quis
@@ -72,18 +85,19 @@ function QnaAccordion() {
                             답변 답변 답변 답변 답변 답변
                         </Text>
                     </Box>
-                    <Box>
+                    <Box textAlign={"right"}>
                         <EditIcon />
-                        <Text
-                            pr={"1"}
+                        <Box
+                            as="span"
+                            px={"3"}
                             color={"grey"}
                             fontSize={"xs"}
                             fontWeight={"bold"}
                             textAlign={"right"}
-                            size={"sm"}
+                            letterSpacing={".1em"}
                         >
                             2024.01.24
-                        </Text>
+                        </Box>
                     </Box>
                 </AccordionPanel>
             </AccordionItem>
