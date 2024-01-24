@@ -7,11 +7,11 @@ import "../css/SellerPage.css"
 
 // import { getUserInfoAPI } from '../api/user'
 
-import Recent from "../components/mypage/BuyerRecent";
-import Following from "../components/mypage/BuyerFollowing";
-import Reviews from "../components/mypage/BuyerReviews";
-import Reviewed from "../components/mypage/BuyerReviewed";
-import Question from "../components/mypage/BuyerQuestion";
+import Recent from "../components/mypage/buyer/BuyerRecent";
+import Following from "../components/mypage/buyer/BuyerFollowing";
+import Reviews from "../components/mypage/buyer/BuyerReviews";
+import Reviewed from "../components/mypage/buyer/BuyerReviewed";
+import Question from "../components/mypage/buyer/BuyerQuestion";
 import Sellerform from "../components/mypage/Sellerform";
 
 export default function BuyerPage() {
