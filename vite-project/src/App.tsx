@@ -13,7 +13,7 @@ import LoginPage from "./pages/LoginPage";
 import ItemDetail from "./pages/ItemDetail";
 import Broadcast from "./pages/BroadcastPage";
 import SignUpPage from "./pages/SignUpPage";
-// import SignPage from "./pages/SignPage";
+import SignPage from "./pages/SignPage";
 import FindAccountPage from "./pages/FindAccountPage";
 import MainPage from "./pages/MainPage";
 import LiveAddForm from "./pages/LiveAddForm";
@@ -41,7 +41,7 @@ function App() {
                         />
                         <Route path="signup" element={<SignUpPage />} />
                         <Route path="signup" element={<SignUpPage />} />
-                        {/* <Route path="sign" element={<SignPage />} /> */}
+                        <Route path="sign" element={<SignPage />} />
                         <Route
                             path="findid"
                             element={<FindAccountPage type="username" />}

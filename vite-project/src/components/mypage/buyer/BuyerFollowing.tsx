@@ -1,14 +1,7 @@
 import { Box, Heading, Text, Flex, Badge } from "@chakra-ui/layout";
 import { Avatar } from "@chakra-ui/react";
-// import { useQuery } from "@tanstack/react-query";
-// import axios from "axios";
 
 export default function Following() {
-
-    // let data = useQuery([current_products], ()=>
-    //     axios.get('링크')
-    //     .then((a)=> {return a.data})
-    // )
 
     return (
         <Box w="75%" bg="white" rounded="lg" overflow="hidden">

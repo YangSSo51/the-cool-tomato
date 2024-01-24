@@ -1,20 +1,12 @@
-import { Box, Heading, Grid, GridItem, Text } from "@chakra-ui/layout";
+import { Box, Grid, GridItem, Text } from "@chakra-ui/layout";
 import { Card, CardBody } from "@chakra-ui/react";
-// import { useQuery } from "@tanstack/react-query";
-// import axios from "axios";
 
 export default function SearchContents() {
 
-    // let data = useQuery([current_products], ()=>
-    //     axios.get('링크')
-    //     .then((a)=> {return a.data})
-    // )
-
     return (
-        <Box w="75%" bg="white" rounded="lg" overflow="hiddenv">
-            <Heading>검색결과</Heading>
+        <Box>
             <Grid templateColumns="repeat(2, 1fr)" gap={4}>
-          {[1, 2, 3, 4].map((productNumber) => (
+            {[1, 2, 3, 4].map((productNumber) => (
             <GridItem key={productNumber}>
               <Card>
                 <CardBody p={6}>
