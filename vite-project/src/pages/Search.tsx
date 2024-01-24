@@ -1,5 +1,5 @@
 import { useState, useRef } from "react";
-import { Input, Button, Flex, Text } from "@chakra-ui/react";
+import { Input, Button, Flex, Text, Box } from "@chakra-ui/react";
 import { SearchIcon } from "@chakra-ui/icons";
 import SearchContents from "../components/search/SearchContents";
 import Recommends from "../components/search/Recommends";
@@ -20,14 +20,14 @@ export default function Search() {
         return (
             <Flex as="form" w="80vw" onSubmit={submitHandler}>
                 <Input 
-                    color='white'
+                    color='themeFontGreen.500'
                     placeholder='궁금한 야채 찾으러 가깅'
-                    _placeholder={{ opacity: 0.4, color: 'pink' }}
-                    focusBorderColor='lime' 
+                    _placeholder={{ opacity: 0.4, color: 'gray' }}
+                    focusBorderColor='themeRed.500' 
                     mr="2" 
                     ref={TextInputRef}
                 />
-                <Button type="submit">
+                <Button colorScheme="red" color="white" type="submit">
                     <SearchIcon />
                 </Button>
             </Flex>
@@ -55,13 +55,12 @@ export default function Search() {
     //   };
 
   return (
-    <Flex direction="column" h="100vh" bg="themeRed.500" align="center">
-
+    <Flex direction="column" h="100vh" align="center">
+        
         <Flex justify={"center"} className="MainText" color={"themeGreen.500"} mt="0.5rem">
             검색하기
         </Flex>
-
-        
+    
         <Flex justify="center" w="90vw">
             <SearchBar />
         </Flex>
@@ -72,7 +71,10 @@ export default function Search() {
                 Loading...
             </Text>
             ) : searchKeyword.length > 0 ? (
-            <SearchContents results={searchKeyword} />
+            <Text mt={10} mb={4} fontWeight="semibold" textAlign="center" color="gray.700">
+                검색결과
+                <SearchContents results={searchKeyword} />    
+            </Text>
             ) : (
             <Text mt={10} mb={4} fontWeight="semibold" textAlign="center" color="gray.700">
                 Recommended Products
