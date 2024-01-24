@@ -13,6 +13,7 @@ import LoginPage from "./pages/LoginPage";
 import ItemDetail from "./pages/ItemDetail";
 import Broadcast from "./pages/BroadcastPage";
 import SignUpPage from "./pages/SignUpPage";
+// import SignPage from "./pages/SignPage";
 import FindAccountPage from "./pages/FindAccountPage";
 import MainPage from "./pages/MainPage";
 import LiveAddForm from "./pages/LiveAddForm";
@@ -31,11 +32,16 @@ function App() {
                         <Route path="items/list" element={<ItemList />} />
                         <Route path="calendar" element={<Calendar />} />
                         <Route path="buyer/:userId" element={<BuyerPage />} />
-                        <Route path="seller" element={<SellerPage />} />
+                        <Route path="seller/:userId" element={<SellerPage />} />
                         <Route path="userinfo" element={<UserinfoPage />} />
                         <Route path="login" element={<LoginPage />} />
-                        <Route path="items/list/detail/:id" element={<ItemDetail/>} />
+                        <Route
+                            path="items/list/detail/:id"
+                            element={<ItemDetail />}
+                        />
                         <Route path="signup" element={<SignUpPage />} />
+                        <Route path="signup" element={<SignUpPage />} />
+                        {/* <Route path="sign" element={<SignPage />} /> */}
                         <Route
                             path="findid"
                             element={<FindAccountPage type="username" />}
@@ -44,8 +50,15 @@ function App() {
                             path="pwdrecover"
                             element={<FindAccountPage type="password" />}
                         />
-                        <Route path="live/form" element={<LiveAddForm/>} />
-                        <Route path="live/:roomId" element={<BuyerLive />}></Route>
+                        <Route path="live/form" element={<LiveAddForm />} />
+                        <Route
+                            path="live/:roomId"
+                            element={<BuyerLive />}
+                        ></Route>
+                        <Route
+                            path="findaccount"
+                            element={<FindAccountPage type="result" />}
+                        />
                     </Route>
                     <Route path="broadcast" element={<Broadcast />} />
                 </Routes>
