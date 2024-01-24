@@ -19,7 +19,7 @@ import ItemDetailQnA from "../components/item/ItemDetailQnA";
 export default function ItemDetail() {
     const Goods = GoodsList;
     type id = number;
-    let { id } = useParams();
+    const { id } = useParams();
 
     return (
         <>
