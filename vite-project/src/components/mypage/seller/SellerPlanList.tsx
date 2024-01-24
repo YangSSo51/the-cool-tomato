@@ -1,14 +1,19 @@
 import { Box, Flex } from "@chakra-ui/layout";
 import { Button } from "@chakra-ui/react";
 import { CalendarIcon } from "@chakra-ui/icons";
+import { useNavigate } from "react-router-dom";
 import PlanItems from "./SellerPlanItems";
 
 function PlanList() {
+    const navigate = useNavigate();
     return (
         <>
         <Box flexDirection="column" w="90%" h="full" overflowY="scroll">
             <Flex>
-                <Button leftIcon={<CalendarIcon />} size="sm" colorScheme='red' variant='solid'>
+                <Button leftIcon={<CalendarIcon />} size="sm" colorScheme='red' variant='solid'
+                onClick={() => {
+                    navigate("/v1/live/form");
+                }}>
                     라이브등록
                 </Button>
                 <Box

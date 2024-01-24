@@ -7,6 +7,7 @@ import axios from "axios"
 import PlanList from "../components/mypage/seller/SellerPlanList";
 import LiveList from "../components/mypage/seller/SellerLiveList";
 import Items from "../components/mypage/seller/SellerItems";
+import Follwers from "../components/mypage/seller/SellerFollwers";
 import Qna from "../components/mypage/seller/SellerQna";
 import Chatbot from "../components/mypage/seller/SellerChatbot";
 import BanUser from "../components/mypage/seller/SellerBanUser";
@@ -23,9 +24,10 @@ export default function SellerPage() {
         { id: 1, title: "완료한 라이브", isSelected: false, component: <LiveList />},
         { id: 2, title: "등록한 상품 목록", isSelected: false, component: <Items />},
         { id: 3, title: "상품 문의 확인", isSelected: false, component: <Qna />},
-        { id: 4, title: "챗봇 설정", isSelected: false, component: <Chatbot />},
+        { id: 4, title: "팔로워 목록", isSelected: false, component: <Follwers />},
         { id: 5, title: "차단한 사용자 목록", isSelected: false, component: <BanUser />},
-        { id: 6, title: "금지어 설정", isSelected: false, component: <BlockWord />},
+        { id: 6, title: "챗봇 설정", isSelected: false, component: <Chatbot />},
+        { id: 7, title: "금지어 설정", isSelected: false, component: <BlockWord />},
     ]);
     const changeSelect = (e) => {
         setTab(e.target.value)
@@ -87,7 +89,6 @@ export default function SellerPage() {
                                     onClick={() => {
                                         navigate("/v1/buyer/" + {userId});
                                     }}
-                                    boxShadow="2px 2px 2px gray"
                                 >구매자 정보 보기
                                 </Button>
 
