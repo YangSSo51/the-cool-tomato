@@ -8,10 +8,12 @@ import {
     Text,
     Textarea,
     Button,
+    Switch,
+    Flex,
 } from "@chakra-ui/react";
 import LiveItemAdd from "../components/broadcast/LiveItemAdd";
 import { useState } from "react";
-import AddGoods from "../components/item/AddGoods";
+import AddGoods from "../components/broadcast/AddGoods";
 
 export default function LiveAddForm() {
     const [isSelected, isSelectedState] = useState(true);
@@ -64,6 +66,22 @@ export default function LiveAddForm() {
                             type="datetime-local"
                         />
                     </Box>
+
+                    <Flex>
+                        <Box p={"2rem"}>
+                            <Text fontSize={"xl"} as={"b"}>
+                                자주 묻는 질문 설정 (챗봇)
+                            </Text>
+                            <Switch ml={"2rem"} size={"lg"} />
+                        </Box>
+                        <Box p={"2rem"}>
+                            <Text fontSize={"xl"} as={"b"}>
+                                채팅을 자동으로 읽어주기 설정
+                            </Text>
+                            <Switch ml={"2rem"} size={"lg"} />
+                        </Box>
+                    </Flex>
+
                     <Box p={"3rem"}>
                         <Box
                             minHeight={"initial"}
@@ -72,7 +90,7 @@ export default function LiveAddForm() {
                             borderRadius={"30px"}
                         >
                             {/* 나머지는 페이지네이션으로 넘겨라! */}
-                            <Center maxH={"100%"}>
+                            <Center maxH={"100%"} minH={"40rem"}>
                                 {isSelected ? <AddGoods /> : <LiveItemAdd />}
                             </Center>
                         </Box>

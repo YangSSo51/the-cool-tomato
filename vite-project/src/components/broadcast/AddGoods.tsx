@@ -27,6 +27,11 @@ export default function AddGoods() {
                         </Th>
                         <Th>
                             <Text as={"b"} fontSize={"xl"}>
+                                할인율
+                            </Text>
+                        </Th>
+                        <Th>
+                            <Text as={"b"} fontSize={"xl"}>
                                 대표상품 선택
                             </Text>
                         </Th>
@@ -46,6 +51,16 @@ export default function AddGoods() {
                             </FormControl>
                         </Td>
                         <Td>
+                            <FormControl
+                                variant="floating"
+                                isRequired
+                                isInvalid
+                            >
+                                <Input placeholder=" " />
+                                <FormLabel>할인율을 입력해주세요</FormLabel>
+                            </FormControl>
+                        </Td>
+                        <Td>
                             <Switch size={"lg"} />
                         </Td>
                     </Tr>
@@ -62,19 +77,13 @@ export default function AddGoods() {
                             </FormControl>
                         </Td>
                         <Td>
-                            <Switch size={"lg"} />
-                        </Td>
-                    </Tr>
-                    <Tr>
-                        <Td>면지 아조씨의 단짠단짠 고등어</Td>
-                        <Td>
                             <FormControl
                                 variant="floating"
                                 isRequired
                                 isInvalid
                             >
                                 <Input placeholder=" " />
-                                <FormLabel>가격을 입력해주세요</FormLabel>
+                                <FormLabel>할인율을 입력해주세요</FormLabel>
                             </FormControl>
                         </Td>
                         <Td>
@@ -94,11 +103,21 @@ export default function AddGoods() {
                             </FormControl>
                         </Td>
                         <Td>
+                            <FormControl
+                                variant="floating"
+                                isRequired
+                                isInvalid
+                            >
+                                <Input placeholder=" " />
+                                <FormLabel>할인율을 입력해주세요</FormLabel>
+                            </FormControl>
+                        </Td>
+                        <Td>
                             <Switch size={"lg"} />
                         </Td>
                     </Tr>
                     <Tr>
-                        <Td>면지 아조씨의 단짠단짠 고등어</Td>
+                        <Td>소영 아조씨의 매끈매끈 갈치</Td>
                         <Td>
                             <FormControl
                                 variant="floating"
@@ -110,11 +129,21 @@ export default function AddGoods() {
                             </FormControl>
                         </Td>
                         <Td>
+                            <FormControl
+                                variant="floating"
+                                isRequired
+                                isInvalid
+                            >
+                                <Input placeholder=" " />
+                                <FormLabel>할인율을 입력해주세요</FormLabel>
+                            </FormControl>
+                        </Td>
+                        <Td>
                             <Switch size={"lg"} />
                         </Td>
                     </Tr>
                     <Tr>
-                        <Td>면지 아조씨의 단짠단짠 고등어</Td>
+                        <Td>병창 할아버지의 매끈매끈 갈치</Td>
                         <Td>
                             <FormControl
                                 variant="floating"
@@ -123,6 +152,42 @@ export default function AddGoods() {
                             >
                                 <Input placeholder=" " />
                                 <FormLabel>가격을 입력해주세요</FormLabel>
+                            </FormControl>
+                        </Td>
+                        <Td>
+                            <FormControl
+                                variant="floating"
+                                isRequired
+                                isInvalid
+                            >
+                                <Input placeholder=" " />
+                                <FormLabel>할인율을 입력해주세요</FormLabel>
+                            </FormControl>
+                        </Td>
+                        <Td>
+                            <Switch size={"lg"} />
+                        </Td>
+                    </Tr>
+                    <Tr>
+                        <Td>혜승 아조씨의 엄마는 외계인</Td>
+                        <Td>
+                            <FormControl
+                                variant="floating"
+                                isRequired
+                                isInvalid
+                            >
+                                <Input placeholder=" " />
+                                <FormLabel>가격을 입력해주세요</FormLabel>
+                            </FormControl>
+                        </Td>
+                        <Td>
+                            <FormControl
+                                variant="floating"
+                                isRequired
+                                isInvalid
+                            >
+                                <Input placeholder=" " />
+                                <FormLabel>할인율을 입력해주세요</FormLabel>
                             </FormControl>
                         </Td>
                         <Td>
