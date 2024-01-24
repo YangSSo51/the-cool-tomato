@@ -1,21 +1,84 @@
-import { Box, Flex, Text } from "@chakra-ui/layout";
-import { Avatar } from "@chakra-ui/react";
-import { Button } from "@chakra-ui/react";
+import { Box } from "@chakra-ui/layout";
+import { Image, Badge, Button, useDisclosure, AlertDialog,
+    AlertDialogBody,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogContent,
+    AlertDialogOverlay,
+    AlertDialogCloseButton, } from "@chakra-ui/react";
+import { useRef } from "react";
 
 function PlanItems() {
+    const { isOpen, onOpen, onClose } = useDisclosure();
+    const cancelRef = useRef();
+    const broadcastInfo = {
+      imageUrl: 'https://bit.ly/2Z4KKcF',
+      imageAlt: 'Rear view of modern home with pool',
+      title: '병창농부의 특급 제안-소나무같은 브룩껄리',
+      time: '2024.01.25 오후 8:00 예정',
+      reviewCount: 34,
+      rating: 4,
+    }
+  
     return (
-        <Box display="flex" alignItems="center" justifyContent="space-between" w="100%" my="4" mx="auto" border="5px solid gray" borderRadius="1rem" boxShadow="2px 2px 2px gray">
-            <Flex alignItems="center">
-                <Avatar my="4" mx="4" size="2xl" bg="gray.200" />
-                <Flex flexDirection="column">
-                    <Text fontSize="1.5rem" mb="4">호철이의 블록체인 교실</Text>
-                    <Text fontSize="1.1rem">10:00 ~ 12:00</Text>
-                </Flex>
-            </Flex>
-            <Button mr="4">
-                바로가기
-            </Button>
+      <Box maxW='sm' borderWidth='1px' borderRadius='lg' overflow='hidden'>
+        <Image src={broadcastInfo.imageUrl} alt={broadcastInfo.imageAlt} />
+        <Box p='6'>
+          <Box display='flex' alignItems='baseline'>
+            <Badge borderRadius='full' px='2' colorScheme='teal'>
+              대기중
+            </Badge>
+          </Box>
+  
+          <Box
+            mt='1'
+            fontWeight='semibold'
+            as='h4'
+            lineHeight='tight'
+            noOfLines={1}
+          >
+            {broadcastInfo.title}
+          </Box>
+  
+          <Box>
+            {broadcastInfo.time}
+          </Box>
+  
+          <Box display='flex' mt='2' alignItems='center'>
+                <Button onClick={onOpen}>바로시작</Button>
+                    <AlertDialog
+                        motionPreset='slideInBottom'
+                        leastDestructiveRef={cancelRef}
+                        onClose={onClose}
+                        isOpen={isOpen}
+                        isCentered
+                    >
+                        <AlertDialogOverlay />
+
+                        <AlertDialogContent>
+                        <AlertDialogHeader>라이브 정보 확인하기</AlertDialogHeader>
+                        <AlertDialogCloseButton />
+                        <AlertDialogBody>
+                            아래 내용과 지금 하려는 방송이 일치하시나용
+                        </AlertDialogBody>
+                        <AlertDialogFooter>
+                            <Button ref={cancelRef} onClick={onClose}>
+                            취소
+                            </Button>
+                            <Button colorScheme='red' ml={3}>
+                            방송시작!
+                            </Button>
+                        </AlertDialogFooter>
+                        </AlertDialogContent>
+                    </AlertDialog>
+
+                <Button onClick={onOpen}>수정</Button>
+
+                <Button onClick={onOpen}>등록취소</Button>
+
+          </Box>
         </Box>
+      </Box>
     )
 }
 

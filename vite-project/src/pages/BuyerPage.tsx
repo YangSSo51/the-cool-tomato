@@ -66,8 +66,8 @@ export default function BuyerPage() {
                 마이페이지
             </Center>
 
-            <Flex m="auto" border="2px" borderColor="green" rounded="lg" w="85vw" minH="85vh">
-                <Flex m="auto" rounded="lg" w="80vw" maxH="80vh" px="2">
+            <Flex m="auto" rounded="lg" w="85vw" minH="85vh">
+                <Flex m="auto" border="2px" borderColor="green"  rounded="lg" w="80vw" maxH="80vh" px="2">
                     <Box w="25%" pr="4">
                         <Box w="full" bg="white" rounded="lg" overflow="hidden">
                             <Flex direction="column" align="center" py="6">

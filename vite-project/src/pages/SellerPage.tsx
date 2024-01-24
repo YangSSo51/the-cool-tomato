@@ -69,14 +69,14 @@ export default function SellerPage() {
     
 
     return (
-        <Box bg="#C1D8B5" minH="100vh" paddingBlock="6rem">
-            <Box>
+        <Box bg="themeLightGreen.500" minH="100vh" mb="10" paddingBlock="6rem">
+
                 <Center style={{ fontSize: "6rem", fontFamily: "GmkBold" }}>
                     판매자 마이페이지
                 </Center>
-            </Box>
 
-            <Flex m="auto" rounded="lg" w="90vw" minH="90vh">
+
+            <Flex m="auto" border="2px" borderColor="themeLightGreen.500" rounded="lg" w="85vw" minH="85vh">
                 <Flex m="auto" rounded="lg" w="80vw" maxH="80vh" px="2">
                     <Box w="25%" pr="4">
                         <Box w="full" bg="white" rounded="lg" overflow="hidden">
@@ -111,12 +111,9 @@ export default function SellerPage() {
                     </Box>
 
                     <Box w="75%" bg="white" rounded="lg" overflow="hidden">
-                        <Box h="full" pl="4">
-                            <Flex justify="center" align="center" h="full">
-                                
-                                {categories[tab].component}
-                            </Flex>
-                        </Box>
+                        <Flex justify="center" align="center" h="full">
+                            {categories[tab].component}
+                        </Flex>
                     </Box>
                 </Flex>
             </Flex>
