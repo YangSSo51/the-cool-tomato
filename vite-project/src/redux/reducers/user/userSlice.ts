@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { UserState } from "../../actions/types";
+import { UserState } from "../../../types/DataTypes";
 // import { loginUserAction } from "../../actions/user/userAction";
 import { loginUserThunk, testUserThunk } from "../../thunk/user/userThunk";
 

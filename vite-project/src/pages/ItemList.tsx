@@ -1,8 +1,8 @@
 import { Box, Flex } from "@chakra-ui/react";
 import Goods from "../components/item/ItemListComponent";
 import GoodsList from "../components/item/dummylist/dummy";
-import CarouselComponent from "../components/item/CarouselComponent";
 import "../css/ItemListComponentcss.css";
+import CarouselComponent from "../components/common/CarouselComponent";
 
 export default function ItemList() {
     const dummylist = GoodsList;

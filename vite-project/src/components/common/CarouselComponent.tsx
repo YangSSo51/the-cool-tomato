@@ -1,5 +1,5 @@
 import { Box, Flex, Text } from "@chakra-ui/react";
-import GoodsList from "./dummylist/dummy";
+import GoodsList from "../item/dummylist/dummy";
 import "../../css/ItemListComponentcss.css";
 import { useEffect, useState } from "react";
 
