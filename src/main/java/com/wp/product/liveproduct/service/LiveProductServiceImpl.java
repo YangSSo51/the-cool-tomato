@@ -4,15 +4,20 @@ import com.wp.product.global.common.code.ErrorCode;
 import com.wp.product.global.exception.BusinessExceptionHandler;
 import com.wp.product.global.util.DateUtil;
 import com.wp.product.liveproduct.dto.request.LiveProductCreateRequest;
+import com.wp.product.liveproduct.dto.request.LiveProductSearchRequest;
+import com.wp.product.liveproduct.dto.response.LiveProductResponse;
 import com.wp.product.liveproduct.entity.LiveProduct;
 import com.wp.product.liveproduct.repository.LiveProductRepository;
 import com.wp.product.product.entity.Product;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @Service
@@ -20,6 +25,42 @@ import java.util.List;
 public class LiveProductServiceImpl implements LiveProductService{
 
     private final LiveProductRepository liveProductRepository;
+
+    @Override
+    @Transactional
+    public Map<String, Object> findLiveProduct(LiveProductSearchRequest request) {
+        List<LiveProductResponse> list = new ArrayList<>();
+        Map<String,Object> map = new HashMap<>();
+        Page<LiveProduct> result = liveProductRepository.search(request);
+
+        result.forEach(liveProduct -> {
+            list.add(LiveProductResponse.builder()
+                    .liveProductId(liveProduct.getLiveProductId())
+                    .productId(liveProduct.getProduct().getProductId())
+                    .sellerId(liveProduct.getProduct().getSellerId())
+                    .sellerName(liveProduct.getProduct().getProductName())
+                    .categoryId(liveProduct.getProduct().getCategory().getCategoryId())
+                    .categoryName(liveProduct.getProduct().getCategory().getCategoryContent())
+                    .productName(liveProduct.getProduct().getProductName())
+                    .productContent(liveProduct.getProduct().getProductContent())
+                    .paymentLink(liveProduct.getProduct().getPaymentLink())
+                    .price(liveProduct.getProduct().getPrice())
+                    .deliveryCharge(liveProduct.getProduct().getDeliveryCharge())
+                    .liveFlatPrice(liveProduct.getLiveFlatPrice())
+                    .liveRatePrice(liveProduct.getLiveRatePrice())
+                    .livePriceStartDate(liveProduct.getLivePriceStartDate())
+                    .livePriceEndDate(liveProduct.getLivePriceEndDate())
+                    .mainProductSetting(liveProduct.getMainProductSetting())
+                    .registerDate(liveProduct.getRegisterDate())
+                    .seq(liveProduct.getSeq())
+                    .build());
+        });
+
+        map.put("list" , list);
+        map.put("totalCount", result.getTotalElements());
+
+        return map;
+    }
 
     @Override
     public void saveLiveProduct(List<LiveProductCreateRequest> liveProductRequestList) {

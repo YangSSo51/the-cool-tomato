@@ -27,7 +27,7 @@ public class LiveProduct {
 
     private LocalDateTime livePriceStartDate;
     private LocalDateTime livePriceEndDate;
-    private boolean mainProductSetting;
+    private Boolean mainProductSetting;
 
     @CreationTimestamp
     @Column(updatable = false)
