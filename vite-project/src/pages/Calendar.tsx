@@ -4,7 +4,6 @@ import dummylivelist from "../components/item/dummylist/dummylivelist";
 export default function Calendar() {
     const dummylive = dummylivelist;
     const today = new Date();
-    
 
     return (
         <Container maxW={"7xl"} minH={"100vh"} p={"2rem"}>
