@@ -2,7 +2,6 @@ import { Box } from "@chakra-ui/react";
 import "../../css/ItemListComponentcss.css";
 import { Link } from "react-router-dom";
 
-
 interface GoodsProps {
     id: number;
     img: string;
@@ -20,7 +19,7 @@ const Goods = ({ id, img, title, price }: GoodsProps) => {
                         <img className="Realimage" src={img}></img>
                     </Box>
                     <Box className="Text">
-                        <h4 className="TextTitle">{title}</h4>
+                        <Box className="TextTitle">{title}</Box>
                     </Box>
                     <Box className="tagWrap">{price}</Box>
                 </Box>
