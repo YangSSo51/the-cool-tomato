@@ -7,11 +7,7 @@ function ItemDetailQnA() {
 
     return (
         <>
-            <Accordion
-                allowMultiple
-                w={"90%"}
-                borderColor={"themeLightGreen.500"}
-            >
+            <Accordion allowMultiple w={"90%"} borderColor={"themeWhite.500"}>
                 <QnaAccordion />
                 <QnaAccordion />
                 <QnaAccordion />

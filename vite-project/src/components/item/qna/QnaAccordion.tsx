@@ -1,21 +1,24 @@
+import { DeleteIcon, EditIcon } from "@chakra-ui/icons";
 import {
     AccordionButton,
     AccordionItem,
     Box,
     Text,
-    Tag,
     AccordionPanel,
     AccordionIcon,
-    Divider,
-    TagLabel,
 } from "@chakra-ui/react";
 
 function QnaAccordion() {
     return (
         <>
-            <AccordionItem py={3}>
-                <AccordionButton>
-                    <Text fontWeight={"bold"} mr={3} color={"themeWhite.500"}>
+            <AccordionItem py={2}>
+                <AccordionButton py={6}>
+                    <Text
+                        mr={3}
+                        color={"grey"}
+                        fontSize={"sm"}
+                        fontWeight={"bold"}
+                    >
                         미답변
                     </Text>
 
@@ -30,6 +33,7 @@ function QnaAccordion() {
                     >
                         현종 아조씨의 고구마는 정품인가요?
                     </Box>
+                    <DeleteIcon />
                     <Text
                         pr={"2"}
                         color={"grey"}
@@ -41,23 +45,22 @@ function QnaAccordion() {
                     <AccordionIcon />
                 </AccordionButton>
                 <AccordionPanel
-                    my={2}
-                    py={2}
+                    py={7}
                     borderTop={"1px"}
                     borderBottom={"1px"}
                     borderColor={"themeLightGreen.500"}
-                    backgroundColor={primary.outwhite}
+                    // backgroundColor={"#f7f8fa"}
                 >
-                    <Text as={"b"}>
+                    <Text fontSize={"sm"} lineHeight={"150%"}>
                         질문 내용 질문 내용 상품에 대한 질문을 하고 있습니다.
                         저는 이 상품이 매우 궁금하며, 앞으로 알아볼 열의를 갖고
                         있습니다. 과연 이 상품은 무엇일까요?? 그건 앞으로
                         알아가야 할 일이라고 생각합니다.
                     </Text>
                 </AccordionPanel>
-                <AccordionPanel my={2} py={2}>
+                <AccordionPanel py={7}>
                     <Box>
-                        <Text as={"b"}>
+                        <Text fontSize={"sm"}>
                             Lorem ipsum dolor sit amet, consectetur adipiscing
                             elit, sed do eiusmod tempor incididunt ut labore et
                             dolore magna aliqua. Ut enim ad minim veniam, quis
@@ -70,12 +73,14 @@ function QnaAccordion() {
                         </Text>
                     </Box>
                     <Box>
+                        <EditIcon />
                         <Text
                             pr={"1"}
                             color={"grey"}
                             fontSize={"xs"}
                             fontWeight={"bold"}
                             textAlign={"right"}
+                            size={"sm"}
                         >
                             2024.01.24
                         </Text>
