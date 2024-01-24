@@ -1,36 +1,47 @@
-import { Flex, Box, Center } from "@chakra-ui/react";
-import LiveListComponent from "../components/broadcast/LiveListComponent";
+import { Flex, Text } from "@chakra-ui/react";
+
 import MainCarouselComponent from "../components/common/MainCarouselComponent";
-import dummylivelist from "../components/item/dummylist/dummylivelist";
+import LiveCarouselComponent from "../components/broadcast/LiveCarouselComponent";
+
 
 export default function LiveList() {
+
     return (
         <>
             <MainCarouselComponent />
 
-            <Center>
-                <Box display={"block"} overflowX={"hidden"} w={"80%"}>
-                    <Flex
-                        wrap={"nowrap"}
-                        direction={"row"}
-                        m={"auto"}
-                        overflowX={"hidden"}
-                        overflowY={"auto"}
-                        w={`${16 * dummylivelist.length}vw`}
-                    >
-                        {dummylivelist.map((data) => (
-                            <Box key={data.id} w="calc(16.33%)">
-                                <LiveListComponent
-                                    id={data.id}
-                                    url={data.img}
-                                    title={data.title}
-                                    price={data.price}
-                                />
-                            </Box>
-                        ))}
-                    </Flex>
-                </Box>
-            </Center>
+            <Flex direction={"column"} p={"1rem"} alignItems={"center"} mt={"2rem"} mb={"2rem"}>
+                <Text
+                    color={"themeGreen.500"}
+                    fontSize={"3xl"}
+                    as={'b'}
+                    mt={"1rem"}
+                    
+                >
+                    지금 가장 핫한 라이브
+                </Text>
+                <LiveCarouselComponent />
+                <Text
+                    color={"themeGreen.500"}
+                    fontSize={"3xl"}
+                    as={'b'}
+                    mt={"1rem"}
+                   
+                >
+                    회원님이 평소 검색한 라이브
+                </Text>
+                <LiveCarouselComponent />
+                <Text
+                    color={"themeGreen.500"}
+                    fontSize={"3xl"}
+                    as={'b'}
+                    mt={"1rem"}
+                    
+                >
+                    현종 아조씨가 좋아하는 라이브
+                </Text>
+                <LiveCarouselComponent />
+            </Flex>
         </>
     );
 }

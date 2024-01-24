@@ -1,6 +1,5 @@
 import { Card, CardBody, Heading, Image, Stack, Text } from "@chakra-ui/react";
 
-
 interface LiveComponent {
     id: number;
     url: string;
@@ -9,8 +8,8 @@ interface LiveComponent {
 }
 
 const LiveListComponent = ({ id, url, title, price }: LiveComponent) => {
-    return (
 
+    return (
         <Card maxW="18rem" key={id}>
             <CardBody>
                 <Image
@@ -18,6 +17,7 @@ const LiveListComponent = ({ id, url, title, price }: LiveComponent) => {
                     borderRadius="lg"
                     boxSize={"sm"}
                     objectFit={'cover'}
+                    h={"18rem"}
                     
                 />
                 <Stack mt="6" spacing="3">
