@@ -49,7 +49,7 @@ public class ProductServiceImpl implements ProductService{
         });
 
         map.put("list" , list);
-        map.put("totalCount", result.getSize());
+        map.put("totalCount", result.getTotalElements());
 
         return map;
     }
@@ -86,7 +86,7 @@ public class ProductServiceImpl implements ProductService{
         });
 
         map.put("list" , list);
-        map.put("totalCount", result.getSize());
+        map.put("totalCount", result.getTotalElements());
 
         return map;
     }

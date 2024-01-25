@@ -1,6 +1,7 @@
 package com.wp.product.product.repository.search;
 
 import com.querydsl.jpa.JPQLQuery;
+import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.wp.product.category.entity.QCategory;
 import com.wp.product.product.dto.request.ProductSearchRequest;
 import com.wp.product.product.entity.Product;
@@ -12,10 +13,17 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
 import java.util.List;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.support.PageableExecutionUtils;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public class ProductSearchImpl extends QuerydslRepositorySupport implements ProductSearch{
-    public ProductSearchImpl(){
+
+    private final JPAQueryFactory queryFactory;
+
+    public ProductSearchImpl(JPAQueryFactory queryFactory){
         super(Product.class);
+        this.queryFactory = queryFactory;
     }
 
     @Override
@@ -27,7 +35,7 @@ public class ProductSearchImpl extends QuerydslRepositorySupport implements Prod
         QCategory category = QCategory.category;
 
         JPQLQuery<Product> query = from(product)                                //SELECT ... FROM PRODUCT
-                .leftJoin(category).on(product.category.eq(category));          //LEFT JOIN CATEGORY ON CATEGORY_ID
+                .leftJoin(product.category).fetchJoin();                        //LEFT JOIN CATEGORY ON CATEGORY_ID
 
         if(request.getCategoryId()!=null && request.getCategoryId() != 0) {
             query.where(category.categoryId.eq(request.getCategoryId()));       //WHERE CATEGORY_ID = ?
@@ -48,23 +56,26 @@ public class ProductSearchImpl extends QuerydslRepositorySupport implements Prod
     }
 
     @Override
+    @Transactional
     public Page<Product> searchInMypage(List<Long> idList) {
+        //아이디 리스트로 마이페이지에서 검색
         Pageable pageable = PageRequest.of(0,10);    //페이징
-
         QProduct product = QProduct.product;
-        QCategory category = QCategory.category;
 
-        JPQLQuery<Product> query = from(product)                                //SELECT ... FROM PRODUCT
-                .leftJoin(category).on(product.category.eq(category))          //LEFT JOIN CATEGORY ON CATEGORY_ID
+        List<Product> list = queryFactory.selectFrom(product)
+                .leftJoin(product.category).fetchJoin()                       //LEFT JOIN CATEGORY ON CATEGORY_ID
                 .where(product.productId.in(idList))                           //Product Id List
                 .groupBy(product)
-                .orderBy(product.registerDate.desc());
+                .orderBy(product.registerDate.desc())
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .fetch();
 
-        this.getQuerydsl().applyPagination(pageable,query);                     //페이징 처리
+        //갯수 조회 쿼리
+        JPQLQuery<Long> countQuery = queryFactory.select(product.count())
+                .from(product)
+                .where(product.productId.in(idList));                           //Product Id List
 
-        List<Product> list = query.fetch();                                     //쿼리 실행
-        Long count = query.fetchCount();                                        //실행 결과
-
-        return new PageImpl<>(list,pageable,count);
+        return PageableExecutionUtils.getPage(list,pageable,countQuery::fetchOne);
     }
 }
