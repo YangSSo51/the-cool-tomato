@@ -9,11 +9,11 @@ interface Items {
 
 const BuyerLiveItem = ({ id, img, title, price }: Items) => {
     return (
-        <Flex direction={"row"} gap={3} key={id} p={"0.1rem"}>
+        <Flex direction={"row"} gap={3} key={id} p={"0.3rem"}>
             <Image objectFit={"cover"} boxSize={"6rem"} src={`${img}`} />
             <Flex direction={"column"} gap={3} mt={"1rem"}>
-                <Text>{title}</Text>
-                <Text>{price}</Text>
+                <Text as={'b'} fontSize={"lg"}>{title}</Text>
+                <Text as={'b'} fontSize={"lg"}>{price}</Text>
             </Flex>
         </Flex>
     );

@@ -1,4 +1,4 @@
-import { Box, Center, Flex } from "@chakra-ui/react";
+import { Avatar, Box, Center, Flex, Text } from "@chakra-ui/react";
 
 import BuyerItem from "../components/live/BuyerItem";
 import BuyerChat from "../components/live/BuyerChat";
@@ -13,11 +13,12 @@ function UnfilledHeart() {
 export default function BuyerLive() {
     return (
         <>
-            <Flex direction={"column"}>
+            <Flex direction={"column"} backgroundColor={"themeWhite.500"}>
                 <Center mt={"1rem"} p={"1rem"}>
-                    <Box w={"60%"} border={"1px"} h={"2rem"}>
-                        (로고)
-                    </Box>
+                    <Flex w={"60%"} h={"2rem"} direction={"row"} alignItems={"center"}>
+                        <Avatar bg="teal.500" />
+                        <Text ml={"1rem"} as={'b'} fontSize={"xl"}>성실한 판매자 2222 </Text>
+                    </Flex>
                 </Center>
                 <Flex
                     direction={"row"}
@@ -26,10 +27,9 @@ export default function BuyerLive() {
                     p={"1.5rem"}
                 >
                     <Box
-                        border={"1px"}
-                        w={"md"}
-                        borderWidth={"1px"}
+                        w={"xl"}
                         borderRadius={"20px"}
+                        backgroundColor={"#ffffff"}
                     >
                         <Center>라이브 화면</Center>
                     </Box>
@@ -38,24 +38,22 @@ export default function BuyerLive() {
                     </Flex>
                     <Flex direction={"column"} ml={"2rem"}>
                         <Box
-                            border={"1px"}
-                            w={"xs"}
-                            borderWidth={"1px"}
+                            w={"sm"}
                             h={"50%"}
-                            borderRadius={"20px"}
                             overflowY={"auto"}
+                            backgroundColor={"#ffffff"}
+                            borderRadius={"20px"}
                         >
-                            <BuyerItem></BuyerItem>
+                            <BuyerItem />
                         </Box>
                         <Box
-                            border={"1px"}
-                            w={"xs"}
-                            borderWidth={"1px"}
+                            w={"sm"}
+                            backgroundColor={"#ffffff"}
                             h={"50%"}
                             borderRadius={"20px"}
                             mt={"1rem"}
                         >
-                            <BuyerChat></BuyerChat>
+                            <BuyerChat />
                         </Box>
                     </Flex>
                 </Flex>
