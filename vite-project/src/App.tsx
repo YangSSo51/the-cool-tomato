@@ -26,7 +26,7 @@ function App() {
                 <Fonts />
                 <Routes>
                     <Route path="/v1" element={<LayOut />}>
-                        <Route path="main" element={<MainPage />}></Route>
+                        <Route path="main" element={<MainPage />} />
                         <Route path="search" element={<Search />} />
                         <Route path="live/list" element={<LiveList />} />
                         <Route path="items/list" element={<ItemList />} />
