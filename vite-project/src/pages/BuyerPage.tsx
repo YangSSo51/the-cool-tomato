@@ -66,13 +66,14 @@ export default function BuyerPage() {
                 마이페이지
             </Center>
 
-            <Flex m="auto" rounded="lg" w="85vw" minH="85vh">
-                <Flex m="auto" border="2px" borderColor="green"  rounded="lg" w="80vw" maxH="80vh" px="2">
+            <Flex m="auto" border="2px" borderColor="themeGreen.500" rounded="lg" w="85vw" minH="85vh">
+                <Flex m="auto" rounded="lg" w="80vw" maxH="80vh" px="2">
                     <Box w="25%" pr="4">
                         <Box w="full" bg="white" rounded="lg" overflow="hidden">
                             <Flex direction="column" align="center" py="6">
 
                                 <Button
+                                    mb="4"
                                     onClick={() => {
                                     navigate("/v1/seller/" + {userId});
                                     }}
@@ -95,6 +96,7 @@ export default function BuyerPage() {
                                         <ListItem
                                         key={category.id}
                                         value={category.id}
+                                        padding=".5rem 1rem"
                                         className={category.isSelected ? "active" : null}
                                         onClick={(e) => changeSelect(e)}
                                         _hover={{ color: "themeRed.500", cursor:"pointer" }}
