@@ -1,4 +1,4 @@
-import { Box, Text } from "@chakra-ui/layout";
+import { Box } from "@chakra-ui/layout";
 import { Button } from "@chakra-ui/react";
 import ItemsofItems from "./SellerItemsofItems";
 
