@@ -6,7 +6,7 @@ import axios from "axios"
 
 import PlanList from "../components/mypage/seller/SellerPlanList";
 import LiveList from "../components/mypage/seller/SellerLiveList";
-import Items from "../components/mypage/seller/SellerItems";
+import Items from "../components/mypage/seller/SellerItemList";
 import Follwers from "../components/mypage/seller/SellerFollwers";
 import Qna from "../components/mypage/seller/SellerQna";
 import Chatbot from "../components/mypage/seller/SellerChatbot";
@@ -20,7 +20,7 @@ export default function SellerPage() {
     const [ userInfo, setUserInfo ] = useState([]);
     const [ tab, setTab ] = useState(0);
     const [categories, setCategories] = useState([
-        { id: 0, title: "예고한 라이브", isSelected: false, component: <PlanList />},
+        { id: 0, title: "예고한 라이브", isSelected: true, component: <PlanList />},
         { id: 1, title: "완료한 라이브", isSelected: false, component: <LiveList />},
         { id: 2, title: "등록한 상품 목록", isSelected: false, component: <Items />},
         { id: 3, title: "상품 문의 확인", isSelected: false, component: <Qna />},
@@ -80,7 +80,7 @@ export default function SellerPage() {
 
             <Flex m="auto" border="2px" borderColor="themeLightGreen.500" rounded="lg" w="85vw" minH="85vh">
                 <Flex m="auto" rounded="lg" w="80vw" maxH="80vh" px="2">
-                    <Box w="25%" pr="4">
+                    <Box w="25%" pr="4" >
                         <Box w="full" bg="white" rounded="lg" overflow="hidden">
                             <Flex direction="column" align="center" py="6">
 
@@ -103,7 +103,7 @@ export default function SellerPage() {
                                 </Button>
 
                                 <Box w="full" mt="6" pt="6">
-                                    <List spacing="4">
+                                    <List spacing="4" h="100%">
                                         {categoryList}
                                     </List>
                                 </Box>

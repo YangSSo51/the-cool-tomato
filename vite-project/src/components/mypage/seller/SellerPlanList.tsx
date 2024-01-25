@@ -10,7 +10,7 @@ function PlanList() {
         <>
         <Box flexDirection="column" w="90%" h="full" overflowY="scroll">
             <Flex>
-                <Button leftIcon={<CalendarIcon />} size="sm" colorScheme='red' variant='solid'
+                <Button leftIcon={<CalendarIcon />} mb="2" size="sm" colorScheme='red' variant='solid'
                 onClick={() => {
                     navigate("/v1/live/form");
                 }}>
@@ -20,6 +20,7 @@ function PlanList() {
                         color='gray.500'
                         fontWeight='semibold'
                         letterSpacing='wide'
+                        mt="2"
                         fontSize='xs'
                         textTransform='uppercase'
                         ml='2'
@@ -27,11 +28,7 @@ function PlanList() {
                     </Box>
             </Flex>
             <PlanItems />
-            <PlanItems />
-            <PlanItems />
-            <PlanItems />
-            <PlanItems />
-            <PlanItems />
+
         </Box>
         </>
     )

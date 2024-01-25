@@ -12,7 +12,7 @@ function PlanItems() {
     const { isOpen, onOpen, onClose } = useDisclosure();
     const cancelRef = useRef();
     const broadcastInfo = {
-      imageUrl: 'https://bit.ly/2Z4KKcF',
+      imageUrl: 'https://www.vegannews.co.kr/data/photos/20230727/art_1688713002447_e60ce1.png',
       imageAlt: 'Rear view of modern home with pool',
       title: '병창농부의 특급 제안-소나무같은 브룩껄리',
       time: '2024.01.25 오후 8:00 예정',
