@@ -14,7 +14,7 @@ export default function LiveList() {
                 alignItems={"center"}
                 mt={"2rem"}
                 mb={"2rem"}
-                
+                maxW={"100vw"}
             >
                 <Text
                     color={"themeGreen.500"}
