@@ -46,8 +46,8 @@ function LoginForm() {
     }, [user, navigate]);
 
     return (
-        <form onSubmit={onSubmit} style={{ width: "100%" }}>
-            <FormControl my={1} isInvalid={isFail}>
+        <form onSubmit={onSubmit} style={{ width: "80%" }}>
+            <FormControl my={4} isInvalid={isFail}>
                 <Input
                     focusBorderColor="themeGreen.500"
                     placeholder="ID"
@@ -57,7 +57,7 @@ function LoginForm() {
                     onChange={(e) => setId(e.target.value)}
                 />
             </FormControl>
-            <FormControl isInvalid={isFail}>
+            <FormControl my={2} isInvalid={isFail}>
                 <InputGroup size="md">
                     <Input
                         pr="4.5rem"
@@ -72,9 +72,10 @@ function LoginForm() {
                         <Button
                             h="1.75rem"
                             size="sm"
+                            // colorScheme="teal"
                             colorScheme="themeGreen"
-                            variant="outline"
-                            color="themeGreen.500"
+                            variant="ghost"
+                            // color="themeGreen.500"
                             onClick={handleClick}
                             borderRadius="lg"
                         >

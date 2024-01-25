@@ -29,7 +29,6 @@ function SignUpForm() {
     const isSexValid = false;
     const isBirthdayValid = false;
 
-
     const navigate = useNavigate();
 
     async function usernameDuplicateCheck(): Promise<void> {}
@@ -65,8 +64,8 @@ function SignUpForm() {
                                 h="1.75rem"
                                 size="sm"
                                 colorScheme="themeGreen"
-                                variant="outline"
-                                color="themeGreen.500"
+                                variant="ghost"
+                                // color="themeGreen.500"
                                 onClick={usernameDuplicateCheck}
                                 borderRadius="md"
                                 _hover={{
@@ -136,8 +135,8 @@ function SignUpForm() {
                                 h="1.75rem"
                                 size="sm"
                                 colorScheme="themeGreen"
-                                variant="outline"
-                                color="themeGreen.500"
+                                variant="ghost"
+                                // color="themeGreen.500"
                                 // onClick={}
                                 borderRadius="md"
                                 _hover={{
@@ -164,8 +163,8 @@ function SignUpForm() {
                                 h="1.75rem"
                                 size="sm"
                                 colorScheme="themeGreen"
-                                variant="outline"
-                                color="themeGreen.500"
+                                variant="ghost"
+                                // color="themeGreen.500"
                                 // onClick={}
                                 borderRadius="md"
                                 _hover={{
@@ -199,7 +198,7 @@ function SignUpForm() {
                         <Text as={"b"}>성별</Text>
                     </FormLabel>
                     <Select
-                        placeholder="gender"
+                        placeholder=""
                         value={sex}
                         onChange={(e) => setSex(e.target.value)}
                     >
@@ -224,7 +223,7 @@ function SignUpForm() {
                 </FormControl>
                 <Button
                     my={4}
-                    w="100%"
+                    w="95%"
                     colorScheme="themeGreen"
                     type="submit"
                     borderRadius="3xl"

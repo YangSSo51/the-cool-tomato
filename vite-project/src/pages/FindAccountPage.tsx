@@ -8,7 +8,7 @@ function FindAccountPage(props: { type: string }) {
     if (props.type === "username") {
         return (
             <>
-                <Center>
+                <Center h={"90vh"}>
                     <FindIdForm />
                 </Center>
             </>
@@ -16,7 +16,7 @@ function FindAccountPage(props: { type: string }) {
     } else if (props.type === "password") {
         return (
             <>
-                <Center>
+                <Center h={"90vh"}>
                     <PwdRecoverForm />
                 </Center>
             </>
@@ -24,7 +24,7 @@ function FindAccountPage(props: { type: string }) {
     } else if (props.type === "result") {
         return (
             <>
-                <Center>
+                <Center h={"90vh"}>
                     <FindAccountResult />
                 </Center>
             </>

@@ -9,7 +9,7 @@ function LoginPage() {
                 <Container
                     // pt={3}
                     m={0}
-                    maxW={{ xl: "35%", lg: "75%", sm: "90%" }}
+                    maxW={{ xl: "35%", lg: "55%", sm: "90%" }}
                     centerContent
                 >
                     <Text
