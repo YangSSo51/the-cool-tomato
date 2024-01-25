@@ -18,7 +18,7 @@ function LoginPage() {
                         fontWeight="bold"
                         color="themeFontGreen.500"
                     >
-                        Login
+                        로그인
                     </Text>
                     <LoginForm />
                     <LoginNavigate />
