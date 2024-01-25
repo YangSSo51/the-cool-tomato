@@ -1,4 +1,4 @@
-import { Box, Flex } from "@chakra-ui/react";
+import { Box, Flex, Text } from "@chakra-ui/react";
 import Goods from "../components/item/ItemListComponent";
 import GoodsList from "../components/item/dummylist/dummy";
 import "../css/ItemListComponentcss.css";
@@ -6,31 +6,13 @@ import CarouselComponent from "../components/common/CarouselComponent";
 
 export default function ItemList() {
     const dummylist = GoodsList;
-    // const [PageSize, setPageSize] = useState();
 
     return (
         <>
-            <Flex
-                justify={"center"}
-                className="MainText"
-                color={"themeGreen.500"}
-                mt={"0.5rem"}
-            >
-                현재 라이브 중인 상품
-            </Flex>
-
-
             <CarouselComponent />
 
-            <Flex justify={"center"} p={"2.5rem"}>
-                <Box
-                    w={"80%"}
-                    h={"1px"}
-                    backgroundColor={"themeGreen.500"}
-                ></Box>
-            </Flex>
-
-            <Flex wrap="wrap" maxW="80%" m="auto" gap={6}>
+            <Box width={"90%"}><Text textAlign={"right"}>카테고리 항목</Text></Box>
+            <Flex wrap="wrap" maxW="85%" m="auto" gap={8}>
                 {dummylist.map((data) => (
                     <Box key={data.id} w="calc(23.33%)" p={4}>
                         <Goods
@@ -42,7 +24,6 @@ export default function ItemList() {
                     </Box>
                 ))}
             </Flex>
-            
         </>
     );
 }

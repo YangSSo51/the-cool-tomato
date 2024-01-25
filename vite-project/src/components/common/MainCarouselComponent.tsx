@@ -34,7 +34,7 @@ export default function MainCarouselComponent() {
     }, [dummylist.length]);
 
     return (
-        <Box overflowX={"hidden"} position={"relative"}>
+        <Box overflowX={"hidden"} position={"relative"} maxW={"100vw"}>
             <Flex
                 overflowX={"hidden"}
                 wrap={"nowrap"}
