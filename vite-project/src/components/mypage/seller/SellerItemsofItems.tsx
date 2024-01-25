@@ -2,61 +2,61 @@ import { Box, Flex, Text } from "@chakra-ui/layout";
 import { Avatar, Button, Card, Image, Stack, CardBody, Heading, CardFooter } from "@chakra-ui/react";
 
 function ItemsofItems() {
+    const productsInfo = {
+        imageUrl: 'https://flexible.img.hani.co.kr/flexible/normal/640/480/imgdb/original/2023/1109/20231109503652.jpg',
+        imageAlt: 'Rear view of modern home with pool',
+        productName: '유기농흙밭 튼튼거대꿀맛고구마',
+        productContent: '저희집 거대밭에서 꺼내놓은 ',
+        price: 98150,
+        deliveryCharge: 8512,
+        quantity: 34,
+        paymentLink: 4,
+      }
+
     return (
-        <>
-        <Card
-            direction={{ base: 'column', sm: 'row' }}
-            overflow='hidden'
-            variant='outline'
-            >
-            <Image
-                objectFit='cover'
-                maxW={{ base: '100%', sm: '200px' }}
-                src='https://images.unsplash.com/photo-1667489022797-ab608913feeb?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHw5fHx8ZW58MHx8fHw%3D&auto=format&fit=crop&w=800&q=60'
-                alt='Caffe Latte'
-            />
+        <Flex justifyContent="space-between" alignItems="center" my="4" mx="auto" p="2" borderWidth='1px' borderRadius='lg' overflow='hidden'>
+            <Flex p="2">
+                <Image mr="2" boxSize="100px" src={productsInfo.imageUrl} alt={productsInfo.imageAlt} />
 
-            <Stack>
-                <CardBody>
-                <Heading size='md'>The perfect latte</Heading>
+                <Box ml="2" pt="4">
 
-                <Text py='2'>
-                    Caffè latte is a coffee beverage of Italian origin made with espresso
-                    and steamed milk.
-                </Text>
-                </CardBody>
-
-                <CardFooter>
-                <Button variant='solid' colorScheme='blue'>
-                    Buy Latte
-                </Button>
-                </CardFooter>
-            </Stack>
-        </Card>
-        <Box display="flex" alignItems="center" justifyContent="space-between" w="100%" my="4" mx="auto" border="5px solid gray" borderRadius="1rem" boxShadow="2px 2px 2px gray">
-            <Flex alignItems="center">
-                <Avatar my="4" mx="4" size="2xl" bg="gray.200" />
-                <Flex flexDirection="column">
-                    <Text fontSize="1.5rem" mb="4">현종아조씨의 비밀스러운 고구마</Text>
-                    <Text fontSize="1.1rem">방송시간 10:00 ~ 12:00</Text>
                     <Box
-                        color='gray.500'
+                        mt='1'
                         fontWeight='semibold'
-                        letterSpacing='wide'
-                        fontSize='xs'
-                        textTransform='uppercase'
-                        ml='2'
-                        >시청수 9.3만 하트수 8만
+                        as='h4'
+                        lineHeight='tight'
+                        noOfLines={1}
+                        >
+                        {productsInfo.productName}
                     </Box>
-                </Flex>
+
+                    <Box>
+                        <Box as='span' color='gray.600' fontSize='sm'>
+                            {productsInfo.productContent}
+                        </Box>
+                    </Box>
+
+                    <Box display='flex' alignItems='baseline'>
+                        <Box
+                            color='gray.500'
+                            fontWeight='semibold'
+                            letterSpacing='wide'
+                            fontSize='xs'
+                            textTransform='uppercase'
+                            >
+                            가격 {productsInfo.price} &bull; 배송비 {productsInfo.deliveryCharge} &bull; 수량 {productsInfo.quantity}
+                            &nbsp; 
+                            판매링크 {productsInfo.paymentLink} 
+                        </Box>
+                    </Box>
+                </Box>
             </Flex>
-            <Button mr="4">
-                바로가기
+
+            <Button>
+                데이터확인!
             </Button>
-        </Box>
-        </>
+        </Flex>
     )
 }
 
 export default ItemsofItems
-

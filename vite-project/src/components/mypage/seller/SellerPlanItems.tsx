@@ -1,4 +1,4 @@
-import { Box, Flex, Spacer } from "@chakra-ui/layout";
+import { Box, Flex } from "@chakra-ui/layout";
 import { Image, Badge, Button, useDisclosure, AlertDialog,
     AlertDialogBody,
     AlertDialogFooter,
@@ -22,13 +22,12 @@ function PlanItems() {
   
     return (
       <Flex justifyContent="space-between" p="2" borderWidth='1px' borderRadius='lg' overflow='hidden'>
-        <Box p='2'>
 
-        <Flex>
+        <Flex p="2">
             <Image mr="2" boxSize="100px" src={broadcastInfo.imageUrl} alt={broadcastInfo.imageAlt} />
             <Box>
                 <Box display='flex' alignItems='baseline'>
-                    <Badge borderRadius='full' px='2' colorScheme='teal'>
+                    <Badge borderRadius='full' px='2' colorScheme='red'>
                     대기중
                     </Badge>
                 </Box>
@@ -79,7 +78,7 @@ function PlanItems() {
             <Button>수정</Button>
             <Button>등록취소</Button>
         </Flex>
-        </Box>
+
       </Flex>
     )
 }
