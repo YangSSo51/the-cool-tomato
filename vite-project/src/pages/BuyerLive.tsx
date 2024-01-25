@@ -5,6 +5,7 @@ import BuyerChat from "../components/live/BuyerChat";
 
 import { CiHeart } from "react-icons/ci";
 import { Icon } from "@chakra-ui/react";
+import NavBar from "../components/common/Navbar";
 
 function UnfilledHeart() {
     return <Icon as={CiHeart} boxSize={"3rem"} ml={"3px"} mb={"3px"} />;
@@ -13,6 +14,7 @@ function UnfilledHeart() {
 export default function BuyerLive() {
     return (
         <>
+        <NavBar />
             <Flex direction={"column"} backgroundColor={"themeWhite.500"}>
                 <Center mt={"1rem"} p={"1rem"}>
                     <Flex w={"60%"} h={"2rem"} direction={"row"} alignItems={"center"}>
@@ -23,15 +25,16 @@ export default function BuyerLive() {
                 <Flex
                     direction={"row"}
                     justify={"center"}
-                    h={"80vh"}
-                    p={"1.5rem"}
+                    h={"90vh"}
+                    p={"2rem"}
+                    
                 >
                     <Box
-                        w={"xl"}
+                        w={"lg"}
                         borderRadius={"20px"}
                         backgroundColor={"#ffffff"}
                     >
-                        <Center>라이브 화면</Center>
+                        
                     </Box>
                     <Flex direction={"column"} alignSelf={"flex-end"}>
                         <UnfilledHeart />

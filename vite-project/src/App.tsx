@@ -52,15 +52,12 @@ function App() {
                         />
                         <Route path="live/form" element={<LiveAddForm />} />
                         <Route
-                            path="live/:roomId"
-                            element={<BuyerLive />}
-                        ></Route>
-                        <Route
                             path="findaccount"
                             element={<FindAccountPage type="result" />}
                         />
                     </Route>
                     <Route path="broadcast" element={<Broadcast />} />
+                    <Route path="v1/live/:roomId" element={<BuyerLive />}></Route>
                 </Routes>
             </ChakraProvider>
         </>
