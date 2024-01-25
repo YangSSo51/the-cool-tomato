@@ -1,4 +1,4 @@
 package com.wp.broadcast.domain.live.dto.response;
 
-public class LiveBroadcastResponseDto {
+public class StartResponseDto {
 }
