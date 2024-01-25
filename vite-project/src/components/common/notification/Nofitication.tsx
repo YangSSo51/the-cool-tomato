@@ -15,9 +15,8 @@ import {
 import { useRef } from "react";
 
 function Nofitication() {
-    const initRef = useRef();
     return (
-        <Popover closeOnBlur={false} placement="left" initialFocusRef={initRef}>
+        <Popover closeOnBlur={false} placement="bottom">
             {({ isOpen, onClose }) => (
                 <>
                     <PopoverTrigger>
@@ -32,14 +31,6 @@ function Nofitication() {
                                     Hello. Nice to meet you! This is the body of
                                     the popover
                                 </Box>
-                                <Button
-                                    mt={4}
-                                    colorScheme="blue"
-                                    onClick={onClose}
-                                    ref={initRef}
-                                >
-                                    Close
-                                </Button>
                             </PopoverBody>
                             <PopoverFooter>This is the footer</PopoverFooter>
                         </PopoverContent>
