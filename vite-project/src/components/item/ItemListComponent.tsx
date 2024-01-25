@@ -16,7 +16,7 @@ const Goods = ({ id, img, title, price }: GoodsProps) => {
             <Box>
                 <Box>
                     <Box maxW={"25rem"} className="img">
-                        <img className="Realimage" src={img}></img>
+                        <img src={img}></img>
                     </Box>
                     <Box className="Text">
                         <Box className="TextTitle">{title}</Box>

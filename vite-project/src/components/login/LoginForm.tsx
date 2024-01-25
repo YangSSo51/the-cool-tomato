@@ -12,6 +12,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { AppDispatch, RootState } from "../../redux/stores/store";
 import { loginUserThunk } from "../../redux/thunk/user/userThunk";
+import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 
 function LoginForm() {
     const [show, setShow] = useState(false);
@@ -46,8 +47,8 @@ function LoginForm() {
     }, [user, navigate]);
 
     return (
-        <form onSubmit={onSubmit} style={{ width: "100%" }}>
-            <FormControl my={1} isInvalid={isFail}>
+        <form onSubmit={onSubmit} style={{ width: "80%" }}>
+            <FormControl my={4} isInvalid={isFail}>
                 <Input
                     focusBorderColor="themeGreen.500"
                     placeholder="ID"
@@ -57,7 +58,7 @@ function LoginForm() {
                     onChange={(e) => setId(e.target.value)}
                 />
             </FormControl>
-            <FormControl isInvalid={isFail}>
+            <FormControl my={2} isInvalid={isFail}>
                 <InputGroup size="md">
                     <Input
                         pr="4.5rem"
@@ -68,17 +69,22 @@ function LoginForm() {
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                     />
-                    <InputRightElement width="4.5rem">
+                    <InputRightElement>
                         <Button
-                            h="1.75rem"
+                            h="2rem"
                             size="sm"
+                            // colorScheme="teal"
                             colorScheme="themeGreen"
-                            variant="outline"
-                            color="themeGreen.500"
+                            variant="ghost"
+                            // color="themeGreen.500"
                             onClick={handleClick}
                             borderRadius="lg"
                         >
-                            {show ? "Hide" : "Show"}
+                            {show ? (
+                                <ViewIcon color="grey" />
+                            ) : (
+                                <ViewOffIcon color="grey" />
+                            )}
                         </Button>
                     </InputRightElement>
                 </InputGroup>

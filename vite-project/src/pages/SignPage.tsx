@@ -5,7 +5,7 @@ function SignPage() {
     return (
         <Center h={"80vh"}>
             <Container
-                pt={3}
+                // pt={3}
                 m={0}
                 maxW={{ xl: "35%", lg: "60%", sm: "90%" }}
                 border={"1px"}

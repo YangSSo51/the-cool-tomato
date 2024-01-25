@@ -1,20 +1,29 @@
-import { Box, Flex } from "@chakra-ui/react";
-import "../../css/MainCarousel.css";
+import { Box, Flex, Icon } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { ChevronLeftIcon, ChevronRightIcon } from "@chakra-ui/icons";
 import { FaRegCircle } from "react-icons/fa";
 
+function FaRegCircleActive() {
+    return <Icon display={"inline-block"} backgroundColor={"themeGreen.500"} borderRadius={"15px"} boxSize={"15px"} mr={"0.5rem"} as={FaRegCircle} />;
+}
+
+function FaRegCircleNone() {
+    return <Icon display={"inline-block"} backgroundColor={"#ffffff"} borderRadius={"15px"} boxSize={"15px"} mr={"0.5rem"} as={FaRegCircle} />;
+}
+
 export default function MainCarouselComponent() {
+    const [slideIndex, setSlideIndex] = useState(0);
+
     const dummylist = [
         { img: "/img/MainC1.PNG" },
         { img: "/img/MainC2.PNG" },
         { img: "/img/MainC3.PNG" },
     ];
-    const [slideIndex, setSlideIndex] = useState(0);
 
     // moveBar
     const moveLeft = () => {
         setSlideIndex(slideIndex === 0 ? dummylist.length - 1 : slideIndex - 1);
+       
     };
     const moveRight = () => {
         setSlideIndex(slideIndex === dummylist.length - 1 ? 0 : slideIndex + 1);
@@ -34,25 +43,22 @@ export default function MainCarouselComponent() {
     }, [dummylist.length]);
 
     return (
-        <Box overflowX={"hidden"} position={"relative"}>
+        <Box overflowX={"hidden"} position={"relative"} maxW={"100vw"}>
             <Flex
                 overflowX={"hidden"}
                 wrap={"nowrap"}
                 style={{
                     width: `${100 * dummylist.length}vw`,
-                    transition: "all 500ms ease-in-out",
+                    transition: "all 1000ms ease-in-out",
                     transitionDuration: "1s",
-                    transform: `translateX(${-1 * ((100 / dummylist.length) * slideIndex)
-                        }%)`,
+                    transform: `translateX(${
+                        -1 * ((100 / dummylist.length) * slideIndex)
+                    }%)`,
                 }}
-
             >
                 {dummylist.map((data, index) => (
                     <Box key={index} p={2} w={"100%"}>
-                        <img
-                            className="img"
-                            src={data.img}
-                        ></img>
+                        <img className="img" src={data.img}></img>
                     </Box>
                 ))}
             </Flex>
@@ -82,9 +88,9 @@ export default function MainCarouselComponent() {
                 textAlign={"center"}
                 mb={"2rem"}
             >
-                <FaRegCircle className="border active" />
-                <FaRegCircle className="border" />
-                <FaRegCircle className="border" />
+                {slideIndex === 0 ? <FaRegCircleActive /> : <FaRegCircleNone />}
+                {slideIndex === 1 ? <FaRegCircleActive /> : <FaRegCircleNone />}
+                {slideIndex === 2 ? <FaRegCircleActive /> : <FaRegCircleNone />}
             </Box>
         </Box>
     );
