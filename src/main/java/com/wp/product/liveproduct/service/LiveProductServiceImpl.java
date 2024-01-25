@@ -5,6 +5,7 @@ import com.wp.product.global.exception.BusinessExceptionHandler;
 import com.wp.product.global.util.DateUtil;
 import com.wp.product.liveproduct.dto.request.LiveProductCreateRequest;
 import com.wp.product.liveproduct.dto.request.LiveProductSearchRequest;
+import com.wp.product.liveproduct.dto.response.LiveBroadcastProductResponse;
 import com.wp.product.liveproduct.dto.response.LiveProductResponse;
 import com.wp.product.liveproduct.entity.LiveProduct;
 import com.wp.product.liveproduct.repository.LiveProductRepository;
@@ -27,36 +28,17 @@ public class LiveProductServiceImpl implements LiveProductService{
     private final LiveProductRepository liveProductRepository;
 
     @Override
+    public List<LiveBroadcastProductResponse> findLiveBroadcastProduct() {
+        return liveProductRepository.searchLiveBroadcastProduct();
+    }
+
+    @Override
     @Transactional
     public Map<String, Object> findLiveProduct(LiveProductSearchRequest request) {
-        List<LiveProductResponse> list = new ArrayList<>();
         Map<String,Object> map = new HashMap<>();
-        Page<LiveProduct> result = liveProductRepository.search(request);
+        Page<LiveProductResponse> result = liveProductRepository.search(request);
 
-        result.forEach(liveProduct -> {
-            list.add(LiveProductResponse.builder()
-                    .liveProductId(liveProduct.getLiveProductId())
-                    .productId(liveProduct.getProduct().getProductId())
-                    .sellerId(liveProduct.getProduct().getSellerId())
-                    .sellerName(liveProduct.getProduct().getProductName())
-                    .categoryId(liveProduct.getProduct().getCategory().getCategoryId())
-                    .categoryName(liveProduct.getProduct().getCategory().getCategoryContent())
-                    .productName(liveProduct.getProduct().getProductName())
-                    .productContent(liveProduct.getProduct().getProductContent())
-                    .paymentLink(liveProduct.getProduct().getPaymentLink())
-                    .price(liveProduct.getProduct().getPrice())
-                    .deliveryCharge(liveProduct.getProduct().getDeliveryCharge())
-                    .liveFlatPrice(liveProduct.getLiveFlatPrice())
-                    .liveRatePrice(liveProduct.getLiveRatePrice())
-                    .livePriceStartDate(liveProduct.getLivePriceStartDate())
-                    .livePriceEndDate(liveProduct.getLivePriceEndDate())
-                    .mainProductSetting(liveProduct.getMainProductSetting())
-                    .registerDate(liveProduct.getRegisterDate())
-                    .seq(liveProduct.getSeq())
-                    .build());
-        });
-
-        map.put("list" , list);
+        map.put("list" , result.getContent());
         map.put("totalCount", result.getTotalElements());
 
         return map;

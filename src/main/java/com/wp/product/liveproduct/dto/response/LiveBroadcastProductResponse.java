@@ -10,12 +10,11 @@ import java.time.LocalDateTime;
 @Setter
 @NoArgsConstructor
 @Schema(description = "라이브 상품 조회를 위한 응답 객체")
-public class LiveProductResponse {
+public class LiveBroadcastProductResponse {
     private Long liveProductId;
     //상품 내용
     private Long productId;
     private Long sellerId;
-    private String sellerName;
     private Long categoryId;
     private String categoryName;
     private String productName;
@@ -33,4 +32,8 @@ public class LiveProductResponse {
     private Boolean mainProductSetting;
     private LocalDateTime registerDate;
     private int seq;
+
+    //라이브 정보
+    private Long liveBroadcastId;
+    private String broadcastStatus;
 }

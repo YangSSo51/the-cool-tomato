@@ -4,6 +4,7 @@ import com.wp.product.global.common.code.SuccessCode;
 import com.wp.product.global.common.response.SuccessResponse;
 import com.wp.product.liveproduct.dto.request.LiveProductCreateRequest;
 import com.wp.product.liveproduct.dto.request.LiveProductSearchRequest;
+import com.wp.product.liveproduct.dto.response.LiveBroadcastProductResponse;
 import com.wp.product.liveproduct.service.LiveProductService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -24,6 +25,20 @@ import java.util.Map;
 public class LiveProductController {
 
     private final LiveProductService liveProductService;
+
+    @GetMapping("/live-list")
+    @Operation(summary = "라이브 중인 방송 상품 목록 조회",description = "방송 상품 리스트를 조회함")
+    public ResponseEntity<?> findLiveBroadcastProduct(){
+
+        List<LiveBroadcastProductResponse> liveBroadcastProduct = liveProductService.findLiveBroadcastProduct();
+
+        SuccessResponse response = SuccessResponse.builder()
+                .data(liveBroadcastProduct)
+                .status(SuccessCode.SELECT_SUCCESS.getStatus())
+                .message(SuccessCode.SELECT_SUCCESS.getMessage()).build();
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
 
     @PostMapping("/list")
     @Operation(summary = "라이브 방송 상품 조회",description = "방송 상품 리스트를 조회함")
