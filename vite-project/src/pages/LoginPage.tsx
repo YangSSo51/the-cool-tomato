@@ -5,7 +5,7 @@ import LoginNavigate from "../components/login/LoginNavigate";
 function LoginPage() {
     return (
         <>
-            <Center my="auto" h={"90vh"} w={"100%"}>
+            <Center my="auto" h={"80vh"} w={"100%"}>
                 <Container
                     // pt={3}
                     m={0}

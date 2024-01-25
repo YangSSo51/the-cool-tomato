@@ -83,7 +83,7 @@ function SignUpForm() {
                     <FormLabel>
                         <Text as={"b"}>비밀번호</Text>
                     </FormLabel>
-                    <InputGroup size="md">
+                    <InputGroup size="md" mb={2}>
                         <Input
                             focusBorderColor="themeGreen.500"
                             placeholder="password"
@@ -91,7 +91,6 @@ function SignUpForm() {
                             autoComplete="current-password"
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
-                            mb={1}
                             id="password"
                         ></Input>
                         <InputRightElement>
@@ -121,7 +120,7 @@ function SignUpForm() {
                     <FormLabel>
                         <Text as={"b"}>이메일</Text>
                     </FormLabel>
-                    <InputGroup size="md" mb={"1"}>
+                    <InputGroup size="md" mb={"2"}>
                         <Input
                             focusBorderColor="themeGreen.500"
                             placeholder="email"

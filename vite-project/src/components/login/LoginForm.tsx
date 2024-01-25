@@ -12,6 +12,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { AppDispatch, RootState } from "../../redux/stores/store";
 import { loginUserThunk } from "../../redux/thunk/user/userThunk";
+import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 
 function LoginForm() {
     const [show, setShow] = useState(false);
@@ -68,9 +69,9 @@ function LoginForm() {
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                     />
-                    <InputRightElement width="4.5rem">
+                    <InputRightElement>
                         <Button
-                            h="1.75rem"
+                            h="2rem"
                             size="sm"
                             // colorScheme="teal"
                             colorScheme="themeGreen"
@@ -79,7 +80,11 @@ function LoginForm() {
                             onClick={handleClick}
                             borderRadius="lg"
                         >
-                            {show ? "Hide" : "Show"}
+                            {show ? (
+                                <ViewIcon color="grey" />
+                            ) : (
+                                <ViewOffIcon color="grey" />
+                            )}
                         </Button>
                     </InputRightElement>
                 </InputGroup>
