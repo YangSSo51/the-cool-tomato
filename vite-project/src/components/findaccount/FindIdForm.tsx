@@ -34,9 +34,9 @@ function FindIdForm() {
                 >
                     아이디 찾기
                 </Text>
-                <form onSubmit={onSubmit} style={{ width: "100%" }}>
-                    <FormControl my={1}>
-                        <FormLabel>이메일 입력</FormLabel>
+                <form onSubmit={onSubmit} style={{ width: "80%" }}>
+                    <FormControl my={4}>
+                        <FormLabel mb={2}>이메일 입력</FormLabel>
                         <Input
                             focusBorderColor="themeGreen.500"
                             placeholder="email"
@@ -48,7 +48,7 @@ function FindIdForm() {
                     <Center>
                         <Button
                             mt={4}
-                            w="100%"
+                            w="95%"
                             colorScheme="themeGreen"
                             type="submit"
                             borderRadius="3xl"

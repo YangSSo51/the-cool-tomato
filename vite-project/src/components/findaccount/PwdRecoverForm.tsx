@@ -34,8 +34,8 @@ function PwdRecoverForm() {
                 >
                     비밀번호 찾기
                 </Text>
-                <form onSubmit={onSubmit} style={{ width: "100%" }}>
-                    <FormControl my={1}>
+                <form onSubmit={onSubmit} style={{ width: "80%" }}>
+                    <FormControl my={4}>
                         <FormLabel>아이디 입력</FormLabel>
                         <Input
                             focusBorderColor="themeGreen.500"
@@ -44,7 +44,7 @@ function PwdRecoverForm() {
                             autoComplete="username"
                         />
                     </FormControl>
-                    <FormControl my={1}>
+                    <FormControl my={3}>
                         <FormLabel>이메일 입력</FormLabel>
                         <Input
                             focusBorderColor="themeGreen.500"
@@ -57,7 +57,7 @@ function PwdRecoverForm() {
                     <Center>
                         <Button
                             mt={4}
-                            w="100%"
+                            w="95%"
                             colorScheme="themeGreen"
                             type="submit"
                             borderRadius="3xl"

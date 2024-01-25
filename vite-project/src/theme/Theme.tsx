@@ -43,7 +43,6 @@ const activeLabelStyles = {
 };
 
 const Theme = extendTheme({
-
     components: {
         Form: {
             variants: {
@@ -77,7 +76,11 @@ const Theme = extendTheme({
     },
 
     colors: {
-        themeGreen: { 500: primary.ourgreen },
+        themeGreen: {
+            500: primary.ourgreen,
+            // 50: "#e9fcf6",
+            600: utility.greenfont,
+        },
         themeRed: { 500: primary.ourred },
         themeWhite: { 500: primary.ourwhite },
         themeLightGreen: { 500: primary.ourlightgreen },

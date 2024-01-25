@@ -29,7 +29,6 @@ function SignUpForm() {
     const isSexValid = false;
     const isBirthdayValid = false;
 
-
     const navigate = useNavigate();
 
     async function usernameDuplicateCheck(): Promise<void> {}
@@ -65,8 +64,8 @@ function SignUpForm() {
                                 h="1.75rem"
                                 size="sm"
                                 colorScheme="themeGreen"
-                                variant="outline"
-                                color="themeGreen.500"
+                                variant="ghost"
+                                // color="themeGreen.500"
                                 onClick={usernameDuplicateCheck}
                                 borderRadius="md"
                                 _hover={{
@@ -84,7 +83,7 @@ function SignUpForm() {
                     <FormLabel>
                         <Text as={"b"}>비밀번호</Text>
                     </FormLabel>
-                    <InputGroup size="md">
+                    <InputGroup size="md" mb={2}>
                         <Input
                             focusBorderColor="themeGreen.500"
                             placeholder="password"
@@ -92,7 +91,6 @@ function SignUpForm() {
                             autoComplete="current-password"
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
-                            mb={1}
                             id="password"
                         ></Input>
                         <InputRightElement>
@@ -122,7 +120,7 @@ function SignUpForm() {
                     <FormLabel>
                         <Text as={"b"}>이메일</Text>
                     </FormLabel>
-                    <InputGroup size="md" mb={"1"}>
+                    <InputGroup size="md" mb={"2"}>
                         <Input
                             focusBorderColor="themeGreen.500"
                             placeholder="email"
@@ -136,8 +134,8 @@ function SignUpForm() {
                                 h="1.75rem"
                                 size="sm"
                                 colorScheme="themeGreen"
-                                variant="outline"
-                                color="themeGreen.500"
+                                variant="ghost"
+                                // color="themeGreen.500"
                                 // onClick={}
                                 borderRadius="md"
                                 _hover={{
@@ -164,8 +162,8 @@ function SignUpForm() {
                                 h="1.75rem"
                                 size="sm"
                                 colorScheme="themeGreen"
-                                variant="outline"
-                                color="themeGreen.500"
+                                variant="ghost"
+                                // color="themeGreen.500"
                                 // onClick={}
                                 borderRadius="md"
                                 _hover={{
@@ -199,7 +197,7 @@ function SignUpForm() {
                         <Text as={"b"}>성별</Text>
                     </FormLabel>
                     <Select
-                        placeholder="gender"
+                        placeholder=""
                         value={sex}
                         onChange={(e) => setSex(e.target.value)}
                     >
@@ -224,7 +222,7 @@ function SignUpForm() {
                 </FormControl>
                 <Button
                     my={4}
-                    w="100%"
+                    w="95%"
                     colorScheme="themeGreen"
                     type="submit"
                     borderRadius="3xl"

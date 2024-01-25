@@ -8,9 +8,12 @@ function FindAccountResult() {
     return (
         <>
             <Container
-                pt={3}
-                m={0}
+                py={"4rem"}
+                px={"3rem"}
                 maxW={{ xl: "35%", lg: "55%", sm: "90%" }}
+                border={"1px"}
+                borderRadius={"3xl"}
+                borderColor={"themeGreen.500"}
                 centerContent
             >
                 <Text
@@ -18,6 +21,7 @@ function FindAccountResult() {
                     fontSize="4xl"
                     fontWeight="bold"
                     color="themeFontGreen.500"
+                    textAlign={"center"}
                 >
                     완료되었습니다
                     <br />
