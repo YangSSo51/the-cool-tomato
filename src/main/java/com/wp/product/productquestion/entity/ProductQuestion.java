@@ -1,6 +1,7 @@
 package com.wp.product.productquestion.entity;
 
 import com.wp.product.product.entity.Product;
+import com.wp.product.productquestion.dto.request.ProductQuestionUpdateRequest;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -30,4 +31,9 @@ public class ProductQuestion {
     @Column(updatable = false)
     private LocalDateTime questionRegisterDate;
     private LocalDateTime answerRegisterDate;
+
+    public void change(ProductQuestionUpdateRequest productQuestionRequest) {
+        this.answerContent = productQuestionRequest.getAnswerContent();;
+        this.answerRegisterDate = LocalDateTime.now();
+    }
 }

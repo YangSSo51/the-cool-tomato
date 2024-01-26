@@ -3,6 +3,7 @@ package com.wp.product.productquestion.controller;
 import com.wp.product.global.common.code.SuccessCode;
 import com.wp.product.global.common.response.SuccessResponse;
 import com.wp.product.productquestion.dto.request.ProductQuestionCreateRequest;
+import com.wp.product.productquestion.dto.request.ProductQuestionUpdateRequest;
 import com.wp.product.productquestion.service.ProductQuestionService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -11,10 +12,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @Slf4j
 @RestController
@@ -27,7 +25,7 @@ public class ProductQuestionController {
 
     @PostMapping
     @Operation(summary = "상품 문의 등록",description = "구매자가 상품 문의를 등록함")
-    public ResponseEntity<?> saveProduct(@RequestBody @Valid ProductQuestionCreateRequest productQuestionRequest){
+    public ResponseEntity<?> saveProductQuestion(@RequestBody @Valid ProductQuestionCreateRequest productQuestionRequest){
         //TODO : 권한 확인 필요(로그인한 유저)
 
         //상품 문의를 등록함
@@ -40,6 +38,19 @@ public class ProductQuestionController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    @PutMapping
+    @Operation(summary = "상품 문의 답변 등록",description = "판매자가 상품 문의를 등록함")
+    public ResponseEntity<?> updateProductQuestion(@RequestBody @Valid ProductQuestionUpdateRequest productQuestionRequest){
+        //TODO : 권한 확인 필요(BUYER)
 
+        //상품 문의 답변을 등록함
+        productQuestionService.updateProducQuestion(productQuestionRequest);
+
+        SuccessResponse response = SuccessResponse.builder()
+                .status(SuccessCode.UPDATE_SUCCESS.getStatus())
+                .message(SuccessCode.UPDATE_SUCCESS.getMessage()).build();
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
 
 }
