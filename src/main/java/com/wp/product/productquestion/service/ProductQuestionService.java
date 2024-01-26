@@ -7,4 +7,6 @@ public interface ProductQuestionService {
     void saveProductQuestion(ProductQuestionCreateRequest productQuestionRequest);
 
     void updateProducQuestion(ProductQuestionUpdateRequest productQuestionRequest);
+
+    void deleteProducQuestion(Long productQuestionId);
 }

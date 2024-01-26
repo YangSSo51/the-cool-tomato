@@ -53,4 +53,18 @@ public class ProductQuestionController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    @DeleteMapping("/{productQuestionId}")
+    @Operation(summary = "상품 문의 삭제",description = "등록자가 상품 문의를 삭제함")
+    public ResponseEntity<?> deleteProductQuestion(@PathVariable Long productQuestionId){
+        //TODO : 권한 확인 필요(로그인한 유저)
+
+        //상품 문의 답변을 삭제함
+        productQuestionService.deleteProducQuestion(productQuestionId);
+
+        SuccessResponse response = SuccessResponse.builder()
+                .status(SuccessCode.DELETE_SUCCESS.getStatus())
+                .message(SuccessCode.DELETE_SUCCESS.getMessage()).build();
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
 }

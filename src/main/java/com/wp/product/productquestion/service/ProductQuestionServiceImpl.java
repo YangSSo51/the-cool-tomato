@@ -54,4 +54,15 @@ public class ProductQuestionServiceImpl implements ProductQuestionService{
             throw new BusinessExceptionHandler("상품 문의 답변 등록에 실패했습니다",ErrorCode.UPDATE_ERROR);
         }
     }
+
+    @Override
+    public void deleteProducQuestion(Long productQuestionId) {
+        //상품 번호로 상품 조회
+        //TODO : 작성자와 동일한 아이디의 삭제요청인지 확인 필요
+        productQuestionRepository.findById(productQuestionId)
+                .orElseThrow(()->new BusinessExceptionHandler("상품 문의가 존재하지 않습니다",ErrorCode.NO_ELEMENT_ERROR));
+
+        //문의 게시판 아이디로 문의 삭제
+        productQuestionRepository.deleteById(productQuestionId);
+    }
 }
