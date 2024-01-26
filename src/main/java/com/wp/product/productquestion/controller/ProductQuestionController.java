@@ -4,6 +4,7 @@ import com.wp.product.global.common.code.SuccessCode;
 import com.wp.product.global.common.response.SuccessResponse;
 import com.wp.product.productquestion.dto.request.ProductQuestionCreateRequest;
 import com.wp.product.productquestion.dto.request.ProductQuestionUpdateRequest;
+import com.wp.product.productquestion.dto.response.ProductQuestionResponse;
 import com.wp.product.productquestion.service.ProductQuestionService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -22,6 +23,22 @@ import org.springframework.web.bind.annotation.*;
 public class ProductQuestionController {
 
     private final ProductQuestionService productQuestionService;
+
+    @GetMapping("/{productQuestionId}")
+    @Operation(summary = "상품 문의 조회",description = "구매자가 상품 문의를 조회함")
+    public ResponseEntity<?> findProductQuestion(@PathVariable Long productQuestionId){
+        //TODO : 권한 확인 필요(BUYER)
+
+        //상품 문의를 등록함
+        ProductQuestionResponse productQuestion = productQuestionService.findProductQuestion(productQuestionId);
+
+        SuccessResponse response = SuccessResponse.builder()
+                .data(productQuestion)
+                .status(SuccessCode.SELECT_SUCCESS.getStatus())
+                .message(SuccessCode.SELECT_SUCCESS.getMessage()).build();
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
 
     @PostMapping
     @Operation(summary = "상품 문의 등록",description = "구매자가 상품 문의를 등록함")

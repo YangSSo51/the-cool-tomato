@@ -5,6 +5,7 @@ import com.wp.product.global.exception.BusinessExceptionHandler;
 import com.wp.product.product.entity.Product;
 import com.wp.product.productquestion.dto.request.ProductQuestionCreateRequest;
 import com.wp.product.productquestion.dto.request.ProductQuestionUpdateRequest;
+import com.wp.product.productquestion.dto.response.ProductQuestionResponse;
 import com.wp.product.productquestion.entity.ProductQuestion;
 import com.wp.product.productquestion.repository.ProductQuestionRepository;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +20,28 @@ import java.util.Optional;
 public class ProductQuestionServiceImpl implements ProductQuestionService{
 
     private final ProductQuestionRepository productQuestionRepository;
+
+    @Override
+    public ProductQuestionResponse findProductQuestion(Long productQuestionId) {
+        //TODO : 판매자 아이디 확인 필요
+        // 카테고리명, 판매자명 추가 조회 필요
+        Optional<ProductQuestion> result = productQuestionRepository.findById(productQuestionId);
+
+        ProductQuestion productQuestion = result.orElseThrow(() -> new BusinessExceptionHandler("상품 문의 조회에 실패했습니다.",ErrorCode.NO_ELEMENT_ERROR));
+
+        ProductQuestionResponse productQuestionResponse = ProductQuestionResponse.builder()
+                .writerId(productQuestion.getWriterId())
+                .productId(productQuestion.getProduct().getProductId())
+                .productName(productQuestion.getProduct().getProductName())
+                .productContent(productQuestion.getProduct().getProductContent())
+                .productQuestionBoardId(productQuestion.getProductQuestionBoardId())
+                .questionContent(productQuestion.getQuestionContent())
+                .answerContent(productQuestion.getAnswerContent())
+                .questionRegisterDate(productQuestion.getQuestionRegisterDate())
+                .answerRegisterDate(productQuestion.getQuestionRegisterDate()).build();
+
+        return productQuestionResponse;
+    }
 
     @Override
     public void saveProductQuestion(ProductQuestionCreateRequest productQuestionRequest) {
