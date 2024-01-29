@@ -56,7 +56,7 @@ function App() {
                             element={<FindAccountPage type="result" />}
                         />
                     </Route>
-                    <Route path="broadcast" element={<Broadcast />} />
+                    <Route path="v1/broadcast" element={<Broadcast />} />
                     <Route path="v1/live/:roomId" element={<BuyerLive />}></Route>
                 </Routes>
             </ChakraProvider>
