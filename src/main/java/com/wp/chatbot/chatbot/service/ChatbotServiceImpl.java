@@ -1,13 +1,18 @@
 package com.wp.chatbot.chatbot.service;
 
 import com.wp.chatbot.chatbot.dto.request.ChatbotCreateRequest;
+import com.wp.chatbot.chatbot.dto.request.ChatbotSearchRequest;
 import com.wp.chatbot.chatbot.dto.request.ChatbotUpdateRequest;
+import com.wp.chatbot.chatbot.dto.response.ChatbotResponse;
 import com.wp.chatbot.chatbot.entity.Chatbot;
 import com.wp.chatbot.chatbot.repository.ChatbotRepository;
 import com.wp.chatbot.global.common.code.ErrorCode;
 import com.wp.chatbot.global.exception.BusinessExceptionHandler;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -15,6 +20,16 @@ import java.util.Optional;
 public class ChatbotServiceImpl implements ChatbotService{
 
     private final ChatbotRepository chatbotRepository;
+
+    @Override
+    public Map<String, Object> search(ChatbotSearchRequest request) {
+        Page<ChatbotResponse> result = chatbotRepository.search(request);
+
+        Map<String,Object> map = new HashMap<>();
+        map.put("list",result.getContent());
+        map.put("totalSize",result.getTotalElements());
+        return map;
+    }
 
     @Override
     public void save(ChatbotCreateRequest request) {

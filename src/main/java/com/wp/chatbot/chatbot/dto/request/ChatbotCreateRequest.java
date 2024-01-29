@@ -1,12 +1,8 @@
 package com.wp.chatbot.chatbot.dto.request;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
-
-import java.time.LocalDateTime;
-
 
 @Getter
 @Schema(description = "상품 조회를 위한 요청 객체")

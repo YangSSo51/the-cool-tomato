@@ -1,6 +1,7 @@
 package com.wp.chatbot.chatbot.controller;
 
 import com.wp.chatbot.chatbot.dto.request.ChatbotCreateRequest;
+import com.wp.chatbot.chatbot.dto.request.ChatbotSearchRequest;
 import com.wp.chatbot.chatbot.dto.request.ChatbotUpdateRequest;
 import com.wp.chatbot.chatbot.service.ChatbotService;
 import com.wp.chatbot.global.common.code.SuccessCode;
@@ -15,6 +16,8 @@ import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+
 
 @Slf4j
 @RestController
@@ -24,6 +27,19 @@ import org.springframework.web.bind.annotation.*;
 public class ChatBotController {
 
     private final ChatbotService chatbotService;
+
+    @PostMapping("/list")
+    public ResponseEntity<?> getChatbotList(@RequestBody @Valid ChatbotSearchRequest request){
+
+        Map<String,Object> result = chatbotService.search(request);
+
+        SuccessResponse response = SuccessResponse.builder()
+                .data(result)
+                .status(SuccessCode.SELECT_SUCCESS.getStatus())
+                .message(SuccessCode.SELECT_SUCCESS.getMessage()).build();
+
+        return new ResponseEntity<>(response,HttpStatus.OK);
+    }
 
     @PostMapping
     @Operation(summary = "챗봇 질의응답 등록",description = "판매자가 챗봇 질의응답을 등록함")
