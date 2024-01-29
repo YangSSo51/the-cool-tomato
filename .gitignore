@@ -1,8 +1,5 @@
 HELP.md
 build.gradle
-gradlew
-gradlew.bat
-gradle
 .gradle
 build/
 !gradle/wrapper/gradle-wrapper.jar
@@ -40,6 +37,6 @@ out/
 ### VS Code ###
 .vscode/
 
-### 설정 정보
+### 세팅 정보 ###
 src/main/resources/application.yml
 src/main/resources/application.properties
