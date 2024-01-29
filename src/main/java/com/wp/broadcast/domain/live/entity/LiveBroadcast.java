@@ -33,6 +33,6 @@ public class LiveBroadcast {
     private LocalDateTime broadcastEndDate;
     private Boolean broadcastStatus;
     private Long viewCount;
-    private Long sessionId;
+    private String sessionId;
     private String topicId;
 }

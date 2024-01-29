@@ -9,7 +9,6 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class StopRequestDto {
-    private String accessToken;
+public class ParticipateRequestDto {
     private Long liveBroadcastId;
 }
