@@ -3,6 +3,7 @@ package com.wp.product.productquestion.controller;
 import com.wp.product.global.common.code.SuccessCode;
 import com.wp.product.global.common.response.SuccessResponse;
 import com.wp.product.productquestion.dto.request.ProductQuestionCreateRequest;
+import com.wp.product.productquestion.dto.request.ProductQuestionSearchRequest;
 import com.wp.product.productquestion.dto.request.ProductQuestionUpdateRequest;
 import com.wp.product.productquestion.dto.response.ProductQuestionResponse;
 import com.wp.product.productquestion.service.ProductQuestionService;
@@ -14,6 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import java.util.Map;
 
 @Slf4j
 @RestController
@@ -23,6 +25,20 @@ import org.springframework.web.bind.annotation.*;
 public class ProductQuestionController {
 
     private final ProductQuestionService productQuestionService;
+
+    @PostMapping("/list")
+    @Operation(summary = "상품 문의 목록 조회",description = "상품 번호로 상품 문의 리스트를 조회함")
+    public ResponseEntity<?> getProductQuestionList(@RequestBody ProductQuestionSearchRequest productQuestionSearchRequest){
+        //상품 문의 리스트 조회
+        Map<String, Object> productQuestionList = productQuestionService.getProductQuestionList(productQuestionSearchRequest);
+
+        SuccessResponse response = SuccessResponse.builder()
+                .data(productQuestionList)
+                .status(SuccessCode.SELECT_SUCCESS.getStatus())
+                .message(SuccessCode.SELECT_SUCCESS.getMessage()).build();
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
 
     @GetMapping("/{productQuestionId}")
     @Operation(summary = "상품 문의 조회",description = "구매자가 상품 문의를 조회함")

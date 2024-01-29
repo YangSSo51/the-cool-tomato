@@ -4,15 +4,18 @@ import com.wp.product.global.common.code.ErrorCode;
 import com.wp.product.global.exception.BusinessExceptionHandler;
 import com.wp.product.product.entity.Product;
 import com.wp.product.productquestion.dto.request.ProductQuestionCreateRequest;
+import com.wp.product.productquestion.dto.request.ProductQuestionSearchRequest;
 import com.wp.product.productquestion.dto.request.ProductQuestionUpdateRequest;
 import com.wp.product.productquestion.dto.response.ProductQuestionResponse;
+import com.wp.product.productquestion.dto.response.ProductQuestionSearchResponse;
 import com.wp.product.productquestion.entity.ProductQuestion;
 import com.wp.product.productquestion.repository.ProductQuestionRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
-import java.util.NoSuchElementException;
-import java.util.Optional;
+
+import java.util.*;
 
 @Slf4j
 @Service
@@ -20,6 +23,20 @@ import java.util.Optional;
 public class ProductQuestionServiceImpl implements ProductQuestionService{
 
     private final ProductQuestionRepository productQuestionRepository;
+
+    @Override
+    public Map<String, Object> getProductQuestionList(ProductQuestionSearchRequest productQuestionSearchRequest) {
+        try {
+            Page<ProductQuestionSearchResponse> result = productQuestionRepository.search(productQuestionSearchRequest);
+            Map<String,Object> map = new HashMap<>();
+
+            map.put("list",result.getContent());
+            map.put("totalCount",result.getTotalElements());
+            return map;
+        }catch (Exception e){
+            throw new BusinessExceptionHandler("상품 문의 조회 중 에러 발생",ErrorCode.INTERNAL_SERVER_ERROR);
+        }
+    }
 
     @Override
     public ProductQuestionResponse findProductQuestion(Long productQuestionId) {

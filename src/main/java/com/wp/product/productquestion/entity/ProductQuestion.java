@@ -20,6 +20,9 @@ public class ProductQuestion {
     private Long productQuestionBoardId;
     private Long writerId;
 
+    @Transient
+    private String writerNickname;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id")
     private Product product;
