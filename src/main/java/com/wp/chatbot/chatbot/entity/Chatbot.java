@@ -1,9 +1,7 @@
 package com.wp.chatbot.chatbot.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.wp.chatbot.chatbot.dto.request.ChatbotUpdateRequest;
+import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
@@ -23,5 +21,11 @@ public class Chatbot {
     private String question;
     private String answer;
     @CreationTimestamp
+    @Column(updatable = false)
     private LocalDateTime registerDate;
+
+    public void change(ChatbotUpdateRequest request) {
+        this.question = request.getQuestion();
+        this.answer = request.getAnswer();
+    }
 }
