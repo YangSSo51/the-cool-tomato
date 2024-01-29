@@ -52,4 +52,18 @@ public class ChatBotController {
 
         return new ResponseEntity<>(response,HttpStatus.OK);
     }
+
+    @DeleteMapping("/{chatbotId}")
+    @Operation(summary = "챗봇 질의응답 삭제",description = "판매자가 챗봇 질의응답을 삭제함")
+    public ResponseEntity<?> deleteChatbot(@PathVariable Long chatbotId){
+        //TODO : 판매자 권한인지 확인 필요
+        chatbotService.delete(chatbotId);
+
+        SuccessResponse response = SuccessResponse.builder()
+                .status(SuccessCode.DELETE_SUCCESS.getStatus())
+                .message(SuccessCode.DELETE_SUCCESS.getMessage())
+                .build();
+
+        return new ResponseEntity<>(response,HttpStatus.OK);
+    }
 }

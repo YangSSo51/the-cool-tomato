@@ -46,4 +46,13 @@ public class ChatbotServiceImpl implements ChatbotService{
             throw new BusinessExceptionHandler("챗봇 질의응답 수정에 실패했습니다", ErrorCode.UPDATE_ERROR);
         }
     }
+
+    @Override
+    public void delete(Long chatbotId) {
+        try {
+            chatbotRepository.deleteById(chatbotId);
+        }catch (Exception e){
+            throw new BusinessExceptionHandler("챗봇 질의응답 삭제 중 에러가 발생했습니다",ErrorCode.DELETE_ERROR);
+        }
+    }
 }

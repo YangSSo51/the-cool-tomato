@@ -7,4 +7,6 @@ public interface ChatbotService {
     void save(ChatbotCreateRequest request);
 
     void update(ChatbotUpdateRequest request);
+
+    void delete(Long chatbotId);
 }
