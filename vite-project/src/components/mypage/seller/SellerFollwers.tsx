@@ -1,12 +1,12 @@
 import { Box, Text } from "@chakra-ui/layout";
 
 
-function Items() {
+function Followers() {
     return (
         <Box flexDirection="column" w="90%" h="full" overflowY="scroll">
-            <Text>내가등록한판매할상품</Text>
+            <Text>팔로워칭구들내팬들내고객님들</Text>
         </Box>
     )
 }
 
-export default Items
+export default Followers

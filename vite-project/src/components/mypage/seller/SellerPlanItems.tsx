@@ -1,4 +1,4 @@
-import { Box, Flex, Spacer } from "@chakra-ui/layout";
+import { Box, Flex } from "@chakra-ui/layout";
 import { Image, Badge, Button, useDisclosure, AlertDialog,
     AlertDialogBody,
     AlertDialogFooter,
@@ -12,7 +12,7 @@ function PlanItems() {
     const { isOpen, onOpen, onClose } = useDisclosure();
     const cancelRef = useRef();
     const broadcastInfo = {
-      imageUrl: 'https://bit.ly/2Z4KKcF',
+      imageUrl: 'https://www.vegannews.co.kr/data/photos/20230727/art_1688713002447_e60ce1.png',
       imageAlt: 'Rear view of modern home with pool',
       title: '병창농부의 특급 제안-소나무같은 브룩껄리',
       time: '2024.01.25 오후 8:00 예정',
@@ -22,13 +22,12 @@ function PlanItems() {
   
     return (
       <Flex justifyContent="space-between" p="2" borderWidth='1px' borderRadius='lg' overflow='hidden'>
-        <Box p='2'>
 
-        <Flex>
+        <Flex p="2">
             <Image mr="2" boxSize="100px" src={broadcastInfo.imageUrl} alt={broadcastInfo.imageAlt} />
             <Box>
                 <Box display='flex' alignItems='baseline'>
-                    <Badge borderRadius='full' px='2' colorScheme='teal'>
+                    <Badge borderRadius='full' px='2' colorScheme='red'>
                     대기중
                     </Badge>
                 </Box>
@@ -79,7 +78,7 @@ function PlanItems() {
             <Button>수정</Button>
             <Button>등록취소</Button>
         </Flex>
-        </Box>
+
       </Flex>
     )
 }

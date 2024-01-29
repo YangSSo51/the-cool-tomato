@@ -49,6 +49,7 @@ const data = {
 
 function Menu() {
     return (
+
         <Box w="80" borderLeft="1px" overflow="auto" p={6}>
             <Text fontSize="2xl" fontWeight="bold" mb={4}>
                 메뉴
@@ -59,8 +60,10 @@ function Menu() {
                     <Tab>피드백</Tab>
                     <Tab>통계</Tab>
                     <Tab>상품목록</Tab>
+
                 </TabList>
                 <TabList>
+
                     <Tab>새상품등록하기</Tab>
                     <Tab>방송정보수정</Tab>
                     <Tab>대본보기</Tab>
