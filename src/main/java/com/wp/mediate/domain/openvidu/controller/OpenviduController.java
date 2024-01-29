@@ -19,7 +19,7 @@ public class OpenviduController {
     OpenviduService openviduService;
 
     @ResponseBody
-    @GetMapping("/session")
+    @PostMapping("/session")
     public ResponseEntity<String> getSession(){
         String session = openviduService.createSession();
         return new ResponseEntity<>(session, HttpStatus.OK);
@@ -31,7 +31,7 @@ public class OpenviduController {
         return HttpStatus.OK;
     }
 
-    @GetMapping("/token/{sessionId}/{role}")
+    @PostMapping("/token/{sessionId}/{role}")
     public ResponseEntity<String> getToken(@PathVariable String sessionId, @PathVariable String role){
         if(role.equals("판매자")){
             String token = openviduService.getToken(sessionId, OpenViduRole.PUBLISHER);
