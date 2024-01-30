@@ -10,7 +10,7 @@ import {
     FormLabel,
     Select,
 } from "@chakra-ui/react";
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import ReactDOM from "react-dom/client";
 
 import "froala-editor/css/froala_style.min.css";
@@ -27,6 +27,13 @@ export default function ItemAdd() {
         attribution: false,
         iframe: true,
     };
+
+    const [content, setContent] = useState('')
+
+    const handleModelChange = (model : string) => {
+        setContent(model)
+        console.log(content)
+    }
 
     useEffect(() => {
         if (editorRef.current) {
@@ -84,6 +91,8 @@ export default function ItemAdd() {
                             <FroalaEditorComponent
                                 tag="textarea"
                                 config={config}
+                                model={content}
+                                onModelChange={handleModelChange}
                             />
                         </Box>
                     </Box>
