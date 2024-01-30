@@ -22,6 +22,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 @RequestMapping("/v1/live-products")
 @Tag(name="라이브 상품 API",description = "라이브 상품 관리용 API")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class LiveProductController {
 
     private final LiveProductService liveProductService;

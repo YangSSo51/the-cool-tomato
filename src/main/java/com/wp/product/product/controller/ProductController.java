@@ -23,6 +23,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 @RequestMapping("/v1/products")
 @Tag(name="상품 API",description = "상품 관리용 API")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class ProductController {
 
     private final ProductService productService;
