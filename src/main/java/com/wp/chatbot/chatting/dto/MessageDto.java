@@ -1,4 +1,4 @@
-package com.wp.chatbot.chatting.controller.dto;
+package com.wp.chatbot.chatting.dto;
 
 import lombok.Builder;
 import lombok.Getter;

@@ -1,6 +1,6 @@
 package com.wp.chatbot.chatting.controller;
 
-import com.wp.chatbot.chatting.controller.dto.MessageDto;
+import com.wp.chatbot.chatting.dto.MessageDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.messaging.handler.annotation.MessageMapping;
