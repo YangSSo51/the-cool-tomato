@@ -18,6 +18,7 @@ import FindAccountPage from "./pages/FindAccountPage";
 import MainPage from "./pages/MainPage";
 import LiveAddForm from "./pages/LiveAddForm";
 import BuyerLive from "./pages/BuyerLive";
+import ItemAdd from "./components/item/ItemAdd";
 
 function App() {
     return (
@@ -55,8 +56,9 @@ function App() {
                             path="findaccount"
                             element={<FindAccountPage type="result" />}
                         />
+                        <Route path="ItemAdd" element={<ItemAdd />}></Route>
                     </Route>
-                    <Route path="broadcast" element={<Broadcast />} />
+                    <Route path="v1/broadcast" element={<Broadcast />} />
                     <Route path="v1/live/:roomId" element={<BuyerLive />}></Route>
                 </Routes>
             </ChakraProvider>

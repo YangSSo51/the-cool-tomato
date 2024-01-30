@@ -5,7 +5,7 @@ import BuyerChat from "../components/live/BuyerChat";
 
 import { CiHeart } from "react-icons/ci";
 import { Icon } from "@chakra-ui/react";
-import NavBar from "../components/common/Navbar";
+import BuyerLiveNav from "../components/common/BuyerLiveNav";
 
 import OpenViduComponent from "../components/openvidu/OpenViduComponent";
 
@@ -16,7 +16,8 @@ function UnfilledHeart() {
 export default function BuyerLive() {
     return (
         <>
-            <NavBar />
+
+            <BuyerLiveNav />
             <Flex direction={"column"} backgroundColor={"themeWhite.500"}>
                 <Center mt={"1rem"} p={"1rem"}>
                     <Flex
