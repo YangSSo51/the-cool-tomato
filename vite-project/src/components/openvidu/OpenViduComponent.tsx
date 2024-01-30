@@ -13,6 +13,7 @@ function OpenViduComponent({
 }) {
     const OPENVIDU_SERVER_URL = `https://i10a501.p.ssafy.io/openvidu/`;
     const [session, setSession] = useState<Session | null>(null);
+    const [subscribers, setSubscribers] = useState<Subscriber[] | null>(null);
     const [subscriber, setSubscriber] = useState<Subscriber | null>(null);
     const [publisher, setPublisher] = useState<Publisher | null>(null);
     const [OV, setOV] = useState<OpenVidu | null>(null);
@@ -24,7 +25,7 @@ function OpenViduComponent({
             session.disconnect();
         }
         setSession(null);
-        setSubscriber(null);
+        setSubscribers(null);
         setPublisher(null);
         setOV(null);
     }, [session]);
@@ -38,10 +39,10 @@ function OpenViduComponent({
 
     useEffect(() => {
         console.log("useEffect eventListener");
-        window.addEventListener("beforeunload", leaveSession);
+        window.addEventListener("beforeunload", leaveSession, true);
 
         return () => {
-            window.removeEventListener("beforeunload", leaveSession);
+            window.removeEventListener("beforeunload", leaveSession, true);
         };
     }, [leaveSession]);
 
@@ -50,21 +51,33 @@ function OpenViduComponent({
 
         session.on("streamDestroyed", (event) => {
             console.log("useEffect streamDestroyed");
-            if (
-                subscriber &&
-                event.stream.streamId === subscriber.stream.streamId
-            ) {
-                setSubscriber(null);
+            // console.log("event.stream: ");
+            // console.log(event.stream);
+            // console.log("subscribers: ");
+            // console.log(subscribers);
+            if (subscribers === null) return;
+            const stream = event.stream;
+            const index = subscribers.findIndex(
+                (subscriber) => subscriber.stream === stream
+            );
+            if (index !== -1) {
+                const newSubscribers = [...subscribers].splice(index, 1);
+                // console.log("newSubscribers: ");
+                // console.log(newSubscribers);
+                setSubscribers(newSubscribers);
             }
+            setSubscriber(null);
         });
-
-        console.log("useEffect streamCreated");
 
         session.on("streamCreated", (event) => {
-            const subscribers = session.subscribe(event.stream, undefined);
-            setSubscriber(subscribers);
+            console.log("useEffect streamCreated");
+            const stream = session.subscribe(event.stream, undefined);
+            // console.log("stream: ");
+            // console.log(stream);
+            setSubscriber(stream);
+            setSubscribers(subscribers ? [...subscribers, stream] : [stream]);
         });
-    }, [session, subscriber]);
+    }, [session, subscribers]);
 
     useEffect(() => {
         if (session === null) {
@@ -124,10 +137,10 @@ function OpenViduComponent({
                 if (session === null) throw new Error("No active session");
                 const sessionIds = await createSession(mySessionId);
                 console.log("getToken sessionIds :");
-                console.log(sessionIds);
+                // console.log(sessionIds);
                 const token = await createToken(sessionIds);
                 console.log("getToken token :");
-                console.log(token);
+                // console.log(token);
                 return token;
             } catch (error) {
                 return Promise.reject(error);
@@ -144,6 +157,7 @@ function OpenViduComponent({
                         if (!OV) {
                             return Promise.reject("OV is not initialized");
                         }
+                        if (type === "live") return;
                         const publishers = OV.initPublisher(undefined, {
                             audioSource: undefined,
                             videoSource: undefined,
@@ -174,7 +188,7 @@ function OpenViduComponent({
             })
             .catch((e) => {
                 console.log("getToken error");
-                console.log(e);
+                // console.log(e);
             });
     }, [OPENVIDU_SERVER_URL, OV, mySessionId, session, type]);
 

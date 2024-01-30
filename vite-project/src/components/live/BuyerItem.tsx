@@ -8,7 +8,6 @@ export default function BuyerItem() {
     return (
         <>
             <Flex direction={"column"}>
-                
                 <Center p={"1rem"}>
                     <Text as={"b"} fontSize={"2xl"}>
                         라이브 특별 가격!
@@ -18,6 +17,7 @@ export default function BuyerItem() {
                 <Box p={"0.5rem"}>
                     {dummylist.map((data) => (
                         <BuyerLiveItem
+                            key={data.id}
                             id={data.id}
                             img={data.img}
                             title={data.title}
