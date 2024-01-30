@@ -22,6 +22,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 @RequestMapping("/v1/product-questions")
 @Tag(name="상품 문의 API",description = "상품 문의 관리용 API")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class ProductQuestionController {
 
     private final ProductQuestionService productQuestionService;
