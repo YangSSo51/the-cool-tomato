@@ -1,0 +1,24 @@
+package com.wp.product.product.dto.response;
+
+import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Builder;
+import lombok.Getter;
+import java.time.LocalDateTime;
+
+@Getter
+@Builder
+@Schema(description = "상품 조회을 위한 응답 객체")
+public class ProductFindResponse {
+    private Long productId;
+    private Long sellerId;
+    private Long sellerName;
+    private Long categoryId;
+    private String categoryName;
+    private String productName;
+    private String productContent;
+    private String paymentLink;
+    private int price;
+    private int deliveryCharge;
+    private int quantity;
+    private LocalDateTime registerDate;
+}
