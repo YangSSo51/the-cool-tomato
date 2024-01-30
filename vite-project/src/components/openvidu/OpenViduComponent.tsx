@@ -1,12 +1,6 @@
-import {
-    OpenVidu,
-    Publisher,
-    Session,
-    StreamManager,
-    Subscriber,
-} from "openvidu-browser";
+import { OpenVidu, Publisher, Session, Subscriber } from "openvidu-browser";
 
-import axios, { AxiosError, AxiosResponse } from "axios";
+import axios, { AxiosResponse } from "axios";
 import UserVideoComponent from "./UserVideoComponent";
 import { useCallback, useEffect, useState } from "react";
 
@@ -81,16 +75,6 @@ function OpenViduComponent({
 
         async function createSession(sessionId: string): Promise<string> {
             try {
-                // const response: AxiosResponse = await axios.post(
-                //     OPENVIDU_SERVER_URL + "api/sessions",
-                //     { customSessionId: sessionId },
-                //     {
-                //         headers: {
-                //             "Content-Type": "application/json",
-                //             Authorization: "Basic T1BFTlZJRFVBUFA6c3NhZnk",
-                //         },
-                //     }
-                // );
                 const options = {
                     url: OPENVIDU_SERVER_URL + "api/sessions",
                     method: "POST",
@@ -110,7 +94,7 @@ function OpenViduComponent({
                 const response: AxiosResponse = await axios(options);
                 return (response.data as { id: string }).id; // The sessionId
             } catch (error) {
-                console.error(error);
+                console.log("createSession error");
                 return Promise.reject(error);
             }
         }
@@ -131,7 +115,7 @@ function OpenViduComponent({
                 );
                 return (response.data as { token: string }).token; // The token
             } catch (error) {
-                console.error(error);
+                console.log("createToken error");
                 return Promise.reject(error);
             }
         }
@@ -139,14 +123,14 @@ function OpenViduComponent({
             try {
                 if (session === null) throw new Error("No active session");
                 const sessionIds = await createSession(mySessionId);
-                console.log("getToken sessionIds");
+                console.log("getToken sessionIds :");
                 console.log(sessionIds);
                 const token = await createToken(sessionIds);
-                console.log("getToken token");
+                console.log("getToken token :");
                 console.log(token);
                 return token;
             } catch (error) {
-                return Promise.reject("Failed to get token.");
+                return Promise.reject(error);
             }
         };
 
@@ -180,12 +164,12 @@ function OpenViduComponent({
                             })
                             .catch((e) => {
                                 console.log("session publish error");
-                                console.log(e);
+                                return Promise.reject(e);
                             });
                     })
                     .catch((e) => {
                         console.log("session connect error");
-                        console.log(e);
+                        return Promise.reject(e);
                     });
             })
             .catch((e) => {
