@@ -10,8 +10,10 @@ function UserVideoComponent({
 }: {
     streamManager: StreamManager;
 }) {
+    console.log("UserVideoComponent streamManager");
+    console.log(streamManager);
     return (
-        <div style={{ height: "100%" }}>
+        <>
             {streamManager !== undefined ? (
                 <div className="streamcomponent" style={{ height: "100%" }}>
                     {/* <div>
@@ -20,7 +22,7 @@ function UserVideoComponent({
                     <OpenViduVideoComponent streamManager={streamManager} />
                 </div>
             ) : null}
-        </div>
+        </>
     );
 }
 

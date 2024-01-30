@@ -27,10 +27,7 @@ function BroadcastScreen() {
             </Text>
             {/* <Box bg="gray.200" rounded="md" h="84vh" /> */}
             {flag ? (
-                <OpenViduComponent
-                    mySessionId="SessionA"
-                    myUserName="userTest"
-                />
+                <OpenViduComponent mySessionId="SessionA" type="broadcast" />
             ) : null}
         </Box>
     );

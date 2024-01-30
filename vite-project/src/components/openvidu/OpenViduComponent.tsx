@@ -10,21 +10,12 @@ import axios, { AxiosError, AxiosResponse } from "axios";
 import UserVideoComponent from "./UserVideoComponent";
 import { useCallback, useEffect, useState } from "react";
 
-interface OpenViduType {
-    mySessionId: string;
-    myUserName: string;
-    session: Session | undefined;
-    mainStreamManager: StreamManager | undefined;
-    publisher: StreamManager | undefined;
-    subscribers: StreamManager[];
-}
-
 function OpenViduComponent({
     mySessionId,
-    myUserName,
+    type,
 }: {
     mySessionId: string;
-    myUserName: string;
+    type: string;
 }) {
     const OPENVIDU_SERVER_URL = `https://i10a501.p.ssafy.io/openvidu/`;
     const [session, setSession] = useState<Session | null>(null);
@@ -61,10 +52,10 @@ function OpenViduComponent({
     }, [leaveSession]);
 
     useEffect(() => {
-        console.log("useEffect streamDestroyed");
         if (session === null) return;
 
         session.on("streamDestroyed", (event) => {
+            console.log("useEffect streamDestroyed");
             if (
                 subscriber &&
                 event.stream.streamId === subscriber.stream.streamId
@@ -72,32 +63,51 @@ function OpenViduComponent({
                 setSubscriber(null);
             }
         });
+
+        console.log("useEffect streamCreated");
+
+        session.on("streamCreated", (event) => {
+            const subscribers = session.subscribe(event.stream, undefined);
+            setSubscriber(subscribers);
+        });
     }, [session, subscriber]);
 
     useEffect(() => {
         if (session === null) {
+            console.log("joinSession");
             joinSession();
             return;
         }
-        console.log("useEffect streamCreated");
-
-        session.on("streamCreated", (event) => {
-            const subscribers = session.subscribe(event.stream, "");
-            setSubscriber(subscribers);
-        });
 
         async function createSession(sessionId: string): Promise<string> {
             try {
-                const response: AxiosResponse = await axios.post(
-                    OPENVIDU_SERVER_URL + "api/sessions",
-                    { customSessionId: sessionId },
-                    {
-                        headers: {
-                            "Content-Type": "application/json",
-                            Authorization: "Basic T1BFTlZJRFVBUFA6c3NhZnk",
-                        },
-                    }
-                );
+                // const response: AxiosResponse = await axios.post(
+                //     OPENVIDU_SERVER_URL + "api/sessions",
+                //     { customSessionId: sessionId },
+                //     {
+                //         headers: {
+                //             "Content-Type": "application/json",
+                //             Authorization: "Basic T1BFTlZJRFVBUFA6c3NhZnk",
+                //         },
+                //     }
+                // );
+                const options = {
+                    url: OPENVIDU_SERVER_URL + "api/sessions",
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: "Basic T1BFTlZJRFVBUFA6c3NhZnk",
+                    },
+                };
+                if (type === "broadcast") {
+                    Object.assign(options, {
+                        data: { customSessionId: sessionId },
+                    });
+                } else {
+                    options.method = "GET";
+                    options.url += "/" + sessionId;
+                }
+                const response: AxiosResponse = await axios(options);
                 return (response.data as { id: string }).id; // The sessionId
             } catch (error) {
                 console.error(error);
@@ -136,50 +146,62 @@ function OpenViduComponent({
                 console.log(token);
                 return token;
             } catch (error) {
-                throw new Error("Failed to get token.");
+                return Promise.reject("Failed to get token.");
             }
         };
 
+        console.log("useEffect getToken start");
         getToken()
             .then((token) => {
                 if (!session) return;
                 session
                     .connect(token)
                     .then(() => {
-                        if (OV) {
-                            const publishers = OV.initPublisher(undefined, {
-                                audioSource: undefined,
-                                videoSource: undefined,
-                                publishAudio: true,
-                                publishVideo: true,
-                                mirror: true,
-                                resolution: "480x854", // The resolution of your video
-                                frameRate: 30, // The frame rate of your video
-                            });
-
-                            console.log("session connect publishers");
-                            console.log(publishers);
-                            setPublisher(publishers);
-                            session
-                                .publish(publishers)
-                                .then(() => {})
-                                .catch(() => {});
+                        if (!OV) {
+                            return Promise.reject("OV is not initialized");
                         }
+                        const publishers = OV.initPublisher(undefined, {
+                            audioSource: undefined,
+                            videoSource: undefined,
+                            publishAudio: true,
+                            publishVideo: true,
+                            mirror: true,
+                            resolution: "360x720", // The resolution of your video
+                            frameRate: 30, // The frame rate of your video
+                        });
+
+                        console.log("session connect setPublishers");
+                        console.log(publishers);
+                        setPublisher(publishers);
+                        session
+                            .publish(publishers)
+                            .then(() => {
+                                console.log("session publish publishers");
+                            })
+                            .catch((e) => {
+                                console.log("session publish error");
+                                console.log(e);
+                            });
                     })
-                    .catch(() => {});
+                    .catch((e) => {
+                        console.log("session connect error");
+                        console.log(e);
+                    });
             })
-            .catch(() => {});
-    }, [OPENVIDU_SERVER_URL, OV, mySessionId, session]);
-    return (
-        <>
-            {publisher == null ? null : (
-                <UserVideoComponent streamManager={publisher} />
-            )}
-            {/* {subscriber == null ? null : (
-                <UserVideoComponent streamManager={subscriber} />
-            )} */}
-        </>
-    );
+            .catch((e) => {
+                console.log("getToken error");
+                console.log(e);
+            });
+    }, [OPENVIDU_SERVER_URL, OV, mySessionId, session, type]);
+
+    function View() {
+        if (type === "broadcast" && publisher !== null) {
+            return <UserVideoComponent streamManager={publisher} />;
+        } else if (type === "live" && subscriber !== null) {
+            return <UserVideoComponent streamManager={subscriber} />;
+        } else return null;
+    }
+    return <View />;
 }
 
 export default OpenViduComponent;
