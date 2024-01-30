@@ -43,7 +43,7 @@ const dummylivelist = [
         id : 5,
         title: "달콤보들 프렌치토스트",
         price: 120000,
-        img: "https://g-selected.pstatic.net/MjAyNDAxMTBfMjE5/MDAxNzA0ODY5NTA3NTEy.H_eo5FiEeN-Gg7PpOk3m-MuBekkwPUvoKxAZoju6L6wg.8Gz9kmRfeQgpPJomOa5tlFa9xPjE2LoCYNH8SJf1BsUg.JPEG/image.jpg",
+        img: "https://phinf.pstatic.net/dthumb/?src=%22https%3A%2F%2Fvideo-phinf.pstatic.net%2F20240125_268%2F1706149552985mRqBc_JPEG%2F016ce1c2-bb29-11ee-8c8a-48df3772577a_01.jpg%22&service=selective&type=f320_480_q90",
         content : "우리 유기농 고구마는 어려서부터 어머니와 함께 키운 제 자식같은 존재입니다."
       },
 

@@ -38,7 +38,7 @@ export default function LiveCarouselComponent() {
 
             >
                 {dummylivelist.map((data) => (
-                    <Box key={data.id} w="calc(16.33%)" pointerEvents={"none"}>
+                    <Box key={data.id} w="calc(10.33%)" pointerEvents={"none"}>
                         <LiveListComponent
                             id={data.id}
                             url={data.img}

@@ -1,14 +1,15 @@
-import { Box, Center, Flex, Text } from "@chakra-ui/react";
+import { Center, Divider, Flex, Input, Text } from "@chakra-ui/react";
 
 export default function BuyerChat() {
     return (
         <>
             <Flex direction={"column"} h={"100%"} p={"1rem"}>
                 <Center>
-                    <Text as={"b"} fontSize={"lg"}>
+                    <Text as={"b"} fontSize={"2xl"}>
                         실시간 채팅
                     </Text>
                 </Center>
+                <Divider></Divider>
                 <Flex
                     flex="1"
                     direction={"column"}
@@ -17,7 +18,7 @@ export default function BuyerChat() {
                 >
                     채팅 화면
                 </Flex>
-                <Box border={"1px"}>채팅창</Box>
+                <Input variant='filled' placeholder='채팅을 입력해주세요' />
             </Flex>
         </>
     );
