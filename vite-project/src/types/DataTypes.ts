@@ -36,3 +36,12 @@ export type UserState = {
     accessToken: string;
     refreshToken: string;
 };
+
+export type RegisterUser = {
+    loginId: string;
+    password: string;
+    email: string;
+    nickname: string;
+    sex: true | false;
+    birthday: string;
+}
