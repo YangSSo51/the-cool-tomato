@@ -29,8 +29,17 @@ public class ProductController {
     private final ProductService productService;
 
     @PostMapping("/list")
-    @Operation(summary = "상품 목록 조회",description = "카테고리 ID, 판매자 ID로 상품 목록 조회 ")
-    public ResponseEntity<?> searchProduct(@RequestBody ProductSearchRequest productSearchRequest){
+    @Operation(summary = "상품 목록 조회",description = "카테고리 ID로 상품 목록 조회 ")
+    public ResponseEntity<?> searchProduct(@RequestParam(defaultValue = "0") int page,
+                                           @RequestParam(defaultValue = "10") int size,
+                                           @RequestParam(required = false,name = "category-id") Long categoryId){
+
+        //상품 목록 조회 request 만듦
+        ProductSearchRequest productSearchRequest = ProductSearchRequest.builder()
+                                                                        .page(page)
+                                                                        .size(size)
+                                                                        .categoryId(categoryId).build();
+
         //카테고리 ID, 판매자 ID로 다중 상품 조회
         Map<String, Object> productFindResponses = productService.searchProduct(productSearchRequest);
 
@@ -42,11 +51,11 @@ public class ProductController {
         return new ResponseEntity<>(response,HttpStatus.OK);
     }
 
-    @GetMapping("/my/list")
-    @Operation(summary = "마이페이지 상품 목록 조회",description = "마이페이지에서 상품 id로 상품 목록 조회")
-    public ResponseEntity<?> searchProductInMypage(@RequestParam(required = false, value = "idList[]") List<Long> idList){
+    @GetMapping("/recent/list")
+    @Operation(summary = "마이페이지 최근 상품 목록 조회",description = "마이페이지에서 상품 id로 최근 본 상품 목록 조회")
+    public ResponseEntity<?> searchRecentProducts(@RequestParam(required = true, value = "idList[]") List<Long> idList){
         //마이페이지에서 상품 id로 상품 목록 조회
-        Map<String, Object> productFindResponses = productService.searchProductInMypage(idList);
+        Map<String, Object> productFindResponses = productService.searchRecentProducts(idList);
 
         SuccessResponse response = SuccessResponse.builder()
                 .data(productFindResponses)

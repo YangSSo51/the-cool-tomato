@@ -26,69 +26,35 @@ public class ProductServiceImpl implements ProductService{
     @Override
     public Map<String, Object> searchProduct(ProductSearchRequest productSearchRequest) {
         //검색 조건에 맞는 상품 리스트 조회
-        Page<Product> result = productRepository.search(productSearchRequest);
-        List<ProductFindResponse> list = new ArrayList<>();
+        try {
+            Page<ProductFindResponse> result = productRepository.search(productSearchRequest);
+            Map<String, Object> map = new HashMap<>();
 
-        Map<String,Object> map = new HashMap<>();
+            map.put("list", result.getContent());
+            map.put("totalCount", result.getTotalElements());
 
-        result.forEach(Product -> {
-            list.add(ProductFindResponse.builder()
-                    .productId(Product.getProductId())
-                    .sellerId(Product.getSellerId())
-                    .sellerName(Product.getSellerId())
-                    .categoryId(Product.getCategory().getCategoryId())
-                    .categoryName(Product.getCategory().getCategoryContent())
-                    .productName(Product.getProductName())
-                    .productContent(Product.getProductContent())
-                    .paymentLink(Product.getPaymentLink())
-                    .price(Product.getPrice())
-                    .deliveryCharge(Product.getDeliveryCharge())
-                    .quantity(Product.getQuantity())
-                    .registerDate(Product.getRegisterDate())
-                    .build());
-        });
-
-        map.put("list" , list);
-        map.put("totalCount", result.getTotalElements());
-
-        return map;
+            return map;
+        } catch (Exception e) {
+            log.debug(e.getMessage());
+            throw new BusinessExceptionHandler("상품 리스트 조회 중 에러가 발생했습니다.", ErrorCode.NO_ELEMENT_ERROR);
+        }
     }
 
     @Override
-    public Map<String, Object> searchProductInMypage(List<Long> idList) {
-        //검색 조건에 맞는 상품 리스트 조회
-        Page<Product> result = null;
+    public Map<String, Object> searchRecentProducts(List<Long> idList) {
         try {
-            result = productRepository.searchInMypage(idList);
-        }catch (NullPointerException e){
-            throw new NullPointerException("유효하지 않은 상품 번호입니다.");
+            //상품 아이디로 최근 본 상품 리스트 조회
+            Page<ProductFindResponse> result = productRepository.searchRecentProducts(idList);
+            Map<String, Object> map = new HashMap<>();
+
+            map.put("list" , result.getContent());
+            map.put("totalCount", result.getTotalElements());
+
+            return map;
+        }catch (Exception e){
+            log.debug(e.getMessage());
+            throw new BusinessExceptionHandler("유효하지 않은 상품 번호입니다.",ErrorCode.NO_ELEMENT_ERROR);
         }
-        List<ProductFindResponse> list = new ArrayList<>();
-
-        //반환값 매핑
-        Map<String,Object> map = new HashMap<>();
-
-        result.forEach(Product -> {
-            list.add(ProductFindResponse.builder()
-                    .productId(Product.getProductId())
-                    .sellerId(Product.getSellerId())
-                    .sellerName(Product.getSellerId())
-                    .categoryId(Product.getCategory().getCategoryId())
-                    .categoryName(Product.getCategory().getCategoryContent())
-                    .productName(Product.getProductName())
-                    .productContent(Product.getProductContent())
-                    .paymentLink(Product.getPaymentLink())
-                    .price(Product.getPrice())
-                    .deliveryCharge(Product.getDeliveryCharge())
-                    .quantity(Product.getQuantity())
-                    .registerDate(Product.getRegisterDate())
-                    .build());
-        });
-
-        map.put("list" , list);
-        map.put("totalCount", result.getTotalElements());
-
-        return map;
     }
 
     @Override
@@ -105,7 +71,6 @@ public class ProductServiceImpl implements ProductService{
         ProductFindResponse response = ProductFindResponse.builder()
                                         .productId(product.getProductId())
                                         .sellerId(product.getSellerId())
-                                        .sellerName(product.getSellerId())
                                         .categoryId(product.getCategory().getCategoryId())
                                         .productName(product.getProductName())
                                         .productContent(product.getProductContent())
