@@ -25,7 +25,7 @@ import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping(value = "/v1/mediate/openvidu")
+@RequestMapping(value = "/v1/live")
 @Tag(name = "live", description = "라이브 API Doc")
 public class LiveController {
 
@@ -83,7 +83,7 @@ public class LiveController {
 
     @ResponseBody
     @PostMapping("/stop")
-    @Operation(summary = "토큰 정보 추출", description = "라이브를 종료합니다.")
+    @Operation(summary = "라이브 종료", description = "라이브를 종료합니다.")
     public ResponseEntity<SuccessResponse<Boolean>> stopLive(@RequestBody @Validated StopRequestDto stopRequestDto){
         String accessToken = stopRequestDto.getAccessToken();
         if(authService.validateToken(accessToken)){

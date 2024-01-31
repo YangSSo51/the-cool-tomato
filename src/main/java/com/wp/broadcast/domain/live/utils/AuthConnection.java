@@ -29,7 +29,6 @@ public class AuthConnection {
                 .retrieve()
                 .bodyToMono(ResponseDto.class)
                 .block();
-
         return (boolean) result.getData();
     }
 
