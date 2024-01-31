@@ -182,17 +182,7 @@ public class UserServiceImpl implements UserService {
         // 회원 정보 추출
 
         // 회원 아이디로 회원 정보 추출
-        User user = userRepository.findById(1L).orElseThrow(() -> new BusinessExceptionHandler(ErrorCode.NOT_FOUND_USER_ID));
-        return GetUserResponse.builder()
-                .id(user.getId())
-                .loginId(user.getLoginId())
-                .nickname(user.getNickname())
-                .sex(user.getSex())
-                .birthday(user.getBirthday())
-                .profileImg(user.getProfileImg())
-                .auth(user.getAuth())
-                .joinDate(user.getJoinDate())
-                .build();
+        return userRepository.findUserById(1L).orElseThrow(() -> new BusinessExceptionHandler(ErrorCode.NOT_FOUND_USER_ID));
     }
 
     // 개인 회원 정보 수정(미완)
