@@ -1,4 +1,4 @@
-package com.wp.broadcast.domain.live.dto.request;
+package com.wp.broadcast.domain.live.dto.controller.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,6 +9,6 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ParticipateRequestDto {
-    private Long liveBroadcastId;
+public class ParticipationResponseDto {
+    private String token;
 }

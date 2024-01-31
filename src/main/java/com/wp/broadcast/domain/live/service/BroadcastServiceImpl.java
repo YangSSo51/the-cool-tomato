@@ -1,0 +1,98 @@
+package com.wp.broadcast.domain.live.service;
+
+import com.wp.broadcast.domain.live.dto.controller.request.ParticipationRequestDto;
+import com.wp.broadcast.domain.live.dto.controller.request.ReservationRequestDto;
+import com.wp.broadcast.domain.live.dto.controller.request.StartRequestDto;
+import com.wp.broadcast.domain.live.dto.controller.request.StopRequestDto;
+import com.wp.broadcast.domain.live.entity.LiveBroadcast;
+import com.wp.broadcast.domain.live.repository.LiveBroadcastRepository;
+import com.wp.broadcast.domain.live.utils.MediateOpenviduConnection;
+import com.wp.broadcast.global.common.code.ErrorCode;
+import com.wp.broadcast.global.exception.BusinessExceptionHandler;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.NoSuchElementException;
+
+@Service
+@NoArgsConstructor
+@AllArgsConstructor
+public class BroadcastServiceImpl implements BroadcastService{
+
+    @Autowired
+    MediateOpenviduConnection mediateOpenviduConnection;
+    @Autowired
+    LiveBroadcastRepository liveBroadcastRepository;
+
+    @Override
+    public Long reserveBroadcast(ReservationRequestDto reservation, Long sellerId) {
+        LiveBroadcast liveBroadcast = LiveBroadcast.builder()
+                .sellerId(sellerId)
+                .broadcastTitle(reservation.getBroadcastTitle())
+                .content(reservation.getContent())
+                .script(reservation.getScript())
+                .ttsSetting(reservation.getTtsSetting())
+                .chatbotSetting(reservation.getChatbotSetting())
+                .broadcastStartDate(reservation.getBroadcastStartDate())
+                .broadcastStatus(false)
+                .viewCount(0L)
+                .build();
+        LiveBroadcast save = liveBroadcastRepository.save(liveBroadcast);
+        return save.getId();
+    }
+
+    @Override
+    public Map<String, String> startBroadcast(StartRequestDto start, Long sellerId) {
+        try {
+            LiveBroadcast liveBroadcast = liveBroadcastRepository.findById(start.getLiveBroadcastId()).orElseThrow();
+            if(!liveBroadcast.getSellerId().equals(sellerId))throw new BusinessExceptionHandler("올바른 판매자가 아닙니다.", ErrorCode.FORBIDDEN_ERROR);
+            String sessionId = mediateOpenviduConnection.getSessionId();
+            String token = mediateOpenviduConnection.getToken(sessionId, "판매자");
+            liveBroadcast.setBroadcastStatus(true);
+            liveBroadcast.setSessionId(sessionId);
+            liveBroadcast.setTopicId(sessionId);
+            liveBroadcastRepository.save(liveBroadcast);
+
+            Map<String, String> result = new HashMap<>();
+            result.put("topicId", sessionId);
+            result.put("token", token);
+            return result;
+        } catch (NoSuchElementException e){
+            throw new BusinessExceptionHandler("예약 내역이 없습니다.", ErrorCode.NOT_FOUND_ERROR);
+        } catch (Exception e){
+            e.printStackTrace();
+            throw new BusinessExceptionHandler("아이고 미안합니다. 김현종에게 문의해주세요~", ErrorCode.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @Override
+    public void stopBroadcast(StopRequestDto stop, Long sellerId) {
+        try {
+            LiveBroadcast liveBroadcast = liveBroadcastRepository.findById(stop.getLiveBroadcastId()).orElseThrow();
+            if(!liveBroadcast.getSellerId().equals(sellerId))throw new BusinessExceptionHandler("올바른 판매자가 아닙니다.", ErrorCode.FORBIDDEN_ERROR);
+            mediateOpenviduConnection.deleteSession(liveBroadcast.getSessionId());
+            liveBroadcast.setBroadcastStatus(false);
+            liveBroadcastRepository.save(liveBroadcast);
+        }catch (NoSuchElementException e) {
+            throw new BusinessExceptionHandler("방송 내역이 없습니다.", ErrorCode.NOT_FOUND_ERROR);
+        }catch (Exception e){
+            throw new BusinessExceptionHandler("아이고 미안합니다. 김현종에게 문의해주세요~", ErrorCode.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @Override
+    public String participateBroadcast(ParticipationRequestDto participation) {
+        try {
+            LiveBroadcast liveBroadcast = liveBroadcastRepository.findById(participation.getLiveBroadcastId()).orElseThrow();
+            return mediateOpenviduConnection.getToken(liveBroadcast.getSessionId(), "구매자");
+        }catch (NoSuchElementException e) {
+            throw new BusinessExceptionHandler("방송 내역이 없습니다.", ErrorCode.NOT_FOUND_ERROR);
+        }catch (Exception e){
+            throw new BusinessExceptionHandler("아이고 미안합니다. 김현종에게 문의해주세요~", ErrorCode.INTERNAL_SERVER_ERROR);
+        }
+    }
+}

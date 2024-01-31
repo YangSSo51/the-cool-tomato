@@ -30,6 +30,7 @@ class OpenviduProviderTest {
 
         ObjectMapper mapper = new ObjectMapper();
         Map<String, Object> map = mapper.readValue(block, Map.class);
+
         OpenVidu openVidu = new OpenVidu("http://i10a501.p.ssafy.io:5443/", "ssafy");
         SessionProperties build = SessionProperties.fromJson(map).build();
         Session session = openVidu.createSession(build);
