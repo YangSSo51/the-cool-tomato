@@ -28,7 +28,27 @@ async function SignupUserAPI(data: RegisterUser) {
 
 async function checkIdAPI(data: {id: string}) {
     console.log("아이디중복췤~!!!!!!", JSON.stringify(data))
-    http.get(`${url}/join/check-login-id/`, data)
+    try {
+        const response = await http.get(`${url}/join/check-login-id/${data.id}`)
+        const responseData = response.data;
+        if (responseData.status === 200 && responseData.data.isDuplicate === false) {
+            console.log("사용 가능한 아이디입니다.");
+        } else {
+            console.log("아이디가 중복되었거나 요청에 문제가 있습니다.");
+        }
+    } catch (error) {
+        console.error(error);
+    }
 }
 
-export { loginUser, SignupUserAPI, checkIdAPI };
+async function sendEmailAPI(data: {email: string}) {
+    console.log("이메일인증s날려~!!!!!!", JSON.stringify(data))
+    http.post(`${url}/join/check-email/`, data)
+}
+
+async function checkEmailAPI(data: {email: string}) {
+    console.log("인증번호확인~!~!!!!!!", JSON.stringify(data))
+    http.get(`${url}/join/check-email/`)
+}
+
+export { loginUser, SignupUserAPI, checkIdAPI, sendEmailAPI, checkEmailAPI };

@@ -13,7 +13,7 @@ import {
 } from "@chakra-ui/react";
 import { ViewIcon, CheckIcon } from "@chakra-ui/icons";
 import { Tooltip } from '@chakra-ui/react'
-import { SignupUserAPI } from "../../api/user";
+import { SignupUserAPI, checkIdAPI, sendEmailAPI, checkEmailAPI } from "../../api/user";
 
 function SignUpForm() {
     // 입력 받을 값: 아뒤, 비번, 이멜, 이멜인증, 닉넴, 성별, 생일
@@ -39,8 +39,6 @@ function SignUpForm() {
     const [isNicknameValid, setIsNicknameValid] = useState(false);
     const [isSexValid, setIsSexValid] = useState(false);
     const [isBirthdayValid, setIsBirthdayValid] = useState(false);
-
-    async function usernameDuplicateCheck(): Promise<void> {}
 
     function handleUsername(e: React.ChangeEvent<HTMLSelectElement>) {
         const inputValue = e.target.value;
@@ -126,7 +124,7 @@ function SignUpForm() {
                                     size="sm"
                                     colorScheme="themeGreen"
                                     variant="ghost"
-                                    onClick={usernameDuplicateCheck}
+                                    onClick={() => checkIdAPI({id : username})}
                                     borderRadius="md"
                                     _hover={{
                                         bg: "themeGreen.500",
@@ -222,6 +220,7 @@ function SignUpForm() {
                                     color: "white",
                                 }}  
                                 isDisabled={!isEmailValid}
+                                onClick={() => sendEmailAPI({email : email})}
                             >전송
                             </Button>
                         </InputRightElement>
