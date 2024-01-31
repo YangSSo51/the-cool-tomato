@@ -22,6 +22,7 @@ function OpenViduVideoComponent({
             muted={mute}
             ref={videoRef}
             onClick={handleClick}
+            style={{ objectFit: "cover" }}
         ></video>
     );
 }

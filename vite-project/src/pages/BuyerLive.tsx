@@ -16,7 +16,6 @@ function UnfilledHeart() {
 export default function BuyerLive() {
     return (
         <>
-
             <BuyerLiveNav />
             <Flex direction={"column"} backgroundColor={"themeWhite.500"}>
                 <Center mt={"1rem"} p={"1rem"}>
@@ -43,7 +42,7 @@ export default function BuyerLive() {
                         borderRadius={"20px"}
                         backgroundColor={"#ffffff"}
                     >
-                        <OpenViduComponent mySessionId="SessionA" type="live" />
+                        <OpenViduComponent type="live" />
                     </Box>
                     <Flex direction={"column"} alignSelf={"flex-end"}>
                         <UnfilledHeart />
