@@ -74,6 +74,47 @@ public class ProductSearchImpl extends QuerydslRepositorySupport implements Prod
     }
 
     @Override
+    public Page<ProductFindResponse> searchMyProducts(ProductSearchRequest request) {
+        Pageable pageable = PageRequest.of(request.getPage(),request.getSize());    //페이징
+
+        QProduct product = QProduct.product;
+        QCategory category = QCategory.category;
+
+        BooleanBuilder builder = new BooleanBuilder();
+
+        builder.and(product.sellerId.eq(request.getSellerId()));
+
+        List<ProductFindResponse> list =  queryFactory.select(Projections.bean(ProductFindResponse.class,
+                        product.productId,
+                        product.sellerId,
+                        product.category.categoryId,
+                        product.category.categoryContent.as("categoryName"),
+                        product.productName,
+                        product.productContent,
+                        product.paymentLink,
+                        product.price,
+                        product.deliveryCharge,
+                        product.quantity,
+                        product.registerDate
+                ))
+                .from(product)
+                .leftJoin(category)
+                .on(product.category.categoryId.eq(category.categoryId))
+                .fetchJoin()
+                .where(builder)
+                .orderBy(product.registerDate.desc())
+                .offset(request.getPage()*request.getSize())
+                .limit(request.getSize())
+                .fetch();
+
+        JPQLQuery<Long> countQuery = queryFactory.select(product.count())
+                .from(product)
+                .where(builder);
+
+        return PageableExecutionUtils.getPage(list,pageable,countQuery::fetchOne);
+    }
+
+    @Override
     @Transactional
     public Page<ProductFindResponse> searchRecentProducts(List<Long> idList) {
         //아이디 리스트로 마이페이지에서 검색

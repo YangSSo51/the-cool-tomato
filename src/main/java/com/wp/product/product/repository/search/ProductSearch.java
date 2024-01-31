@@ -7,5 +7,8 @@ import java.util.List;
 
 public interface ProductSearch {
     Page<ProductFindResponse> search(ProductSearchRequest request);
+
+    Page<ProductFindResponse> searchMyProducts(ProductSearchRequest request);
+
     Page<ProductFindResponse> searchRecentProducts(List<Long> idList);
 }

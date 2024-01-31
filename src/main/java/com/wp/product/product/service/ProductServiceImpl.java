@@ -41,6 +41,23 @@ public class ProductServiceImpl implements ProductService{
     }
 
     @Override
+    public Map<String, Object> searchMyProducts(ProductSearchRequest productSearchRequest) {
+        //판매자가 자신이 등록한 상품 리스트 조회
+        try {
+            Page<ProductFindResponse> result = productRepository.searchMyProducts(productSearchRequest);
+            Map<String, Object> map = new HashMap<>();
+
+            map.put("list", result.getContent());
+            map.put("totalCount", result.getTotalElements());
+
+            return map;
+        } catch (Exception e) {
+            log.debug(e.getMessage());
+            throw new BusinessExceptionHandler("상품 리스트 조회 중 에러가 발생했습니다.", ErrorCode.NO_ELEMENT_ERROR);
+        }
+    }
+
+    @Override
     public Map<String, Object> searchRecentProducts(List<Long> idList) {
         try {
             //상품 아이디로 최근 본 상품 리스트 조회
@@ -101,6 +118,7 @@ public class ProductServiceImpl implements ProductService{
             //상품을 등록함
             productRepository.save(product);
         }catch (DataIntegrityViolationException e){
+            log.debug(e.getMessage());
             throw new DataIntegrityViolationException("상품 등록에 실패했습니다");
         }
     }
@@ -120,6 +138,7 @@ public class ProductServiceImpl implements ProductService{
         }catch (NoSuchElementException e){
             throw new NoSuchElementException("상품이 존재하지 않습니다");
         }catch(Exception e){
+            log.debug(e.getMessage());
             throw new BusinessExceptionHandler("상품 수정에 실패했습니다",ErrorCode.UPDATE_ERROR);
         }
     }
