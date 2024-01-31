@@ -10,7 +10,7 @@ import {
     FormLabel,
     Select,
 } from "@chakra-ui/react";
-import React, { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import ReactDOM from "react-dom/client";
 
 import "froala-editor/css/froala_style.min.css";
@@ -25,15 +25,25 @@ export default function ItemAdd() {
         heightMin: 700,
         autofocus: true,
         attribution: false,
-        iframe: true,
     };
 
+    // Editor
     useEffect(() => {
         if (editorRef.current) {
             const root = ReactDOM.createRoot(editorRef.current);
             root.render(<FroalaEditorComponent tag="textarea" />);
         }
     });
+
+    // Values
+    const [values, setValues] = useState({})
+    const handleChange = (e: any) => {
+        const {name, value} = e.target
+        setValues((prevValues) => ({
+            ...prevValues,
+            [name]: value
+        }))
+    }
 
     return (
         <>
@@ -55,7 +65,7 @@ export default function ItemAdd() {
                             isRequired
                             isInvalid
                         >
-                            <Input placeholder=" " />
+                            <Input type="text" name="title" onChange={handleChange} placeholder=" " />
                             <FormLabel>제목을 입력해주세요</FormLabel>
                         </FormControl>
                     </Box>
