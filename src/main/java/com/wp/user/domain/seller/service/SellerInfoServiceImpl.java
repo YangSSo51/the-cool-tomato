@@ -1,6 +1,4 @@
 package com.wp.user.domain.seller.service;
-
-import com.wp.user.domain.follow.service.FollowManageService;
 import com.wp.user.domain.seller.dto.request.AddSellerInfoRequest;
 import com.wp.user.domain.seller.dto.response.GetSellerInfoListResponse;
 import com.wp.user.domain.seller.dto.response.GetSellerInfoResponse;
@@ -19,7 +17,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.util.List;
 
 @Service
@@ -29,32 +26,19 @@ public class SellerInfoServiceImpl implements SellerInfoService {
     private final SellerInfoRepository sellerInfoRepository;
     private final UserRepository userRepository;
     private final JwtService jwtService;
-    private final FollowManageService followManageService;
 
     // 판매자 상세 정보 조회
     @Override
     public GetSellerResponse getSeller(Long sellerId) {
-        User user = userRepository.findById(sellerId).orElseThrow(() -> new BusinessExceptionHandler(ErrorCode.NOT_FOUND_SELLER_ID));
-        SellerInfo sellerInfo = sellerInfoRepository.findSellerInfoByUserId(sellerId).orElseThrow(() -> new BusinessExceptionHandler(ErrorCode.NOT_FOUND_SELLER));
-        Long followerCount = followManageService.getFollowerCount(sellerId);
+        GetSellerResponse getSellerResponse = sellerInfoRepository.findSellerByUserId(sellerId).orElseThrow(() -> new BusinessExceptionHandler(ErrorCode.NOT_FOUND_SELLER));
         try {
-            if(!user.getAuth().equals(Auth.SELLER)) {
+            if(!getSellerResponse.getAuth().equals(Auth.SELLER)) {
                 throw new BusinessExceptionHandler(ErrorCode.NOT_SELLER);
             }
         } catch (Exception e) {
             throw new BusinessExceptionHandler(ErrorCode.NOT_SELLER);
         }
-        return GetSellerResponse.builder()
-                .userId(user.getId())
-                .sellerInfoId(sellerInfo.getId())
-                .loginId(user.getLoginId())
-                .nickname(user.getNickname())
-                .sex(user.getSex())
-                .birthday(user.getBirthday())
-                .profileImg(user.getProfileImg())
-                .auth(user.getAuth())
-                .followerCount(followerCount)
-                .joinDate(user.getJoinDate()).build();
+        return getSellerResponse;
     }
 
     // 판매자 전환 신청 목록 조회
