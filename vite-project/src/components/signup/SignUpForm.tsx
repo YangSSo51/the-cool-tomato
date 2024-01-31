@@ -82,20 +82,29 @@ function SignUpForm() {
         setIsEmailValid(regex.test(inputValue));
         setEmail(inputValue);
     }
-    
+    console.log(sex)
     function onSubmit(event: React.SyntheticEvent): void {
         event.preventDefault();
         // TODO: 회원가입 비동기 통신
         // 모든 조건이 True일 때 회원가입 제출
-        if (isUsernameValid === false) {
+        if (isUsernameValid === true) {
             alert("아이디 중복확인해주세요!")
-        } else if (isPasswordValid === false) {
+        } else if (isPasswordValid === true) {
             alert("비밀번호 확인해주세요!!")
         } else if (isEmailValid === false) {
             alert("이메일 인증해주세요!")
-        }
-        SignupUserAPI
+        } else {
+            const userData = {
+                loginId: username,
+                password: password,
+                email: email,
+                nickname: nickname,
+                sex: sex.toLowerCase() === 'true',
+                birthday: birthday,
+            };
+            SignupUserAPI(userData)
         console.log('온서브밋')
+        }
     }
     
     return (
@@ -247,6 +256,7 @@ function SignUpForm() {
                                     bg: "themeGreen.500",
                                     color: "white",
                                 }}  
+                                onClick={() => {checkEmailAPI({email: email, code: emailVerification})}}
                             >
                                 확인
                             </Button>
@@ -278,7 +288,7 @@ function SignUpForm() {
                         onChange={(e) => setSex(e.target.value)}
                     >
                         <option value="true">남자</option>
-                        <option value="false">여자</option>
+                        <option>여자</option>
                     </Select>
                     <FormErrorMessage>성별을 확인해 주세요</FormErrorMessage>
                 </FormControl>

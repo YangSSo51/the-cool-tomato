@@ -46,9 +46,19 @@ async function sendEmailAPI(data: {email: string}) {
     http.post(`${url}/join/check-email/`, data)
 }
 
-async function checkEmailAPI(data: {email: string}) {
+async function checkEmailAPI(data: {email: string, code: string}) {
     console.log("인증번호확인~!~!!!!!!", JSON.stringify(data))
-    http.get(`${url}/join/check-email/`)
+    try {
+        const response = await http.get(`${url}/join/check-email-verifications/${data.email}/${data.code}`)
+        const responseData = response.data;
+        if (responseData.status === 200 && responseData.data.isVerify === true) {
+            console.log("이메일 인증이 성공적으로 완료됐습니다");
+        } else {
+            console.log("아이디가 중복되었거나 요청에 문제가 있습니다.");
+        }
+    } catch (error) {
+        console.error(error);
+    }
 }
 
 export { loginUser, SignupUserAPI, checkIdAPI, sendEmailAPI, checkEmailAPI };
