@@ -25,9 +25,9 @@ export default function ItemAdd() {
         heightMin: 700,
         autofocus: true,
         attribution: false,
-        iframe: true,
     };
 
+    // Editor
     const [content, setContent] = useState('')
 
     const handleModelChange = (model : string) => {
@@ -41,6 +41,16 @@ export default function ItemAdd() {
             root.render(<FroalaEditorComponent tag="textarea" />);
         }
     });
+
+    // Values
+    const [values, setValues] = useState({})
+    const handleChange = (e: any) => {
+        const {name, value} = e.target
+        setValues((prevValues) => ({
+            ...prevValues,
+            [name]: value
+        }))
+    }
 
     return (
         <>
@@ -62,7 +72,7 @@ export default function ItemAdd() {
                             isRequired
                             isInvalid
                         >
-                            <Input placeholder=" " />
+                            <Input type="text" name="title" onChange={handleChange} placeholder=" " />
                             <FormLabel>제목을 입력해주세요</FormLabel>
                         </FormControl>
                     </Box>
