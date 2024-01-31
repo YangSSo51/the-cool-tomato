@@ -7,7 +7,7 @@ function Layout() {
     return (
         <Flex direction={"column"} minHeight={"100vh"}>
             <NavBar />
-            <Flex flex="1" direction={"column"} overflowY={"auto"} pt={"1rem"}>
+            <Flex flex="1" direction={"column"} overflowY={"auto"} pt={"2rem"} pb={"4rem"}>
                 <Outlet />
             </Flex>
             <FooterComponent />
