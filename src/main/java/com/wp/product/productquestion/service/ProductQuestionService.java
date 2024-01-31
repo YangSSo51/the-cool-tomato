@@ -10,6 +10,8 @@ public interface ProductQuestionService {
 
     Map<String, Object> getProductQuestionList(ProductQuestionSearchRequest productQuestionSearchRequest);
 
+    Map<String, Object> getProductQuestionMyList(ProductQuestionSearchRequest productQuestionSearchRequest);
+
     ProductQuestionResponse findProductQuestion(Long productQuestionId);
 
     void saveProductQuestion(ProductQuestionCreateRequest productQuestionRequest);

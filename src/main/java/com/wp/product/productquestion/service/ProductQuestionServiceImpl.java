@@ -10,6 +10,7 @@ import com.wp.product.productquestion.dto.response.ProductQuestionResponse;
 import com.wp.product.productquestion.dto.response.ProductQuestionSearchResponse;
 import com.wp.product.productquestion.entity.ProductQuestion;
 import com.wp.product.productquestion.repository.ProductQuestionRepository;
+import com.wp.product.productquestion.repository.search.ProductQuestionMyListResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -35,6 +36,20 @@ public class ProductQuestionServiceImpl implements ProductQuestionService{
             return map;
         }catch (Exception e){
             throw new BusinessExceptionHandler("상품 문의 조회 중 에러 발생",ErrorCode.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @Override
+    public Map<String, Object> getProductQuestionMyList(ProductQuestionSearchRequest productQuestionSearchRequest) {
+        try {
+            Page<ProductQuestionMyListResponse> result = productQuestionRepository.searchMyList(productQuestionSearchRequest);
+            Map<String,Object> map = new HashMap<>();
+
+            map.put("list",result.getContent());
+            map.put("totalCount",result.getTotalElements());
+            return map;
+        }catch (Exception e){
+            throw new BusinessExceptionHandler("판매자 상품 문의 조회 중 에러 발생",ErrorCode.INTERNAL_SERVER_ERROR);
         }
     }
 
