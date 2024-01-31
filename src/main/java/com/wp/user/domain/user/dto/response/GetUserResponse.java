@@ -3,15 +3,13 @@ package com.wp.user.domain.user.dto.response;
 import com.wp.user.domain.user.entity.Auth;
 import com.wp.user.domain.user.entity.Sex;
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
@@ -25,4 +23,20 @@ public class GetUserResponse {
     String profileImg;
     Auth auth;
     LocalDateTime joinDate;
+    SellerInfo sellerInfo;
+    @Getter
+    @Setter
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @Builder
+    public static class SellerInfo {
+        Long sellerInfoId;
+        String businessNumber;
+        String businessContent;
+        String mailOrderSalesNumber;
+        String businessAddress;
+        String phoneNumber;
+        LocalDateTime registerDate;
+        boolean approvalStatus;
+    }
 }

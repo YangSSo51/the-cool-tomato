@@ -2,12 +2,13 @@ package com.wp.user.domain.user.repository;
 
 import com.wp.user.domain.user.entity.Auth;
 import com.wp.user.domain.user.entity.User;
+import com.wp.user.domain.user.repository.search.UserSearchRepository;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 import java.util.Optional;
 
-public interface UserRepository extends JpaRepository<User, Long> {
+public interface UserRepository extends JpaRepository<User, Long>, UserSearchRepository {
     // 로그인 아이디 중복 체크
     boolean existsByLoginId(String loginId);
     // 이메일 중복 체크
