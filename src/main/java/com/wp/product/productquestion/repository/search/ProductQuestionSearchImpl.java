@@ -53,9 +53,9 @@ public class ProductQuestionSearchImpl extends QuerydslRepositorySupport impleme
                 .on(qUser.userId.eq(qProductQuestionBoard.writerId))
                 .fetchJoin()
                 .where(qProductQuestionBoard.product.productId.eq(request.getProductId()))
-                .orderBy(qProductQuestionBoard.questionRegisterDate.desc())
-                .offset(request.getPage())
+                .offset(request.getPage()*request.getSize())
                 .limit(request.getSize())
+                .orderBy(qProductQuestionBoard.questionRegisterDate.desc())
                 .fetch();
 
         JPQLQuery<Long> countQuery = queryFactory.select(qProductQuestionBoard.count())

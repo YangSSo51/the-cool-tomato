@@ -26,9 +26,16 @@ public class ProductQuestionController {
 
     private final ProductQuestionService productQuestionService;
 
-    @PostMapping("/list")
+    @GetMapping("/list")
     @Operation(summary = "상품 문의 목록 조회",description = "상품 번호로 상품 문의 리스트를 조회함")
-    public ResponseEntity<?> getProductQuestionList(@RequestBody ProductQuestionSearchRequest productQuestionSearchRequest){
+    public ResponseEntity<?> getProductQuestionList(@RequestParam int page,
+                                                    @RequestParam int size,
+                                                    @RequestParam("product-id") Long productId){
+        ProductQuestionSearchRequest productQuestionSearchRequest = ProductQuestionSearchRequest.builder()
+                .page(page)
+                .size(size)
+                .productId(productId).build();
+
         //상품 문의 리스트 조회
         Map<String, Object> productQuestionList = productQuestionService.getProductQuestionList(productQuestionSearchRequest);
 
