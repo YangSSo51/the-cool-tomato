@@ -27,9 +27,11 @@ import org.springframework.web.multipart.MultipartFile;
 public class UserController {
 
     private final UserService userService;
+
     @PostMapping("/join")
     @Operation(summary = "회원가입", description = "사용자는 회원 정보를 입력하여 회원가입을 합니다.")
     public ResponseEntity<SuccessResponse<?>> addUser(@Valid @RequestBody AddUserRequest addUserRequest) {
+
         userService.addUser(addUserRequest);
         SuccessResponse<?> response = SuccessResponse.builder()
                 .status(SuccessCode.INSERT_SUCCESS.getStatus())

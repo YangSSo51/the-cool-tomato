@@ -8,6 +8,11 @@ import com.wp.user.domain.user.entity.User;
 import com.wp.user.domain.user.repository.EmailCodeRepository;
 import com.wp.user.domain.user.repository.UserRepository;
 import com.wp.user.global.common.code.ErrorCode;
+import com.wp.user.global.common.request.AccessTokenRequest;
+import com.wp.user.global.common.request.IssueTokenRequest;
+import com.wp.user.global.common.response.IssueTokenResponse;
+import com.wp.user.global.common.response.SuccessResponse;
+import com.wp.user.global.common.service.AuthClient;
 import com.wp.user.global.common.service.JwtService;
 import com.wp.user.global.exception.BusinessExceptionHandler;
 import jakarta.mail.MessagingException;
@@ -37,6 +42,7 @@ public class UserServiceImpl implements UserService {
     private final JwtService jwtService;
     private final BCryptPasswordEncoder passwordEncoder;
     private final JavaMailSender javaMailSender;
+    private final AuthClient authClient;
 
     // 회원가입
     @Override
@@ -50,7 +56,6 @@ public class UserServiceImpl implements UserService {
         } catch (Exception e) {
             throw new BusinessExceptionHandler(ErrorCode.ALREADY_REGISTERED_EMAIL); // errorCode : B001
         }
-
         // User 엔티티 생성
         User user = User.builder()
                 .auth(Auth.BUYER)
@@ -97,7 +102,7 @@ public class UserServiceImpl implements UserService {
         return CheckEmailVerificationResponse.builder().isVerify(emailCode.getCode().equals(code)).build();
     }
 
-    // 로그인(미완)
+    // 로그인
     @Override
     @Transactional
     public LoginResponse login(LoginRequest logInRequest) {
@@ -110,11 +115,13 @@ public class UserServiceImpl implements UserService {
             throw new BusinessExceptionHandler(ErrorCode.NOT_VALID_PASSWORD); // errorCode : B003
         }
         // 토큰 발급
+        SuccessResponse<IssueTokenResponse> successResponse = authClient.issueToken(IssueTokenRequest.builder().userId(user.getId()).auth(user.getAuth()).build());
+        IssueTokenResponse issueTokenResponse = successResponse.getData();
         return LoginResponse.builder()
                 .profileImg(user.getProfileImg())
                 .auth(user.getAuth())
-                .accessToken("")
-                .refreshToken("")
+                .accessToken(issueTokenResponse.getAccessToken())
+                .refreshToken(issueTokenResponse.getRefreshToken())
                 .build();
     }
 
@@ -179,6 +186,9 @@ public class UserServiceImpl implements UserService {
     public GetUserResponse getUser(HttpServletRequest httpServletRequest) {
         // 헤더 Access Token 추출
         String accessToken = jwtService.resolveToken(httpServletRequest);
+        System.out.println(accessToken);
+        boolean isValidate = isValidateAccessToken(accessToken);
+        if(isValidate) System.out.println("에러에러아님아님");
         // 회원 정보 추출
 
         // 회원 아이디로 회원 정보 추출
@@ -282,6 +292,15 @@ public class UserServiceImpl implements UserService {
         } catch (MessagingException | UnsupportedEncodingException e) {
             throw new BusinessExceptionHandler(ErrorCode.SEND_EMAIL_ERROR);
         }
+    }
+
+
+    // Access Token 인증
+    @Override
+    public boolean isValidateAccessToken(String accessToken) {
+        String response = authClient.validateToken(AccessTokenRequest.builder().accessToken(accessToken).build());
+        System.out.println(response);
+        return true;
     }
 
 }
