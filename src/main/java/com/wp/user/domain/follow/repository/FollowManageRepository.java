@@ -1,6 +1,7 @@
 package com.wp.user.domain.follow.repository;
 
 import com.wp.user.domain.follow.entity.FollowManage;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

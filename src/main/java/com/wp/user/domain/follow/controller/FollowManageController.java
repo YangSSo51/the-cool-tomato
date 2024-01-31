@@ -26,10 +26,22 @@ public class FollowManageController {
 
     private final FollowManageService followManageService;
 
-    @GetMapping
-    @Operation(summary = "팔로우 목록 조회", description = "사용자의 팔로우 목록을 조회합니다.")
-    public ResponseEntity<SuccessResponse<?>> getFollowManages(HttpServletRequest httpServletRequest) {
-        GetFollowManageListResponse getFollowManageListResponse = followManageService.getFollowManages(httpServletRequest);
+    @GetMapping("/follower")
+    @Operation(summary = "팔로워 목록 조회", description = "판매자의 팔로워 목록을 조회합니다.")
+    public ResponseEntity<SuccessResponse<?>> getFollowerManages(HttpServletRequest httpServletRequest) {
+        GetFollowManageListResponse getFollowManageListResponse = followManageService.getFollowerManages(httpServletRequest);
+        SuccessResponse<?> response = SuccessResponse.builder()
+                .status(SuccessCode.SELECT_SUCCESS.getStatus())
+                .message(SuccessCode.SELECT_SUCCESS.getMessage())
+                .data(getFollowManageListResponse)
+                .build();
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @GetMapping("/following")
+    @Operation(summary = "팔로잉 목록 조회", description = "구매자의 팔로잉 목록을 조회합니다.")
+    public ResponseEntity<SuccessResponse<?>> getFollowingManages(HttpServletRequest httpServletRequest) {
+        GetFollowManageListResponse getFollowManageListResponse = followManageService.getFollowingManages(httpServletRequest);
         SuccessResponse<?> response = SuccessResponse.builder()
                 .status(SuccessCode.SELECT_SUCCESS.getStatus())
                 .message(SuccessCode.SELECT_SUCCESS.getMessage())
