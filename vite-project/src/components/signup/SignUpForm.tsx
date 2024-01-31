@@ -203,7 +203,7 @@ function SignUpForm() {
                     </FormErrorMessage>
                 </FormControl>
 
-                <FormControl my={2} isInvalid={isEmailValid} isRequired>
+                <FormControl my={2} isRequired>
                     <FormLabel>
                         <Text as={"b"}>이메일</Text>
                     </FormLabel>
