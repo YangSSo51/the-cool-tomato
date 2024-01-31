@@ -47,6 +47,29 @@ public class ProductQuestionController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    @GetMapping("/my/list")
+    @Operation(summary = "상품 문의 목록 조회",description = "상품 번호로 상품 문의 리스트를 조회함")
+    public ResponseEntity<?> getProductMyQuestionList(@RequestParam int page,
+                                                    @RequestParam int size){
+        //TODO : 로그인한 판매자 아이디 가져오기
+
+        ProductQuestionSearchRequest productQuestionSearchRequest = ProductQuestionSearchRequest.builder()
+                .page(page)
+                .size(size)
+                .sellerId(1L).build();
+
+        //판매자 상품 문의 리스트 조회
+        Map<String, Object> productQuestionList = productQuestionService.getProductQuestionMyList(productQuestionSearchRequest);
+
+        SuccessResponse response = SuccessResponse.builder()
+                .data(productQuestionList)
+                .status(SuccessCode.SELECT_SUCCESS.getStatus())
+                .message(SuccessCode.SELECT_SUCCESS.getMessage()).build();
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+
     @GetMapping("/{productQuestionId}")
     @Operation(summary = "상품 문의 조회",description = "구매자가 상품 문의를 조회함")
     public ResponseEntity<?> findProductQuestion(@PathVariable Long productQuestionId){

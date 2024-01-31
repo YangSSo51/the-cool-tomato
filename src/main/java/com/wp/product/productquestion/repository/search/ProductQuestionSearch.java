@@ -6,4 +6,6 @@ import org.springframework.data.domain.Page;
 
 public interface ProductQuestionSearch {
     Page<ProductQuestionSearchResponse> search(ProductQuestionSearchRequest request);
+
+    Page<ProductQuestionMyListResponse> searchMyList(ProductQuestionSearchRequest request);
 }

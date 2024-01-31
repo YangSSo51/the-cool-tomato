@@ -64,4 +64,45 @@ public class ProductQuestionSearchImpl extends QuerydslRepositorySupport impleme
 
         return PageableExecutionUtils.getPage(list,pageable,countQuery::fetchOne);
     }
+
+    @Override
+    @Transactional
+    public Page<ProductQuestionMyListResponse> searchMyList(ProductQuestionSearchRequest request) {
+        Pageable pageable = PageRequest.of(request.getPage(), request.getSize());    //페이징
+
+        QProductQuestion qProductQuestionBoard = QProductQuestion.productQuestion;
+        QUser qUser = QUser.user;
+
+        List<ProductQuestionMyListResponse> list = queryFactory.select(Projections.bean(ProductQuestionMyListResponse.class,
+                        qProductQuestionBoard.productQuestionBoardId,
+                        qProductQuestionBoard.writerId,
+                        qUser.nickname.as("writerNickname"),
+                        qProductQuestionBoard.product.productId,
+                        qProductQuestionBoard.product.productName,
+                        qProductQuestionBoard.product.productContent,
+                        qProductQuestionBoard.questionContent,
+                        qProductQuestionBoard.answerContent,
+                        qProductQuestionBoard.questionRegisterDate,
+                        qProductQuestionBoard.answerRegisterDate,
+                        new CaseBuilder()
+                                .when(qProductQuestionBoard.answerContent.isNotNull())
+                                .then(1)
+                                .otherwise(0).as("answer")
+                ))
+                .from(qProductQuestionBoard)
+                .leftJoin(qUser)
+                .on(qUser.userId.eq(qProductQuestionBoard.writerId))
+                .fetchJoin()
+                .where(qProductQuestionBoard.writerId.eq(request.getSellerId()))
+                .offset(request.getPage()*request.getSize())
+                .limit(request.getSize())
+                .orderBy(qProductQuestionBoard.answerContent.asc(),qProductQuestionBoard.questionRegisterDate.desc())
+                .fetch();
+
+        JPQLQuery<Long> countQuery = queryFactory.select(qProductQuestionBoard.count())
+                .from(qProductQuestionBoard)
+                .where(qProductQuestionBoard.writerId.eq(request.getSellerId()));
+
+        return PageableExecutionUtils.getPage(list,pageable,countQuery::fetchOne);
+    }
 }
