@@ -30,13 +30,16 @@ public class SellerInfoServiceImpl implements SellerInfoService {
     // 판매자 상세 정보 조회
     @Override
     public GetSellerResponse getSeller(Long sellerId) {
-        GetSellerResponse getSellerResponse = sellerInfoRepository.findSellerByUserId(sellerId).orElseThrow(() -> new BusinessExceptionHandler(ErrorCode.NOT_FOUND_SELLER));
+        GetSellerResponse getSellerResponse = sellerInfoRepository.findSellerByUserId(sellerId).orElseThrow(() -> new BusinessExceptionHandler(ErrorCode.NOT_FOUND_SELLER_ID));
         try {
+            if(getSellerResponse.getSellerInfoId() == null) {
+                throw new BusinessExceptionHandler(ErrorCode.NOT_FOUND_SELLER);
+            }
             if(!getSellerResponse.getAuth().equals(Auth.SELLER)) {
                 throw new BusinessExceptionHandler(ErrorCode.NOT_SELLER);
             }
-        } catch (Exception e) {
-            throw new BusinessExceptionHandler(ErrorCode.NOT_SELLER);
+        } catch (BusinessExceptionHandler e) {
+            throw new BusinessExceptionHandler(e.getErrorCode());
         }
         return getSellerResponse;
     }
