@@ -15,13 +15,14 @@ import java.time.LocalDateTime;
 @Builder
 @Schema(description = "판매자 상세 정보 조회를 위한 응답 객체")
 public class GetSellerResponse {
-    Long id;
+    Long userId;
+    Long sellerInfoId;
     String loginId;
     String nickname;
     Sex sex;
     LocalDate birthday;
     String profileImg;
     Auth auth;
-    Long follower_count;
+    Long followerCount;
     LocalDateTime joinDate;
 }

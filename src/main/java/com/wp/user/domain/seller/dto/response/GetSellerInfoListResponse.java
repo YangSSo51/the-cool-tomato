@@ -11,32 +11,32 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@Schema(description = "판매자 정보 목록 조회를 위한 응답 객체")
+@Schema(description = "판매자 전환 신청 목록 조회를 위한 응답 객체")
 public class GetSellerInfoListResponse {
-    List<GetSellerInfo> sellerInfos;
+    List<GetSellerInfo> sellers;
     @Getter
     @AllArgsConstructor
     @NoArgsConstructor
     @Builder
     public static class GetSellerInfo {
-        private Long id;
+        private Long sellerInfoId;
+        private Long userId;
         private String loginId;
         private String nickname;
         private String profileImg;
-        private Long sellerInfoId;
     }
 
     public static GetSellerInfoListResponse from(List<SellerInfo> sellerInfoList) {
-        List<GetSellerInfo> sellerInfos = new ArrayList<>();
+        List<GetSellerInfo> sellers = new ArrayList<>();
         for (SellerInfo sellerInfo : sellerInfoList) {
             GetSellerInfo getSellerInfo = GetSellerInfo.builder()
-                    .id(sellerInfo.getUser().getId())
+                    .sellerInfoId(sellerInfo.getId())
+                    .userId(sellerInfo.getUser().getId())
                     .loginId(sellerInfo.getUser().getLoginId())
                     .nickname(sellerInfo.getUser().getNickname())
-                    .profileImg(sellerInfo.getUser().getProfileImg())
-                    .sellerInfoId(sellerInfo.getId()).build();
-            sellerInfos.add(getSellerInfo);
+                    .profileImg(sellerInfo.getUser().getProfileImg()).build();
+            sellers.add(getSellerInfo);
         }
-        return GetSellerInfoListResponse.builder().sellerInfos(sellerInfos).build();
+        return GetSellerInfoListResponse.builder().sellers(sellers).build();
     }
 }

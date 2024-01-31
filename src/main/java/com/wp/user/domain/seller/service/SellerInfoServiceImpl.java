@@ -1,5 +1,4 @@
 package com.wp.user.domain.seller.service;
-
 import com.wp.user.domain.seller.dto.request.AddSellerInfoRequest;
 import com.wp.user.domain.seller.dto.response.GetSellerInfoListResponse;
 import com.wp.user.domain.seller.dto.response.GetSellerInfoResponse;
@@ -18,7 +17,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.util.List;
 
 @Service
@@ -32,23 +30,15 @@ public class SellerInfoServiceImpl implements SellerInfoService {
     // 판매자 상세 정보 조회
     @Override
     public GetSellerResponse getSeller(Long sellerId) {
-        User user = userRepository.findById(sellerId).orElseThrow(() -> new BusinessExceptionHandler(ErrorCode.NOT_FOUND_USER_ID));
+        GetSellerResponse getSellerResponse = sellerInfoRepository.findSellerByUserId(sellerId).orElseThrow(() -> new BusinessExceptionHandler(ErrorCode.NOT_FOUND_SELLER));
         try {
-            if(!user.getAuth().equals(Auth.SELLER)) {
+            if(!getSellerResponse.getAuth().equals(Auth.SELLER)) {
                 throw new BusinessExceptionHandler(ErrorCode.NOT_SELLER);
             }
         } catch (Exception e) {
             throw new BusinessExceptionHandler(ErrorCode.NOT_SELLER);
         }
-        return GetSellerResponse.builder()
-                .id(user.getId())
-                .loginId(user.getLoginId())
-                .nickname(user.getNickname())
-                .sex(user.getSex())
-                .birthday(user.getBirthday())
-                .profileImg(user.getProfileImg())
-                .auth(user.getAuth())
-                .joinDate(user.getJoinDate()).build();
+        return getSellerResponse;
     }
 
     // 판매자 전환 신청 목록 조회
@@ -74,7 +64,7 @@ public class SellerInfoServiceImpl implements SellerInfoService {
         // 권한이 관리자 & 구매자일 경우만 조회
         SellerInfo sellerInfo = sellerInfoRepository.findById(sellerInfoId).orElseThrow(() -> new BusinessExceptionHandler(ErrorCode.NOT_FOUND_SELLER));
         return GetSellerInfoResponse.builder()
-                .businessInfoId(sellerInfo.getId())
+                .sellerInfoId(sellerInfo.getId())
                 .userId(sellerInfo.getUser().getId())
                 .businessNumber(sellerInfo.getBusinessNumber())
                 .businessContent(sellerInfo.getBusinessContent())
@@ -117,7 +107,7 @@ public class SellerInfoServiceImpl implements SellerInfoService {
         String accessToken = jwtService.resolveToken(httpServletRequest);
         // 회원 정보 추출
 
-        // 권한이 관리자일 경우만 저장
+        // 권한이 관리자일 경우만 승인
 
         SellerInfo sellerInfo = sellerInfoRepository.findById(sellerInfoId).orElseThrow(() -> new BusinessExceptionHandler(ErrorCode.NOT_FOUND_SELLER));
         // 이미 승인된 경우
@@ -147,7 +137,7 @@ public class SellerInfoServiceImpl implements SellerInfoService {
         String accessToken = jwtService.resolveToken(httpServletRequest);
         // 회원 정보 추출
 
-        // 권한이 관리자일 경우만 저장
+        // 권한이 관리자일 경우만 철회
 
         SellerInfo sellerInfo = sellerInfoRepository.findById(sellerInfoId).orElseThrow(() -> new BusinessExceptionHandler(ErrorCode.NOT_FOUND_SELLER));
         // 이미 철회된 경우

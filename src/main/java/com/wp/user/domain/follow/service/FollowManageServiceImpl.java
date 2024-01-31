@@ -99,4 +99,10 @@ public class FollowManageServiceImpl implements FollowManageService {
         }
         followManageRepository.deleteByFollowerIdAndFollowingId(1L, sellerId);
     }
+
+    @Override
+    public Long getFollowerCount(Long sellerId) {
+        List<FollowManage> followManages = followManageRepository.findAllByFollowingId(sellerId);
+        return (long) followManages.size();
+    }
 }

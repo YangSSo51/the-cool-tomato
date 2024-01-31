@@ -10,4 +10,5 @@ public interface FollowManageService {
     FollowStatusResponse getFollowStatus(HttpServletRequest httpServletRequest, Long sellerId);
     void addFollow(HttpServletRequest httpServletRequest, AddFollowManageRequest addFollowManageRequest);
     void removeFollow(HttpServletRequest httpServletRequest, Long sellerId);
+    Long getFollowerCount(Long sellerId);
 }

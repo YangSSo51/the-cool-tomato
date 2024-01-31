@@ -5,14 +5,12 @@ import com.wp.user.domain.seller.dto.response.GetSellerInfoListResponse;
 import com.wp.user.domain.seller.dto.response.GetSellerInfoResponse;
 import com.wp.user.domain.seller.dto.response.GetSellerResponse;
 import com.wp.user.domain.seller.service.SellerInfoService;
-import com.wp.user.domain.user.dto.request.AddUserRequest;
 import com.wp.user.global.common.code.SuccessCode;
 import com.wp.user.global.common.response.SuccessResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -23,7 +21,7 @@ import org.springframework.web.bind.annotation.*;
 @Validated
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("v1/sellers")
+@RequestMapping("v1/users/sellers")
 @Tag(name = "판매자 API", description = "판매자 전환 용 API")
 public class SellerInfoController {
 
@@ -54,7 +52,7 @@ public class SellerInfoController {
     }
 
     @GetMapping("/admin-sellers/{seller-info-id}")
-    @Operation(summary = "판매자 전환 신청 상세 조회", description = "관리자와 구매자는 판매자 전환 신청 목록을 조회합니다.")
+    @Operation(summary = "판매자 전환 신청 상세 조회", description = "관리자와 구매자는 판매자 전환 신청을 상세 조회합니다.")
     public ResponseEntity<SuccessResponse<?>> getSellerInfo(HttpServletRequest httpServletRequest, @NotNull(message = "판매자 정보 ID를 입력해 주세요.") @PathVariable(name = "seller-info-id") Long sellerInfoId) {
         GetSellerInfoResponse getSellerInfoResponse = sellerInfoService.getSellerInfo(httpServletRequest, sellerInfoId);
         SuccessResponse<?> response = SuccessResponse.builder()
