@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import {
     Input,
     InputGroup,
@@ -7,17 +6,17 @@ import {
     Button,
     FormControl,
     FormErrorMessage,
+    FormHelperText,
     Select,
     FormLabel,
-    Text,
-    Alert,
-    AlertIcon,
-    AlertTitle,
+    Text
 } from "@chakra-ui/react";
 import { ViewIcon, CheckIcon } from "@chakra-ui/icons";
+import { Tooltip } from '@chakra-ui/react'
 import { SignupUserAPI } from "../../api/user";
 
 function SignUpForm() {
+    // 입력 받을 값: 아뒤, 비번, 이멜, 이멜인증, 닉넴, 성별, 생일
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [passwordAgain, setPasswordAgain] = useState("");
@@ -26,15 +25,14 @@ function SignUpForm() {
     const [nickname, setNickname] = useState("");
     const [sex, setSex] = useState("");
     const [birthday, setBirthday] = useState("");
-
-    console.log(username)
-    console.log(password)
-    console.log(passwordAgain)
-    console.log(email)
-    console.log(nickname)
-    console.log(sex)
-    console.log(birthday)
-
+    // 비밀번호 버튼들
+    const [show, setShow] = useState(false);
+    const handleClick = () => setShow(!show)
+    const [show2, setShow2] = useState(false);
+    const handleClick2 = () => setShow2(!show2)
+    const [check, setCheck] = useState(false);
+    const [check2, setCheck2] = useState(false);
+    // 유효성 검사
     const [isUsernameValid, setIsUsernameValid] = useState(false);
     const [isPasswordValid, setIsPasswordValid] = useState(false);
     const [isEmailValid, setIsEmailValid] = useState(false);
@@ -44,7 +42,7 @@ function SignUpForm() {
 
     async function usernameDuplicateCheck(): Promise<void> {}
 
-    function handleUsername(e) {
+    function handleUsername(e: React.ChangeEvent<HTMLSelectElement>) {
         const inputValue = e.target.value;
         const cleanedValue = inputValue.replace(/[^A-Za-z0-9]/g, '');
         // 한글 입력 제한
@@ -61,48 +59,46 @@ function SignUpForm() {
         setUsername(limitedValue);
     }
 
-    function handlePassword(e) {
+    function handlePassword(e: React.ChangeEvent<HTMLSelectElement>) {
         const inputValue = e.target.value;
-        const cleanedValue = inputValue.replace(/[^A-Za-z0-9]/g, '');
-        // 한글 입력 제한
-        if (/[ㄱ-ㅎㅏ-ㅣ가-힣]/.test(inputValue)) {
-            alert('한글은 입력할 수 없습니다.');
-            return;
-        }
-        // 글자 수 제한
-        const limitedValue = cleanedValue.substring(0, 30);
-        if (cleanedValue.length > 30) {
-            alert('ID는 최대 30자까지 가능합니다.');
-            return;
-        }
-        setUsername(limitedValue);
+        const regex = /^(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[!@#$%^&*]).{8,}$/;
+        // 체크아이콘 표시를 위해
+        setCheck(regex.test(inputValue));
+        setPassword(inputValue);
     }
 
-    function handleEmail(e) {
+    function handlePasswordConfirm(e: React.ChangeEvent<HTMLSelectElement>) {
         const inputValue = e.target.value;
-        const cleanedValue = inputValue.replace(/[^A-Za-z0-9]/g, '');
-        // 한글 입력 제한
-        if (/[ㄱ-ㅎㅏ-ㅣ가-힣]/.test(inputValue)) {
-            alert('한글은 입력할 수 없습니다.');
-            return;
+        const regex = /^(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[!@#$%^&*]).{8,}$/;
+        // 동일한지 확인
+        if (password === inputValue) {
+            setCheck2(regex.test(inputValue));
         }
-        // 글자 수 제한
-        const limitedValue = cleanedValue.substring(0, 30);
-        if (cleanedValue.length > 30) {
-            alert('ID는 최대 30자까지 가능합니다.');
-            return;
-        }
-        setUsername(limitedValue);
+        setPasswordAgain(inputValue)
+    }
+
+    function handleEmail(e: React.ChangeEvent<HTMLSelectElement>) {
+        const inputValue = e.target.value;
+        const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        // 올바른 이메일 형식일 때 이메일 전송버튼 활성화
+        setIsEmailValid(regex.test(inputValue));
+        setEmail(inputValue);
     }
     
     function onSubmit(event: React.SyntheticEvent): void {
         event.preventDefault();
         // TODO: 회원가입 비동기 통신
-        SignupUserAPI 
+        // 모든 조건이 True일 때 회원가입 제출
+        if (isUsernameValid === false) {
+            alert("아이디 중복확인해주세요!")
+        } else if (isPasswordValid === false) {
+            alert("비밀번호 확인해주세요!!")
+        } else if (isEmailValid === false) {
+            alert("이메일 인증해주세요!")
+        }
+        SignupUserAPI
         console.log('온서브밋')
     }
-
-
     
     return (
         <>
@@ -114,32 +110,34 @@ function SignUpForm() {
                     <FormLabel>
                         <Text as={"b"}>아이디</Text>
                     </FormLabel>
-                    <InputGroup size="md">
-                        <Input
-                            focusBorderColor="themeGreen.500"
-                            placeholder="ID"
-                            size="md"
-                            autoComplete="username"
-                            value={username}
-                            onChange={handleUsername}
-                        />
-                        <InputRightElement width="4.5rem" pr={"1"}>
-                            <Button
-                                h="1.75rem"
-                                size="sm"
-                                colorScheme="themeGreen"
-                                variant="ghost"
-                                onClick={usernameDuplicateCheck}
-                                borderRadius="md"
-                                _hover={{
-                                    bg: "themeGreen.500",
-                                    color: "white",
-                                }}
-                            >
-                                중복확인
-                            </Button>
-                        </InputRightElement>
-                    </InputGroup>
+                    <Tooltip label="아이디는 영문, 숫자 구성으로 30자 이내 작성할 수 있습니다" bg='gray.400' aria-label='A tooltip'>
+                        <InputGroup size="md">
+                            <Input
+                                focusBorderColor="themeGreen.500"
+                                placeholder="ID"
+                                size="md"
+                                autoComplete="username"
+                                value={username}
+                                onChange={handleUsername}
+                            />
+                            <InputRightElement width="4.5rem" pr={"1"}>
+                                <Button
+                                    h="1.75rem"
+                                    size="sm"
+                                    colorScheme="themeGreen"
+                                    variant="ghost"
+                                    onClick={usernameDuplicateCheck}
+                                    borderRadius="md"
+                                    _hover={{
+                                        bg: "themeGreen.500",
+                                        color: "white",
+                                    }}
+                                >
+                                    중복확인
+                                </Button>
+                            </InputRightElement>
+                        </InputGroup>
+                    </Tooltip>
                     <FormErrorMessage>아이디를 확인해 주세요</FormErrorMessage>
                 </FormControl>
                 
@@ -147,33 +145,50 @@ function SignUpForm() {
                     <FormLabel>
                         <Text as={"b"}>비밀번호</Text>
                     </FormLabel>
-                    <InputGroup size="md" mb={2}>
-                        <Input
-                            focusBorderColor="themeGreen.500"
-                            placeholder="password"
-                            size="md"
-                            autoComplete="current-password"
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                            id="password"
-                        ></Input>
-                        <InputRightElement>
-                            <CheckIcon color="green.500" mr={"1"} />
-                            <ViewIcon color="grey" mr={"1"} />
-                        </InputRightElement>
-                    </InputGroup>
+                    <Tooltip bg='gray.400' label="최소 8자 이상, 최소한 하나의 대문자, 하나의 소문자, 하나의 숫자, 하나의 특수문자를 포함, 공백 허용하지 않습니다" aria-label='A tooltip'>
+                        <InputGroup size="md" mb={2}>
+                            <Input
+                                focusBorderColor="themeGreen.500"
+                                placeholder="password"
+                                size="md"
+                                autoComplete="current-password"
+                                value={password}
+                                onChange={handlePassword}
+                                type={show ? 'text' : 'password'}
+                                id="password"
+                            />
+                            <InputRightElement>
+                                {check ? (
+                                    <CheckIcon color="green.500" mr={"1"} />
+                                    ) : (
+                                        ''
+                                )}
+                                <Button h='1.75rem' size='sm' onClick={handleClick}>
+                                    {show ? <ViewIcon mr={"1"} /> : <ViewIcon mr={"1"} />}
+                                </Button>
+                            </InputRightElement>
+                        </InputGroup>
+                    </Tooltip>
+
                     <InputGroup size="md">
                         <Input
                             focusBorderColor="themeGreen.500"
                             placeholder="password again"
                             size="md"
                             value={passwordAgain}
-                            onChange={(e) => setPasswordAgain(e.target.value)}
+                            onChange={handlePasswordConfirm}
+                            type={show2 ? 'text' : 'password'}
                             id="passwordAgain"
-                        ></Input>
+                        />
                         <InputRightElement>
-                            <CheckIcon color="green.500" mr={"1"} />
-                            <ViewIcon color="grey" mr={"1"} />
+                            {check2 ? (
+                                <CheckIcon color="green.500" mr={"1"} />
+                                ) : (
+                                    ''
+                            )}
+                            <Button h='1.75rem' size='sm' onClick={handleClick2}>
+                                {show2 ? <ViewIcon mr={"1"} /> : <ViewIcon mr={"1"} />}
+                            </Button>
                         </InputRightElement>
                     </InputGroup>
                     <FormErrorMessage>
@@ -192,27 +207,26 @@ function SignUpForm() {
                             size="md"
                             autoComplete="email"
                             value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                        ></Input>
+                            onChange={handleEmail}
+                            id="email"
+                        />
                         <InputRightElement pr={"1"} w="3.25rem">
                             <Button
                                 h="1.75rem"
                                 size="sm"
                                 colorScheme="themeGreen"
                                 variant="ghost"
-                                // color="themeGreen.500"
-                                // onClick={}
                                 borderRadius="md"
                                 _hover={{
                                     bg: "themeGreen.500",
                                     color: "white",
                                 }}  
-                            >
-                                재전송
+                                isDisabled={!isEmailValid}
+                            >전송
                             </Button>
                         </InputRightElement>
                     </InputGroup>
-                    {/* {errors.email && <p>{errors.email.message}</p>} */}
+                    
                     <InputGroup size="md">
                         <Input
                             focusBorderColor="themeGreen.500"
@@ -222,28 +236,25 @@ function SignUpForm() {
                             onChange={(e) =>
                                 setEmailVerification(e.target.value)
                             }
-                        ></Input>
+                        />
                         <InputRightElement pr={"1"}>
                             <Button
                                 h="1.75rem"
                                 size="sm"
                                 colorScheme="themeGreen"
                                 variant="ghost"
-                                // color="themeGreen.500"
-                                // onClick={}
                                 borderRadius="md"
                                 _hover={{
                                     bg: "themeGreen.500",
                                     color: "white",
-                                }}
+                                }}  
                             >
                                 확인
                             </Button>
                         </InputRightElement>
                     </InputGroup>
-
-                    <FormErrorMessage>이메일을 확인해 주세요</FormErrorMessage>
                 </FormControl>
+
                 <FormControl my={2} isInvalid={isNicknameValid} isRequired>
                     <FormLabel>
                         <Text as={"b"}>닉네임</Text>
@@ -267,8 +278,8 @@ function SignUpForm() {
                         value={sex}
                         onChange={(e) => setSex(e.target.value)}
                     >
-                        <option value="male">남자</option>
-                        <option value="female">여자</option>
+                        <option value="true">남자</option>
+                        <option value="false">여자</option>
                     </Select>
                     <FormErrorMessage>성별을 확인해 주세요</FormErrorMessage>
                 </FormControl>
