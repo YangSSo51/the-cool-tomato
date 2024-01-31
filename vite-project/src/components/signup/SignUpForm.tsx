@@ -15,7 +15,7 @@ import {
     AlertTitle,
 } from "@chakra-ui/react";
 import { ViewIcon, CheckIcon } from "@chakra-ui/icons";
-import { SignupUserAPI } from "../../api/user";
+// import { SignupUserAPI } from "../../api/user";
 
 function SignUpForm() {
     const [username, setUsername] = useState("");
@@ -98,7 +98,7 @@ function SignUpForm() {
     function onSubmit(event: React.SyntheticEvent): void {
         event.preventDefault();
         // TODO: 회원가입 비동기 통신
-        SignupUserAPI 
+        // SignupUserAPI 
         console.log('온서브밋')
     }
 
