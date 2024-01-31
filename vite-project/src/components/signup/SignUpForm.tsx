@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
     Input,
@@ -10,8 +10,12 @@ import {
     Select,
     FormLabel,
     Text,
+    Alert,
+    AlertIcon,
+    AlertTitle,
 } from "@chakra-ui/react";
 import { ViewIcon, CheckIcon } from "@chakra-ui/icons";
+// import { SignupUserAPI } from "../../api/user";
 
 function SignUpForm() {
     const [username, setUsername] = useState("");
@@ -22,24 +26,84 @@ function SignUpForm() {
     const [nickname, setNickname] = useState("");
     const [sex, setSex] = useState("");
     const [birthday, setBirthday] = useState("");
-    const isUsernameValid = false;
-    const isPasswordValid = false;
-    const isEmailValid = false;
-    const isNicknameValid = false;
-    const isSexValid = false;
-    const isBirthdayValid = false;
 
-    const navigate = useNavigate();
+    console.log(username)
+    console.log(password)
+    console.log(passwordAgain)
+    console.log(email)
+    console.log(nickname)
+    console.log(sex)
+    console.log(birthday)
+
+    const [isUsernameValid, setIsUsernameValid] = useState(false);
+    const [isPasswordValid, setIsPasswordValid] = useState(false);
+    const [isEmailValid, setIsEmailValid] = useState(false);
+    const [isNicknameValid, setIsNicknameValid] = useState(false);
+    const [isSexValid, setIsSexValid] = useState(false);
+    const [isBirthdayValid, setIsBirthdayValid] = useState(false);
 
     async function usernameDuplicateCheck(): Promise<void> {}
 
+    function handleUsername(e) {
+        const inputValue = e.target.value;
+        const cleanedValue = inputValue.replace(/[^A-Za-z0-9]/g, '');
+        // 한글 입력 제한
+        if (/[ㄱ-ㅎㅏ-ㅣ가-힣]/.test(inputValue)) {
+            alert('한글은 입력할 수 없습니다.');
+            return;
+        }
+        // 글자 수 제한
+        const limitedValue = cleanedValue.substring(0, 30);
+        if (cleanedValue.length > 30) {
+            alert('ID는 최대 30자까지 가능합니다.');
+            return;
+        }
+        setUsername(limitedValue);
+    }
+
+    function handlePassword(e) {
+        const inputValue = e.target.value;
+        const cleanedValue = inputValue.replace(/[^A-Za-z0-9]/g, '');
+        // 한글 입력 제한
+        if (/[ㄱ-ㅎㅏ-ㅣ가-힣]/.test(inputValue)) {
+            alert('한글은 입력할 수 없습니다.');
+            return;
+        }
+        // 글자 수 제한
+        const limitedValue = cleanedValue.substring(0, 30);
+        if (cleanedValue.length > 30) {
+            alert('ID는 최대 30자까지 가능합니다.');
+            return;
+        }
+        setUsername(limitedValue);
+    }
+
+    function handleEmail(e) {
+        const inputValue = e.target.value;
+        const cleanedValue = inputValue.replace(/[^A-Za-z0-9]/g, '');
+        // 한글 입력 제한
+        if (/[ㄱ-ㅎㅏ-ㅣ가-힣]/.test(inputValue)) {
+            alert('한글은 입력할 수 없습니다.');
+            return;
+        }
+        // 글자 수 제한
+        const limitedValue = cleanedValue.substring(0, 30);
+        if (cleanedValue.length > 30) {
+            alert('ID는 최대 30자까지 가능합니다.');
+            return;
+        }
+        setUsername(limitedValue);
+    }
+    
     function onSubmit(event: React.SyntheticEvent): void {
         event.preventDefault();
         // TODO: 회원가입 비동기 통신
-
-        navigate("/v1/sign");
+        // SignupUserAPI 
+        console.log('온서브밋')
     }
 
+
+    
     return (
         <>
             <form
@@ -57,7 +121,7 @@ function SignUpForm() {
                             size="md"
                             autoComplete="username"
                             value={username}
-                            onChange={(e) => setUsername(e.target.value)}
+                            onChange={handleUsername}
                         />
                         <InputRightElement width="4.5rem" pr={"1"}>
                             <Button
@@ -65,7 +129,6 @@ function SignUpForm() {
                                 size="sm"
                                 colorScheme="themeGreen"
                                 variant="ghost"
-                                // color="themeGreen.500"
                                 onClick={usernameDuplicateCheck}
                                 borderRadius="md"
                                 _hover={{
@@ -79,6 +142,7 @@ function SignUpForm() {
                     </InputGroup>
                     <FormErrorMessage>아이디를 확인해 주세요</FormErrorMessage>
                 </FormControl>
+                
                 <FormControl my={2} isInvalid={isPasswordValid} isRequired>
                     <FormLabel>
                         <Text as={"b"}>비밀번호</Text>
@@ -116,6 +180,7 @@ function SignUpForm() {
                         비밀번호를 확인해 주세요
                     </FormErrorMessage>
                 </FormControl>
+
                 <FormControl my={2} isInvalid={isEmailValid} isRequired>
                     <FormLabel>
                         <Text as={"b"}>이메일</Text>
@@ -141,12 +206,13 @@ function SignUpForm() {
                                 _hover={{
                                     bg: "themeGreen.500",
                                     color: "white",
-                                }}
+                                }}  
                             >
                                 재전송
                             </Button>
                         </InputRightElement>
                     </InputGroup>
+                    {/* {errors.email && <p>{errors.email.message}</p>} */}
                     <InputGroup size="md">
                         <Input
                             focusBorderColor="themeGreen.500"

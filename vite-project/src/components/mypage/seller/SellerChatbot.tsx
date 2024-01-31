@@ -3,18 +3,18 @@ import {
     Table,
     Thead,
     Tbody,
-    Tfoot,
     Tr,
     Th,
     Td,
-    TableCaption,
     TableContainer,
+    Button
   } from '@chakra-ui/react'
 
 function Chatbot() {
     return (
-        <Box flexDirection="column" w="90%" h="full" overflowY="scroll">
-            <TableContainer>
+        <Box flexDirection="column" w="90%" h="full">
+            <Button colorScheme='purple'>채팅 명령어 추가</Button>
+            <TableContainer mt="20">
                 <Table variant='simple'>
                     <Thead>
                     <Tr>
@@ -26,9 +26,20 @@ function Chatbot() {
                     </Thead>
                     <Tbody>
                     <Tr>
-                        <Td>!대표</Td>
-                        <Td>?? 어케설정</Td>
-                        <Td>수정 삭제</Td>
+                    <Td>!싸피</Td>
+                        <Td>가기싫다</Td>
+                        <Td display="flex" justifyContent="space-around">
+                            <Button colorScheme='whatsapp'>수정</Button>
+                            <Button colorScheme="red">삭제</Button>
+                        </Td>
+                    </Tr>
+                    <Tr>
+                        <Td>!집</Td>
+                        <Td>집가고싶다</Td>
+                        <Td display="flex" justifyContent="space-around">
+                            <Button colorScheme='whatsapp'>수정</Button>
+                            <Button colorScheme="red">삭제</Button>
+                        </Td>
                         {/* <Td isNumeric>25.4</Td> */}
                     </Tr>
                     </Tbody>
