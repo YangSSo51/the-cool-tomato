@@ -4,6 +4,9 @@ import UserVideoComponent from "./UserVideoComponent";
 import { useCallback, useEffect, useState } from "react";
 
 import { getLiveStartToken, getLiveJoinToken } from "../../api/openVidu";
+import { useSelector } from "react-redux";
+import { RootState } from "../../redux/stores/store";
+import { useParams } from "react-router-dom";
 
 function OpenViduComponent({ type }: { type: string }) {
     const [session, setSession] = useState<Session | null>(null);
@@ -11,6 +14,12 @@ function OpenViduComponent({ type }: { type: string }) {
     const [subscriber, setSubscriber] = useState<Subscriber | null>(null);
     const [publisher, setPublisher] = useState<Publisher | null>(null);
     const [OV, setOV] = useState<OpenVidu | null>(null);
+
+    const accessToken: string = useSelector(
+        (state: RootState) => state.user.accessToken
+    );
+    const { roomId } = useParams() as { roomId: string };
+    const liveBroadcastId = parseInt(roomId);
 
     console.log("OpenViduComponent");
 
@@ -78,13 +87,13 @@ function OpenViduComponent({ type }: { type: string }) {
                 let token = "";
                 if (type === "broadcast") {
                     const test_data = {
-                        accessToken: "",
-                        liveBroadcastId: 0,
+                        accessToken,
+                        liveBroadcastId,
                     };
                     token = await getLiveStartToken(test_data);
                 } else {
                     const test_data = {
-                        liveBroadcastId: 0,
+                        liveBroadcastId,
                     };
                     token = await getLiveJoinToken(test_data);
                 }

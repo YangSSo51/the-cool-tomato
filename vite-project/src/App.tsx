@@ -58,8 +58,14 @@ function App() {
                         />
                         <Route path="ItemAdd" element={<ItemAdd />}></Route>
                     </Route>
-                    <Route path="v1/broadcast" element={<Broadcast />} />
-                    <Route path="v1/live/:roomId" element={<BuyerLive />}></Route>
+                    <Route
+                        path="v1/broadcast/:roomId"
+                        element={<Broadcast />}
+                    />
+                    <Route
+                        path="v1/live/:roomId"
+                        element={<BuyerLive />}
+                    ></Route>
                 </Routes>
             </ChakraProvider>
         </>
