@@ -9,7 +9,6 @@ import java.util.List;
 import java.util.Optional;
 
 public interface SellerInfoRepository extends JpaRepository<SellerInfo, Long>, SellerSearchRepository {
-    Optional<SellerInfo> findSellerInfoByUserId(Long sellerId);
     @EntityGraph(attributePaths = {"user"})
     List<SellerInfo> findAll();
     @EntityGraph(attributePaths = {"user"})
