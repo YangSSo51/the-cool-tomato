@@ -6,7 +6,8 @@ import com.wp.user.domain.follow.dto.response.GetFollowManageListResponse;
 import jakarta.servlet.http.HttpServletRequest;
 
 public interface FollowManageService {
-    GetFollowManageListResponse getFollowManages(HttpServletRequest httpServletRequest);
+    GetFollowManageListResponse getFollowerManages(HttpServletRequest httpServletRequest);
+    GetFollowManageListResponse getFollowingManages(HttpServletRequest httpServletRequest);
     FollowStatusResponse getFollowStatus(HttpServletRequest httpServletRequest, Long sellerId);
     void addFollow(HttpServletRequest httpServletRequest, AddFollowManageRequest addFollowManageRequest);
     void removeFollow(HttpServletRequest httpServletRequest, Long sellerId);

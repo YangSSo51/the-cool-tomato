@@ -27,9 +27,21 @@ public class FollowManageServiceImpl implements FollowManageService {
     private final JwtService jwtService;
     private final UserRepository userRepository;
 
-    // 팔로우 목록 조회
+    // 팔로워 목록 조회
     @Override
-    public GetFollowManageListResponse getFollowManages(HttpServletRequest httpServletRequest) {
+    public GetFollowManageListResponse getFollowerManages(HttpServletRequest httpServletRequest) {// 헤더 Access Token 추출
+        String accessToken = jwtService.resolveToken(httpServletRequest);
+        // 인증
+        // 회원 정보 추출
+
+        // 팔로우 목록(임시)
+        List<FollowManage> followManages = followManageRepository.findAllByFollowingId(1L);
+        return GetFollowManageListResponse.from(followManages);
+    }
+
+    // 팔로잉 목록 조회
+    @Override
+    public GetFollowManageListResponse getFollowingManages(HttpServletRequest httpServletRequest) {
         // 헤더 Access Token 추출
         String accessToken = jwtService.resolveToken(httpServletRequest);
         // 인증
