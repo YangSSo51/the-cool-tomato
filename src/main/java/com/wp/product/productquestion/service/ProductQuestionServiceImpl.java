@@ -40,9 +40,9 @@ public class ProductQuestionServiceImpl implements ProductQuestionService{
     }
 
     @Override
-    public Map<String, Object> getProductQuestionMyList(ProductQuestionSearchRequest productQuestionSearchRequest) {
+    public Map<String, Object> getMyProductQuestionList(ProductQuestionSearchRequest productQuestionSearchRequest) {
         try {
-            Page<ProductQuestionMyListResponse> result = productQuestionRepository.searchMyList(productQuestionSearchRequest);
+            Page<ProductQuestionMyListResponse> result = productQuestionRepository.getMyProductQuestionList(productQuestionSearchRequest);
             Map<String,Object> map = new HashMap<>();
 
             map.put("list",result.getContent());
@@ -54,25 +54,25 @@ public class ProductQuestionServiceImpl implements ProductQuestionService{
     }
 
     @Override
+    public Map<String, Object> getMyQuestionList(ProductQuestionSearchRequest productQuestionSearchRequest) {
+        try {
+            Page<ProductQuestionMyListResponse> result = productQuestionRepository.getMyQuestionList(productQuestionSearchRequest);
+            Map<String,Object> map = new HashMap<>();
+
+            map.put("list",result.getContent());
+            map.put("totalCount",result.getTotalElements());
+            return map;
+        }catch (Exception e){
+            throw new BusinessExceptionHandler("구매자 상품 문의 조회 중 에러 발생",ErrorCode.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @Override
     public ProductQuestionResponse findProductQuestion(Long productQuestionId) {
         //TODO : 판매자 아이디 확인 필요
-        // 카테고리명, 판매자명 추가 조회 필요
-        Optional<ProductQuestion> result = productQuestionRepository.findById(productQuestionId);
-
-        ProductQuestion productQuestion = result.orElseThrow(() -> new BusinessExceptionHandler("상품 문의 조회에 실패했습니다.",ErrorCode.NO_ELEMENT_ERROR));
-
-        ProductQuestionResponse productQuestionResponse = ProductQuestionResponse.builder()
-                .writerId(productQuestion.getWriterId())
-                .productId(productQuestion.getProduct().getProductId())
-                .productName(productQuestion.getProduct().getProductName())
-                .productContent(productQuestion.getProduct().getProductContent())
-                .productQuestionBoardId(productQuestion.getProductQuestionBoardId())
-                .questionContent(productQuestion.getQuestionContent())
-                .answerContent(productQuestion.getAnswerContent())
-                .questionRegisterDate(productQuestion.getQuestionRegisterDate())
-                .answerRegisterDate(productQuestion.getQuestionRegisterDate()).build();
-
-        return productQuestionResponse;
+        Optional<ProductQuestionResponse> result = productQuestionRepository.findProductQuestion(productQuestionId);
+        result.orElseThrow(()-> new BusinessExceptionHandler("조회된 상품문의가 없습니다",ErrorCode.NO_ELEMENT_ERROR));
+        return result.get();
     }
 
     @Override
