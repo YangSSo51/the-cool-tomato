@@ -28,4 +28,13 @@ function liveAxios() {
     });
 }
 
-export { mainAxios, openViduDirectAxios, liveAxios };
+function productAxios() {
+    return axios.create({
+        baseURL: "http://i10a501.p.ssafy.io:8082/v1",
+        headers: {
+            "Content-Type": "application/json",
+        },
+    });
+}
+
+export { mainAxios, openViduDirectAxios, liveAxios, productAxios };
