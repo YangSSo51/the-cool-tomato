@@ -7,7 +7,7 @@ const http = mainAxios();
 const headers = new AxiosHeaders();
 headers.set("Content-Type", "application/json;charset=utf-8");
 
-const url = "/v1/users";
+const url = "users";
 
 async function loginUser(data: { id: string; password: string }) {
     console.log("loginUser data: " + JSON.stringify(data));
@@ -33,6 +33,7 @@ async function checkIdAPI(data: {id: string}) {
         const responseData = response.data;
         if (responseData.status === 200 && responseData.data.isDuplicate === false) {
             console.log("사용 가능한 아이디입니다.");
+            return 1
         } else {
             console.log("아이디가 중복되었거나 요청에 문제가 있습니다.");
         }

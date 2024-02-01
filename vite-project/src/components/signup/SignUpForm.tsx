@@ -5,7 +5,6 @@ import {
     InputRightElement,
     Button,
     FormControl,
-    FormErrorMessage,
     FormHelperText,
     Select,
     FormLabel,
@@ -36,28 +35,54 @@ function SignUpForm() {
     const [isUsernameValid, setIsUsernameValid] = useState(false);
     const [isPasswordValid, setIsPasswordValid] = useState(false);
     const [isEmailValid, setIsEmailValid] = useState(false);
+    const [sendcode, setSendcode] = useState(false)
     const [isNicknameValid, setIsNicknameValid] = useState(false);
-    const [isSexValid, setIsSexValid] = useState(false);
-    const [isBirthdayValid, setIsBirthdayValid] = useState(false);
 
-    function handleUsername(e: React.ChangeEvent<HTMLSelectElement>) {
+    console.log("유효성통과 다 트루냐???", isUsernameValid, isPasswordValid, isEmailValid, isNicknameValid)
+    // 안내메시지
+    const [validMessage, setValidMessage] = useState({
+        idMessage: "",
+        passwordMessage: "",
+        passwordConfirmMessage: "",
+        emailMessage: "",
+      });
+
+    function handleUsername(e: React.ChangeEvent<HTMLInputElement>) {
         const inputValue = e.target.value;
         const cleanedValue = inputValue.replace(/[^A-Za-z0-9]/g, '');
         // 한글 입력 제한
         if (/[ㄱ-ㅎㅏ-ㅣ가-힣]/.test(inputValue)) {
-            alert('한글은 입력할 수 없습니다.');
+            setValidMessage({ ...validMessage, idMessage: "한글을 입력할 수 없습니다." });
+            return;
+        }
+        // 특문 제한
+        if (/[~!@#$%";'^,&*()_+|</>=>`?:{[\]}]/g.test(inputValue)) {
+            setValidMessage({ ...validMessage, idMessage: "특수문자를 입력할 수 없습니다." });
             return;
         }
         // 글자 수 제한
         const limitedValue = cleanedValue.substring(0, 30);
         if (cleanedValue.length > 30) {
-            alert('ID는 최대 30자까지 가능합니다.');
+            setValidMessage({ ...validMessage, idMessage: "아이디는 최대 30자까지 가능합니다." });
             return;
         }
+        setValidMessage({ ...validMessage, idMessage: "" });
         setUsername(limitedValue);
     }
 
-    function handlePassword(e: React.ChangeEvent<HTMLSelectElement>) {
+    // 중복확인 버튼 클릭 시
+    const handleCheckId = () => {
+        checkIdAPI({ id: username }).then((result) => {
+            if (result === 1) {
+                setIsUsernameValid(true)
+                setValidMessage({ ...validMessage, idMessage: "사용할 수 있는 아이디입니다." });
+            } else {
+                setValidMessage({ ...validMessage, idMessage: "중복된 아이디입니다." });
+            }
+        });
+    };
+
+    function handlePassword(e: React.ChangeEvent<HTMLInputElement>) {
         const inputValue = e.target.value;
         const regex = /^(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[!@#$%^&*]).{8,}$/;
         // 체크아이콘 표시를 위해
@@ -65,31 +90,32 @@ function SignUpForm() {
         setPassword(inputValue);
     }
 
-    function handlePasswordConfirm(e: React.ChangeEvent<HTMLSelectElement>) {
+    function handlePasswordConfirm(e: React.ChangeEvent<HTMLInputElement>) {
         const inputValue = e.target.value;
         const regex = /^(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[!@#$%^&*]).{8,}$/;
         // 동일한지 확인
         if (password === inputValue) {
             setCheck2(regex.test(inputValue));
+            setIsPasswordValid(true)
         }
         setPasswordAgain(inputValue)
     }
 
-    function handleEmail(e: React.ChangeEvent<HTMLSelectElement>) {
+    function handleEmail(e: React.ChangeEvent<HTMLInputElement>) {
         const inputValue = e.target.value;
         const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         // 올바른 이메일 형식일 때 이메일 전송버튼 활성화
-        setIsEmailValid(regex.test(inputValue));
+        setSendcode(regex.test(inputValue))
         setEmail(inputValue);
     }
-    console.log(sex)
+
     function onSubmit(event: React.SyntheticEvent): void {
         event.preventDefault();
         // TODO: 회원가입 비동기 통신
         // 모든 조건이 True일 때 회원가입 제출
-        if (isUsernameValid === true) {
+        if (isUsernameValid === false) {
             alert("아이디 중복확인해주세요!")
-        } else if (isPasswordValid === true) {
+        } else if (isPasswordValid === false) {
             alert("비밀번호 확인해주세요!!")
         } else if (isEmailValid === false) {
             alert("이메일 인증해주세요!")
@@ -106,14 +132,14 @@ function SignUpForm() {
         console.log('온서브밋')
         }
     }
-    
+    //
     return (
         <>
             <form
                 onSubmit={onSubmit}
                 style={{ width: "100%", height: "100vh" }}
             >
-                <FormControl my={2} isInvalid={isUsernameValid} isRequired>
+                <FormControl my={2}  isRequired>
                     <FormLabel>
                         <Text as={"b"}>아이디</Text>
                     </FormLabel>
@@ -123,7 +149,7 @@ function SignUpForm() {
                                 focusBorderColor="themeGreen.500"
                                 placeholder="ID"
                                 size="md"
-                                autoComplete="username"
+                                // autoComplete="username"
                                 value={username}
                                 onChange={handleUsername}
                             />
@@ -133,7 +159,21 @@ function SignUpForm() {
                                     size="sm"
                                     colorScheme="themeGreen"
                                     variant="ghost"
-                                    onClick={() => checkIdAPI({id : username})}
+                                    onClick={handleCheckId}
+                                    // todo : 서버 열리면 return 값 중복체크로 1들어오는지 확인하는 부분
+                                    //     try {
+                                    //         check.then((res) => {
+                                    //             console.log(res)
+                                    // 만약 200이면 
+                                    // setIsUsernameValid(true)
+                                    // setValidMessage({...validMessage, idMessage: "사용할 수 있는 아이디입니다."});
+                                    // 만약 400이면
+                                    // setValidMessage({...validMessage, idMessage: "중복된 아이디입니다."});
+                                    //         })
+                                    //     } catch (error) {
+                                    //         console.error(error)
+                                    //     }
+                                    // }
                                     borderRadius="md"
                                     _hover={{
                                         bg: "themeGreen.500",
@@ -145,10 +185,10 @@ function SignUpForm() {
                             </InputRightElement>
                         </InputGroup>
                     </Tooltip>
-                    <FormErrorMessage>아이디를 확인해 주세요</FormErrorMessage>
+                    <FormHelperText>{validMessage.idMessage}</FormHelperText>
                 </FormControl>
                 
-                <FormControl my={2} isInvalid={isPasswordValid} isRequired>
+                <FormControl my={2} isRequired>
                     <FormLabel>
                         <Text as={"b"}>비밀번호</Text>
                     </FormLabel>
@@ -198,9 +238,7 @@ function SignUpForm() {
                             </Button>
                         </InputRightElement>
                     </InputGroup>
-                    <FormErrorMessage>
-                        비밀번호를 확인해 주세요
-                    </FormErrorMessage>
+                    <FormHelperText>{validMessage.passwordMessage}</FormHelperText>
                 </FormControl>
 
                 <FormControl my={2} isRequired>
@@ -228,7 +266,7 @@ function SignUpForm() {
                                     bg: "themeGreen.500",
                                     color: "white",
                                 }}  
-                                isDisabled={!isEmailValid}
+                                isDisabled={!sendcode}
                                 onClick={() => sendEmailAPI({email : email})}
                             >전송
                             </Button>
@@ -262,9 +300,10 @@ function SignUpForm() {
                             </Button>
                         </InputRightElement>
                     </InputGroup>
+                    <FormHelperText>{validMessage.emailMessage}</FormHelperText>
                 </FormControl>
 
-                <FormControl my={2} isInvalid={isNicknameValid} isRequired>
+                <FormControl my={2} isRequired>
                     <FormLabel>
                         <Text as={"b"}>닉네임</Text>
                     </FormLabel>
@@ -274,11 +313,12 @@ function SignUpForm() {
                         size="md"
                         autoComplete="nickname"
                         value={nickname}
-                        onChange={(e) => setNickname(e.target.value)}
-                    ></Input>
-                    <FormErrorMessage>닉네임을 확인해 주세요</FormErrorMessage>
+                        onChange={(e) => {setNickname(e.target.value); setIsNicknameValid(e.target.value.length > 0);} }
+                    />
+
                 </FormControl>
-                <FormControl my={2} isInvalid={isSexValid} isRequired>
+
+                <FormControl my={2} isRequired>
                     <FormLabel>
                         <Text as={"b"}>성별</Text>
                     </FormLabel>
@@ -290,9 +330,9 @@ function SignUpForm() {
                         <option value="true">남자</option>
                         <option>여자</option>
                     </Select>
-                    <FormErrorMessage>성별을 확인해 주세요</FormErrorMessage>
+                    
                 </FormControl>
-                <FormControl my={2} isInvalid={isBirthdayValid} isRequired>
+                <FormControl my={2} isRequired>
                     <FormLabel>
                         <Text as={"b"}>생년월일</Text>
                     </FormLabel>

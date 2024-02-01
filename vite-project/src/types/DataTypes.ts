@@ -45,3 +45,11 @@ export type RegisterUser = {
     sex: true | false;
     birthday: string;
 }
+
+export type RegisterSeller = {
+    business_number: string;
+    business_content: string;
+    mail_order_sales_number: string;
+    business_address: string;
+    phone_number: string;
+}

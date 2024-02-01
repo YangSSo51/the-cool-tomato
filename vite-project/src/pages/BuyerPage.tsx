@@ -17,6 +17,7 @@ import Sellerform from "../components/mypage/Sellerform";
 export default function BuyerPage() {
 
     const navigate = useNavigate();
+    const [boxHeight, setBoxHeight] = useState("85vh");
     const { userId } = useParams();
     const [ userInfo, setUserInfo ] = useState([]);
     const [ tab, setTab ] = useState(0);
@@ -28,6 +29,7 @@ export default function BuyerPage() {
         { id: 4, isSelected: false , name: '내가 한 문의', component: <Question userId={userId} /> },
         { id: 5, isSelected: false , name: '판매자 신청', component: <Sellerform userId={userId} /> },
     ]);
+
     const changeSelect = (e) => {
         setTab(e.target.value)
         setCategoryTabs(categoryTabs.map((item, index) => {
@@ -38,6 +40,10 @@ export default function BuyerPage() {
           })
         );
     }
+
+    useEffect(() => {
+            setBoxHeight("80vh"); // 탭 변경 시 초기 높이로 리셋
+        }, [tab]);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -62,13 +68,13 @@ export default function BuyerPage() {
     return (
         <Box minH="100vh" mb="10" paddingBlock="6rem">
 
-            <Center fontFamily="GmkBold" fontSize="6rem" color={"themeGreen.500"}>
+            <Center fontFamily="GmkBold" fontSize={{ base: "4rem", md: "5rem", lg: "6rem" }} color={"themeGreen.500"}>
                 마이페이지
             </Center>
 
-            <Flex m="auto" border="2px" borderColor="themeGreen.500" rounded="lg" w="85vw" minH="85vh">
-                <Flex m="auto" rounded="lg" w="80vw" maxH="80vh" px="2">
-                    <Box w="25%" pr="4">
+            <Flex m="auto" border="2px" borderColor="themeGreen.500" rounded="lg" w="85vw" overflow="scroll" minH={boxHeight}>
+                <Flex m="auto" direction={{ base: "column", lg: "row"}} rounded="lg" w="80vw" maxH={{ base:"auto", lg: "80vh"}} px="2">
+                    <Box w={{ base: "100%", lg: "25%" }} pr="4">
                         <Box w="full" bg="white" rounded="lg" overflow="hidden">
                             <Flex direction="column" align="center" py="6">
 
@@ -110,12 +116,10 @@ export default function BuyerPage() {
                         </Box>
                     </Box>
 
-                    <Box w="75%" bg="white" rounded="lg" overflow="hidden">
-                        <Box h="full" pl="4">
-                            <Flex justify="center" align="center" h="full">
+                    <Box w="75%" bg="white" rounded="lg" overflowY="scroll">
+                        <Flex justify="center" align="center" h="full">
                             {categoryTabs[tab].component}
-                            </Flex>
-                        </Box>
+                        </Flex>
                     </Box>
                 </Flex>
             </Flex>

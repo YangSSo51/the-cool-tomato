@@ -2,7 +2,7 @@ import axios from "axios";
 
 function mainAxios() {
     return axios.create({
-        baseURL: "http://localhost:3000",
+        baseURL: "http://localhost:3000/v1/",
         headers: {
             "Content-Type": "application/json;charset=utf-8",
         },
