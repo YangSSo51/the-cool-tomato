@@ -10,6 +10,11 @@ import com.wp.user.domain.user.entity.Auth;
 import com.wp.user.domain.user.entity.User;
 import com.wp.user.domain.user.repository.UserRepository;
 import com.wp.user.global.common.code.ErrorCode;
+import com.wp.user.global.common.request.AccessTokenRequest;
+import com.wp.user.global.common.request.ExtractionRequest;
+import com.wp.user.global.common.request.TokenRequest;
+import com.wp.user.global.common.response.IssueTokenResponse;
+import com.wp.user.global.common.service.AuthClient;
 import com.wp.user.global.common.service.JwtService;
 import com.wp.user.global.exception.BusinessExceptionHandler;
 import jakarta.servlet.http.HttpServletRequest;
@@ -18,6 +23,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -26,6 +32,7 @@ public class SellerInfoServiceImpl implements SellerInfoService {
     private final SellerInfoRepository sellerInfoRepository;
     private final UserRepository userRepository;
     private final JwtService jwtService;
+    private final AuthClient authClient;
 
     // 판매자 상세 정보 조회
     @Override
@@ -49,10 +56,16 @@ public class SellerInfoServiceImpl implements SellerInfoService {
     public GetSellerInfoListResponse getSellerInfos(HttpServletRequest httpServletRequest) {
         // 헤더 Access Token 추출
         String accessToken = jwtService.resolveAccessToken(httpServletRequest);
-        // 회원 정보 추출
-
+        authClient.validateToken(AccessTokenRequest.builder().accessToken(accessToken).build());
         // 권한이 관리자일 경우만 조회
-
+        Map<String, String> infos = authClient.extraction(ExtractionRequest.builder().accessToken(accessToken).infos(List.of("auth")).build()).getInfos();
+        try {
+            if(!infos.get("auth").equals("ADMIN")) {
+                throw new BusinessExceptionHandler(ErrorCode.FORBIDDEN_ERROR);
+            }
+        } catch(Exception e) {
+            throw new BusinessExceptionHandler(ErrorCode.FORBIDDEN_ERROR);
+        }
         List<SellerInfo> sellerInfoList = sellerInfoRepository.findAll();
         return GetSellerInfoListResponse.from(sellerInfoList);
     }
@@ -62,9 +75,16 @@ public class SellerInfoServiceImpl implements SellerInfoService {
     public GetSellerInfoResponse getSellerInfo(HttpServletRequest httpServletRequest, Long sellerInfoId) {
         // 헤더 Access Token 추출
         String accessToken = jwtService.resolveAccessToken(httpServletRequest);
-        // 회원 정보 추출
-
+        authClient.validateToken(AccessTokenRequest.builder().accessToken(accessToken).build());
         // 권한이 관리자 & 구매자일 경우만 조회
+        Map<String, String> infos = authClient.extraction(ExtractionRequest.builder().accessToken(accessToken).infos(List.of("auth")).build()).getInfos();
+        try {
+            if(infos.get("auth").equals("BUYER")) {
+                throw new BusinessExceptionHandler(ErrorCode.FORBIDDEN_ERROR);
+            }
+        } catch(Exception e) {
+            throw new BusinessExceptionHandler(ErrorCode.FORBIDDEN_ERROR);
+        }
         SellerInfo sellerInfo = sellerInfoRepository.findById(sellerInfoId).orElseThrow(() -> new BusinessExceptionHandler(ErrorCode.NOT_FOUND_SELLER));
         return GetSellerInfoResponse.builder()
                 .sellerInfoId(sellerInfo.getId())
@@ -84,12 +104,19 @@ public class SellerInfoServiceImpl implements SellerInfoService {
     public void addSellerInfo(HttpServletRequest httpServletRequest, AddSellerInfoRequest addSellerInfoRequest) {
         // 헤더 Access Token 추출
         String accessToken = jwtService.resolveAccessToken(httpServletRequest);
-        // 회원 정보 추출
-
+        authClient.validateToken(AccessTokenRequest.builder().accessToken(accessToken).build());
         // 권한이 구매자일 경우만 저장
+        Map<String, String> infos = authClient.extraction(ExtractionRequest.builder().accessToken(accessToken).infos(List.of("userId", "auth")).build()).getInfos();
+        System.out.println(infos);
+        try {
+            if(!infos.get("auth").equals("BUYER")) {
+                throw new BusinessExceptionHandler(ErrorCode.FORBIDDEN_ERROR);
+            }
+        } catch(Exception e) {
+            throw new BusinessExceptionHandler(ErrorCode.FORBIDDEN_ERROR);
+        }
 
-
-        User user = userRepository.findById(1L).orElseThrow(() -> new BusinessExceptionHandler(ErrorCode.NOT_FOUND_USER_ID));
+        User user = userRepository.findById(Long.valueOf(infos.get("userId"))).orElseThrow(() -> new BusinessExceptionHandler(ErrorCode.NOT_FOUND_USER_ID));
         SellerInfo sellerInfo = SellerInfo.builder()
                 .user(user)
                 .businessNumber(addSellerInfoRequest.getBusinessNumber())
@@ -108,10 +135,17 @@ public class SellerInfoServiceImpl implements SellerInfoService {
     public ModifySellerStatusResponse modifySellerStatusTrue(HttpServletRequest httpServletRequest, Long sellerInfoId) {
         // 헤더 Access Token 추출
         String accessToken = jwtService.resolveAccessToken(httpServletRequest);
-        // 회원 정보 추출
-
+        authClient.validateToken(AccessTokenRequest.builder().accessToken(accessToken).build());
+        String refreshToken = jwtService.resolveRefreshToken(httpServletRequest);
         // 권한이 관리자일 경우만 승인
-
+        Map<String, String> infos = authClient.extraction(ExtractionRequest.builder().accessToken(accessToken).infos(List.of("auth")).build()).getInfos();
+        try {
+            if(!infos.get("auth").equals("ADMIN")) {
+                throw new BusinessExceptionHandler(ErrorCode.FORBIDDEN_ERROR);
+            }
+        } catch(Exception e) {
+            throw new BusinessExceptionHandler(ErrorCode.FORBIDDEN_ERROR);
+        }
         SellerInfo sellerInfo = sellerInfoRepository.findById(sellerInfoId).orElseThrow(() -> new BusinessExceptionHandler(ErrorCode.NOT_FOUND_SELLER));
         // 이미 승인된 경우
         try {
@@ -124,6 +158,7 @@ public class SellerInfoServiceImpl implements SellerInfoService {
         sellerInfo.setApprovalStatus(true);
         sellerInfo.getUser().setAuth(Auth.SELLER);
         // 토큰 재발급
+//
         return ModifySellerStatusResponse.builder()
                 .profileImg(sellerInfo.getUser().getProfileImg())
                 .auth(sellerInfo.getUser().getAuth())
@@ -138,10 +173,17 @@ public class SellerInfoServiceImpl implements SellerInfoService {
     public ModifySellerStatusResponse modifySellerStatusFalse(HttpServletRequest httpServletRequest, Long sellerInfoId) {
         // 헤더 Access Token 추출
         String accessToken = jwtService.resolveAccessToken(httpServletRequest);
-        // 회원 정보 추출
-
+        authClient.validateToken(AccessTokenRequest.builder().accessToken(accessToken).build());
+        String refreshToken = jwtService.resolveRefreshToken(httpServletRequest);
         // 권한이 관리자일 경우만 철회
-
+        Map<String, String> infos = authClient.extraction(ExtractionRequest.builder().accessToken(accessToken).infos(List.of("auth")).build()).getInfos();
+        try {
+            if(!infos.get("auth").equals("ADMIN")) {
+                throw new BusinessExceptionHandler(ErrorCode.FORBIDDEN_ERROR);
+            }
+        } catch(Exception e) {
+            throw new BusinessExceptionHandler(ErrorCode.FORBIDDEN_ERROR);
+        }
         SellerInfo sellerInfo = sellerInfoRepository.findById(sellerInfoId).orElseThrow(() -> new BusinessExceptionHandler(ErrorCode.NOT_FOUND_SELLER));
         // 이미 철회된 경우
         try {

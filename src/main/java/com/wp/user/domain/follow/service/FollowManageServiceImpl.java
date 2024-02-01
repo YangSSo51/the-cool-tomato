@@ -42,7 +42,7 @@ public class FollowManageServiceImpl implements FollowManageService {
         Map<String, String> infos = authClient.extraction(ExtractionRequest.builder().accessToken(accessToken).infos(List.of("userId")).build()).getInfos();
         // 팔로우 목록
         List<FollowManage> followManages = followManageRepository.findAllByFollowingId(Long.valueOf(infos.get("userId")));
-        return GetFollowManageListResponse.from(followManages);
+        return GetFollowManageListResponse.fromFollower(followManages);
     }
 
     // 팔로잉 목록 조회
@@ -56,7 +56,7 @@ public class FollowManageServiceImpl implements FollowManageService {
         Map<String, String> infos = authClient.extraction(ExtractionRequest.builder().accessToken(accessToken).infos(List.of("userId")).build()).getInfos();
         // 팔로우 목록
         List<FollowManage> followManages = followManageRepository.findAllByFollowerId(Long.valueOf(infos.get("userId")));
-        return GetFollowManageListResponse.from(followManages);
+        return GetFollowManageListResponse.fromFollowing(followManages);
     }
 
     // 팔로우 여부 조회

@@ -27,7 +27,21 @@ public class GetFollowManageListResponse {
         private String profileImg;
     }
 
-    public static GetFollowManageListResponse from(List<FollowManage> followManageList) {
+    public static GetFollowManageListResponse fromFollower(List<FollowManage> followManageList) {
+        List<GetFollowManage> follow = new ArrayList<>();
+        for (FollowManage followManage : followManageList) {
+            GetFollowManage getFollowManage = GetFollowManage.builder()
+                    .id(followManage.getId())
+                    .userId(followManage.getFollower().getId())
+                    .loginId(followManage.getFollower().getLoginId())
+                    .nickname(followManage.getFollower().getNickname())
+                    .profileImg(followManage.getFollower().getProfileImg()).build();
+            follow.add(getFollowManage);
+        }
+        return GetFollowManageListResponse.builder().follow(follow).build();
+    }
+
+    public static GetFollowManageListResponse fromFollowing(List<FollowManage> followManageList) {
         List<GetFollowManage> follow = new ArrayList<>();
         for (FollowManage followManage : followManageList) {
             GetFollowManage getFollowManage = GetFollowManage.builder()
