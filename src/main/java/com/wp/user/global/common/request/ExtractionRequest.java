@@ -5,11 +5,13 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 public class ExtractionRequest {
     private String accessToken;
-    private String[] infos;
+    private List<String> infos;
 }

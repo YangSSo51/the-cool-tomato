@@ -21,5 +21,4 @@ public interface UserService {
     GetUserListResponse getUsers(HttpServletRequest httpServletRequest);
     void forceRemoveUser(HttpServletRequest httpServletRequest, Long id);
     void sendEmail(String email, String title, StringBuffer sb);
-    boolean isValidateAccessToken(String accessToken);
 }

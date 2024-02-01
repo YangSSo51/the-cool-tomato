@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.google.gson.JsonParseException;
 import com.wp.user.global.common.code.ErrorCode;
 import com.wp.user.global.common.response.ErrorResponse;
+import feign.FeignException;
 import jakarta.validation.ConstraintViolationException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -178,8 +179,7 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(response, HttpStatus.valueOf(ErrorCode.REQUEST_BODY_MISSING_ERROR.getStatus()));
     }
 
-
-    // ==================================================================================================================
+        // ==================================================================================================================
 
     /**
      * [Exception] 모든 Exception 경우 발생
