@@ -8,13 +8,19 @@ import org.springframework.stereotype.Component;
 @Component
 public class JwtService {
     private static final String AUTHORIZATION_HEADER = "Authorization";
+    private static final String REFRESH_TOKEN_HEADER = "Refresh-Token";
     private static final String BEARER_PREFIX = "Bearer ";
-    // HTTP Request 헤더로부터 토큰 추출
-    public String resolveToken(HttpServletRequest httpServletRequest) {
+
+    // Request의 Header에서 AccessToken 값을 가져옵니다. "Authorization" : "Bearer token"
+    public String resolveAccessToken(HttpServletRequest httpServletRequest) {
         String bearerToken = httpServletRequest.getHeader(AUTHORIZATION_HEADER);
         if (bearerToken != null && bearerToken.startsWith(BEARER_PREFIX)) {
             return bearerToken.substring(7);
         }
         return null;
+    }
+    // Request의 Header에서 RefreshToken 값을 가져옵니다. "Refresh Token" : "token"
+    public String resolveRefreshToken(HttpServletRequest httpServletRequest) {
+        return httpServletRequest.getHeader(REFRESH_TOKEN_HEADER);
     }
 }

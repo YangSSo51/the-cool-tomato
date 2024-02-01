@@ -171,21 +171,22 @@ public class UserServiceImpl implements UserService {
         return str.toString();
     }
 
-    // 로그아웃(미완)
+    // 로그아웃
     @Override
     @Transactional
     public void logout(HttpServletRequest httpServletRequest) {
         // 헤더 Access Token 추출
-        String accessToken = jwtService.resolveToken(httpServletRequest);
+        String accessToken = jwtService.resolveAccessToken(httpServletRequest);
         authClient.validateToken(AccessTokenRequest.builder().accessToken(accessToken).build());
         // 로그아웃 처리
+        authClient.deleteToken(AccessTokenRequest.builder().accessToken(accessToken).build());
     }
 
     // 개인 회원 정보 조회
     @Override
     public GetUserResponse getUser(HttpServletRequest httpServletRequest) {
         // 헤더 Access Token 추출
-        String accessToken = jwtService.resolveToken(httpServletRequest);
+        String accessToken = jwtService.resolveAccessToken(httpServletRequest);
         authClient.validateToken(AccessTokenRequest.builder().accessToken(accessToken).build());
         // 회원 정보 추출
         Map<String, String> infos = authClient.extraction(ExtractionRequest.builder().accessToken(accessToken).infos(List.of("userId")).build()).getInfos();
@@ -193,13 +194,14 @@ public class UserServiceImpl implements UserService {
         return userRepository.findUserById(Long.valueOf(infos.get("userId"))).orElseThrow(() -> new BusinessExceptionHandler(ErrorCode.NOT_FOUND_USER_ID));
     }
 
-    // 개인 회원 정보 수정(미완)
+    // 개인 회원 정보 수정
     @Override
     @Transactional
     public ModifyUserResponse modifyUser(HttpServletRequest httpServletRequest, MultipartFile profileImgFile, ModifyUserRequest modifyUserRequest) {
         // 헤더 Access Token 추출
-        String accessToken = jwtService.resolveToken(httpServletRequest);
+        String accessToken = jwtService.resolveAccessToken(httpServletRequest);
         authClient.validateToken(AccessTokenRequest.builder().accessToken(accessToken).build());
+        String refreshToken = jwtService.resolveRefreshToken(httpServletRequest);
         // 회원 정보 추출
         Map<String, String> infos = authClient.extraction(ExtractionRequest.builder().accessToken(accessToken).infos(List.of("userId")).build()).getInfos();
         // 회원 아이디로 회원 정보 추출
@@ -232,25 +234,25 @@ public class UserServiceImpl implements UserService {
                 throw new BusinessExceptionHandler(ErrorCode.NOT_VALID_PASSWORD); // errorCode : B003
             }
             // 토큰 재발급
-//            IssueTokenResponse issueTokenResponse = authClient.reissueToken(TokenRequest.builder().accessToken(accessToken).refreshToken(refreshToken).build())
-//            modifyUserResponse.setAccessToken(issueTokenResponse.getAccessToken());
-//            modifyUserResponse.setRefreshToken(issueTokenResponse.getRefreshToken());
+            IssueTokenResponse issueTokenResponse = authClient.reissueToken(TokenRequest.builder().accessToken(accessToken).refreshToken(refreshToken).build());
+            modifyUserResponse.setAccessToken(issueTokenResponse.getAccessToken());
+            modifyUserResponse.setRefreshToken(issueTokenResponse.getRefreshToken());
             user.setPassword(passwordEncoder.encode(modifyUserRequest.getNewPassword()));
         }
         return modifyUserResponse;
     }
 
-    // 회원 탈퇴(미완)
+    // 회원 탈퇴
     @Override
     @Transactional
     public void removeUser(HttpServletRequest httpServletRequest) {
         // 헤더 Access Token 추출
-        String accessToken = jwtService.resolveToken(httpServletRequest);
+        String accessToken = jwtService.resolveAccessToken(httpServletRequest);
         authClient.validateToken(AccessTokenRequest.builder().accessToken(accessToken).build());
         // 회원 정보 추출
         Map<String, String> infos = authClient.extraction(ExtractionRequest.builder().accessToken(accessToken).infos(List.of("userId")).build()).getInfos();
         // 회원 탈퇴 처리(Refresh Token 삭제)
-
+        authClient.deleteToken(AccessTokenRequest.builder().accessToken(accessToken).build());
         // 회원 탈퇴 처리(DB 삭제)
         userRepository.deleteById(Long.valueOf(infos.get("userId")));
     }
@@ -259,7 +261,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public GetUserListResponse getUsers(HttpServletRequest httpServletRequest) {
         // 헤더 Access Token 추출
-        String accessToken = jwtService.resolveToken(httpServletRequest);
+        String accessToken = jwtService.resolveAccessToken(httpServletRequest);
         authClient.validateToken(AccessTokenRequest.builder().accessToken(accessToken).build());
         // 권한 추출
         Map<String, String> infos = authClient.extraction(ExtractionRequest.builder().accessToken(accessToken).infos(List.of("auth")).build()).getInfos();
@@ -276,12 +278,12 @@ public class UserServiceImpl implements UserService {
         return GetUserListResponse.builder().users(users).build();
     }
 
-    // 회원 강제 탈퇴(미완)
+    // 회원 강제 탈퇴
     @Override
     @Transactional
     public void forceRemoveUser(HttpServletRequest httpServletRequest, Long id) {
         // 헤더 Access Token 추출
-        String accessToken = jwtService.resolveToken(httpServletRequest);
+        String accessToken = jwtService.resolveAccessToken(httpServletRequest);
         authClient.validateToken(AccessTokenRequest.builder().accessToken(accessToken).build());
         // 권한 추출
         Map<String, String> infos = authClient.extraction(ExtractionRequest.builder().accessToken(accessToken).infos(List.of("auth")).build()).getInfos();
@@ -293,7 +295,7 @@ public class UserServiceImpl implements UserService {
             throw new BusinessExceptionHandler(ErrorCode.FORBIDDEN_ERROR);
         }
         // 회원 탈퇴 처리(Refresh Token 삭제)
-
+        authClient.deleteToken(AccessTokenRequest.builder().accessToken(accessToken).build());
         // 회원 탈퇴 처리(DB 삭제)
         userRepository.deleteById(id);
     }

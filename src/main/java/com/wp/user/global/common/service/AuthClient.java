@@ -18,7 +18,7 @@ public interface AuthClient {
     @PostMapping
     IssueTokenResponse issueToken(@RequestBody IssueTokenRequest issueTokenRequest);
     @DeleteMapping
-    SuccessResponse<?> deleteToken(@RequestBody AccessTokenRequest accessTokenRequest);
+    String deleteToken(@RequestBody AccessTokenRequest accessTokenRequest);
     @PostMapping("/validationToken")
     String validateToken(@RequestBody AccessTokenRequest accessTokenRequest);
     @PostMapping("/reissue")

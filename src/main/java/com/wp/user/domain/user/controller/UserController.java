@@ -11,6 +11,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -168,9 +169,9 @@ public class UserController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/admin/{id}")
     @Operation(summary = "회원탈퇴", description = "관리자는 강제로 회원을 탈퇴시킵니다.")
-    public ResponseEntity<SuccessResponse<?>> forceRemoveUser(HttpServletRequest request, @NotBlank(message = "사용자의 id를 입력해주세요.") @PathVariable Long id) {
+    public ResponseEntity<SuccessResponse<?>> forceRemoveUser(HttpServletRequest request, @NotNull(message = "사용자의 id를 입력해주세요.") @PathVariable Long id) {
         userService.forceRemoveUser(request, id);
         SuccessResponse<?> response = SuccessResponse.builder()
                 .status(SuccessCode.DELETE_SUCCESS.getStatus())

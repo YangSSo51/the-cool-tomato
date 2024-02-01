@@ -30,7 +30,7 @@ public class FollowManageServiceImpl implements FollowManageService {
     // 팔로워 목록 조회
     @Override
     public GetFollowManageListResponse getFollowerManages(HttpServletRequest httpServletRequest) {// 헤더 Access Token 추출
-        String accessToken = jwtService.resolveToken(httpServletRequest);
+        String accessToken = jwtService.resolveAccessToken(httpServletRequest);
         // 인증
         // 회원 정보 추출
 
@@ -43,7 +43,7 @@ public class FollowManageServiceImpl implements FollowManageService {
     @Override
     public GetFollowManageListResponse getFollowingManages(HttpServletRequest httpServletRequest) {
         // 헤더 Access Token 추출
-        String accessToken = jwtService.resolveToken(httpServletRequest);
+        String accessToken = jwtService.resolveAccessToken(httpServletRequest);
         // 인증
         // 회원 정보 추출
 
@@ -56,7 +56,7 @@ public class FollowManageServiceImpl implements FollowManageService {
     @Override
     public FollowStatusResponse getFollowStatus(HttpServletRequest httpServletRequest, Long sellerId) {
         // 헤더 Access Token 추출
-        String accessToken = jwtService.resolveToken(httpServletRequest);
+        String accessToken = jwtService.resolveAccessToken(httpServletRequest);
         // 인증
         // 회원 정보 추출
 
@@ -70,7 +70,7 @@ public class FollowManageServiceImpl implements FollowManageService {
     @Transactional
     public void addFollow(HttpServletRequest httpServletRequest, AddFollowManageRequest addFollowManageRequest) {
         // 헤더 Access Token 추출
-        String accessToken = jwtService.resolveToken(httpServletRequest);
+        String accessToken = jwtService.resolveAccessToken(httpServletRequest);
         // 인증
         // 회원 정보 추출
 
@@ -97,7 +97,7 @@ public class FollowManageServiceImpl implements FollowManageService {
     @Transactional
     public void removeFollow(HttpServletRequest httpServletRequest, Long sellerId) {
         // 헤더 Access Token 추출
-        String accessToken = jwtService.resolveToken(httpServletRequest);
+        String accessToken = jwtService.resolveAccessToken(httpServletRequest);
         // 인증
         // 회원 정보 추출
 

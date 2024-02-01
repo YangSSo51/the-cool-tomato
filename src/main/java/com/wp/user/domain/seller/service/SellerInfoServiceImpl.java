@@ -48,7 +48,7 @@ public class SellerInfoServiceImpl implements SellerInfoService {
     @Override
     public GetSellerInfoListResponse getSellerInfos(HttpServletRequest httpServletRequest) {
         // 헤더 Access Token 추출
-        String accessToken = jwtService.resolveToken(httpServletRequest);
+        String accessToken = jwtService.resolveAccessToken(httpServletRequest);
         // 회원 정보 추출
 
         // 권한이 관리자일 경우만 조회
@@ -61,7 +61,7 @@ public class SellerInfoServiceImpl implements SellerInfoService {
     @Override
     public GetSellerInfoResponse getSellerInfo(HttpServletRequest httpServletRequest, Long sellerInfoId) {
         // 헤더 Access Token 추출
-        String accessToken = jwtService.resolveToken(httpServletRequest);
+        String accessToken = jwtService.resolveAccessToken(httpServletRequest);
         // 회원 정보 추출
 
         // 권한이 관리자 & 구매자일 경우만 조회
@@ -83,7 +83,7 @@ public class SellerInfoServiceImpl implements SellerInfoService {
     @Transactional
     public void addSellerInfo(HttpServletRequest httpServletRequest, AddSellerInfoRequest addSellerInfoRequest) {
         // 헤더 Access Token 추출
-        String accessToken = jwtService.resolveToken(httpServletRequest);
+        String accessToken = jwtService.resolveAccessToken(httpServletRequest);
         // 회원 정보 추출
 
         // 권한이 구매자일 경우만 저장
@@ -107,7 +107,7 @@ public class SellerInfoServiceImpl implements SellerInfoService {
     @Transactional
     public ModifySellerStatusResponse modifySellerStatusTrue(HttpServletRequest httpServletRequest, Long sellerInfoId) {
         // 헤더 Access Token 추출
-        String accessToken = jwtService.resolveToken(httpServletRequest);
+        String accessToken = jwtService.resolveAccessToken(httpServletRequest);
         // 회원 정보 추출
 
         // 권한이 관리자일 경우만 승인
@@ -137,7 +137,7 @@ public class SellerInfoServiceImpl implements SellerInfoService {
     @Transactional
     public ModifySellerStatusResponse modifySellerStatusFalse(HttpServletRequest httpServletRequest, Long sellerInfoId) {
         // 헤더 Access Token 추출
-        String accessToken = jwtService.resolveToken(httpServletRequest);
+        String accessToken = jwtService.resolveAccessToken(httpServletRequest);
         // 회원 정보 추출
 
         // 권한이 관리자일 경우만 철회
