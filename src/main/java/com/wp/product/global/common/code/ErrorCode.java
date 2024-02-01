@@ -12,7 +12,7 @@ import lombok.Getter;
  */
 @Getter
 public enum ErrorCode {
-
+    BUSINESS_EXCEPTION_ERROR(400, "B999", "Business Exception Error"),
     /**
      * ******************************* Global Error CodeList ***************************************
      * HTTP Status Code
@@ -75,7 +75,7 @@ public enum ErrorCode {
     // Transaction Delete Error
     DELETE_ERROR(500, "T003", "Delete Transaction Error Exception"),
 
-    ; // End
+    NO_ELEMENT_ERROR(500,"T004" ,"No Element Error Exception" ); // End
 
     /**
      * ******************************* Error Code Constructor ***************************************
