@@ -1,7 +1,7 @@
 import { mainAxios } from "./http";
 import { AxiosHeaders } from "axios";
 import { useNavigate } from "react-router-dom";
-import { RegisterUser } from "../types/DataTypes";
+import { RegisterUser, RegisterSeller } from "../types/DataTypes";
 
 const http = mainAxios();
 const headers = new AxiosHeaders();
@@ -62,4 +62,15 @@ async function checkEmailAPI(data: {email: string, code: string}) {
     }
 }
 
-export { loginUser, SignupUserAPI, checkIdAPI, sendEmailAPI, checkEmailAPI };
+async function registerSellerAPI(data: RegisterSeller) {
+    console.log("판매자신청좀하겠습니다.~!!!!!!!", JSON.stringify(data))
+    try {
+        await http.post(`${url}/sellers`, data)
+        return 1
+    } catch (error) {
+        console.error(error);
+        alert('폼 재확인 plz~');
+    }
+}
+
+export { loginUser, SignupUserAPI, checkIdAPI, sendEmailAPI, checkEmailAPI, registerSellerAPI };

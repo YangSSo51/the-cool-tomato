@@ -61,9 +61,9 @@ function SignUpForm() {
             return;
         }
         // 글자 수 제한
-        const limitedValue = cleanedValue.substring(0, 30);
-        if (cleanedValue.length > 30) {
-            setValidMessage({ ...validMessage, idMessage: "아이디는 최대 30자까지 가능합니다." });
+        const limitedValue = cleanedValue.substring(0, 16);
+        if (cleanedValue.length > 16) {
+            setValidMessage({ ...validMessage, idMessage: "아이디는 최대 16자까지 가능합니다." });
             return;
         }
         setValidMessage({ ...validMessage, idMessage: "" });

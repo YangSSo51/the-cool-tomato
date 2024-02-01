@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Box, Flex, Center, Text } from "@chakra-ui/layout";
-import { Button, Avatar, List, ListItem } from "@chakra-ui/react";
+import { Button, Avatar, List, ListItem, Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbSeparator, } from "@chakra-ui/react";
+import { ChevronRightIcon } from "@chakra-ui/icons";
 import axios from "axios";
 import "../css/SellerPage.css"
 
@@ -116,8 +117,17 @@ export default function BuyerPage() {
                         </Box>
                     </Box>
 
-                    <Box w="75%" bg="white" rounded="lg" overflowY="scroll">
-                        <Flex justify="center" align="center" h="full">
+                    <Box w={{ base: "100%", lg: "75%" }} bg="white" rounded="lg" overflowY="scroll">
+                        <Flex direction="column" justify="center" align="center" h="full">
+                            <Breadcrumb mb="10" spacing='8px' separator={<ChevronRightIcon color='gray.500' />}>
+                                <BreadcrumbItem>
+                                    <BreadcrumbLink>마이페이지</BreadcrumbLink>
+                                </BreadcrumbItem>
+
+                                <BreadcrumbItem isCurrentPage>
+                                    <BreadcrumbLink>{categoryTabs[tab].name}</BreadcrumbLink>
+                                </BreadcrumbItem>
+                            </Breadcrumb>
                             {categoryTabs[tab].component}
                         </Flex>
                     </Box>
