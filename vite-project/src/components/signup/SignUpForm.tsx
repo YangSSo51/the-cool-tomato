@@ -21,7 +21,7 @@ function SignUpForm() {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [passwordAgain, setPasswordAgain] = useState("");
-    const [email, setEmail] = useState("");
+    const [email, setEmail] = useState("M");
     const [emailVerification, setEmailVerification] = useState("");
     const [nickname, setNickname] = useState("");
     const [sex, setSex] = useState("");

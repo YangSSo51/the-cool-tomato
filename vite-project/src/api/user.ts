@@ -9,8 +9,27 @@ headers.set("Content-Type", "application/json;charset=utf-8");
 
 const url = "users";
 
-async function loginUser(data: { id: string; password: string }) {
-    return http.post(`${url}/login`, data);
+async function loginUser(data: { loginId: string; password: string }) {
+    try {
+        const response = await http.post(`${url}/login`, data);
+        const responseData = response.data
+        if (responseData.status === 201) {
+            console.log("로그인");
+            return responseData
+        }
+    } catch (error) {
+        if (error instanceof Error) {
+            // const axiosError = error as AxiosError;
+            console.error(error.message);
+            // if (axiosError.response && axiosError.response.status === 401) {
+            //   console.log("axiosError");
+            //   return "가입된 아이디가 아닙니다.";
+            // } else if (axiosError.response.divisionCode === B003 && axiosError.response.status === 401) {
+            //     return "비밀번호가 일치하지 않습니다."
+            // }
+            // console.log("에러에러에러에러에러");
+        }
+    }
 }
 
 async function SignupUserAPI(data: RegisterUser) {
