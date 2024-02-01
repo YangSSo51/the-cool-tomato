@@ -41,9 +41,16 @@ public class LiveProductController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @PostMapping("/list")
+    @GetMapping("/list")
     @Operation(summary = "라이브 방송 상품 조회",description = "방송 상품 리스트를 조회함")
-    public ResponseEntity<?> findLiveProduct(@RequestBody LiveProductSearchRequest request){
+    public ResponseEntity<?> findLiveProduct(@RequestParam(defaultValue = "0") int page,
+                                             @RequestParam(defaultValue = "10") int size,
+                                             @RequestParam(name = "live-id") Long liveId){
+
+        LiveProductSearchRequest request = LiveProductSearchRequest.builder()
+                                            .page(page)
+                                            .size(size)
+                                            .liveId(liveId).build();
 
         Map<String, Object> result = liveProductService.findLiveProduct(request);
 
