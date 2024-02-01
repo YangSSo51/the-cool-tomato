@@ -1,6 +1,6 @@
-import { productAxios } from "./http";
+import { productsAxios } from "./http";
 
-const http = productAxios();
+const http = productsAxios();
 
 const url = "/product-questions";
 
