@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("v1/users/follow")
 @Tag(name = "팔로우 API", description = "팔로우 관리 용 API")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class FollowManageController {
 
     private final FollowManageService followManageService;

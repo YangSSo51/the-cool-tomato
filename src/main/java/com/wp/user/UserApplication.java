@@ -16,20 +16,4 @@ public class UserApplication {
     public static void main(String[] args) {
         SpringApplication.run(UserApplication.class, args);
     }
-
-    @Bean
-    public WebMvcConfigurer corsConfigurer() {
-        return new WebMvcConfigurer() {
-            @Override
-            public void addCorsMappings(CorsRegistry registry) {
-                registry.addMapping("/**")
-                        .allowedOriginPatterns("*")
-                        .allowedHeaders("*")
-                        .exposedHeaders("*")
-                        .allowedMethods("*")
-                        .allowCredentials(true);
-            }
-        };
-    }
-
 }
