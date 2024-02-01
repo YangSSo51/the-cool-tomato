@@ -35,13 +35,18 @@ public class LiveProductServiceImpl implements LiveProductService{
     @Override
     @Transactional
     public Map<String, Object> findLiveProduct(LiveProductSearchRequest request) {
-        Map<String,Object> map = new HashMap<>();
-        Page<LiveProductResponse> result = liveProductRepository.search(request);
+        try {
+            Map<String, Object> map = new HashMap<>();
+            Page<LiveProductResponse> result = liveProductRepository.search(request);
 
-        map.put("list" , result.getContent());
-        map.put("totalCount", result.getTotalElements());
+            map.put("list", result.getContent());
+            map.put("totalCount", result.getTotalElements());
 
-        return map;
+            return map;
+        }catch (Exception e){
+            log.debug(e.getMessage());
+            throw new BusinessExceptionHandler("라이브 방송 상품 목록 조회 중 에러가 발생했습니다.",ErrorCode.NO_ELEMENT_ERROR);
+        }
     }
 
     @Override

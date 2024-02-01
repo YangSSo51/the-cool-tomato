@@ -39,11 +39,23 @@ public class LiveProductSearchImpl extends QuerydslRepositorySupport implements 
 
         //방송 상품 목록 조회 쿼리
         List<LiveProductResponse> list = queryFactory.select(Projections.bean(LiveProductResponse.class,
-                liveProduct.liveProductId, product.productId, product.sellerId, product.category.categoryId,
-                product.category.categoryContent.as("categoryName"), product.productName,product.productContent,
-                product.price, product.deliveryCharge, product.quantity,
-                liveProduct.liveFlatPrice, liveProduct.liveRatePrice, liveProduct.livePriceStartDate, liveProduct.livePriceEndDate,
-                liveProduct.mainProductSetting, liveProduct.registerDate, liveProduct.seq))
+                liveProduct.liveProductId,
+                        product.productId,
+                        product.sellerId,
+                        product.category.categoryId,
+                        product.category.categoryContent.as("categoryName"),
+                        product.productName,
+                        product.productContent,
+                        product.price,
+                        product.deliveryCharge,
+                        product.quantity,
+                        liveProduct.liveFlatPrice,
+                        liveProduct.liveRatePrice,
+                        liveProduct.livePriceStartDate,
+                        liveProduct.livePriceEndDate,
+                        liveProduct.mainProductSetting,
+                        liveProduct.registerDate,
+                        liveProduct.seq))
                 .from(liveProduct)
                 .innerJoin(product)
                 .on(liveProduct.product.productId.eq(product.productId))
@@ -70,7 +82,10 @@ public class LiveProductSearchImpl extends QuerydslRepositorySupport implements 
 
         //라이브 중인 방송 상품 조회
         List<LiveBroadcastProductResponse> list  = queryFactory.select(Projections.bean(LiveBroadcastProductResponse.class,
+                        qLiveProduct.liveProductId,
+                        qLiveBroadcast.liveBroadcastId,
                         qProduct.productId,
+                        qProduct.category.categoryId,
                         qProduct.category.categoryContent.as("categoryName"),
                         qProduct.sellerId,
                         qProduct.productName,
@@ -80,6 +95,11 @@ public class LiveProductSearchImpl extends QuerydslRepositorySupport implements 
                         qProduct.deliveryCharge,
                         qProduct.quantity,
                         qProduct.registerDate,
+                        qLiveProduct.liveFlatPrice,
+                        qLiveProduct.liveRatePrice,
+                        qLiveProduct.livePriceStartDate,
+                        qLiveProduct.livePriceEndDate,
+                        qLiveProduct.mainProductSetting,
                         qLiveBroadcast.broadcastStatus,
                         qLiveBroadcast.liveBroadcastId
                 ))
@@ -89,6 +109,7 @@ public class LiveProductSearchImpl extends QuerydslRepositorySupport implements 
                 .leftJoin(qLiveBroadcast)
                 .on(qLiveProduct.liveId.eq(qLiveBroadcast.liveBroadcastId))
                 .where(qLiveBroadcast.broadcastStatus.eq("1"))
+                .orderBy(qLiveBroadcast.broadcastStartDate.desc(), qProduct.productId.desc())   //가장 최근 등록한 방송,상품 순
                 .fetch();
 
         return list;
