@@ -11,6 +11,7 @@ import com.wp.user.global.common.code.ErrorCode;
 import com.wp.user.global.common.request.AccessTokenRequest;
 import com.wp.user.global.common.request.ExtractionRequest;
 import com.wp.user.global.common.request.IssueTokenRequest;
+import com.wp.user.global.common.request.TokenRequest;
 import com.wp.user.global.common.response.IssueTokenResponse;
 import com.wp.user.global.common.service.AuthClient;
 import com.wp.user.global.common.service.JwtService;
@@ -159,15 +160,15 @@ public class UserServiceImpl implements UserService {
         char[] charSet = new char[] { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F',
                 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z' };
 
-        String str = "";
+        StringBuilder str = new StringBuilder();
 
         // 문자 배열 길이의 값을 랜덤으로 10개를 뽑아 구문을 작성함
         int idx = 0;
         for (int i = 0; i < 10; i++) {
             idx = (int) (charSet.length * Math.random());
-            str += charSet[idx];
+            str.append(charSet[idx]);
         }
-        return str;
+        return str.toString();
     }
 
     // 로그아웃(미완)
@@ -232,8 +233,8 @@ public class UserServiceImpl implements UserService {
             }
             // 토큰 재발급
 //            IssueTokenResponse issueTokenResponse = authClient.reissueToken(TokenRequest.builder().accessToken(accessToken).refreshToken(refreshToken).build())
-            modifyUserResponse.setAccessToken("");
-            modifyUserResponse.setRefreshToken("");
+//            modifyUserResponse.setAccessToken(issueTokenResponse.getAccessToken());
+//            modifyUserResponse.setRefreshToken(issueTokenResponse.getRefreshToken());
             user.setPassword(passwordEncoder.encode(modifyUserRequest.getNewPassword()));
         }
         return modifyUserResponse;
@@ -247,10 +248,11 @@ public class UserServiceImpl implements UserService {
         String accessToken = jwtService.resolveToken(httpServletRequest);
         authClient.validateToken(AccessTokenRequest.builder().accessToken(accessToken).build());
         // 회원 정보 추출
-
+        Map<String, String> infos = authClient.extraction(ExtractionRequest.builder().accessToken(accessToken).infos(List.of("userId")).build()).getInfos();
         // 회원 탈퇴 처리(Refresh Token 삭제)
 
         // 회원 탈퇴 처리(DB 삭제)
+        userRepository.deleteById(Long.valueOf(infos.get("userId")));
     }
 
     // 전체 회원 정보 조회
@@ -262,7 +264,7 @@ public class UserServiceImpl implements UserService {
         // 권한 추출
         Map<String, String> infos = authClient.extraction(ExtractionRequest.builder().accessToken(accessToken).infos(List.of("auth")).build()).getInfos();
         try {
-            if(infos.get("auth").equals("ADMIN")) {
+            if(!infos.get("auth").equals("ADMIN")) {
                 throw new BusinessExceptionHandler(ErrorCode.FORBIDDEN_ERROR);
             }
         } catch(Exception e) {
@@ -281,11 +283,19 @@ public class UserServiceImpl implements UserService {
         // 헤더 Access Token 추출
         String accessToken = jwtService.resolveToken(httpServletRequest);
         authClient.validateToken(AccessTokenRequest.builder().accessToken(accessToken).build());
-        // 회원 정보 추출
-
+        // 권한 추출
+        Map<String, String> infos = authClient.extraction(ExtractionRequest.builder().accessToken(accessToken).infos(List.of("auth")).build()).getInfos();
+        try {
+            if(!infos.get("auth").equals("ADMIN")) {
+                throw new BusinessExceptionHandler(ErrorCode.FORBIDDEN_ERROR);
+            }
+        } catch(Exception e) {
+            throw new BusinessExceptionHandler(ErrorCode.FORBIDDEN_ERROR);
+        }
         // 회원 탈퇴 처리(Refresh Token 삭제)
 
         // 회원 탈퇴 처리(DB 삭제)
+        userRepository.deleteById(id);
     }
 
     @Override
