@@ -9,6 +9,9 @@ import com.wp.user.domain.user.entity.Auth;
 import com.wp.user.domain.user.entity.User;
 import com.wp.user.domain.user.repository.UserRepository;
 import com.wp.user.global.common.code.ErrorCode;
+import com.wp.user.global.common.request.AccessTokenRequest;
+import com.wp.user.global.common.request.ExtractionRequest;
+import com.wp.user.global.common.service.AuthClient;
 import com.wp.user.global.common.service.JwtService;
 import com.wp.user.global.exception.BusinessExceptionHandler;
 import jakarta.servlet.http.HttpServletRequest;
@@ -18,6 +21,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -26,16 +30,18 @@ public class FollowManageServiceImpl implements FollowManageService {
     private final FollowManageRepository followManageRepository;
     private final JwtService jwtService;
     private final UserRepository userRepository;
+    private final AuthClient authClient;
 
     // 팔로워 목록 조회
     @Override
     public GetFollowManageListResponse getFollowerManages(HttpServletRequest httpServletRequest) {// 헤더 Access Token 추출
         String accessToken = jwtService.resolveAccessToken(httpServletRequest);
         // 인증
+        authClient.validateToken(AccessTokenRequest.builder().accessToken(accessToken).build());
         // 회원 정보 추출
-
-        // 팔로우 목록(임시)
-        List<FollowManage> followManages = followManageRepository.findAllByFollowingId(1L);
+        Map<String, String> infos = authClient.extraction(ExtractionRequest.builder().accessToken(accessToken).infos(List.of("userId")).build()).getInfos();
+        // 팔로우 목록
+        List<FollowManage> followManages = followManageRepository.findAllByFollowingId(Long.valueOf(infos.get("userId")));
         return GetFollowManageListResponse.from(followManages);
     }
 
@@ -45,10 +51,11 @@ public class FollowManageServiceImpl implements FollowManageService {
         // 헤더 Access Token 추출
         String accessToken = jwtService.resolveAccessToken(httpServletRequest);
         // 인증
+        authClient.validateToken(AccessTokenRequest.builder().accessToken(accessToken).build());
         // 회원 정보 추출
-
-        // 팔로우 목록(임시)
-        List<FollowManage> followManages = followManageRepository.findAllByFollowerId(1L);
+        Map<String, String> infos = authClient.extraction(ExtractionRequest.builder().accessToken(accessToken).infos(List.of("userId")).build()).getInfos();
+        // 팔로우 목록
+        List<FollowManage> followManages = followManageRepository.findAllByFollowerId(Long.valueOf(infos.get("userId")));
         return GetFollowManageListResponse.from(followManages);
     }
 
@@ -58,10 +65,11 @@ public class FollowManageServiceImpl implements FollowManageService {
         // 헤더 Access Token 추출
         String accessToken = jwtService.resolveAccessToken(httpServletRequest);
         // 인증
+        authClient.validateToken(AccessTokenRequest.builder().accessToken(accessToken).build());
         // 회원 정보 추출
-
-        // 팔로우 여부(임시)
-        boolean followStatus = followManageRepository.existsByFollowerIdAndFollowingId(1L, sellerId);
+        Map<String, String> infos = authClient.extraction(ExtractionRequest.builder().accessToken(accessToken).infos(List.of("userId")).build()).getInfos();
+        // 팔로우 여부
+        boolean followStatus = followManageRepository.existsByFollowerIdAndFollowingId(Long.valueOf(infos.get("userId")), sellerId);
         return FollowStatusResponse.builder().isFollow(followStatus).build();
     }
 
@@ -72,10 +80,11 @@ public class FollowManageServiceImpl implements FollowManageService {
         // 헤더 Access Token 추출
         String accessToken = jwtService.resolveAccessToken(httpServletRequest);
         // 인증
+        authClient.validateToken(AccessTokenRequest.builder().accessToken(accessToken).build());
         // 회원 정보 추출
-
-        // 팔로워(임시)
-        User follower = userRepository.findById(1L).orElseThrow(() -> new BusinessExceptionHandler(ErrorCode.NOT_FOUND_USER_ID));
+        Map<String, String> infos = authClient.extraction(ExtractionRequest.builder().accessToken(accessToken).infos(List.of("userId")).build()).getInfos();
+        // 팔로워
+        User follower = userRepository.findById(Long.valueOf(infos.get("userId"))).orElseThrow(() -> new BusinessExceptionHandler(ErrorCode.NOT_FOUND_USER_ID));
         // 팔로잉
         User following = userRepository.findById(addFollowManageRequest.getSellerId()).orElseThrow(() -> new BusinessExceptionHandler(ErrorCode.NOT_FOUND_SELLER_ID));
         try {
@@ -99,8 +108,9 @@ public class FollowManageServiceImpl implements FollowManageService {
         // 헤더 Access Token 추출
         String accessToken = jwtService.resolveAccessToken(httpServletRequest);
         // 인증
+        authClient.validateToken(AccessTokenRequest.builder().accessToken(accessToken).build());
         // 회원 정보 추출
-
+        Map<String, String> infos = authClient.extraction(ExtractionRequest.builder().accessToken(accessToken).infos(List.of("userId")).build()).getInfos();
         User seller = userRepository.findById(sellerId).orElseThrow(() -> new BusinessExceptionHandler(ErrorCode.NOT_FOUND_SELLER_ID));
         try {
             if(!seller.getAuth().equals(Auth.SELLER)) {
@@ -109,7 +119,7 @@ public class FollowManageServiceImpl implements FollowManageService {
         } catch (Exception e) {
             throw new BusinessExceptionHandler(ErrorCode.NOT_SELLER);
         }
-        followManageRepository.deleteByFollowerIdAndFollowingId(1L, sellerId);
+        followManageRepository.deleteByFollowerIdAndFollowingId(Long.valueOf(infos.get("userId")), sellerId);
     }
 
     @Override
