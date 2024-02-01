@@ -25,4 +25,7 @@ public class ProductQuestionSearchRequest {
 
     @Schema(description = "판매자 id")
     private Long sellerId;
+
+    @Schema(description = "구매자 id")
+    private Long buyerId;
 }

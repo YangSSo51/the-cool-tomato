@@ -16,6 +16,7 @@ public class ProductQuestionResponse {
     private Long writerId;
     private String writerNickname;
     private Long productId;
+    private Long sellerId;
     private String productName;
     private String productContent;
     private String questionContent;
