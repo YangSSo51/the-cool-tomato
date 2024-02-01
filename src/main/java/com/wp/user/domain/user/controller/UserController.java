@@ -24,7 +24,6 @@ import org.springframework.web.multipart.MultipartFile;
 @RestController
 @RequestMapping("v1/users")
 @Tag(name = "회원 API", description = "회원 관리 용 API")
-@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class UserController {
 
     private final UserService userService;

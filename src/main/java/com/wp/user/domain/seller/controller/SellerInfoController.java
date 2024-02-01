@@ -23,7 +23,6 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("v1/users/sellers")
 @Tag(name = "판매자 API", description = "판매자 전환 용 API")
-@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class SellerInfoController {
 
     private final SellerInfoService sellerInfoService;
