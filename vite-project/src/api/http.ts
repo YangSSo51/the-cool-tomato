@@ -2,7 +2,7 @@ import axios from "axios";
 
 function mainAxios() {
     return axios.create({
-        baseURL: "http://localhost:3000/v1/",
+        baseURL: "http://3.39.6.29:8084/v1/",
         headers: {
             "Content-Type": "application/json;charset=utf-8",
         },
@@ -28,4 +28,13 @@ function liveAxios() {
     });
 }
 
-export { mainAxios, openViduDirectAxios, liveAxios };
+function productsAxios() {
+    return axios.create({
+        baseURL: "http://3.39.6.29:8082/v1/",
+        headers: {
+            "Content-Type": "application/json",
+        },
+    });
+}
+
+export { mainAxios, openViduDirectAxios, liveAxios, productsAxios };

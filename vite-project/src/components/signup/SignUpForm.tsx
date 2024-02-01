@@ -12,9 +12,11 @@ import {
 } from "@chakra-ui/react";
 import { ViewIcon, CheckIcon } from "@chakra-ui/icons";
 import { Tooltip } from '@chakra-ui/react'
+import { useNavigate } from "react-router";
 import { SignupUserAPI, checkIdAPI, sendEmailAPI, checkEmailAPI } from "../../api/user";
 
 function SignUpForm() {
+    const navigate = useNavigate();
     // 입력 받을 값: 아뒤, 비번, 이멜, 이멜인증, 닉넴, 성별, 생일
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
@@ -37,7 +39,7 @@ function SignUpForm() {
     const [isEmailValid, setIsEmailValid] = useState(false);
     const [sendcode, setSendcode] = useState(false)
     const [isNicknameValid, setIsNicknameValid] = useState(false);
-
+    console.log(sex)
     console.log("유효성통과 다 트루냐???", isUsernameValid, isPasswordValid, isEmailValid, isNicknameValid)
     // 안내메시지
     const [validMessage, setValidMessage] = useState({
@@ -61,9 +63,9 @@ function SignUpForm() {
             return;
         }
         // 글자 수 제한
-        const limitedValue = cleanedValue.substring(0, 16);
-        if (cleanedValue.length > 16) {
-            setValidMessage({ ...validMessage, idMessage: "아이디는 최대 16자까지 가능합니다." });
+        const limitedValue = cleanedValue.substring(0, 10);
+        if (cleanedValue.length > 10) {
+            setValidMessage({ ...validMessage, idMessage: "아이디는 최대 10자까지 가능합니다." });
             return;
         }
         setValidMessage({ ...validMessage, idMessage: "" });
@@ -109,7 +111,26 @@ function SignUpForm() {
         setEmail(inputValue);
     }
 
-    function onSubmit(event: React.SyntheticEvent): void {
+    const handleCheckEmail = () => {
+        sendEmailAPI({email: email}).then((result) => {
+            if (result === 1) {
+                setValidMessage({ ...validMessage, emailMessage: "인증번호가 전송되었습니다!" });
+            }
+        })
+    }
+
+    const handleCheckCode = () => {
+        checkEmailAPI({email: email, code: emailVerification}).then((result) => {
+            if (result === 1) {
+                setValidMessage({ ...validMessage, emailMessage: "이메일 인증이 완료되었습니다" });
+                setIsEmailValid(true)
+            } else {
+                setValidMessage({ ...validMessage, emailMessage: "인증번호를 다시 확인해주세요" });
+            }
+        })
+    }
+
+    async function onSubmit(event: React.SyntheticEvent): Promise<void> {
         event.preventDefault();
         // TODO: 회원가입 비동기 통신
         // 모든 조건이 True일 때 회원가입 제출
@@ -125,10 +146,15 @@ function SignUpForm() {
                 password: password,
                 email: email,
                 nickname: nickname,
-                sex: sex.toLowerCase() === 'true',
+                sex: sex,
                 birthday: birthday,
             };
-            SignupUserAPI(userData)
+            const response = await SignupUserAPI(userData);
+            if (response === 1) {
+                navigate('/v1/sign')
+            } else if (response === 33) {
+                alert("이미 회원가입된 이메일입니다. 로그인해주세요")
+            }
         console.log('온서브밋')
         }
     }
@@ -160,20 +186,6 @@ function SignUpForm() {
                                     colorScheme="themeGreen"
                                     variant="ghost"
                                     onClick={handleCheckId}
-                                    // todo : 서버 열리면 return 값 중복체크로 1들어오는지 확인하는 부분
-                                    //     try {
-                                    //         check.then((res) => {
-                                    //             console.log(res)
-                                    // 만약 200이면 
-                                    // setIsUsernameValid(true)
-                                    // setValidMessage({...validMessage, idMessage: "사용할 수 있는 아이디입니다."});
-                                    // 만약 400이면
-                                    // setValidMessage({...validMessage, idMessage: "중복된 아이디입니다."});
-                                    //         })
-                                    //     } catch (error) {
-                                    //         console.error(error)
-                                    //     }
-                                    // }
                                     borderRadius="md"
                                     _hover={{
                                         bg: "themeGreen.500",
@@ -267,7 +279,7 @@ function SignUpForm() {
                                     color: "white",
                                 }}  
                                 isDisabled={!sendcode}
-                                onClick={() => sendEmailAPI({email : email})}
+                                onClick={handleCheckEmail}
                             >전송
                             </Button>
                         </InputRightElement>
@@ -294,7 +306,7 @@ function SignUpForm() {
                                     bg: "themeGreen.500",
                                     color: "white",
                                 }}  
-                                onClick={() => {checkEmailAPI({email: email, code: emailVerification})}}
+                                onClick={handleCheckCode}
                             >
                                 확인
                             </Button>
@@ -327,8 +339,8 @@ function SignUpForm() {
                         value={sex}
                         onChange={(e) => setSex(e.target.value)}
                     >
-                        <option value="true">남자</option>
-                        <option>여자</option>
+                        <option value="M">남자</option>
+                        <option value="F">여자</option>
                     </Select>
                     
                 </FormControl>

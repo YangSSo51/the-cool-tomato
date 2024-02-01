@@ -42,7 +42,7 @@ export type RegisterUser = {
     password: string;
     email: string;
     nickname: string;
-    sex: true | false;
+    sex: string;
     birthday: string;
 }
 
