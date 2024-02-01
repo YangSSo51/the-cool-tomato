@@ -11,7 +11,7 @@ import org.springframework.data.redis.core.RedisHash;
 @AllArgsConstructor
 @Builder
 @NoArgsConstructor
-@RedisHash(value = "jwt_token", timeToLive = (60L * 60L * 24L))
+@RedisHash(value = "jwt_token", timeToLive = (60L * 60L * 24L * 7L))
 public class JwtToken {
     @Id
     private String id; //user_id

@@ -50,7 +50,7 @@ public class JwtTokenProviderServiceImpl implements JwtTokenProviderService {
         }
 
         Long now = System.currentTimeMillis();
-        Long accessTokenValidityInMilliseconds = tokenValidityInMilliseconds * 1000;
+        Long accessTokenValidityInMilliseconds = tokenValidityInMilliseconds * 1000 * 2 * 24;
         String accessToken = Jwts.builder()
                 .setHeaderParam("typ", "JWT")
                 .setHeaderParam("alg", "HS512")
@@ -61,7 +61,7 @@ public class JwtTokenProviderServiceImpl implements JwtTokenProviderService {
                 .signWith(SignatureAlgorithm.HS512, signingKey)
                 .compact();
 
-        Long refreshTokenValidityInMilliseconds = tokenValidityInMilliseconds * 1000 * 2 * 24;
+        Long refreshTokenValidityInMilliseconds = tokenValidityInMilliseconds * 1000 * 2 * 24 * 7;
         String refreshToken = Jwts.builder()
                 .setHeaderParam("typ", "JWT")
                 .setHeaderParam("alg", "HS512")
