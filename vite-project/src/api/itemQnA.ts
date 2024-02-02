@@ -89,6 +89,11 @@ async function postItemQnA(
     return await http.post(url, data, { headers });
 }
 
+async function deleteItemQnA(productQuestionId: number, accessToken: string) {
+    headers.set("Authorization", `Bearer ${accessToken}`);
+    return await http.delete(`${url}/${productQuestionId}`, { headers });
+}
+
 export {
     getQnAList,
     sellerPutQnaAPI,
@@ -96,4 +101,5 @@ export {
     buyerGetQnaAPI,
     sellerGetQnaAPI,
     postItemQnA,
+    deleteItemQnA,
 };

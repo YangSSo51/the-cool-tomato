@@ -1,14 +1,4 @@
-import {
-    Accordion,
-    AccordionButton,
-    AccordionItem,
-    Button,
-    Center,
-    Flex,
-    Icon,
-    IconButton,
-    Text,
-} from "@chakra-ui/react";
+import { Accordion, Button, Flex, IconButton, Text } from "@chakra-ui/react";
 import QnaAccordion from "./qna/QnaAccordion";
 import QnaRegistrationModal from "./qna/QnaRegistrationModal";
 import { useParams } from "react-router-dom";
@@ -37,12 +27,38 @@ function ItemDetailQnA() {
         }
         setPage(page + 1);
     }
-    function refreshQnA() {
-        getQnAList({ page: 0, size: 1, "product-id": productID }).then(
-            (res: AxiosResponse) => {
-                setAccortionList([...res.data.data.list, ...accortionList]);
-            }
-        );
+    function refreshQnA(): void;
+    function refreshQnA(
+        newPage: number,
+        newSize: number,
+        isReset: boolean
+    ): void;
+    function refreshQnA(
+        newPage?: number,
+        newSize?: number,
+        isReset?: boolean
+    ): void {
+        if (
+            newPage === undefined ||
+            newSize === undefined ||
+            isReset === undefined
+        ) {
+            console.log("refreshQnA()");
+            refreshQnA(0, (page + 1) * size, true);
+        } else {
+            console.log("refreshQnA(newPage, newSize, isReset)");
+            getQnAList({
+                page: newPage,
+                size: newSize,
+                "product-id": productID,
+            }).then((res: AxiosResponse) => {
+                if (isReset) {
+                    setAccortionList([...res.data.data.list]);
+                } else {
+                    setAccortionList([...res.data.data.list, ...accortionList]);
+                }
+            });
+        }
     }
 
     useEffect(() => {
@@ -80,7 +96,13 @@ function ItemDetailQnA() {
 
             <Accordion allowMultiple w={"90%"} borderColor={"themeWhite.500"}>
                 {accortionList.map((data, index) => {
-                    return <QnaAccordion data={data} key={index} />;
+                    return (
+                        <QnaAccordion
+                            data={data}
+                            key={index}
+                            refreshQnA={refreshQnA}
+                        />
+                    );
                 })}
             </Accordion>
             <Flex w={"90%"} justifyContent={"center"}>

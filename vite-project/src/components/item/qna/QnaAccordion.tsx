@@ -1,4 +1,4 @@
-import { DeleteIcon, EditIcon } from "@chakra-ui/icons";
+import { DeleteIcon } from "@chakra-ui/icons";
 import {
     AccordionButton,
     AccordionItem,
@@ -8,9 +8,24 @@ import {
     AccordionIcon,
 } from "@chakra-ui/react";
 import { ItemQnA } from "../../../types/DataTypes";
+import QnaDeleteAlertDialog from "./QnaDeleteAlertDialog";
+import { deleteItemQnA } from "../../../api/itemQnA";
+import { useState } from "react";
+import { useSelector } from "react-redux";
+import { RootState } from "../../../redux/stores/store";
 
-function QnaAccordion({ data }: { data: ItemQnA }) {
+function QnaAccordion({
+    data,
+    refreshQnA,
+}: {
+    data: ItemQnA;
+    refreshQnA: () => void;
+}) {
     console.log("QnaAccordion");
+    const [alertOpen, setAlertOpen] = useState(false);
+    const accessToken = useSelector(
+        (state: RootState) => state.user.accessToken
+    );
     const questionDate = data.questionRegisterDate
         ? data.questionRegisterDate.split("T")[0].replaceAll("-", ".")
         : "";
@@ -21,8 +36,26 @@ function QnaAccordion({ data }: { data: ItemQnA }) {
         data.questionContent.length > 35
             ? data.questionContent.slice(0, 35) + "..."
             : data.questionContent;
+    const handleClick = () => {
+        setAlertOpen(!alertOpen);
+    };
+    const handleDelete = () => {
+        deleteItemQnA(data.productQuestionBoardId, accessToken)
+            .then(() => {
+                refreshQnA();
+                handleClick();
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+    };
     return (
         <>
+            <QnaDeleteAlertDialog
+                isOpen={alertOpen}
+                handleCancel={handleClick}
+                handleDelete={handleDelete}
+            />
             <AccordionItem py={2}>
                 <AccordionButton py={6}>
                     {data.answer === 0 ? (
@@ -59,8 +92,11 @@ function QnaAccordion({ data }: { data: ItemQnA }) {
                         <Box as="span" pr={"2"}>
                             {questionTitle}
                         </Box>
-                        {data.isMine === 1 ? (
-                            <DeleteIcon color={"lightgrey"} />
+                        {data.isMine === 0 ? (
+                            <DeleteIcon
+                                color={"lightgrey"}
+                                onClick={handleClick}
+                            />
                         ) : null}
                     </Box>
                     <Text
@@ -96,7 +132,7 @@ function QnaAccordion({ data }: { data: ItemQnA }) {
                         {data.questionContent}
                     </Text>
                 </AccordionPanel>
-                {data.answer === 1 ? (
+                {data.answer === 0 ? (
                     <AccordionPanel py={7}>
                         <Box>
                             <Text

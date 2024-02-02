@@ -23,7 +23,7 @@ function QnaRegistrationModal({
 }: {
     isOpen: boolean;
     handleModalOpen: () => void;
-    refreshQnA: () => void;
+    refreshQnA: (newPage: number, newSize: number, isReset: boolean) => void;
 }) {
     const [questionContent, setQuestionContent] = useState("");
     const accessToken = useSelector(
@@ -47,7 +47,7 @@ function QnaRegistrationModal({
         };
         postItemQnA(data, accessToken)
             .then(() => {
-                refreshQnA();
+                refreshQnA(0, 1, false);
                 handleClose();
             })
             .catch((err) => {
