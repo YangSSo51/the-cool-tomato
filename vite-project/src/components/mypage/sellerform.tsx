@@ -3,10 +3,11 @@ import { FormControl, FormLabel, FormHelperText, Input, Button, Alert, AlertIcon
 import { useState } from "react";
 import { registerSellerAPI } from "../../api/user";
 import { setAuthSeller } from "../../redux/reducers/user/userSlice";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../../redux/stores/store";
 
 export default function Sellerform() {
+    const dispatch = useDispatch();
     const user = useSelector((state: RootState) => state.user);
     const accessToken = user.accessToken;
     console.log(user)
@@ -119,7 +120,7 @@ export default function Sellerform() {
         change(inputValue);
     }
     
-    function onSubmit(event: React.SyntheticEvent): void {
+    async function onSubmit(event: React.SyntheticEvent): void {
         event.preventDefault();
         // TODO: 회원가입 비동기 통신
         if (businessNumber === '') {
@@ -140,9 +141,9 @@ export default function Sellerform() {
                 businessAddress: businessAddress,
                 phoneNumber: phoneNumber
             };
-            registerSellerAPI(sellerData, accessToken)
+            await registerSellerAPI(sellerData, accessToken)
             setIsSubmitted(true)
-            setAuthSeller();
+            dispatch(setAuthSeller());
         console.log('온서브밋')
         }
     }
