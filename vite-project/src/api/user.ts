@@ -141,11 +141,12 @@ async function findIdAPI(data: {email: string}) {
     try {
         const response = await http.get(`${url}/find-login-id/${data.email}`)
         const responseData = response.data;
-        if (responseData.status === 201) {
+        if (responseData.status === 200) {
             console.log("이메일 전송이 완료되었습니다");
         } else if (responseData.status === 401 && responseData.divisionCode === "B005") {
             console.log("가입된 이메일이 아닙니다 회원가입 ㄱ");
         } else {
+            console.log(responseData)
             console.log("걍 문제있음")
         }
     } catch (error) {
@@ -175,13 +176,21 @@ async function findPwAPI(data: {loginId: string, email: string}) {
 
 async function logoutAPI(accessToken: string) {
     console.log("로그아웃")
-    const response = await http.post(`${url}/logout`, {}, {
-        headers: {
-            "Content-Type": "application/json",
-            "Authorization": "Bearer " + accessToken
+    console.log(accessToken)
+    try {
+        const response = await http.delete(`${url}/logout`, {
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": "Bearer " + accessToken
+            }
+        });
+        const responseData = response.data;
+        if (responseData.status === 200) {
+            console.log("로그아웃 성공")
+            }
+        } catch(error) {
+            console.log(error)
         }
-    });
-    return response.data;
 }
 
 export { loginUser, signupUserAPI, checkIdAPI, sendEmailAPI, checkEmailAPI, registerSellerAPI, findIdAPI, findPwAPI, logoutAPI };

@@ -97,7 +97,8 @@ function SignUpForm() {
         // 동일한지 확인
         if (password === inputValue) {
             setCheck2(regex.test(inputValue));
-            setIsPasswordValid(true)
+            setIsPasswordValid(true);
+            setValidMessage({ ...validMessage, passwordMessage: "" });
         } else {
             setValidMessage({ ...validMessage, passwordMessage: "비밀번호가 일치하지 않습니다" });
         }

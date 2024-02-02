@@ -1,6 +1,6 @@
 import "../../css/Navbar.css";
 import { Image, Box, Flex, Spacer } from "@chakra-ui/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { RootState } from "../../redux/stores/store";
@@ -15,13 +15,16 @@ import LogoutProfileComponent from "./NavComponent/LogoutProfileComponent";
 function NavBar() {
     const navigate = useNavigate();
     const user = useSelector((state: RootState) => state.user);
+    const [myAuth, setMyAuth] = useState("")
     const [isLogin, setIsLogin] = useState(false);
-    const isBuyer = user.auth === "BUYER";
-    const isSeller = user.auth === "SELLER";
     const profileImg = user.profileImg
-    if (user.auth === "BUYER" || user.auth === "SELLER" || user.auth === "ADMIN") {
-        setIsLogin(true)
-    }
+
+    useEffect(() => {
+        setMyAuth(user.auth)
+        if (user.auth === "BUYER" || user.auth === "SELLER" || user.auth === "ADMIN") {
+            setIsLogin(true)
+        }
+    }, []);
 
     return (
         <Box className="paddingNavBar">
@@ -48,13 +51,13 @@ function NavBar() {
 
                 <Spacer />
 
-                {isSeller ? <SellerComponent /> : <BuyerComponent />}
+                {myAuth === "SELLER" ? <SellerComponent /> : <BuyerComponent />}
 
                 <Spacer />
 
-                {isLogin && isBuyer ? (
+                {isLogin && myAuth === "BUYER" ? (
                     <ProfileBuyerComponent />
-                ) : isLogin && isSeller ? (
+                ) : isLogin && myAuth === "SELLER" ? (
                     <ProfileSellerComponent />
                 ) : (
                     <LogoutProfileComponent />
