@@ -48,10 +48,12 @@ export default function ItemDetail() {
                                 />
                             </Box>
 
-                            <Flex display={"block"} pl={"2.5rem"} ml={"4rem"}>
-                                <Text fontSize={"2xl"} as={"b"} mb={"4"}>
+                            <Flex display={"block"} pl={"2.5rem"} ml={"3rem"}>
+                                <Box mb={"1rem"}>
+                                <Text fontSize={"2xl"} as={"b"}>
                                     {fetchData?.productName}
                                 </Text>
+                                </Box>
                                 <Text fontSize={"lg"} mb={"1"}>
                                     <Text color={"themeRed.500"} as={"b"}>
                                         33% 9,900원
@@ -70,36 +72,36 @@ export default function ItemDetail() {
                                         라이브 기간만 적용되는 가격입니다.
                                     </Text>
                                 </Box>
-                                <Box mb={4}>
+                                <Box mb={"1.5rem"}>
                                     <Text fontSize={"lg"} as={"b"} mb={2}>
                                         배송
                                     </Text>
                                     <Text>수도권 및 일부지역 당일배송</Text>
                                 </Box>
-                                <Box mb={4}>
+                                <Box mb={"1.5rem"}>
                                     <Text fontSize={"lg"} as={"b"} mb={2}>
                                         포장타입
                                     </Text>
                                     <Text>선물용 / 가정용</Text>
                                 </Box>
-                                <Box mb={4}>
+                                <Box mb={"1.5rem"}>
                                     <Text fontSize={"lg"} as={"b"} mb={2}>
                                         유통기한
                                     </Text>
                                     <Text>상품 별도 표기</Text>
                                 </Box>
-                                <Box mb={4}>
+                                <Box mb={"1.5rem"}>
                                     <Text fontSize={"lg"} as={"b"} mb={2}>
                                         상품 문의
                                     </Text>
                                     <Text>010-4944-9850</Text>
                                 </Box>
-                                <Box mb={6} alignItems={"center"}>
+                                <Box mb={"6rem"} alignItems={"center"}>
                                     <Button
                                         borderRadius={"md"}
                                         bg={"themeGreen.500"}
                                     >
-                                        <Text color={"white"}>바로구매</Text>
+                                        <Text color={"white"}>바로 구매</Text>
                                     </Button>
                                 </Box>
                             </Flex>

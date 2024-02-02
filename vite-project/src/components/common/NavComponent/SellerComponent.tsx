@@ -1,6 +1,5 @@
 import { Box, Flex, Link, Spacer } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
-import ItemAdd from "../../../pages/ItemAdd";
 
 export default function SellerComponent() {
     const navigate = useNavigate();
@@ -20,7 +19,7 @@ export default function SellerComponent() {
                 <Spacer />
                 <Link
                     onClick={() => {
-                        navigate("/v1/items/list");
+                        navigate("/v1/items/list/0");
                     }}
                     color={"black"}
                     _hover={{ color: "#126F54" }}
