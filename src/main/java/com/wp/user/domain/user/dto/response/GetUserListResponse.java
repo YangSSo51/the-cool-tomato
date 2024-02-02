@@ -16,6 +16,6 @@ import java.util.List;
 @Schema(description = "전체 회원 정보 조회를 위한 응답 객체")
 public class GetUserListResponse {
     int totalPage;
-    int totalSize;
+    long totalSize;
     List<User> users;
 }
