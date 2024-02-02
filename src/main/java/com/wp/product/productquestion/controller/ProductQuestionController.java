@@ -32,10 +32,12 @@ public class ProductQuestionController {
     public ResponseEntity<?> getProductQuestionList(@RequestParam int page,
                                                     @RequestParam int size,
                                                     @RequestParam("product-id") Long productId){
+        //TODO : 로그인 아이디
         ProductQuestionSearchRequest productQuestionSearchRequest = ProductQuestionSearchRequest.builder()
                 .page(page)
                 .size(size)
-                .productId(productId).build();
+                .productId(productId)
+                .loginId(2L).build();
 
         //상품 문의 리스트 조회
         Map<String, Object> productQuestionList = productQuestionService.getProductQuestionList(productQuestionSearchRequest);

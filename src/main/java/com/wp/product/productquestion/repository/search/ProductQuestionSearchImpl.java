@@ -48,7 +48,11 @@ public class ProductQuestionSearchImpl extends QuerydslRepositorySupport impleme
                                 new CaseBuilder()
                                         .when(qProductQuestionBoard.answerContent.isNotNull())
                                         .then(1)
-                                        .otherwise(0).as("answer")
+                                        .otherwise(0).as("answer"),
+                                new CaseBuilder()
+                                        .when(qProductQuestionBoard.writerId.eq(request.getLoginId()))
+                                        .then(1)
+                                        .otherwise(0).as("isMine")
                 ))
                 .from(qProductQuestionBoard)
                 .leftJoin(qUser)
