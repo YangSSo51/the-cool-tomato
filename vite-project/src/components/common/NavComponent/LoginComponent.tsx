@@ -1,16 +1,17 @@
 import { Flex, Link } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
-import { RootState } from "../../../redux/stores/store";
-import { logoutAPI } from "../../../api/user";
+import { useSelector, useDispatch } from "react-redux";
+import { RootState, AppDispatch } from "../../../redux/stores/store";
+import { logoutUserThunk } from "../../../redux/thunk/user/userThunk";
 
 export default function LoginComponent() {
     const navigate = useNavigate();
+    const dispatch: AppDispatch = useDispatch();
     const user = useSelector((state: RootState) => state.user);
     const accessToken = user.accessToken;
     
     const handlelogout = () => {
-        logoutAPI(accessToken);
+        dispatch(logoutUserThunk(accessToken))
         navigate("/v1/main");
     }
 

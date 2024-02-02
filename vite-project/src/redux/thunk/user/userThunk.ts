@@ -1,6 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 // import { UserState } from "../../actions/types";
-import { loginUser } from "../../../api/user";
+import { loginUser, logoutAPI } from "../../../api/user";
 import { AxiosResponse } from "axios";
 
 const loginUserThunk = createAsyncThunk(
@@ -12,8 +12,17 @@ const loginUserThunk = createAsyncThunk(
     }
 );
 
+const logoutUserThunk = createAsyncThunk(
+    "user/logout",
+    async (accessToken: string, thunkAPI) => {
+        console.log("logoutUserThunk: " + JSON.stringify(accessToken));
+        const response: AxiosResponse = await logoutAPI(accessToken);
+        return response.data;
+    }
+);
+
 const testUserThunk = createAsyncThunk("user/test", async () => {
     return "test";
 });
 
-export { loginUserThunk, testUserThunk };
+export { loginUserThunk, logoutUserThunk, testUserThunk };

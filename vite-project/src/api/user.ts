@@ -193,8 +193,10 @@ async function logoutAPI(accessToken: string) {
         if (responseData.status === 200) {
             console.log("로그아웃 성공")
             }
+        return response
         } catch(error) {
             console.log(error)
+            throw error;
         }
 }
 

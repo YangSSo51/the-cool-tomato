@@ -86,7 +86,7 @@ export default function SellerPage() {
                                 <Button
                                     mb="4"
                                     onClick={() => {
-                                        navigate("/v1/buyer/" + {userId});
+                                        navigate("/v1/buyer/");
                                     }}
                                 >구매자 정보 보기
                                 </Button>
