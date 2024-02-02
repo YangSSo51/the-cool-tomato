@@ -26,6 +26,7 @@ public class GetSellerInfoListResponse {
         private String loginId;
         private String nickname;
         private String profileImg;
+        private boolean approvalStatus;
     }
 
     public static GetSellerInfoListResponse from(int totalPage, long totalSize, List<SellerInfo> sellerInfoList) {
@@ -36,7 +37,8 @@ public class GetSellerInfoListResponse {
                     .userId(sellerInfo.getUser().getId())
                     .loginId(sellerInfo.getUser().getLoginId())
                     .nickname(sellerInfo.getUser().getNickname())
-                    .profileImg(sellerInfo.getUser().getProfileImg()).build();
+                    .profileImg(sellerInfo.getUser().getProfileImg())
+                    .approvalStatus(sellerInfo.isApprovalStatus()).build();
             sellers.add(getSellerInfo);
         }
         return GetSellerInfoListResponse.builder().totalPage(totalPage).totalSize(totalSize).sellers(sellers).build();
