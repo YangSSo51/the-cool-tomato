@@ -17,16 +17,20 @@ async function loginUser(data: { loginId: string; password: string }) {
             return responseData
         }
     } catch (error) {
-        if (error instanceof Error) {
-            // const axiosError = error as AxiosError;
-            console.error(error.message);
-            // if (axiosError.response && axiosError.response.status === 401) {
-            //   console.log("axiosError");
-            //   return "가입된 아이디가 아닙니다.";
-            // } else if (axiosError.response.divisionCode === B003 && axiosError.response.status === 401) {
-            //     return "비밀번호가 일치하지 않습니다."
-            // }
-            // console.log("에러에러에러에러에러");
+        if (error instanceof AxiosError) {
+            console.error(error);
+            if (error.response) {
+              console.log(error.response.data.reason); // 'reason' 출력
+              if (error.response.status === 401) {
+                if (error.response.data.divisionCode === 'B003') {
+                    throw new Error("비밀번호가 일치하지 않습니다.");
+                } else {
+                    console.log("미가입");
+                    throw new Error("가입된 아이디가 아닙니다.");
+                }
+              }
+            }
+            console.log("에러에러에러에러에러");
         }
     }
 }
@@ -107,11 +111,28 @@ async function checkEmailAPI(data: {email: string, code: string}) {
 async function registerSellerAPI(data: RegisterSeller) {
     console.log("판매자신청좀하겠습니다.~!!!!!!!", JSON.stringify(data))
     try {
-        await http.post(`${url}/sellers`, data)
-        return 1
+        const response = await http.post(`${url}/sellers`, data)
+        const responseData = response.data
+        if (responseData.status === 201) {
+            console.log("성공~!");
+            return responseData
+        }
     } catch (error) {
-        console.error(error);
-        alert('폼 재확인 plz~');
+        if (error instanceof AxiosError) {
+            console.error(error);
+            if (error.response) {
+              console.log(error.response.data.reason); // 'reason' 출력
+              if (error.response.status === 401) {
+                if (error.response.data.divisionCode === 'B008') {
+                    throw new Error("로그인 여부를 다시 확인해주세요");
+                } else {
+                    console.log("미가입");
+                    throw new Error("JWT 문제");
+                }
+              }
+            }
+            console.log("에러에러에러에러에러");
+        }
     }
 }
 

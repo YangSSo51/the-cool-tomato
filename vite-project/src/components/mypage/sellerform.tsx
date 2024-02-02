@@ -116,12 +116,16 @@ export default function Sellerform() {
     function onSubmit(event: React.SyntheticEvent): void {
         event.preventDefault();
         // TODO: 회원가입 비동기 통신
-        if (businessNumber === false) {
-            alert("아이디 중복확인해주세요!")
-        } else if (businessContent === false) {
-            alert("비밀번호 확인해주세요!!")
-        } else if (mailOrderSalesNumber === false) {
-            alert("이메일 인증해주세요!")
+        if (businessNumber === '') {
+            alert("사업자 번호를 입력해주세요")
+        } else if (businessContent === '') {
+            alert("판매자 실명을 확인해주세요")
+        } else if (mailOrderSalesNumber === '') {
+            alert("통신판매신고번호를 확인해주세요")
+        } else if (businessAddress === '') {
+            alert("사업장 주소를 확인해주세요")
+        } else if (phoneNumber === '') {
+            alert("업체 연락처를 확인해주세요!")
         } else {
             const sellerData = {
                 business_number: businessNumber,
