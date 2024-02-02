@@ -7,6 +7,8 @@ import { CiHeart } from "react-icons/ci";
 import { Icon } from "@chakra-ui/react";
 import BuyerLiveNav from "../components/common/BuyerLiveNav";
 
+import OpenViduComponent from "../components/openvidu/OpenViduComponent";
+
 function UnfilledHeart() {
     return <Icon as={CiHeart} boxSize={"3rem"} ml={"3px"} mb={"3px"} />;
 }
@@ -14,6 +16,7 @@ function UnfilledHeart() {
 export default function BuyerLive() {
     return (
         <>
+
             <BuyerLiveNav />
             <Flex direction={"column"} backgroundColor={"themeWhite.500"}>
                 <Center mt={"1rem"} p={"1rem"}>
@@ -39,7 +42,9 @@ export default function BuyerLive() {
                         w={"lg"}
                         borderRadius={"20px"}
                         backgroundColor={"#ffffff"}
-                    ></Box>
+                    >
+                        <OpenViduComponent mySessionId="SessionA" type="live" />
+                    </Box>
                     <Flex direction={"column"} alignSelf={"flex-end"}>
                         <UnfilledHeart />
                     </Flex>
