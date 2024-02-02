@@ -1,5 +1,4 @@
-import React from "react";
-import { Text, Center, Container, Button } from "@chakra-ui/react";
+import { Text, Container, Button } from "@chakra-ui/react";
 
 function FindAccountResult() {
     function onClick(): void {

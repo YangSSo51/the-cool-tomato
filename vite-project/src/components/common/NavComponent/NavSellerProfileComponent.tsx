@@ -1,6 +1,7 @@
 import { BellIcon, Search2Icon } from "@chakra-ui/icons";
 import { Avatar, Box, Flex, Link } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
+import Nofitication from "../notification/Nofitication";
 
 export default function ProfileSellerComponent() {
     const navigate = useNavigate();
@@ -17,7 +18,8 @@ export default function ProfileSellerComponent() {
                     />
                 </Link>
                 <Link>
-                    <BellIcon color={"#126F54"} boxSize={6} />
+                    {/* <BellIcon color={"#126F54"} boxSize={6} /> */}
+                    <Nofitication />
                 </Link>
                 <Avatar
                     onClick={() => {

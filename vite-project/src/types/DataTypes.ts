@@ -36,3 +36,33 @@ export type UserState = {
     accessToken: string;
     refreshToken: string;
 };
+
+export type RegisterUser = {
+    loginId: string;
+    password: string;
+    email: string;
+    nickname: string;
+    sex: string;
+    birthday: string;
+};
+
+export type RegisterSeller = {
+    business_number: string;
+    business_content: string;
+    mail_order_sales_number: string;
+    business_address: string;
+    phone_number: string;
+};
+
+export interface ItemQnA {
+    productQuestionBoardId: number;
+    writerId: number;
+    writerNickname: string;
+    productId: number;
+    questionContent: string;
+    answerContent: string | null;
+    questionRegisterDate: string;
+    answerRegisterDate: string | null;
+    answer: number;
+    isMine: number;
+}

@@ -13,6 +13,7 @@ import Chatbot from "../components/mypage/seller/SellerChatbot";
 import BanUser from "../components/mypage/seller/SellerBanUser";
 import BlockWord from "../components/mypage/seller/SellerBlockWord";
 import "../css/SellerPage.css";
+import { TestComponent } from "../components/mypage/TEST";
 
 export default function SellerPage() {
     const navigate = useNavigate();
@@ -28,6 +29,8 @@ export default function SellerPage() {
         { id: 5, title: "차단한 사용자 목록", isSelected: false, component: <BanUser />},
         { id: 6, title: "챗봇 설정", isSelected: false, component: <Chatbot />},
         { id: 7, title: "금지어 설정", isSelected: false, component: <BlockWord />},
+        { id: 8, title: "테스트1", isSelected: false, component: <TestComponent title="테스트1"/>},
+        { id: 9, title: "테스트2", isSelected: false, component: <TestComponent title="테스트2"/>},
     ]);
     const changeSelect = (e) => {
         setTab(e.target.value)
@@ -72,18 +75,14 @@ export default function SellerPage() {
 
     return (
         <Box minH="100vh" mb="10" paddingBlock="6rem">
-
-                <Center fontFamily="GmkBold" fontSize="6rem" color={"themeRed.500"}>
+                <Center className="response_title" fontFamily="GmkBold" fontSize={{ base: "4rem", md: "5rem", lg: "6rem" }} color={"themeRed.500"}>
                     판매자 마이페이지
                 </Center>
-
-
-            <Flex m="auto" border="2px" borderColor="themeLightGreen.500" rounded="lg" w="85vw" minH="85vh">
-                <Flex m="auto" rounded="lg" w="80vw" maxH="80vh" px="2">
-                    <Box w="25%" pr="4" >
+            <Flex m="auto"  border="2px" borderColor="themeLightGreen.500" overflow="scroll" rounded="lg" w="85vw" minH="85vh">
+                <Flex m="auto" direction={{ base: "column", lg: "row"}} rounded="lg" w="80vw" maxH={{ base:"auto", lg: "80vh"}} px="2">
+                    <Box w={{ base: "100%", lg: "25%" }} pr="4" >
                         <Box w="full" bg="white" rounded="lg" overflow="hidden">
                             <Flex direction="column" align="center" py="6">
-
                                 <Button
                                     mb="4"
                                     onClick={() => {
@@ -91,9 +90,7 @@ export default function SellerPage() {
                                     }}
                                 >구매자 정보 보기
                                 </Button>
-
                                 {userInfo ? <Avatar mt="4" size="xl" src={userInfo.profile_img} /> : 로딩중 }
-
                                 <Button
                                     mt="4"
                                     onClick={() => {
@@ -110,8 +107,7 @@ export default function SellerPage() {
                             </Flex>
                         </Box>
                     </Box>
-
-                    <Box w="75%" bg="white" rounded="lg" overflow="hidden">
+                    <Box w="75%" bg="white" rounded="lg" h="50vh" overflowY="scroll" className="custom-scrollbar">
                         <Flex justify="center" align="center" h="full">
                             {categories[tab].component}
                         </Flex>
