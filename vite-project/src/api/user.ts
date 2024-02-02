@@ -1,6 +1,5 @@
-
+import { mainAxios } from "./http";
 import { AxiosHeaders, AxiosError } from "axios";
-// import { useNavigate } from "react-router-dom";
 import { RegisterUser, RegisterSeller } from "../types/DataTypes";
 
 const http = mainAxios();

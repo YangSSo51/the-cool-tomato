@@ -5,7 +5,7 @@ import { AxiosResponse } from "axios";
 
 const loginUserThunk = createAsyncThunk(
     "user/login",
-    async (idpw: { id: string; password: string }, thunkAPI) => {
+    async (idpw: { loginId: string; password: string }, thunkAPI) => {
         console.log("loginUserThunk idpw: " + JSON.stringify(idpw));
         const response: AxiosResponse = await loginUser(idpw);
         return response.data;

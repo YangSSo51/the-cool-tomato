@@ -32,7 +32,7 @@ function LoginForm() {
         console.log("LoginForm onSubmit Password: " + password);
 
         console.log("Login Submit");
-        await dispatch(loginUserThunk({ id, password }));
+        await dispatch(loginUserThunk({ loginId: id, password }));
     }
 
     useEffect(() => {
@@ -40,7 +40,7 @@ function LoginForm() {
         console.log("Login Result type: " + typeof user.auth);
         if (user.auth !== "FAIL" && user.auth !== "INIT") {
             console.log("Login Success");
-            navigate("/v1");
+            navigate("/v1/main");
         } else if (user.auth === "FAIL") {
             console.log("Login Fail");
         }
