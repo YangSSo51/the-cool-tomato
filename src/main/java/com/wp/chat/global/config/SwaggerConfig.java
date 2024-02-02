@@ -30,8 +30,8 @@ public class SwaggerConfig {
 
         return new OpenAPI()
                 .info(new Info()
-                        .title("라이브 커머스 프로젝트 회원 API")
-                        .description("회원 관리, 판매자 관리, 팔로우, 알림 기능을 제공합니다.")
+                        .title("라이브 커머스 프로젝트 채팅 API")
+                        .description("채팅 기능을 제공합니다.")
                         .version("1.0.0"))
                 .components(components)
                 .addSecurityItem(securityRequirement);
