@@ -23,6 +23,9 @@ public class ProductQuestionSearchRequest {
     @Schema(description = "상품 id")
     private Long productId;
 
+    @Schema(description = "로그인 id")
+    private Long loginId;
+    
     @Schema(description = "판매자 id")
     private Long sellerId;
 

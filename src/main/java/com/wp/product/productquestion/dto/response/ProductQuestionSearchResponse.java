@@ -20,4 +20,5 @@ public class ProductQuestionSearchResponse {
     private LocalDateTime questionRegisterDate;
     private LocalDateTime answerRegisterDate;
     private int answer;
+    private int isMine;
 }

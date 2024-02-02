@@ -35,6 +35,7 @@ public class ProductQuestionServiceImpl implements ProductQuestionService{
             map.put("totalCount",result.getTotalElements());
             return map;
         }catch (Exception e){
+            log.debug(e.getMessage());
             throw new BusinessExceptionHandler("상품 문의 조회 중 에러 발생",ErrorCode.INTERNAL_SERVER_ERROR);
         }
     }

@@ -92,6 +92,7 @@ public class ProductServiceImpl implements ProductService{
                                         .productName(product.getProductName())
                                         .productContent(product.getProductContent())
                                         .paymentLink(product.getPaymentLink())
+                                        .imgSrc(product.getImgSrc())
                                         .price(product.getPrice())
                                         .deliveryCharge(product.getDeliveryCharge())
                                         .quantity(product.getQuantity())
