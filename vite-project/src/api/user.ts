@@ -31,11 +31,11 @@ async function loginUser(data: { loginId: string; password: string }) {
               }
             }
             console.log("에러에러에러에러에러");
+          }
         }
-    }
 }
 
-async function SignupUserAPI(data: RegisterUser) {
+async function signupUserAPI(data: RegisterUser) {
 
     try {
         const response = await http.post(`${url}/join`, data)
@@ -173,5 +173,5 @@ async function findPwAPI(data: {loginId: string, email: string}) {
         }
 }
 
-export { loginUser, SignupUserAPI, checkIdAPI, sendEmailAPI, checkEmailAPI, registerSellerAPI, findIdAPI, findPwAPI };
+export { loginUser, signupUserAPI, checkIdAPI, sendEmailAPI, checkEmailAPI, registerSellerAPI, findIdAPI, findPwAPI };
 
