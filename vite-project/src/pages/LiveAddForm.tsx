@@ -15,9 +15,14 @@ import LiveItemAdd from "../components/broadcast/LiveItemAdd";
 import { useState } from "react";
 import AddGoods from "../components/broadcast/AddGoods";
 
-export default function LiveAddForm() {
-    const [isSelected, isSelectedState] = useState(true);
 
+export default function LiveAddForm() {
+    const [isSelected, isSelectedState] = useState(false);
+
+    const onSetSelected = ( x : boolean ): void => {
+        isSelectedState(x);
+    }
+    
     return (
         <>
             <Container maxW={"container.xl"} p={"3rem"}>
@@ -90,11 +95,24 @@ export default function LiveAddForm() {
                             borderRadius={"30px"}
                         >
                             {/* 나머지는 페이지네이션으로 넘겨라! */}
-                            <Center maxH={"100%"} minH={"40rem"}>
-                                {isSelected ? <AddGoods /> : <LiveItemAdd />}
-                            </Center>
+
+                            {isSelected ? (
+                                <Box
+                                    maxH={"100%"}
+                                    minH={"40rem"}
+                                    display="flex"
+                                    flexDirection="column"
+                                >
+                                    <AddGoods isSelected={isSelected} isSelectedState={onSetSelected} />
+                                </Box>
+                            ) : (
+                                <Center maxH={"100%"} minH={"40rem"}>
+                                    <LiveItemAdd isSelected={isSelected} isSelectedState={onSetSelected} />
+                                </Center>
+                            )}
                         </Box>
                     </Box>
+
                     <Box p={"2rem"}>
                         <Text as={"b"} fontSize={"2xl"}>
                             중요한 메모 & 스크립트

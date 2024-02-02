@@ -37,4 +37,14 @@ function productsAxios() {
     });
 }
 
-export { mainAxios, openViduDirectAxios, liveAxios, productsAxios };
+function ItemAxios() {
+    return axios.create({
+        baseURL: "http://3.39.6.29:8082/v1",
+        headers: {
+            "Content-Type": "application/json;charset=utf-8",
+        },
+    });
+}
+
+export { mainAxios, openViduDirectAxios, liveAxios, productsAxios, ItemAxios };
+

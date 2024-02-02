@@ -1,26 +1,39 @@
-import { Box, Flex, Text } from "@chakra-ui/react";
+import { Box, Container, Flex, Text } from "@chakra-ui/react";
 import Goods from "../components/item/ItemListComponent";
-import GoodsList from "../components/item/dummylist/dummy";
 import "../css/ItemListComponentcss.css";
+import { ItemDetailDelete, ItemListFetch } from '../api/Itemlist'
+import { useEffect, useState } from "react";
 
 export default function ItemList() {
-    const dummylist = GoodsList;
+    const [dummylist, setDummylist] = useState([])
+
+    useEffect(() => {
+        ItemListFetch({page: 0, size: 10}).then((res) => {setDummylist(res)})
+    }, [])
+
+    const onDelete = (targetId : number) => {
+        ItemDetailDelete(targetId)
+    }
 
     return (
-        <>
-            <Box width={"90%"} p={"1rem"}><Text textAlign={"right"}>카테고리 항목</Text></Box>
-            <Flex wrap="wrap" maxW="85%" m="auto" gap={8}>
-                {dummylist.map((data) => (
-                    <Box key={data.id} w="calc(23.33%)" p={4}>
-                        <Goods
-                            id={data.id}
-                            img={data.img}
-                            title={data.title}
-                            price={data.price}
-                        />
-                    </Box>
-                ))}
+        <Container maxW={"80vw"} centerContent>
+            <Flex direction={"column"}>
+                <Box p={"1rem"} mb={"1rem"}>
+                    <Text textAlign={"right"}>카테고리 항목</Text>
+                </Box>
+                <Flex wrap="wrap" justifyContent="center" gap={"2rem"}>
+                    {dummylist.map((data) => (
+                        <Box key={data.productId} w="calc(25% - 1.5rem)" mb={"3rem"} onClick={() => onDelete(data.productId)}>
+                            <Goods
+                                id={data.productId}
+                                img={data.img}
+                                title={data.productName}
+                                price={data.price}
+                            />
+                        </Box>
+                    ))}
+                </Flex>
             </Flex>
-        </>
+        </Container>
     );
 }

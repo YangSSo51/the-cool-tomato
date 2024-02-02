@@ -17,6 +17,18 @@ import "froala-editor/css/froala_style.min.css";
 import "froala-editor/css/froala_editor.pkgd.min.css";
 import FroalaEditorComponent from "react-froala-wysiwyg";
 import "froala-editor/js/plugins.pkgd.min.js";
+import { ItemAddFunction } from "../api/Itemlist";
+import { useNavigate } from "react-router-dom";
+
+interface InterfaceValues {
+    categoryId: number;
+    productName: string;
+    productContent: string;
+    paymentLink: string;
+    price: number;
+    deliveryCharge: number;
+    quantity: number;
+}
 
 export default function ItemAdd() {
     const editorRef = useRef(null);
@@ -26,31 +38,66 @@ export default function ItemAdd() {
         autofocus: true,
         attribution: false,
     };
+    const [values, setValues] = useState<InterfaceValues>({
+        categoryId: 0,
+        productName: "",
+        productContent: "",
+        paymentLink: "https://naver.com",
+        price: 0,
+        deliveryCharge: 1000,
+        quantity: 100,
+    });
+    const navigate = useNavigate();
 
-    // Editor
-    const [content, setContent] = useState('')
-
-    const handleModelChange = (model : string) => {
-        setContent(model)
-        console.log(content)
-    }
-
+    // Editor & Editor Values
     useEffect(() => {
         if (editorRef.current) {
             const root = ReactDOM.createRoot(editorRef.current);
             root.render(<FroalaEditorComponent tag="textarea" />);
         }
-    });
+    }, []);
 
-    // Values
-    const [values, setValues] = useState({})
-    const handleChange = (e: any) => {
-        const {name, value} = e.target
+    // 입력값
+    const handleNumber = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const { name, value } = e.target;
         setValues((prevValues) => ({
             ...prevValues,
-            [name]: value
-        }))
-    }
+            [name]: Number(value),
+        }));
+    };
+
+    const handleString = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const { name, value } = e.target;
+        setValues((prevValues) => ({
+            ...prevValues,
+            [name]: value,
+        }));
+    };
+
+    const handleCategory = (e: React.ChangeEvent<HTMLSelectElement>) => {
+        const value = e.target.value;
+        setValues((prevValues) => ({
+            ...prevValues,
+            ["categoryId"]: Number(value),
+        }));
+    };
+
+    const handleModelChange = (model: string) => {
+        setValues((prevValues) => ({
+            ...prevValues,
+            ["productContent"]: model,
+        }));
+    };
+
+    const onSubmit = async () => {
+
+        try {
+            await ItemAddFunction(values);
+            navigate('/v1/items/list')
+        } catch (error) {
+            console.error(error);
+        }
+    };
 
     return (
         <>
@@ -72,7 +119,12 @@ export default function ItemAdd() {
                             isRequired
                             isInvalid
                         >
-                            <Input type="text" name="title" onChange={handleChange} placeholder=" " />
+                            <Input
+                                type="text"
+                                name="productName"
+                                onChange={handleString}
+                                placeholder=" "
+                            />
                             <FormLabel>제목을 입력해주세요</FormLabel>
                         </FormControl>
                     </Box>
@@ -88,7 +140,12 @@ export default function ItemAdd() {
                             isRequired
                             isInvalid
                         >
-                            <Input placeholder=" " />
+                            <Input
+                                type="number"
+                                name="price"
+                                onChange={handleNumber}
+                                placeholder=" "
+                            />
                             <FormLabel>가격을 입력해주세요</FormLabel>
                         </FormControl>
                     </Box>
@@ -101,7 +158,6 @@ export default function ItemAdd() {
                             <FroalaEditorComponent
                                 tag="textarea"
                                 config={config}
-                                model={content}
                                 onModelChange={handleModelChange}
                             />
                         </Box>
@@ -116,15 +172,20 @@ export default function ItemAdd() {
                         <Select
                             mt={"1rem"}
                             placeholder="카테고리를 선택해주세요"
+                            onChange={handleCategory}
                         >
-                            <option value="option1">Option 1</option>
-                            <option value="option2">Option 2</option>
-                            <option value="option3">Option 3</option>
+                            <option value="0">농산물</option>
+                            <option value="1">수산물</option>
+                            <option value="2">김현종</option>
                         </Select>
                     </Box>
 
-                    <Center mt={"10rem"}>
-                        <Button bgColor={"themeGreen.500"} mr={3}>
+                    <Center mt={"5rem"}>
+                        <Button
+                            bgColor={"themeGreen.500"}
+                            mr={3}
+                            onClick={onSubmit}
+                        >
                             <Text as={"samp"} color={"white"}>
                                 등록
                             </Text>

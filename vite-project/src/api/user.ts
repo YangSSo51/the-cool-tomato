@@ -1,4 +1,4 @@
-import { mainAxios } from "./http";
+
 import { AxiosHeaders, AxiosError } from "axios";
 // import { useNavigate } from "react-router-dom";
 import { RegisterUser, RegisterSeller } from "../types/DataTypes";
@@ -33,6 +33,7 @@ async function loginUser(data: { loginId: string; password: string }) {
 }
 
 async function SignupUserAPI(data: RegisterUser) {
+
     try {
         const response = await http.post(`${url}/join`, data)
         const responseData = response.data
@@ -57,6 +58,7 @@ async function SignupUserAPI(data: RegisterUser) {
 }
 
 async function checkIdAPI(data: {id: string}) {
+
     try {
         const response = await http.get(`${url}/join/check-login-id/${data.id}`)
         const responseData = response.data;
@@ -72,6 +74,7 @@ async function checkIdAPI(data: {id: string}) {
 }
 
 async function sendEmailAPI(data: {email: string}) {
+
     try {
         const response = await http.post(`${url}/join/check-email`, data);
         const responseData = response.data;
@@ -151,3 +154,4 @@ async function findPwAPI(data: {loginId: string, email: string}) {
 }
 
 export { loginUser, SignupUserAPI, checkIdAPI, sendEmailAPI, checkEmailAPI, registerSellerAPI, findIdAPI, findPwAPI };
+
