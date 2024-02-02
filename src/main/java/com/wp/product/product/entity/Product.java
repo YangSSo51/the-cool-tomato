@@ -26,6 +26,7 @@ public class Product {
     private String productName;
     private String productContent;
     private String paymentLink;
+    private String imgSrc;
     private int price;
     private int deliveryCharge;
     private int quantity;
