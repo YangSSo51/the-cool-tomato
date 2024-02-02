@@ -3,7 +3,7 @@ import { Image, Box, Flex, Spacer } from "@chakra-ui/react";
 import { useState } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { AppDispatch, RootState } from "../../redux/stores/store";
+import { RootState } from "../../redux/stores/store";
 import LoginComponent from "./NavComponent/LoginComponent";
 import LogoutComponent from "./NavComponent/LogoutComponent";
 import SellerComponent from "./NavComponent/SellerComponent";
@@ -15,16 +15,20 @@ import LogoutProfileComponent from "./NavComponent/LogoutProfileComponent";
 function NavBar() {
     const navigate = useNavigate();
     const user = useSelector((state: RootState) => state.user);
-    const [loginlogout, LoginState] = useState(true);
-    const [BuyerSeller, BuyerSellerState] = useState(false);
-    const [profile, ProfileState] = useState();
+    const [isLogin, setIsLogin] = useState(false);
+    const isBuyer = user.auth === "BUYER";
+    const isSeller = user.auth === "SELLER";
+    const profileImg = user.profileImg
+    if (user.auth === "BUYER" || user.auth === "SELLER" || user.auth === "ADMIN") {
+        setIsLogin(true)
+    }
 
     return (
         <Box className="paddingNavBar">
             <Flex minWidth={"max-content"} alignItems="center" gap="2">
                 <Box />
                 <Spacer />
-                {loginlogout ? <LoginComponent /> : <LogoutComponent />}
+                {isLogin ? <LoginComponent /> : <LogoutComponent />}
             </Flex>
             <Flex minWidth="max-content" alignItems="center" gap="3">
                 <Box
@@ -38,16 +42,19 @@ function NavBar() {
                         width={"100%"}
                         height={"100%"}
                         objectFit={"cover"}
-                        src="/img/main_logo.png"
+                        src={profileImg}
                     ></Image>
                 </Box>
 
                 <Spacer />
-                {BuyerSeller ? <BuyerComponent /> : <SellerComponent />}
+
+                {isSeller ? <SellerComponent /> : <BuyerComponent />}
+
                 <Spacer />
-                {loginlogout && BuyerSeller ? (
+
+                {isLogin && isBuyer ? (
                     <ProfileBuyerComponent />
-                ) : loginlogout && !BuyerSeller ? (
+                ) : isLogin && isSeller ? (
                     <ProfileSellerComponent />
                 ) : (
                     <LogoutProfileComponent />

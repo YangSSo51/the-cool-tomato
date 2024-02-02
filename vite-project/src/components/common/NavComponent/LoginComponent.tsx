@@ -1,16 +1,25 @@
 import { Flex, Link } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { RootState } from "../../../redux/stores/store";
+import { logoutAPI } from "../../../api/user";
 
 export default function LoginComponent() {
     const navigate = useNavigate();
+    const user = useSelector((state: RootState) => state.user);
+    const accessToken = user.accessToken;
+    
+    const handlelogout = () => {
+        logoutAPI(accessToken);
+        navigate("/v1/main");
+    }
+
     return (
         <Flex alignItems="center" gap="3">
             <Link
                 className="TopNavFont"
                 _hover={{ color: "themeGreen.500" }}
-                onClick={() => {
-                    navigate("./login");
-                }}
+                onClick={handlelogout}
             >
                 로그아웃
             </Link>

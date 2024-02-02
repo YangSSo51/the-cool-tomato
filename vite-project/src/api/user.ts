@@ -111,11 +111,28 @@ async function checkEmailAPI(data: {email: string, code: string}) {
 async function registerSellerAPI(data: RegisterSeller) {
     console.log("판매자신청좀하겠습니다.~!!!!!!!", JSON.stringify(data))
     try {
-        await http.post(`${url}/sellers`, data)
-        return 1
+        const response = await http.post(`${url}/sellers`, data)
+        const responseData = response.data
+        if (responseData.status === 201) {
+            console.log("성공~!");
+            return responseData
+        }
     } catch (error) {
-        console.error(error);
-        alert('폼 재확인 plz~');
+        if (error instanceof AxiosError) {
+            console.error(error);
+            if (error.response) {
+              console.log(error.response.data.reason); // 'reason' 출력
+              if (error.response.status === 401) {
+                if (error.response.data.divisionCode === 'B008') {
+                    throw new Error("로그인 여부를 다시 확인해주세요");
+                } else {
+                    console.log("미가입");
+                    throw new Error("JWT 문제");
+                }
+              }
+            }
+            console.log("에러에러에러에러에러");
+        }
     }
 }
 
@@ -156,5 +173,16 @@ async function findPwAPI(data: {loginId: string, email: string}) {
         }
 }
 
-export { loginUser, signupUserAPI, checkIdAPI, sendEmailAPI, checkEmailAPI, registerSellerAPI, findIdAPI, findPwAPI };
+async function logoutAPI(accessToken: string) {
+    console.log("로그아웃")
+    const response = await http.post(`${url}/logout`, {}, {
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer " + accessToken
+        }
+    });
+    return response.data;
+}
+
+export { loginUser, signupUserAPI, checkIdAPI, sendEmailAPI, checkEmailAPI, registerSellerAPI, findIdAPI, findPwAPI, logoutAPI };
 

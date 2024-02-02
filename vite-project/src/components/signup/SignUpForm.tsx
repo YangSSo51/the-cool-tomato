@@ -10,7 +10,7 @@ import {
     FormLabel,
     Text
 } from "@chakra-ui/react";
-import { ViewIcon, CheckIcon } from "@chakra-ui/icons";
+import { ViewIcon, ViewOffIcon, CheckIcon } from "@chakra-ui/icons";
 import { Tooltip } from '@chakra-ui/react'
 import { useNavigate } from "react-router";
 import { signupUserAPI, checkIdAPI, sendEmailAPI, checkEmailAPI } from "../../api/user";
@@ -21,10 +21,10 @@ function SignUpForm() {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [passwordAgain, setPasswordAgain] = useState("");
-    const [email, setEmail] = useState("M");
+    const [email, setEmail] = useState("");
     const [emailVerification, setEmailVerification] = useState("");
     const [nickname, setNickname] = useState("");
-    const [sex, setSex] = useState("");
+    const [sex, setSex] = useState("M");
     const [birthday, setBirthday] = useState("");
     // 비밀번호 버튼들
     const [show, setShow] = useState(false);
@@ -99,7 +99,7 @@ function SignUpForm() {
             setCheck2(regex.test(inputValue));
             setIsPasswordValid(true)
         } else {
-            setValidMessage({ ...validMessage, passwordMessage: "입력한 비밀번호가 일치하지 않습니다" });
+            setValidMessage({ ...validMessage, passwordMessage: "비밀번호가 일치하지 않습니다" });
         }
         setPasswordAgain(inputValue)
     }
@@ -222,8 +222,12 @@ function SignUpForm() {
                                     ) : (
                                         ''
                                 )}
-                                <Button h='1.75rem' size='sm' onClick={handleClick}>
-                                    {show ? <ViewIcon mr={"1"} /> : <ViewIcon mr={"1"} />}
+                                <Button h='1.75rem' size='sm' variant="ghost" onClick={handleClick}>
+                                {show ? (
+                                    <ViewIcon color="grey" />
+                                ) : (
+                                    <ViewOffIcon color="grey" />
+                                )}    
                                 </Button>
                             </InputRightElement>
                         </InputGroup>
@@ -245,8 +249,12 @@ function SignUpForm() {
                                 ) : (
                                     ''
                             )}
-                            <Button h='1.75rem' size='sm' onClick={handleClick2}>
-                                {show2 ? <ViewIcon mr={"1"} /> : <ViewIcon mr={"1"} />}
+                            <Button h='1.75rem' size='sm' variant="ghost" onClick={handleClick2}>
+                                {show2 ? (
+                                    <ViewIcon color="grey" />
+                                    ) : (
+                                    <ViewOffIcon color="grey" />
+                                )}
                             </Button>
                         </InputRightElement>
                     </InputGroup>

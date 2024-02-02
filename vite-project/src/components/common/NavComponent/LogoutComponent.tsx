@@ -18,7 +18,7 @@ export default function LogoutComponent() {
                 className="TopNavFont"
                 _hover={{ color: "themeGreen.500" }}
                 onClick={() => {
-                    navigate("./logout");
+                    navigate("./login");
                 }}
             >
                 로그인

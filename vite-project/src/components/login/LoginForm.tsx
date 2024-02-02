@@ -36,6 +36,12 @@ function LoginForm() {
     }
 
     useEffect(() => {
+        if (isFail) {
+            user.auth === "INIT"
+        }
+    }, [])
+
+    useEffect(() => {
         console.log("Login Result: " + user.auth);
         console.log("Login Result type: " + typeof user.auth);
         if (user.auth !== "FAIL" && user.auth !== "INIT") {

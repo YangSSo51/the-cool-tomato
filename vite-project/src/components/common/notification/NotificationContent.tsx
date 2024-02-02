@@ -1,4 +1,4 @@
-import { Box, Divider, PopoverBody, Link, Flex } from "@chakra-ui/react";
+import { Box, Divider, PopoverBody, Link } from "@chakra-ui/react";
 import { NotificationContentTypes } from "./Nofitication";
 
 function NotificationContent({ url, msg, time }: NotificationContentTypes) {
