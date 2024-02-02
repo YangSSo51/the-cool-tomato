@@ -31,7 +31,7 @@ async function ItemListFetch(data: { page: number; size: number }) {
     const response = await http.get("/products/list", {
         params: { page: data.page, size: data.size },
     });
-    return response.data.data.list;
+    return response.data.data;
 }
 
 async function ItemDetailDelete(id: number) {

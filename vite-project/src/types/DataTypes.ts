@@ -72,7 +72,7 @@ export interface ItemDetailInterface {
     imgSrc: string;
     sellerId: number;
     categoryId: number;
-    categoryName: null;
+    categoryName: string;
     productName: string;
     productContent: string;
     paymentLink: string;

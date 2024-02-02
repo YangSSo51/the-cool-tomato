@@ -1,4 +1,4 @@
-import { BellIcon, Search2Icon } from "@chakra-ui/icons";
+import { Search2Icon } from "@chakra-ui/icons";
 import { Avatar, Box, Flex, Link } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 import Nofitication from "../notification/Nofitication";

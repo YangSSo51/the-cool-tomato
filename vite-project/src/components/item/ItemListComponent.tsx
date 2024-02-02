@@ -3,16 +3,16 @@ import "../../css/ItemListComponentcss.css";
 import { Link } from "react-router-dom";
 
 interface GoodsProps {
-    id: number;
-    img: string;
-    title: string;
-    price: number;
+    id: number | undefined;
+    img: string | undefined;
+    title: string | undefined;
+    price: number | undefined;
 }
 
 const Goods = ({ id, img, title, price }: GoodsProps) => {
     return (
 
-        <Link to={`detail/${id}`}>
+        <Link to={`/v1/items/detail/${id}`}>
             <Box>
                 <Box>
                     <Box maxW={"25rem"} className="img">

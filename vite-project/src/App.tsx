@@ -30,14 +30,14 @@ function App() {
                         <Route path="main" element={<MainPage />} />
                         <Route path="search" element={<Search />} />
                         <Route path="live/list" element={<LiveList />} />
-                        <Route path="items/list" element={<ItemList />} />
+                        <Route path="items/list/:currentpage" element={<ItemList />} />
                         <Route path="calendar" element={<Calendar />} />
                         <Route path="buyer/:userId" element={<BuyerPage />} />
                         <Route path="seller/:userId" element={<SellerPage />} />
                         <Route path="userinfo" element={<UserinfoPage />} />
                         <Route path="login" element={<LoginPage />} />
                         <Route
-                            path="items/list/detail/:id"
+                            path="items/detail/:id"
                             element={<ItemDetail />}
                         />
                         <Route path="signup" element={<SignUpPage />} />
