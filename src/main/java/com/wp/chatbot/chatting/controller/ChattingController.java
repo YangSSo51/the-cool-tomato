@@ -1,10 +1,11 @@
 package com.wp.chatbot.chatting.controller;
 
+import com.wp.chatbot.chatting.dto.KomoranAnalyze;
 import com.wp.chatbot.chatting.dto.MessageDto;
+import kr.co.shineware.util.common.model.Pair;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.messaging.handler.annotation.MessageMapping;
-import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -14,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class ChattingController {
 
     private final SimpMessagingTemplate template;
-    private final SimpMessageSendingOperations sendingOperations;
+    private final KomoranAnalyze komoran = new KomoranAnalyze();
 
     /**
      * 채팅 입장 시 입장 정보 전송
@@ -33,7 +34,19 @@ public class ChattingController {
     @MessageMapping(value = "/chat/message")
     public void message(MessageDto message){
         //TODO : 질문에 대한 답변 찾아서 반환해줘야함
+        String query = message.getMessage();
+        String modelType = "full";
+
+        komoran.setUserInput(query, modelType);
+        komoran.analyze();
+        
+        for (Pair<String,String> result : komoran.getQueryResult()){
+            if("NN".equals(result.getSecond().substring(0,2))){ //명사만 걸러냄
+                System.out.println(result.getFirst());
+            }
+        }
         MessageDto answer = MessageDto.builder().roomId(message.getRoomId()).message("답변이요").writer(1L).build();
+
         template.convertAndSend("/sub/chat/room/" + message.getRoomId(), message);
         template.convertAndSend("/sub/chat/room/" + message.getRoomId(), answer);
     }
