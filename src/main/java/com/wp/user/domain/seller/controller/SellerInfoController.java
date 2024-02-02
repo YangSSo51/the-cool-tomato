@@ -41,8 +41,8 @@ public class SellerInfoController {
 
     @GetMapping("/admin")
     @Operation(summary = "판매자 전환 신청 목록 조회", description = "관리자는 판매자 전환 신청 목록을 조회합니다.")
-    public ResponseEntity<SuccessResponse<?>> getSellerInfos(HttpServletRequest httpServletRequest) {
-        GetSellerInfoListResponse getSellerInfoListResponse = sellerInfoService.getSellerInfos(httpServletRequest);
+    public ResponseEntity<SuccessResponse<?>> getSellerInfos(HttpServletRequest httpServletRequest, @NotNull(message = "페이지 번호를 입력해 주세요.") @RequestParam int page, @NotNull(message = "크기를 입력해 주세요.") @RequestParam int size) {
+        GetSellerInfoListResponse getSellerInfoListResponse = sellerInfoService.getSellerInfos(httpServletRequest, page, size);
         SuccessResponse<?> response = SuccessResponse.builder()
                 .status(SuccessCode.SELECT_SUCCESS.getStatus())
                 .message(SuccessCode.SELECT_SUCCESS.getMessage())

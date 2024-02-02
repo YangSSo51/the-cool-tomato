@@ -20,6 +20,10 @@ import com.wp.user.global.exception.BusinessExceptionHandler;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
@@ -53,7 +57,7 @@ public class SellerInfoServiceImpl implements SellerInfoService {
 
     // 판매자 전환 신청 목록 조회
     @Override
-    public GetSellerInfoListResponse getSellerInfos(HttpServletRequest httpServletRequest) {
+    public GetSellerInfoListResponse getSellerInfos(HttpServletRequest httpServletRequest, int page, int size) {
         // 헤더 Access Token 추출
         String accessToken = jwtService.resolveAccessToken(httpServletRequest);
         authClient.validateToken(AccessTokenRequest.builder().accessToken(accessToken).build());
@@ -66,7 +70,8 @@ public class SellerInfoServiceImpl implements SellerInfoService {
         } catch(Exception e) {
             throw new BusinessExceptionHandler(ErrorCode.FORBIDDEN_ERROR);
         }
-        List<SellerInfo> sellerInfoList = sellerInfoRepository.findAll();
+        Pageable pageable = PageRequest.of(page, size, Sort.sort())
+        Page<SellerInfo> sellerInfoList = sellerInfoRepository.findAll(pageable);
         return GetSellerInfoListResponse.from(sellerInfoList);
     }
 
