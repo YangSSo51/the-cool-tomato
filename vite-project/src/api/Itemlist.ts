@@ -1,21 +1,13 @@
-import { ItemAxios } from "./http";
+import { itemAxios } from "./http";
 import { AxiosHeaders } from "axios";
 
-const http = ItemAxios();
+const http = itemAxios();
 const headers = new AxiosHeaders();
 headers.set("Content-Type", "application/json;charset=utf-8");
 
-async function Category() {
-    return http.get("/categories");
-}
-
 async function ItemListDetailFetch(data: { id: number }) {
-    try {
-        const response = await http.get(`products/${data.id}`);
-        console.log(response.data);
-    } catch (error) {
-        console.log(error);
-    }
+    const response = await http.get(`products/${data.id}`);
+    return response;
 }
 
 async function ItemAddFunction(data: {
@@ -29,9 +21,9 @@ async function ItemAddFunction(data: {
 }) {
     try {
         const response = await http.post("/products", data);
-        console.log(response.data);
+        return response;
     } catch (error) {
-        console.error(error);
+        alert("안댐");
     }
 }
 
@@ -42,9 +34,19 @@ async function ItemListFetch(data: { page: number; size: number }) {
     return response.data.data.list;
 }
 
-async function ItemDetailDelete(id : number) {
-    const response = await http.delete(`/products/${id}`)
-    console.log(response)
+async function ItemDetailDelete(id: number) {
+    await http.delete(`/products/${id}`);
 }
 
-export { Category, ItemListDetailFetch, ItemAddFunction, ItemListFetch, ItemDetailDelete };
+async function ItemDetailFetch(id: number) {
+    const response = await http.get(`/products/${id}`);
+    return response.data.data;
+}
+
+export {
+    ItemListDetailFetch,
+    ItemAddFunction,
+    ItemListFetch,
+    ItemDetailDelete,
+    ItemDetailFetch,
+};
