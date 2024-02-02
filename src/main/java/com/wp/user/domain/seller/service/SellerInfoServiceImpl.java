@@ -70,9 +70,9 @@ public class SellerInfoServiceImpl implements SellerInfoService {
         } catch(Exception e) {
             throw new BusinessExceptionHandler(ErrorCode.FORBIDDEN_ERROR);
         }
-        Pageable pageable = PageRequest.of(page, size, Sort.sort())
+        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "registerDate"));
         Page<SellerInfo> sellerInfoList = sellerInfoRepository.findAll(pageable);
-        return GetSellerInfoListResponse.from(sellerInfoList);
+        return GetSellerInfoListResponse.from(sellerInfoList.getTotalPages(), sellerInfoList.getTotalElements(), sellerInfoList.stream().toList());
     }
 
     // 판매자 전환 신청 상세 조회

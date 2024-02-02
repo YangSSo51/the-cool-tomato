@@ -9,7 +9,7 @@ import jakarta.servlet.http.HttpServletRequest;
 
 public interface SellerInfoService {
     GetSellerResponse getSeller(Long sellerId);
-    GetSellerInfoListResponse getSellerInfos(HttpServletRequest httpServletRequest);
+    GetSellerInfoListResponse getSellerInfos(HttpServletRequest httpServletRequest, int page, int size);
     GetSellerInfoResponse getSellerInfo(HttpServletRequest httpServletRequest, Long sellerInfoId);
     void addSellerInfo(HttpServletRequest httpServletRequest, AddSellerInfoRequest addSellerInfoRequest);
     ModifySellerStatusResponse modifySellerStatusTrue(HttpServletRequest httpServletRequest, Long sellerInfoId);
