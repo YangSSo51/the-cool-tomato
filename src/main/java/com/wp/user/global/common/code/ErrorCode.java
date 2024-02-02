@@ -90,11 +90,11 @@ public enum ErrorCode {
     NOT_FOUND_USER_ID(401, "B008", "회원을 찾을 수 없습니다."),
     NOT_FOUND_SEND_EMAIL(401, "B009", "이메일 인증을 다시 시도해주세요."),
     // 판매자
-    NOT_FOUND_SELLER(401, "B0010", "판매자 정보를 찾을 수 없습니다."),
-    ALREADY_APPROVE_SELLER(409, "B0011", "이미 판매자 전환 신청이 승인되었습니다."),
+    NOT_FOUND_SELLER(401, "B010", "판매자 정보를 찾을 수 없습니다."),
+    ALREADY_APPROVE_SELLER(409, "B011", "이미 판매자 전환 신청이 승인되었습니다."),
     ALREADY_CANCEL_SELLER(409, "B0012", "이미 판매자 전환 신청이 철회되었습니다."),
-    NOT_SELLER(401, "B0013", "판매자가 아닙니다."),
-    NOT_FOUND_SELLER_ID(401, "B0014", "판매자를 찾을 수 없습니다."),
+    NOT_SELLER(401, "B013", "판매자가 아닙니다."),
+    NOT_FOUND_SELLER_ID(401, "B014", "판매자를 찾을 수 없습니다."),
     /**
      * ******************************* Custom Error CodeList ***************************************
      */

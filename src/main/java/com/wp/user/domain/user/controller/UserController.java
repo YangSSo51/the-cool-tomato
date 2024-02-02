@@ -158,9 +158,9 @@ public class UserController {
     }
 
     @GetMapping("/admin")
-    @Operation(summary = "전체 회원 정보 목록 조회", description = "사용자는 자신의 회원 정보를 조회합니다.")
-    public ResponseEntity<SuccessResponse<?>> getUsers(HttpServletRequest request) {
-        GetUserListResponse getUserListResponse = userService.getUsers(request);
+    @Operation(summary = "전체 회원 정보 목록 조회", description = "관리자는 전체 회원 정보를 조회합니다.")
+    public ResponseEntity<SuccessResponse<?>> getUsers(HttpServletRequest request, @RequestParam int page, @RequestParam int size) {
+        GetUserListResponse getUserListResponse = userService.getUsers(request, page, size);
         SuccessResponse<?> response = SuccessResponse.builder()
                 .status(SuccessCode.SELECT_SUCCESS.getStatus())
                 .message(SuccessCode.SELECT_SUCCESS.getMessage())
