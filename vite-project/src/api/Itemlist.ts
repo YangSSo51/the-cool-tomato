@@ -1,7 +1,7 @@
-import { ItemAxios } from "./http";
+import { itemAxios } from "./http";
 import { AxiosHeaders } from "axios";
 
-const http = ItemAxios();
+const http = itemAxios();
 const headers = new AxiosHeaders();
 headers.set("Content-Type", "application/json;charset=utf-8");
 
