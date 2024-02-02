@@ -107,7 +107,6 @@ public class SellerInfoServiceImpl implements SellerInfoService {
         authClient.validateToken(AccessTokenRequest.builder().accessToken(accessToken).build());
         // 권한이 구매자일 경우만 저장
         Map<String, String> infos = authClient.extraction(ExtractionRequest.builder().accessToken(accessToken).infos(List.of("userId", "auth")).build()).getInfos();
-        System.out.println(infos);
         try {
             if(!infos.get("auth").equals("BUYER")) {
                 throw new BusinessExceptionHandler(ErrorCode.FORBIDDEN_ERROR);
