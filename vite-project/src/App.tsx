@@ -18,7 +18,7 @@ import FindAccountPage from "./pages/FindAccountPage";
 import MainPage from "./pages/MainPage";
 import LiveAddForm from "./pages/LiveAddForm";
 import BuyerLive from "./pages/BuyerLive";
-import ItemAdd from "./components/item/ItemAdd";
+import ItemAdd from "./pages/ItemAdd";
 
 function App() {
     return (

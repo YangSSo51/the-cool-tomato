@@ -1,6 +1,6 @@
 import { Box, Flex, Link, Spacer } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
-import ItemAdd from "../../item/ItemAdd";
+import ItemAdd from "../../../pages/ItemAdd";
 
 export default function SellerComponent() {
     const navigate = useNavigate();

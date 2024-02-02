@@ -1,15 +1,19 @@
 import { Box, Container, Flex, Text } from "@chakra-ui/react";
 import Goods from "../components/item/ItemListComponent";
-import GoodsList from "../components/item/dummylist/dummy";
 import "../css/ItemListComponentcss.css";
-import { Category } from '../api/Itemlist'
-import { ItemListDetailFetch } from '../api/Itemlist'
+import { ItemDetailDelete, ItemListFetch } from '../api/Itemlist'
+import { useEffect, useState } from "react";
 
 export default function ItemList() {
-    const dummylist = GoodsList;
+    const [dummylist, setDummylist] = useState([])
 
-    console.log(Category())
-    console.log(ItemListDetailFetch({id:13}))
+    useEffect(() => {
+        ItemListFetch({page: 0, size: 10}).then((res) => {setDummylist(res)})
+    }, [])
+
+    const onDelete = (targetId : number) => {
+        ItemDetailDelete(targetId)
+    }
 
     return (
         <Container maxW={"80vw"} centerContent>
@@ -19,11 +23,11 @@ export default function ItemList() {
                 </Box>
                 <Flex wrap="wrap" justifyContent="center" gap={"2rem"}>
                     {dummylist.map((data) => (
-                        <Box key={data.id} w="calc(25% - 1.5rem)" mb={"3rem"}>
+                        <Box key={data.productId} w="calc(25% - 1.5rem)" mb={"3rem"} onClick={() => onDelete(data.productId)}>
                             <Goods
-                                id={data.id}
+                                id={data.productId}
                                 img={data.img}
-                                title={data.title}
+                                title={data.productName}
                                 price={data.price}
                             />
                         </Box>
