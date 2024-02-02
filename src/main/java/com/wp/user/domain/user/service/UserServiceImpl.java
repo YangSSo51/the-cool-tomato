@@ -280,7 +280,7 @@ public class UserServiceImpl implements UserService {
         // 회원 정보 조회
         Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.ASC, "id"));
         Page<User> users = userRepository.findAllByAuthNot(pageable, Auth.ADMIN);
-        return GetUserListResponse.builder().totalPage(users.getTotalPages()).totalSize(users.getSize()).users(users.stream().toList()).build();
+        return GetUserListResponse.builder().totalPage(users.getTotalPages()).totalSize(users.getTotalElements()).users(users.stream().toList()).build();
     }
 
     // 회원 강제 탈퇴
