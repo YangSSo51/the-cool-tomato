@@ -39,7 +39,6 @@ function SignUpForm() {
     const [isEmailValid, setIsEmailValid] = useState(false);
     const [sendcode, setSendcode] = useState(false)
     const [isNicknameValid, setIsNicknameValid] = useState(false);
-    console.log(sex)
     console.log("유효성통과 다 트루냐???", isUsernameValid, isPasswordValid, isEmailValid, isNicknameValid)
     // 안내메시지
     const [validMessage, setValidMessage] = useState({
@@ -157,7 +156,6 @@ function SignUpForm() {
             } else if (response === 33) {
                 alert("이미 회원가입된 이메일입니다. 로그인해주세요")
             }
-        console.log('온서브밋')
         }
     }
     //

@@ -1,10 +1,11 @@
 import "../../css/Navbar.css";
 import { Image, Box, Flex, Spacer } from "@chakra-ui/react";
 import { useState } from "react";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { AppDispatch, RootState } from "../../redux/stores/store";
 import LoginComponent from "./NavComponent/LoginComponent";
 import LogoutComponent from "./NavComponent/LogoutComponent";
-
-import { useNavigate } from "react-router-dom";
 import SellerComponent from "./NavComponent/SellerComponent";
 import BuyerComponent from "./NavComponent/BuyerComponent";
 import ProfileBuyerComponent from "./NavComponent/NavBuyerProfileComponent";
@@ -13,6 +14,7 @@ import LogoutProfileComponent from "./NavComponent/LogoutProfileComponent";
 
 function NavBar() {
     const navigate = useNavigate();
+    const user = useSelector((state: RootState) => state.user);
     const [loginlogout, LoginState] = useState(true);
     const [BuyerSeller, BuyerSellerState] = useState(false);
     const [profile, ProfileState] = useState();
