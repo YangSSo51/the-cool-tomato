@@ -1,8 +1,8 @@
 package com.wp.chat.global.common.service;
 
 import com.fasterxml.jackson.databind.type.TypeFactory;
-import com.wp.user.global.common.response.ErrorResponse;
-import com.wp.user.global.common.response.SuccessResponse;
+import com.wp.chat.global.common.response.ErrorResponse;
+import com.wp.chat.global.common.response.SuccessResponse;
 import feign.FeignException;
 import feign.Response;
 import feign.codec.Decoder;
