@@ -66,3 +66,18 @@ export interface ItemQnA {
     answer: number;
     isMine: number;
 }
+
+export interface ItemDetailInterface {
+    productId: number;
+    imgSrc: string;
+    sellerId: number;
+    categoryId: number;
+    categoryName: null;
+    productName: string;
+    productContent: string;
+    paymentLink: string;
+    price: number;
+    deliveryCharge: number;
+    quantity: number;
+    registerDate: string
+}

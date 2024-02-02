@@ -10,16 +10,25 @@ import {
     TabPanels,
     TabPanel,
 } from "@chakra-ui/react";
-import GoodsList from "../components/item/dummylist/dummy";
 import ItemDetailDetail from "../components/item/ItemDetailDetail";
 import { useParams } from "react-router-dom";
 import ItemDetailReview from "../components/item/ItemDetailReview";
 import ItemDetailQnA from "../components/item/ItemDetailQnA";
+import { useEffect, useState } from "react";
+import { ItemDetailInterface } from "../types/DataTypes";
+import { ItemDetailFetch } from "../api/Itemlist";
 
 export default function ItemDetail() {
-    const Goods = GoodsList;
-    type id = number;
-    const { id } = useParams();
+    const [fetchData, setFetchData] = useState<
+        ItemDetailInterface | undefined
+    >();
+    const { id } = useParams() as { id: string };
+
+    useEffect(() => {
+        ItemDetailFetch(Number(id)).then((res) => {
+            setFetchData(res);
+        });
+    }, []);
 
     return (
         <>
@@ -29,7 +38,7 @@ export default function ItemDetail() {
                         <Flex grow={1}>
                             <Box maxW={"26rem"}>
                                 <Image
-                                    src={Goods[id].img}
+                                    src={fetchData?.imgSrc}
                                     aspectRatio="1/1"
                                     objectFit="cover"
                                     width="100%"
@@ -39,9 +48,9 @@ export default function ItemDetail() {
                                 />
                             </Box>
 
-                            <Flex display={"block"} pl={"2.5rem"}>
+                            <Flex display={"block"} pl={"2.5rem"} ml={"4rem"}>
                                 <Text fontSize={"2xl"} as={"b"} mb={"4"}>
-                                    {Goods[id].title}
+                                    {fetchData?.productName}
                                 </Text>
                                 <Text fontSize={"lg"} mb={"1"}>
                                     <Text color={"themeRed.500"} as={"b"}>
@@ -53,7 +62,7 @@ export default function ItemDetail() {
                                         as={"b"}
                                         textDecorationLine={"line-through"}
                                     >
-                                        {Goods[id].price}
+                                        {fetchData?.price}
                                     </Text>
                                 </Text>
                                 <Box mb={"4"}>
@@ -124,7 +133,7 @@ export default function ItemDetail() {
                                 alignItems={"center"}
                                 justify={"center"}
                             >
-                                <ItemDetailDetail />
+                                <ItemDetailDetail content={fetchData?.productContent} />
                             </Flex>
                         </TabPanel>
                         <TabPanel>

@@ -7,7 +7,7 @@
     .paddingNavBar {
         margin: 0 auto;
         padding: 0.3rem;
-        width: 100%;
+        width: 100vw;
     }
 
     .LogoImage {

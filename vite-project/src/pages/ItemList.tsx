@@ -4,6 +4,7 @@ import "../css/ItemListComponentcss.css";
 import { ItemDetailDelete, ItemListFetch } from '../api/Itemlist'
 import { useEffect, useState } from "react";
 
+
 export default function ItemList() {
     const [dummylist, setDummylist] = useState([])
 
@@ -11,9 +12,11 @@ export default function ItemList() {
         ItemListFetch({page: 0, size: 10}).then((res) => {setDummylist(res)})
     }, [])
 
-    const onDelete = (targetId : number) => {
-        ItemDetailDelete(targetId)
-    }
+    // const onDelete = (targetId : number) => {
+    //     ItemDetailDelete(targetId)
+    // }
+
+    // onClick={() => onDelete(data.productId)}
 
     return (
         <Container maxW={"80vw"} centerContent>
@@ -23,7 +26,7 @@ export default function ItemList() {
                 </Box>
                 <Flex wrap="wrap" justifyContent="center" gap={"2rem"}>
                     {dummylist.map((data) => (
-                        <Box key={data.productId} w="calc(25% - 1.5rem)" mb={"3rem"} onClick={() => onDelete(data.productId)}>
+                        <Box key={data.productId} w="calc(25% - 1.5rem)" mb={"3rem"}>
                             <Goods
                                 id={data.productId}
                                 img={data.img}

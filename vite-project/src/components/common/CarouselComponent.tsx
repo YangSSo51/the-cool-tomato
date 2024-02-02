@@ -14,32 +14,22 @@ export default function CarouselComponent() {
         const step = (timestamp) => {
             if (!start) start = timestamp;
 
-            console.log(start)
-
             const elapsed = timestamp - start;
-
-            
-
             
             const newOffset = (elapsed * 0.003) % totalWidth;
 
             setOffset(newOffset);
 
-            // Request the next frame
             window.requestAnimationFrame(step)
 
-            
         };
 
-        // Start the animation
         window.requestAnimationFrame(step);
 
-        // Cleanup
         return () => {
             window.cancelAnimationFrame(step);
         };
     }, []);
-
 // useEffect(() => {
 //     const totalSlides = dummylist.length;
 //     const interval = setInterval(() => {
