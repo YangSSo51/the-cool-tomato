@@ -13,7 +13,7 @@ import {
 import { ViewIcon, CheckIcon } from "@chakra-ui/icons";
 import { Tooltip } from '@chakra-ui/react'
 import { useNavigate } from "react-router";
-import { SignupUserAPI, checkIdAPI, sendEmailAPI, checkEmailAPI } from "../../api/user";
+import { signupUserAPI, checkIdAPI, sendEmailAPI, checkEmailAPI } from "../../api/user";
 
 function SignUpForm() {
     const navigate = useNavigate();
@@ -99,6 +99,8 @@ function SignUpForm() {
         if (password === inputValue) {
             setCheck2(regex.test(inputValue));
             setIsPasswordValid(true)
+        } else {
+            setValidMessage({ ...validMessage, passwordMessage: "입력한 비밀번호가 일치하지 않습니다" });
         }
         setPasswordAgain(inputValue)
     }
@@ -149,7 +151,7 @@ function SignUpForm() {
                 sex: sex,
                 birthday: birthday,
             };
-            const response = await SignupUserAPI(userData);
+            const response = await signupUserAPI(userData);
             if (response === 1) {
                 navigate('/v1/sign')
             } else if (response === 33) {

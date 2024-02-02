@@ -17,21 +17,25 @@ async function loginUser(data: { loginId: string; password: string }) {
             return responseData
         }
     } catch (error) {
-        if (error instanceof Error) {
-            // const axiosError = error as AxiosError;
-            console.error(error.message);
-            // if (axiosError.response && axiosError.response.status === 401) {
-            //   console.log("axiosError");
-            //   return "가입된 아이디가 아닙니다.";
-            // } else if (axiosError.response.divisionCode === B003 && axiosError.response.status === 401) {
-            //     return "비밀번호가 일치하지 않습니다."
-            // }
-            // console.log("에러에러에러에러에러");
+        if (error instanceof AxiosError) {
+            console.error(error);
+            if (error.response) {
+              console.log(error.response.data.reason); // 'reason' 출력
+              if (error.response.status === 401) {
+                if (error.response.data.divisionCode === 'B003') {
+                    throw new Error("비밀번호가 일치하지 않습니다.");
+                } else {
+                    console.log("미가입");
+                    throw new Error("가입된 아이디가 아닙니다.");
+                }
+              }
+            }
+            console.log("에러에러에러에러에러");
+          }
         }
-    }
 }
 
-async function SignupUserAPI(data: RegisterUser) {
+async function signupUserAPI(data: RegisterUser) {
 
     try {
         const response = await http.post(`${url}/join`, data)
@@ -152,5 +156,5 @@ async function findPwAPI(data: {loginId: string, email: string}) {
         }
 }
 
-export { loginUser, SignupUserAPI, checkIdAPI, sendEmailAPI, checkEmailAPI, registerSellerAPI, findIdAPI, findPwAPI };
+export { loginUser, signupUserAPI, checkIdAPI, sendEmailAPI, checkEmailAPI, registerSellerAPI, findIdAPI, findPwAPI };
 
