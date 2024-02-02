@@ -22,6 +22,10 @@ import jakarta.mail.internet.MimeMessage;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -31,6 +35,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.UnsupportedEncodingException;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -259,7 +264,7 @@ public class UserServiceImpl implements UserService {
 
     // 전체 회원 정보 조회
     @Override
-    public GetUserListResponse getUsers(HttpServletRequest httpServletRequest) {
+    public GetUserListResponse getUsers(HttpServletRequest httpServletRequest, int page, int size) {
         // 헤더 Access Token 추출
         String accessToken = jwtService.resolveAccessToken(httpServletRequest);
         authClient.validateToken(AccessTokenRequest.builder().accessToken(accessToken).build());
@@ -273,9 +278,9 @@ public class UserServiceImpl implements UserService {
             throw new BusinessExceptionHandler(ErrorCode.FORBIDDEN_ERROR);
         }
         // 회원 정보 조회
-        List<User> users = userRepository.findAllByAuthNot(Auth.ADMIN);
-
-        return GetUserListResponse.builder().users(users).build();
+        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.ASC, "id"));
+        Page<User> users = userRepository.findAllByAuthNot(pageable, Auth.ADMIN);
+        return GetUserListResponse.builder().totalPage(users.getTotalPages()).totalSize(users.getSize()).users(users.stream().toList()).build();
     }
 
     // 회원 강제 탈퇴

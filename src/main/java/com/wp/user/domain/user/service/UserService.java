@@ -18,7 +18,7 @@ public interface UserService {
     GetUserResponse getUser(HttpServletRequest httpServletRequest);
     ModifyUserResponse modifyUser(HttpServletRequest httpServletRequest, MultipartFile profileImgFile, ModifyUserRequest modifyUserRequest);
     void removeUser(HttpServletRequest httpServletRequest);
-    GetUserListResponse getUsers(HttpServletRequest httpServletRequest);
+    GetUserListResponse getUsers(HttpServletRequest httpServletRequest, int page, int size);
     void forceRemoveUser(HttpServletRequest httpServletRequest, Long id);
     void sendEmail(String email, String title, StringBuffer sb);
 }
