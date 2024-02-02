@@ -13,7 +13,15 @@ const initialState: UserState = {
 const userSlice = createSlice({
     name: "user",
     initialState,
-    reducers: {},
+    // reducers: {},
+    reducers: {
+        resetAuth: (state) => {
+            state.auth = "INIT";
+        },
+        setAuthSeller: (state) => {
+            state.auth = "SELLER"
+        }
+    },
     extraReducers: (builder) => {
         builder
             .addCase(loginUserThunk.fulfilled, (state, action) => {
@@ -48,4 +56,5 @@ const userSlice = createSlice({
 });
 
 // export const { login } = userSlice.actions;
+export const { resetAuth, setAuthSeller } = userSlice.actions;
 export default userSlice.reducer;

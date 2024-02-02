@@ -47,11 +47,11 @@ export type RegisterUser = {
 };
 
 export type RegisterSeller = {
-    business_number: string;
-    business_content: string;
-    mail_order_sales_number: string;
-    business_address: string;
-    phone_number: string;
+    businessNumber: string;
+    businessContent: string;
+    mailOrderSalesNumber: string;
+    businessAddress: string;
+    phoneNumber: string;
 };
 
 export interface ItemQnA {

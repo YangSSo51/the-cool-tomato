@@ -13,6 +13,7 @@ import { useNavigate } from "react-router-dom";
 import { AppDispatch, RootState } from "../../redux/stores/store";
 import { loginUserThunk } from "../../redux/thunk/user/userThunk";
 import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
+// import { resetAuth } from "../../redux/reducers/user/userSlice";
 
 function LoginForm() {
     const [show, setShow] = useState(false);
@@ -35,18 +36,16 @@ function LoginForm() {
         await dispatch(loginUserThunk({ loginId:id, password }));
     }
 
-    useEffect(() => {
-        if (isFail) {
-            user.auth === "INIT"
-        }
-    }, [])
+    // useEffect(() => {
+    //     dispatch(resetAuth());
+    // }, [dispatch])
 
     useEffect(() => {
         console.log("Login Result: " + user.auth);
         console.log("Login Result type: " + typeof user.auth);
         if (user.auth !== "FAIL" && user.auth !== "INIT") {
             console.log("Login Success");
-            navigate("/v1");
+            navigate("/v1/main");
         } else if (user.auth === "FAIL") {
             console.log("Login Fail");
         }

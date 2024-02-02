@@ -26,6 +26,9 @@ function NavBar() {
         }
     }, []);
 
+    console.log(myAuth)
+    console.log(isLogin)
+
     return (
         <Box className="paddingNavBar">
             <Flex minWidth={"max-content"} alignItems="center" gap="2">

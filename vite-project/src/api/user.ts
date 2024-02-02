@@ -108,10 +108,15 @@ async function checkEmailAPI(data: {email: string, code: string}) {
     }
 }
 
-async function registerSellerAPI(data: RegisterSeller) {
+async function registerSellerAPI(data: RegisterSeller, accessToken: string) {
     console.log("판매자신청좀하겠습니다.~!!!!!!!", JSON.stringify(data))
     try {
-        const response = await http.post(`${url}/sellers`, data)
+        const response = await http.post(`${url}/sellers`, data, {
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": "Bearer " + accessToken
+            }
+        })
         const responseData = response.data
         if (responseData.status === 201) {
             console.log("성공~!");

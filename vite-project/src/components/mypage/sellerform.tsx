@@ -2,8 +2,14 @@ import { Box, Flex } from "@chakra-ui/layout";
 import { FormControl, FormLabel, FormHelperText, Input, Button, Alert, AlertIcon } from '@chakra-ui/react'
 import { useState } from "react";
 import { registerSellerAPI } from "../../api/user";
+import { setAuthSeller } from "../../redux/reducers/user/userSlice";
+import { useSelector } from "react-redux";
+import { RootState } from "../../redux/stores/store";
 
 export default function Sellerform() {
+    const user = useSelector((state: RootState) => state.user);
+    const accessToken = user.accessToken;
+    console.log(user)
     const [isSubmitted, setIsSubmitted] = useState(false);
     const [businessNumber, setBusinessNumber] = useState<string>("");
     const [businessContent, setBusinessContent] = useState<string>("");
@@ -32,7 +38,7 @@ export default function Sellerform() {
         change : setBusinessNumber
     },
     {
-        title : '판매자 실명',
+        title : '판매자 설명',
         enTitle : 'Seller\'s Legal Name',
         // rule : 한글 혹은 영문만 가능,
         key : businessContent,
@@ -119,7 +125,7 @@ export default function Sellerform() {
         if (businessNumber === '') {
             alert("사업자 번호를 입력해주세요")
         } else if (businessContent === '') {
-            alert("판매자 실명을 확인해주세요")
+            alert("판매자 설명을 확인해주세요")
         } else if (mailOrderSalesNumber === '') {
             alert("통신판매신고번호를 확인해주세요")
         } else if (businessAddress === '') {
@@ -128,14 +134,15 @@ export default function Sellerform() {
             alert("업체 연락처를 확인해주세요!")
         } else {
             const sellerData = {
-                business_number: businessNumber,
-                business_content: businessContent,
-                mail_order_sales_number: mailOrderSalesNumber,
-                business_address: businessAddress,
-                phone_number: phoneNumber
+                businessNumber: businessNumber,
+                businessContent: businessContent,
+                mailOrderSalesNumber: mailOrderSalesNumber,
+                businessAddress: businessAddress,
+                phoneNumber: phoneNumber
             };
-            registerSellerAPI(sellerData)
+            registerSellerAPI(sellerData, accessToken)
             setIsSubmitted(true)
+            setAuthSeller();
         console.log('온서브밋')
         }
     }
