@@ -4,11 +4,15 @@ import {
     AccordionItem,
     Button,
     Center,
+    Flex,
     Icon,
+    IconButton,
+    Text,
 } from "@chakra-ui/react";
 import QnaAccordion from "./qna/QnaAccordion";
+import QnaRegistrationModal from "./qna/QnaRegistrationModal";
 import { useParams } from "react-router-dom";
-import { FaChevronDown } from "react-icons/fa";
+import { FaChevronDown, FaEdit } from "react-icons/fa";
 import { getQnAList } from "../../api/itemQnA";
 import { useEffect, useState } from "react";
 import { ItemQnA } from "../../types/DataTypes";
@@ -21,13 +25,24 @@ function ItemDetailQnA() {
     const [accortionList, setAccortionList] = useState<Array<ItemQnA>>([]);
     const [page, setPage] = useState(0);
     const [maxPage, setMaxPage] = useState(0);
+    const [modalOpen, setModalOpen] = useState(false);
 
+    function handleModalOpen() {
+        setModalOpen(!modalOpen);
+    }
     function getMoreQnA() {
         if (page >= maxPage) {
             console.log("max page");
             return;
         }
-        setPage(page + size);
+        setPage(page + 1);
+    }
+    function refreshQnA() {
+        getQnAList({ page: 0, size: 1, "product-id": productID }).then(
+            (res: AxiosResponse) => {
+                setAccortionList([...res.data.data.list, ...accortionList]);
+            }
+        );
     }
 
     useEffect(() => {
@@ -47,18 +62,41 @@ function ItemDetailQnA() {
     }, [page, productID]);
     return (
         <>
+            <Flex w={"90%"} justifyContent={"flex-end"}>
+                <QnaRegistrationModal
+                    isOpen={modalOpen}
+                    handleModalOpen={handleModalOpen}
+                    refreshQnA={refreshQnA}
+                />
+                <Button
+                    leftIcon={<FaEdit />}
+                    colorScheme="themeGreen"
+                    size={"sm"}
+                    onClick={handleModalOpen}
+                >
+                    문의하기
+                </Button>
+            </Flex>
+
             <Accordion allowMultiple w={"90%"} borderColor={"themeWhite.500"}>
                 {accortionList.map((data, index) => {
                     return <QnaAccordion data={data} key={index} />;
                 })}
-                <AccordionItem>
-                    <AccordionButton py={2}>
-                        <Center w={"100%"} onClick={getMoreQnA}>
-                            <Icon as={FaChevronDown}></Icon>
-                        </Center>
-                    </AccordionButton>
-                </AccordionItem>
             </Accordion>
+            <Flex w={"90%"} justifyContent={"center"}>
+                {accortionList.length === 0 ? (
+                    <Text textAlign={"center"}>문의가 없습니다</Text>
+                ) : (
+                    <IconButton
+                        aria-label=""
+                        hidden={page >= maxPage}
+                        icon={<FaChevronDown />}
+                        variant={"ghost"}
+                        w={"100%"}
+                        onClick={getMoreQnA}
+                    />
+                )}
+            </Flex>
         </>
     );
 }

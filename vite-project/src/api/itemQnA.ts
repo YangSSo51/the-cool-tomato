@@ -1,6 +1,9 @@
+import { AxiosHeaders } from "axios";
 import { itemAxios } from "./http";
 
 const http = itemAxios();
+const headers = new AxiosHeaders();
+headers.set("Content-Type", "application/json;charset=utf-8");
 
 const url = "/product-questions";
 
@@ -75,10 +78,22 @@ async function sellerGetQnaAPI(params: type) {
     }
 }
 
+async function postItemQnA(
+    data: {
+        productId: number;
+        questionContent: string;
+    },
+    accessToken: string
+) {
+    headers.set("Authorization", `Bearer ${accessToken}`);
+    return await http.post(url, data, { headers });
+}
+
 export {
     getQnAList,
     sellerPutQnaAPI,
     qnaDetailAPI,
     buyerGetQnaAPI,
     sellerGetQnaAPI,
+    postItemQnA,
 };
