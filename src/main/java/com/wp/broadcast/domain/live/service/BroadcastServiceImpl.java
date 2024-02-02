@@ -47,9 +47,16 @@ public class BroadcastServiceImpl implements BroadcastService{
 
     @Override
     public Map<String, String> startBroadcast(StartRequestDto start, Long sellerId) {
+        LiveBroadcast liveBroadcast;
         try {
-            LiveBroadcast liveBroadcast = liveBroadcastRepository.findById(start.getLiveBroadcastId()).orElseThrow();
-            if(!liveBroadcast.getSellerId().equals(sellerId))throw new BusinessExceptionHandler("올바른 판매자가 아닙니다.", ErrorCode.FORBIDDEN_ERROR);
+            liveBroadcast = liveBroadcastRepository.findById(start.getLiveBroadcastId()).orElseThrow();
+        }catch (NoSuchElementException e){
+            throw new BusinessExceptionHandler("예약 내역이 없습니다.", ErrorCode.NOT_FOUND_ERROR);
+        }
+
+        if(!liveBroadcast.getSellerId().equals(sellerId))throw new BusinessExceptionHandler("올바른 판매자가 아닙니다.", ErrorCode.FORBIDDEN_ERROR);
+
+        try {
             String sessionId = mediateOpenviduConnection.getSessionId();
             String token = mediateOpenviduConnection.getToken(sessionId, "판매자");
             liveBroadcast.setBroadcastStatus(true);
@@ -61,8 +68,6 @@ public class BroadcastServiceImpl implements BroadcastService{
             result.put("topicId", sessionId);
             result.put("token", token);
             return result;
-        } catch (NoSuchElementException e){
-            throw new BusinessExceptionHandler("예약 내역이 없습니다.", ErrorCode.NOT_FOUND_ERROR);
         } catch (Exception e){
             e.printStackTrace();
             throw new BusinessExceptionHandler("아이고 미안합니다. 김현종에게 문의해주세요~", ErrorCode.INTERNAL_SERVER_ERROR);
@@ -71,15 +76,20 @@ public class BroadcastServiceImpl implements BroadcastService{
 
     @Override
     public void stopBroadcast(StopRequestDto stop, Long sellerId) {
+        LiveBroadcast liveBroadcast;
         try {
-            LiveBroadcast liveBroadcast = liveBroadcastRepository.findById(stop.getLiveBroadcastId()).orElseThrow();
-            if(!liveBroadcast.getSellerId().equals(sellerId))throw new BusinessExceptionHandler("올바른 판매자가 아닙니다.", ErrorCode.FORBIDDEN_ERROR);
+            liveBroadcast = liveBroadcastRepository.findById(stop.getLiveBroadcastId()).orElseThrow();
+        }catch (NoSuchElementException e){
+            throw new BusinessExceptionHandler("방송 내역이 없습니다.", ErrorCode.NOT_FOUND_ERROR);
+        }
+
+        if(!liveBroadcast.getSellerId().equals(sellerId))throw new BusinessExceptionHandler("올바른 판매자가 아닙니다.", ErrorCode.FORBIDDEN_ERROR);
+
+        try {
             mediateOpenviduConnection.deleteSession(liveBroadcast.getSessionId());
             liveBroadcast.setBroadcastStatus(false);
             liveBroadcastRepository.save(liveBroadcast);
-        }catch (NoSuchElementException e) {
-            throw new BusinessExceptionHandler("방송 내역이 없습니다.", ErrorCode.NOT_FOUND_ERROR);
-        }catch (Exception e){
+        } catch (Exception e){
             throw new BusinessExceptionHandler("아이고 미안합니다. 김현종에게 문의해주세요~", ErrorCode.INTERNAL_SERVER_ERROR);
         }
     }

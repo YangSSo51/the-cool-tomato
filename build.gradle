@@ -39,6 +39,7 @@ dependencies {
 
 	// https://mvnrepository.com/artifact/io.openvidu/openvidu-java-client
 	implementation group: 'io.openvidu', name: 'openvidu-java-client', version: '2.29.0'
+	implementation 'org.springframework.data:spring-data-elasticsearch:4.2.2'
 }
 
 tasks.named('test') {

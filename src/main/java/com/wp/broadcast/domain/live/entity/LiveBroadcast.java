@@ -5,7 +5,9 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.data.annotation.CreatedDate;
 
 import java.time.LocalDate;
@@ -38,7 +40,12 @@ public class LiveBroadcast {
     private String sessionId;
     private String topicId;
     private String stormapplicationId;
+
     @CreationTimestamp
     private LocalDateTime registerDate;
 
+    @UpdateTimestamp
+    private LocalDateTime modificationTime;
+
+    private Boolean isDeleted;
 }

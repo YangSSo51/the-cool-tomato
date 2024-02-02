@@ -40,7 +40,7 @@ public class LiveController {
     public ResponseEntity<SuccessResponse<ReservationResponseDto>> reserveLive(@RequestBody @Validated ReservationRequestDto reservationRequestDto){
         String accessToken = reservationRequestDto.getAccessToken();
         if(authService.validateToken(accessToken)){
-            if(authService.getAuth(accessToken).equals("seller")){
+            if(authService.getAuth(accessToken).equals("SELLER")){
                 Long userId = authService.getUserId(accessToken);
                 Long broadcastId = broadcastService.reserveBroadcast(reservationRequestDto, userId);
                 ReservationResponseDto result = ReservationResponseDto.builder().liveBroadcastId(broadcastId).build();
@@ -59,7 +59,7 @@ public class LiveController {
     public ResponseEntity<SuccessResponse<StartResponseDto>> startLive(@RequestBody @Validated StartRequestDto startRequestDto){
         String accessToken = startRequestDto.getAccessToken();
         if(authService.validateToken(accessToken)){
-            if(authService.getAuth(accessToken).equals("seller")){
+            if(authService.getAuth(accessToken).equals("SELLER")){
                 Long userId = authService.getUserId(accessToken);
                 Map<String, String> tokenAndtopic = broadcastService.startBroadcast(startRequestDto, userId);
                 StartResponseDto result = StartResponseDto.builder().token(tokenAndtopic.get("token")).topicId(tokenAndtopic.get("topicId")).build();
@@ -87,7 +87,7 @@ public class LiveController {
     public ResponseEntity<SuccessResponse<Boolean>> stopLive(@RequestBody @Validated StopRequestDto stopRequestDto){
         String accessToken = stopRequestDto.getAccessToken();
         if(authService.validateToken(accessToken)){
-            if(authService.getAuth(accessToken).equals("seller")){
+            if(authService.getAuth(accessToken).equals("SELLER")){
                 Long userId = authService.getUserId(accessToken);
                 broadcastService.stopBroadcast(stopRequestDto, userId);
                 return new ResponseEntity<>(SuccessResponse.<Boolean>builder().data(true).status(200).message("방송 종료 성공").build(), HttpStatus.OK);
