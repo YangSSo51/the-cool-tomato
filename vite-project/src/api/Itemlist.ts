@@ -10,12 +10,8 @@ async function Category() {
 }
 
 async function ItemListDetailFetch(data: { id: number }) {
-    try {
-        const response = await http.get(`products/${data.id}`);
-        console.log(response.data);
-    } catch (error) {
-        console.log(error);
-    }
+    const response = await http.get(`products/${data.id}`);
+    console.log(response)
 }
 
 async function ItemAddFunction(data: {
@@ -42,9 +38,21 @@ async function ItemListFetch(data: { page: number; size: number }) {
     return response.data.data.list;
 }
 
-async function ItemDetailDelete(id : number) {
-    const response = await http.delete(`/products/${id}`)
+async function ItemDetailDelete(id: number) {
+    const response = await http.delete(`/products/${id}`);
+    console.log(response);
+}
+
+async function ItemDetailFetch(id: number) {
+    const response = await http.get(`/products/${id}`)
     console.log(response)
 }
 
-export { Category, ItemListDetailFetch, ItemAddFunction, ItemListFetch, ItemDetailDelete };
+export {
+    Category,
+    ItemListDetailFetch,
+    ItemAddFunction,
+    ItemListFetch,
+    ItemDetailDelete,
+    ItemDetailFetch,
+};

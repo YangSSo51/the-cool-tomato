@@ -37,4 +37,4 @@ function itemAxios() {
     });
 }
 
-export { mainAxios, openViduDirectAxios, liveAxios, productsAxios, itemAxios };
+export { mainAxios, openViduDirectAxios, liveAxios, itemAxios };
