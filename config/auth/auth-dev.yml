@@ -2,6 +2,8 @@ server:
   port: 8081
 
 spring:
+  application:
+    name: auth
   datasource:
     url: jdbc:mysql://kpc.chf1yiylcr3s.ap-northeast-2.rds.amazonaws.com:3306/m5s?serverTimezone=UTC
     username: kpc
@@ -26,3 +28,11 @@ spring:
 logging.level:
   org.hibernate.SQL: debug
   org.hibernate.type: trace
+
+eureka:
+  instance:
+    # 표기되는 규칙 변경
+    instance-id: ${spring.cloud.client.hostname}:${spring.application.instance_id:${random.value}}
+  client:
+    service-url:
+      defaultZone: http://MASTER:8761/eureka
