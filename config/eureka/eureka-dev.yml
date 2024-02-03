@@ -7,8 +7,8 @@ spring:
 
 eureka:
   instance:
-    hostname: http://172.30.1.50
+    hostname: 172.30.1.50
     prefer-ip-address: true
   client:
-    register-with-eureka: false
-    fetch-registry: false
+    register-with-eureka: true
+    fetch-registry: true
