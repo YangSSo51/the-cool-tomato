@@ -10,5 +10,5 @@ eureka:
     hostname: 172.30.1.50
     prefer-ip-address: true
   client:
-    register-with-eureka: true
-    fetch-registry: true
+    register-with-eureka: false
+    fetch-registry: false
