@@ -1,5 +1,7 @@
 package com.wp.chat.global.config;
 
+import com.wp.chat.global.common.service.FilterChannelInterceptor;
+import com.wp.chat.global.common.service.StompExceptionHandler;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.simp.config.ChannelRegistration;
@@ -13,6 +15,8 @@ import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerCo
 @EnableWebSocketMessageBroker // Web Socket을 활성화하고 메시지 브로커 사용 가능
 public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     private static final String WEB_SOCKET_HOST = "*";
+    private final FilterChannelInterceptor filterChannelInterceptor;
+    private final StompExceptionHandler stompExceptionHandler;
 
     // 메시지 브로커를 구성하는 메서드
     @Override
@@ -25,6 +29,11 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
         // stomp websocket endpoint 설정( ws://localhost:8080/v1/ws-stomp )
-        registry.addEndpoint("/v1/ws-stomp").setAllowedOriginPatterns(WEB_SOCKET_HOST).withSockJS();
+        registry.setErrorHandler(stompExceptionHandler).addEndpoint("/v1/ws-stomp").setAllowedOriginPatterns(WEB_SOCKET_HOST).withSockJS();
+    }
+
+    @Override
+    public void configureClientInboundChannel(ChannelRegistration registration) {
+        registration.interceptors(filterChannelInterceptor);
     }
 }

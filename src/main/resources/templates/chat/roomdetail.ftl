@@ -65,7 +65,7 @@
                 this.message = '';
             },
             recvMessage: function(recv) {
-                this.messages.unshift({"type":recv.type,"sender":recv.sender, "message":recv.message})
+                this.messages.unshift({"sender":recv.sender, "message":recv.message})
             }
         }
     });

@@ -14,22 +14,16 @@ import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-import java.util.Map;
-
 @RequiredArgsConstructor
 @Controller
 public class ChatMessageController {
     private final KafkaTemplate<String, ChatMessage> kafkaTemplate;
-    private final AuthClient authClient;
     private final UserClient userClient;
     private final NewTopic topic;
 
     @MessageMapping("/chat/message")
     @Transactional
     public void message(@Header("Authorization") String token, ChatMessageRequest chatMessageRequest) {
-        // 토큰 인증
-        authClient.validateToken(AccessTokenRequest.builder().accessToken(token.substring(7)).build());
         // 회원 정보 추출
         UserResponse userResponse = userClient.getUser(token);
         ChatMessage chatMessage = ChatMessage.builder().roomId(chatMessageRequest.getRoomId()).sender(userResponse.getNickname()).message(chatMessageRequest.getMessage()).build();
