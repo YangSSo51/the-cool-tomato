@@ -17,7 +17,7 @@
 <body>
 <div class="container" id="app" v-cloak>
     <div>
-        <h2>{{room.name}}</h2>
+        <h2>{{roomId}}</h2>
     </div>
     <div class="input-group">
         <div class="input-group-prepend">
@@ -43,7 +43,7 @@
 <script>
     //alert(document.title);
     // websocket & stomp initialize
-    var sock = new SockJS("/ws-stomp");
+    var sock = new SockJS("/v1/ws-stomp");
     var ws = Stomp.over(sock);
     var reconnect = 0;
     // vue.js
@@ -51,7 +51,6 @@
         el: '#app',
         data: {
             roomId: '',
-            room: {},
             sender: '',
             message: '',
             messages: []
@@ -59,34 +58,31 @@
         created() {
             this.roomId = localStorage.getItem('wschat.roomId');
             this.sender = localStorage.getItem('wschat.sender');
-            this.findRoom();
         },
         methods: {
-            findRoom: function() {
-                axios.get('/v1/chat/room/'+this.roomId).then(response => { this.room = response.data; });
-            },
             sendMessage: function() {
-                ws.send("/pub/chat/message", {}, JSON.stringify({type:'TALK', roomId:this.roomId, sender:this.sender, message:this.message}));
+                ws.send("/pub/chat/message", {Authorization: "Bearer " + this.sender}, JSON.stringify({roomId:this.roomId, message:this.message}));
                 this.message = '';
             },
             recvMessage: function(recv) {
-                this.messages.unshift({"type":recv.type,"sender":recv.sender,"message":recv.message})
+                this.messages.unshift({"type":recv.type,"sender":recv.sender, "message":recv.message})
             }
         }
     });
 
     function connect() {
         // pub/sub event
-        ws.connect({}, function(frame) {
+        ws.connect({Authorization: "Bearer " + vm.$data.sender}, function(frame) {
             ws.subscribe("/sub/chat/room/"+vm.$data.roomId, function(message) {
                 var recv = JSON.parse(message.body);
+                console.log(recv);
                 vm.recvMessage(recv);
-            });
+            }, {Authorization: "Bearer " + vm.$data.sender});
         }, function(error) {
             if(reconnect++ < 5) {
                 setTimeout(function() {
                     // console.log("connection reconnect");
-                    sock = new SockJS("/ws-stomp");
+                    sock = new SockJS("/v1/ws-stomp");
                     ws = Stomp.over(sock);
                     connect();
                 },10*1000);
