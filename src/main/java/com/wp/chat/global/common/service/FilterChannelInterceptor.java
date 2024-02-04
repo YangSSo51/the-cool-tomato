@@ -31,7 +31,6 @@ public class FilterChannelInterceptor implements ChannelInterceptor {
         if (StompCommand.CONNECT.equals(headerAccessor.getCommand()) || StompCommand.SEND.equals(headerAccessor.getCommand())
                 || StompCommand.SUBSCRIBE.equals(headerAccessor.getCommand())) {
             String accessToken = Objects.requireNonNull(headerAccessor.getNativeHeader("Authorization")).toString();
-            System.out.println(accessToken);
             if (StringUtils.hasText(accessToken) && accessToken.startsWith("[Bearer")) {
                 accessToken = accessToken.substring(8, accessToken.length()-1);
             }
