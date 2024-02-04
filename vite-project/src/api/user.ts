@@ -1,6 +1,6 @@
 import { mainAxios } from "./http";
 import { AxiosHeaders, AxiosError } from "axios";
-import { RegisterUser, RegisterSeller } from "../types/DataTypes";
+import { RegisterUser, RegisterSeller, userInfo } from "../types/DataTypes";
 
 const http = mainAxios();
 const headers = new AxiosHeaders();
@@ -20,18 +20,39 @@ async function loginUser(data: { loginId: string; password: string }) {
         if (error instanceof AxiosError) {
             console.error(error);
             if (error.response) {
-              console.log(error.response.data.reason); // 'reason' 출력
+              console.log(error.response); // 'reason' 출력
               if (error.response.status === 401) {
-                if (error.response.data.divisionCode === 'B003') {
-                    throw new Error("비밀번호가 일치하지 않습니다.");
-                } else {
-                    console.log("미가입");
-                    throw new Error("가입된 아이디가 아닙니다.");
+                  if (error.response.data.divisionCode === 'B003') {
+                      throw new Error("비밀번호가 일치하지 않습니다.");
+                    } else {
+                        console.log("미가입");
+                        throw new Error("가입된 아이디가 아닙니다.");
+                    }
                 }
-              }
             }
             console.log("에러에러에러에러에러");
-          }
+        }
+    }
+}
+
+async function logoutAPI(accessToken: string) {
+    console.log("로그아웃")
+    console.log(accessToken)
+    try {
+        const response = await http.delete(`${url}/logout`, {
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": "Bearer " + accessToken
+            }
+        });
+        const responseData = response.data;
+        if (responseData.status === 200) {
+            console.log("로그아웃 성공")
+            }
+        return response
+        } catch(error) {
+            console.log(error)
+            throw error;
         }
 }
 
@@ -108,6 +129,45 @@ async function checkEmailAPI(data: {email: string, code: string}) {
     }
 }
 
+
+async function findIdAPI(data: {email: string}) {
+    console.log("아 아이디 찾을거라고~!")
+    try {
+        const response = await http.get(`${url}/find-login-id/${data.email}`)
+        const responseData = response.data;
+        if (responseData.status === 200) {
+            console.log("이메일 전송이 완료되었습니다");
+        } else if (responseData.status === 401 && responseData.divisionCode === "B005") {
+            console.log("가입된 이메일이 아닙니다 회원가입 ㄱ");
+        } else {
+            console.log(responseData)
+            console.log("걍 문제있음")
+        }
+    } catch (error) {
+        console.error(error);
+        console.log("오류임")
+    }
+}
+
+async function findPwAPI(data: {loginId: string, email: string}) {
+    console.log("비번 찾자.. 할수잇어")
+    try {
+        const response = await http.post(`${url}/find-password`, data)
+        if (response.status === 201) {
+            console.log("비밀번호 찾기 성공");
+            return 1; // 성공을 나타내는 값 (원하는 값으로 변경 가능)
+        } else if (response.status === 400) {
+            console.log("올바른 아이디 혹은 이메일이 아님요");
+            return 0;
+        } else if (response.status === 401) {
+            console.log("아이디와 이메일의 가입정보가 일치하지 않습니다")
+        }
+    } catch (error) {
+        console.error("비밀번호 찾기 실패", error);
+        return 0;
+    }
+}
+
 async function registerSellerAPI(data: RegisterSeller, accessToken: string) {
     console.log("판매자신청좀하겠습니다.~!!!!!!!", JSON.stringify(data))
     try {
@@ -141,49 +201,11 @@ async function registerSellerAPI(data: RegisterSeller, accessToken: string) {
     }
 }
 
-async function findIdAPI(data: {email: string}) {
-    console.log("아 아이디 찾을거라고~!")
-    try {
-        const response = await http.get(`${url}/find-login-id/${data.email}`)
-        const responseData = response.data;
-        if (responseData.status === 200) {
-            console.log("이메일 전송이 완료되었습니다");
-        } else if (responseData.status === 401 && responseData.divisionCode === "B005") {
-            console.log("가입된 이메일이 아닙니다 회원가입 ㄱ");
-        } else {
-            console.log(responseData)
-            console.log("걍 문제있음")
-        }
-    } catch (error) {
-        console.error(error);
-        console.log("오류임")
-    }
-}
-
-async function findPwAPI(data: {loginId: string, email: string}) {
-    console.log("비번 찾자.. 할수잇어")
-    try {
-        const response = await http.post(`${url}/find-password`, data)
-        if (response.status === 201) {
-            console.log("비밀번호 찾기 성공");
-            return 1; // 성공을 나타내는 값 (원하는 값으로 변경 가능)
-          } else if (response.status === 400) {
-            console.log("올바른 아이디 혹은 이메일이 아님요");
-            return 0;
-          } else if (response.status === 401) {
-            console.log("아이디와 이메일의 가입정보가 일치하지 않습니다")
-          }
-        } catch (error) {
-          console.error("비밀번호 찾기 실패", error);
-          return 0;
-        }
-}
-
-async function logoutAPI(accessToken: string) {
-    console.log("로그아웃")
+async function getMyInfoAPI(accessToken: string) {
+    console.log("회원정보수정용 조회받깅")
     console.log(accessToken)
     try {
-        const response = await http.delete(`${url}/logout`, {
+        const response = await http.get(`${url}`, {
             headers: {
                 "Content-Type": "application/json",
                 "Authorization": "Bearer " + accessToken
@@ -191,14 +213,36 @@ async function logoutAPI(accessToken: string) {
         });
         const responseData = response.data;
         if (responseData.status === 200) {
-            console.log("로그아웃 성공")
+            console.log("정보조회성공")
             }
-        return response
-        } catch(error) {
-            console.log(error)
-            throw error;
-        }
+        return responseData
+    } catch(error) {
+        console.log(error)
+        throw error;
+    }
 }
 
-export { loginUser, signupUserAPI, checkIdAPI, sendEmailAPI, checkEmailAPI, registerSellerAPI, findIdAPI, findPwAPI, logoutAPI };
+async function postMyInfoAPI(data: userInfo, accessToken: string, refreshToken: string) {
+    console.log("회원정보수정용 수정하깅")
+    console.log(accessToken)
+    try {
+        const response = await http.post(`${url}`, data, {
+            headers: {
+                "Content-Type": "mulitpart/form-data",
+                "Authorization": "Bearer " + accessToken,
+                "Refresh-Token": refreshToken
+            }
+        });
+        const responseData = response.data;
+        if (responseData.status === 200) {
+            console.log("정보수정성공")
+            }
+        return responseData
+    } catch(error) {
+        console.log(error)
+        throw error;
+    }
+}
+
+export { loginUser, signupUserAPI, checkIdAPI, sendEmailAPI, checkEmailAPI, registerSellerAPI, findIdAPI, findPwAPI, logoutAPI, getMyInfoAPI, postMyInfoAPI };
 

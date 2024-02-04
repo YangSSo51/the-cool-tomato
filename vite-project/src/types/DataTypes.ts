@@ -1,14 +1,11 @@
 export type userInfo = {
-    userId: number;
-    loginId: string;
-    pw?: string;
-    token: string;
+    profileImgFile: File | null;
+    profileImg: string  | null;
+    password: string | null;
+    newPassword: string | null;
     nickname: string;
-    sex: boolean;
+    sex: string;
     birthday: string;
-    profileImg: string;
-    auth: string;
-    joinData: string;
 };
 
 export type goodsField = {
@@ -21,14 +18,6 @@ export type goodsField = {
     quantity: number | string;
     images: string;
 };
-
-// export type solvedData = {
-//     solved: Boolean;
-//     probNo: number;
-//     userInfo?: userSolvedData;
-//     time_sort_list?: userSolvedData[];
-//     memory_sort_list?: userSolvedData[];
-//   };
 
 export type UserState = {
     profileImg: string;
