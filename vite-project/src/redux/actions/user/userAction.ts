@@ -4,9 +4,9 @@ import { UserState } from "../../../types/DataTypes";
 
 function loginUserAction(
     state: UserState,
-    action: PayloadAction<{ id: string; password: string }>
+    action: PayloadAction<{ loginId: string; password: string }>
 ) {
-    const idpw: { id: string; password: string } = action.payload;
+    const idpw: { loginId: string; password: string } = action.payload;
     loginUser(idpw);
 }
 

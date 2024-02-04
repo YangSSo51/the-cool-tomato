@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { UserState } from "../../../types/DataTypes";
 // import { loginUserAction } from "../../actions/user/userAction";
-import { loginUserThunk, testUserThunk } from "../../thunk/user/userThunk";
+import { loginUserThunk, logoutUserThunk, testUserThunk } from "../../thunk/user/userThunk";
 
 const initialState: UserState = {
     profileImg: "",
@@ -51,6 +51,14 @@ const userSlice = createSlice({
                         action.payload
                 );
                 state.accessToken = action.payload;
+            })
+            .addCase(logoutUserThunk.fulfilled, (state, action) => {
+                console.log(
+                    "userSlice logoutUserThunk.fulfilled action.payload: " +
+                        action.payload
+                );
+                state.accessToken = "";
+                state.auth = 'INIT';
             });
     },
 });

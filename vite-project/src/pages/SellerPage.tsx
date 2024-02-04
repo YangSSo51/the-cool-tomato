@@ -17,7 +17,6 @@ import { TestComponent } from "../components/mypage/TEST";
 
 export default function SellerPage() {
     const navigate = useNavigate();
-    const { userId } = useParams();
     const [ userInfo, setUserInfo ] = useState([]);
     const [ tab, setTab ] = useState(0);
     const [categories, setCategories] = useState([
