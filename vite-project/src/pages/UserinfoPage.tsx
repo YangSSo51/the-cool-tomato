@@ -130,7 +130,7 @@ export default function UserinfoPage() {
                                 />
                             </FormControl>
                             
-                            <FormControl my={2} isRequired>
+                            <FormControl my={2}>
                                 <FormLabel>
                                     <Text as={"b"}>현재 비밀번호</Text>
                                 </FormLabel>
@@ -163,7 +163,7 @@ export default function UserinfoPage() {
                                 </InputGroup>
                             </FormControl>
                                 
-                            <FormControl my={2} isRequired>
+                            <FormControl my={2}>
 
                                 <FormLabel>
                                     <Text as={"b"}>새 비밀번호</Text>
@@ -195,7 +195,7 @@ export default function UserinfoPage() {
                                 </InputGroup>
                             </FormControl>
 
-                            <FormControl my={2} isRequired>
+                            <FormControl my={2}>
                                 <FormLabel>
                                     <Text as={"b"}>닉네임</Text>
                                 </FormLabel>
@@ -209,7 +209,7 @@ export default function UserinfoPage() {
                                 />
                             </FormControl>
 
-                            <FormControl my={2} isRequired>
+                            <FormControl my={2}>
                                 <FormLabel>
                                     <Text as={"b"}>성별</Text>
                                 </FormLabel>
@@ -223,7 +223,7 @@ export default function UserinfoPage() {
                                 </Select>
                                 
                             </FormControl>
-                            <FormControl my={2} isRequired>
+                            <FormControl my={2}>
                                 <FormLabel>
                                     <Text as={"b"}>생년월일</Text>
                                 </FormLabel>

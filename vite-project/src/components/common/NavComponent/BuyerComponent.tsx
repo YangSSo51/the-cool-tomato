@@ -20,7 +20,7 @@ export default function SellerComponent() {
                 <Spacer />
                 <Link
                     onClick={() => {
-                        navigate("/v1/items/list");
+                        navigate("/v1/items/list/0");
                     }}
                     color={"black"}
                     _hover={{ color: "#126F54" }}

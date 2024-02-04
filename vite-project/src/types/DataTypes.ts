@@ -61,7 +61,7 @@ export interface ItemDetailInterface {
     imgSrc: string;
     sellerId: number;
     categoryId: number;
-    categoryName: null;
+    categoryName: string;
     productName: string;
     productContent: string;
     paymentLink: string;
@@ -69,4 +69,14 @@ export interface ItemDetailInterface {
     deliveryCharge: number;
     quantity: number;
     registerDate: string
+}
+
+export type broadcastInfo = {
+    accessToken: string;
+    broadcastTitle: string;
+    content: string;
+    script: string;
+    ttsSetting: boolean;
+    chatbotSetting: boolean;
+    broadcastStartDate: string;
 }

@@ -1,4 +1,5 @@
 import { liveAxios } from "./http";
+import { broadcastInfo } from "../types/DataTypes";
 
 const http = liveAxios();
 
@@ -21,6 +22,22 @@ async function stopLive(data: {
 }) {
     return http.post(`/stop`, data);
 }
+
+// 라이브 예약하기 함수
+async function reserveLive(broadcastInfo: broadcastInfo) {
+    try {
+        const response = await http.post(`/reservation`, broadcastInfo);
+        const responseData = response.data;
+        if (responseData.status === 200) {
+            console.log("라이브 예약 성공");
+            return responseData;
+        }
+    } catch (error) {
+        console.log("라이브 예약 실패");
+        throw error;
+    }
+}
+
 
 // async function createSessionDeprecated(sessionId: string): Promise<string> {
 //     try {
@@ -83,4 +100,4 @@ async function stopLive(data: {
 //     }
 // };
 
-export { getLiveStartToken, getLiveJoinToken, stopLive };
+export { getLiveStartToken, getLiveJoinToken, stopLive, reserveLive };

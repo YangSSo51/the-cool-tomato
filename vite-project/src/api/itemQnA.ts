@@ -14,9 +14,10 @@ async function getQnAList(params: {
 }) {
     return await http.get(url + "/list", { params });
 }
+
 async function sellerPutQnaAPI(params: type) {
     try {
-        const response = await http.put(`${URL}`);
+        const response = await http.put(`${url}`);
         const responseData = response.data;
         if (responseData.status === 200) {
             console.log("응~잘돼");
@@ -32,7 +33,7 @@ async function sellerPutQnaAPI(params: type) {
 
 async function qnaDetailAPI(data: { productQuestionId: number }) {
     try {
-        const response = await http.get(`${URL}/${data.productQuestionId}`);
+        const response = await http.get(`${url}/${data.productQuestionId}`);
         const responseData = response.data;
         if (responseData.status === 200) {
             console.log("응~잘돼");
@@ -48,7 +49,7 @@ async function qnaDetailAPI(data: { productQuestionId: number }) {
 
 async function buyerGetQnaAPI(params: type) {
     try {
-        const response = await http.get(`${URL}/buyer/my/list`);
+        const response = await http.get(`${url}/buyer/my/list`);
         const responseData = response.data;
         if (responseData.status === 200) {
             console.log("응~잘돼");
@@ -64,7 +65,7 @@ async function buyerGetQnaAPI(params: type) {
 
 async function sellerGetQnaAPI(params: type) {
     try {
-        const response = await http.get(`${URL}/buyer/my/list`);
+        const response = await http.get(`${url}/buyer/my/list`);
         const responseData = response.data;
         if (responseData.status === 200) {
             console.log("응~잘돼");

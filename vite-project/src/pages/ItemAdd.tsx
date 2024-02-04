@@ -93,7 +93,7 @@ export default function ItemAdd() {
 
         try {
             await ItemAddFunction(values);
-            navigate('/v1/items/list')
+            navigate('/v1/items/list/0')
         } catch (error) {
             console.error(error);
         }
