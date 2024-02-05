@@ -1,7 +1,13 @@
 package com.wp.product.product.controller;
 
+import com.wp.product.global.common.code.ErrorCode;
 import com.wp.product.global.common.code.SuccessCode;
+import com.wp.product.global.common.request.AccessTokenRequest;
+import com.wp.product.global.common.request.ExtractionRequest;
+import com.wp.product.global.common.response.ErrorResponse;
 import com.wp.product.global.common.response.SuccessResponse;
+import com.wp.product.global.common.service.AuthClient;
+import com.wp.product.global.common.service.JwtService;
 import com.wp.product.product.dto.request.ProductCreateRequest;
 import com.wp.product.product.dto.request.ProductSearchRequest;
 import com.wp.product.product.dto.request.ProductUpdateRequest;
@@ -9,6 +15,7 @@ import com.wp.product.product.dto.response.ProductFindResponse;
 import com.wp.product.product.service.ProductService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -27,6 +34,8 @@ import java.util.Map;
 public class ProductController {
 
     private final ProductService productService;
+    private final JwtService jwtService;
+    private final AuthClient authClient;
 
     @GetMapping("/list")
     @Operation(summary = "상품 목록 조회",description = "카테고리 ID로 상품 목록 조회 ")
@@ -53,15 +62,26 @@ public class ProductController {
 
     @GetMapping("/my/list")
     @Operation(summary = "판매자 상품 목록 조회",description = "판매자 자신이 등록한 상품 목록 조회 ")
-    public ResponseEntity<?> searchMyProducts(@RequestParam(defaultValue = "0") int page,
+    public ResponseEntity<?> searchMyProducts(HttpServletRequest httpServletRequest,
+                                              @RequestParam(defaultValue = "0") int page,
                                               @RequestParam(defaultValue = "10") int size){
-        
-        //TODO : 판매자 권한이 있고 판매자 ID로 목록 조회
+        //판매자 권한이 있고 판매자 ID로 목록 조회
+        String accessToken = jwtService.resolveAccessToken(httpServletRequest);
+        // 헤더 Access Token 추출
+        authClient.validateToken(AccessTokenRequest.builder().accessToken(accessToken).build());
+        // 권한이 구매자일 경우만 저장
+        Map<String, String> infos = authClient.extraction(ExtractionRequest.builder().accessToken(accessToken).infos(List.of("userId", "auth")).build()).getInfos();
+
+        if(!infos.get("auth").equals("SELLER")) {
+            ErrorResponse response = ErrorResponse.of(ErrorCode.FORBIDDEN_ERROR, ErrorCode.FORBIDDEN_ERROR.getMessage());
+            return new ResponseEntity<>(response,HttpStatus.FORBIDDEN);
+        }
+
         //판매자 상품 목록 조회 request 만듦
         ProductSearchRequest productSearchRequest = ProductSearchRequest.builder()
                 .page(page)
                 .size(size)
-                .sellerId(1L).build();
+                .sellerId(Long.valueOf(infos.get("userId"))).build();
 
         //판매자 ID로 상품 목록 조회
         Map<String, Object> productFindResponses = productService.searchMyProducts(productSearchRequest);
@@ -104,11 +124,23 @@ public class ProductController {
 
     @PostMapping
     @Operation(summary = "상품 등록",description = "판매자가 상품을 등록함")
-    public ResponseEntity<?> saveProduct(@RequestBody @Valid ProductCreateRequest productRequest){
-        //TODO : 권한 확인 필요(BUYER)
+    public ResponseEntity<?> saveProduct(HttpServletRequest httpServletRequest,
+                                         @RequestBody @Valid ProductCreateRequest productRequest){
+        //판매자 권한이 있는지 확인
+        String accessToken = jwtService.resolveAccessToken(httpServletRequest);
+        // 헤더 Access Token 추출
+        authClient.validateToken(AccessTokenRequest.builder().accessToken(accessToken).build());
+        // 권한이 구매자일 경우만 저장
+        Map<String, String> infos = authClient.extraction(ExtractionRequest.builder().accessToken(accessToken).infos(List.of("userId", "auth")).build()).getInfos();
 
+        if(!infos.get("auth").equals("SELLER")) {
+            ErrorResponse response = ErrorResponse.of(ErrorCode.FORBIDDEN_ERROR, ErrorCode.FORBIDDEN_ERROR.getMessage());
+            return new ResponseEntity<>(response,HttpStatus.FORBIDDEN);
+        }
+
+        Long userId = Long.valueOf(infos.get("userId"));
         //상품을 등록함
-        productService.saveProduct(productRequest);
+        productService.saveProduct(productRequest,userId);
 
         SuccessResponse response = SuccessResponse.builder()
                                     .status(SuccessCode.INSERT_SUCCESS.getStatus())
@@ -119,11 +151,24 @@ public class ProductController {
 
     @PutMapping
     @Operation(summary = "상품 수정",description = "판매자가 상품 정보를 수정함")
-    public ResponseEntity<?> updateProduct(@RequestBody @Valid ProductUpdateRequest productRequest){
-        //TODO : 권한 확인 필요(BUYER)
+    public ResponseEntity<?> updateProduct(HttpServletRequest httpServletRequest,
+                                           @RequestBody @Valid ProductUpdateRequest productRequest){
+        //판매자 권한이 있는지 확인
+        String accessToken = jwtService.resolveAccessToken(httpServletRequest);
+        // 헤더 Access Token 추출
+        authClient.validateToken(AccessTokenRequest.builder().accessToken(accessToken).build());
+        // 권한이 구매자일 경우만 저장
+        Map<String, String> infos = authClient.extraction(ExtractionRequest.builder().accessToken(accessToken).infos(List.of("userId", "auth")).build()).getInfos();
+
+        if(!infos.get("auth").equals("SELLER")) {
+            ErrorResponse response = ErrorResponse.of(ErrorCode.FORBIDDEN_ERROR, ErrorCode.FORBIDDEN_ERROR.getMessage());
+            return new ResponseEntity<>(response,HttpStatus.FORBIDDEN);
+        }
+
+        Long userId = Long.valueOf(infos.get("userId"));
 
         //상품 정보를 수정함
-        productService.updateProduct(productRequest);
+        productService.updateProduct(productRequest,userId);
 
         SuccessResponse response = SuccessResponse.builder()
                 .status(SuccessCode.UPDATE_SUCCESS.getStatus())
@@ -134,11 +179,24 @@ public class ProductController {
 
     @DeleteMapping("/{productId}")
     @Operation(summary = "상품 삭제",description = "판매자가 상품번호로 상품을 삭제함")
-    public ResponseEntity<?> deleteProduct(@PathVariable Long productId){
-        //TODO : 권한 확인 필요(BUYER)
+    public ResponseEntity<?> deleteProduct(HttpServletRequest httpServletRequest,
+                                           @PathVariable Long productId){
+        //판매자 권한이 있는지 확인
+        String accessToken = jwtService.resolveAccessToken(httpServletRequest);
+        // 헤더 Access Token 추출
+        authClient.validateToken(AccessTokenRequest.builder().accessToken(accessToken).build());
+        // 권한이 구매자일 경우만 저장
+        Map<String, String> infos = authClient.extraction(ExtractionRequest.builder().accessToken(accessToken).infos(List.of("userId", "auth")).build()).getInfos();
+
+        if(!infos.get("auth").equals("SELLER")) {
+            ErrorResponse response = ErrorResponse.of(ErrorCode.FORBIDDEN_ERROR, ErrorCode.FORBIDDEN_ERROR.getMessage());
+            return new ResponseEntity<>(response,HttpStatus.FORBIDDEN);
+        }
+
+        Long userId = Long.valueOf(infos.get("userId"));
 
         //상품 번호로 상품을 삭제함
-        productService.deleteProduct(productId);
+        productService.deleteProduct(productId,userId);
 
         SuccessResponse response = SuccessResponse.builder()
                 .status(SuccessCode.DELETE_SUCCESS.getStatus())
