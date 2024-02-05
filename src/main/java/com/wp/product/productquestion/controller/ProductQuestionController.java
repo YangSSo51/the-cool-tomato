@@ -27,9 +27,18 @@ public class ProductQuestionController {
 
     private final ProductQuestionService productQuestionService;
 
-    @PostMapping("/list")
+    @GetMapping("/list")
     @Operation(summary = "상품 문의 목록 조회",description = "상품 번호로 상품 문의 리스트를 조회함")
-    public ResponseEntity<?> getProductQuestionList(@RequestBody ProductQuestionSearchRequest productQuestionSearchRequest){
+    public ResponseEntity<?> getProductQuestionList(@RequestParam int page,
+                                                    @RequestParam int size,
+                                                    @RequestParam("product-id") Long productId){
+        //TODO : 로그인 아이디
+        ProductQuestionSearchRequest productQuestionSearchRequest = ProductQuestionSearchRequest.builder()
+                .page(page)
+                .size(size)
+                .productId(productId)
+                .loginId(2L).build();
+
         //상품 문의 리스트 조회
         Map<String, Object> productQuestionList = productQuestionService.getProductQuestionList(productQuestionSearchRequest);
 
@@ -41,12 +50,56 @@ public class ProductQuestionController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @GetMapping("/{productQuestionId}")
-    @Operation(summary = "상품 문의 조회",description = "구매자가 상품 문의를 조회함")
-    public ResponseEntity<?> findProductQuestion(@PathVariable Long productQuestionId){
-        //TODO : 권한 확인 필요(BUYER)
+    @GetMapping("/seller/my/list")
+    @Operation(summary = "판매자가 상품 문의 목록 조회",description = "판매자의 상품 문의 리스트를 조회함")
+    public ResponseEntity<?> getMyProductQuestionList(@RequestParam int page,
+                                                    @RequestParam int size){
+        //TODO : 로그인한 판매자 아이디 가져오기
 
-        //상품 문의를 등록함
+        ProductQuestionSearchRequest productQuestionSearchRequest = ProductQuestionSearchRequest.builder()
+                .page(page)
+                .size(size)
+                .sellerId(2L).build();
+
+        //판매자 상품 문의 리스트 조회
+        Map<String, Object> productQuestionList = productQuestionService.getMyProductQuestionList(productQuestionSearchRequest);
+
+        SuccessResponse response = SuccessResponse.builder()
+                .data(productQuestionList)
+                .status(SuccessCode.SELECT_SUCCESS.getStatus())
+                .message(SuccessCode.SELECT_SUCCESS.getMessage()).build();
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @GetMapping("/buyer/my/list")
+    @Operation(summary = "구매자가 자신의 상품 문의 목록 조회",description = "구매자가 자신의 상품 문의 리스트를 조회함")
+    public ResponseEntity<?> getMyQuestionList(@RequestParam int page,
+                                               @RequestParam int size){
+        //TODO : 로그인한 구매자 아이디 가져오기
+
+        ProductQuestionSearchRequest productQuestionSearchRequest = ProductQuestionSearchRequest.builder()
+                .page(page)
+                .size(size)
+                .buyerId(1L).build();
+
+        //판매자 상품 문의 리스트 조회
+        Map<String, Object> productQuestionList = productQuestionService.getMyQuestionList(productQuestionSearchRequest);
+
+        SuccessResponse response = SuccessResponse.builder()
+                .data(productQuestionList)
+                .status(SuccessCode.SELECT_SUCCESS.getStatus())
+                .message(SuccessCode.SELECT_SUCCESS.getMessage()).build();
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @GetMapping("/{productQuestionId}")
+    @Operation(summary = "상품 문의 조회",description = "판매자가 상품 문의 아이디로 상품 문의를 조회함")
+    public ResponseEntity<?> findProductQuestion(@PathVariable Long productQuestionId){
+        //TODO : 권한 확인 필요(SELLER), 상품 등록자인지
+
+        //상품 문의 id로 상품 문의 단 건 조회
         ProductQuestionResponse productQuestion = productQuestionService.findProductQuestion(productQuestionId);
 
         SuccessResponse response = SuccessResponse.builder()

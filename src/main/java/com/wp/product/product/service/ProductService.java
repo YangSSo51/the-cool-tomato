@@ -10,7 +10,9 @@ import java.util.Map;
 public interface ProductService {
     Map<String, Object> searchProduct(ProductSearchRequest productSearchRequest);
 
-    Map<String, Object> searchProductInMypage(List<Long> idList);
+    Map<String, Object> searchMyProducts(ProductSearchRequest productSearchRequest);
+
+    Map<String, Object> searchRecentProducts(List<Long> idList);
 
     ProductFindResponse findProductById(Long productId);
 

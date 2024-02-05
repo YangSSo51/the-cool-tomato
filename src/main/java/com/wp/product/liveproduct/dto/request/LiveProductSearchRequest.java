@@ -3,10 +3,14 @@ package com.wp.product.liveproduct.dto.request;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
+@Builder
+@AllArgsConstructor
 @NoArgsConstructor
 @Schema(description = "라이브 상품 조회를 위한 요청 객체")
 public class LiveProductSearchRequest {
