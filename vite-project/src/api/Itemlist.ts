@@ -43,10 +43,19 @@ async function ItemDetailFetch(id: number) {
     return response.data.data;
 }
 
+async function ItemListSellerGet(
+    params: { page: number; size: number },
+    accessToken: string
+) {
+    headers.set("Authorization", `Bearer ${accessToken}`);
+    return await http.get("/products/my/list", { headers, params });
+}
+
 export {
     ItemListDetailFetch,
     ItemAddFunction,
     ItemListFetch,
     ItemDetailDelete,
     ItemDetailFetch,
+    ItemListSellerGet,
 };
