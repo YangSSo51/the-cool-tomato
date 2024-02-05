@@ -30,7 +30,7 @@
     </div>
     <ul class="list-group">
         <li class="list-group-item" v-for="message in messages">
-            {{message.sender}} - {{message.message}}</a>
+            {{message.senderNickname}} - {{message.message}}</a>
         </li>
     </ul>
     <div></div>
@@ -65,7 +65,7 @@
                 this.message = '';
             },
             recvMessage: function(recv) {
-                this.messages.unshift({"sender":recv.sender, "message":recv.message})
+                this.messages.unshift({"senderId":recv.senderId, "senderNickname":recv.senderNickname, "message":recv.message})
             }
         }
     });

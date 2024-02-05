@@ -9,6 +9,7 @@ import lombok.*;
 @Builder
 public class ChatMessage {
     private String roomId;
-    private String sender;
+    private Long senderId;
+    private String senderNickname;
     private String message;
 }

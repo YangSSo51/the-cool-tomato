@@ -24,7 +24,7 @@ public class ChatMessageController {
     public void message(@Header("Authorization") String token, ChatMessageRequest chatMessageRequest) {
         // 회원 정보 추출
         UserResponse userResponse = userClient.getUser(token);
-        ChatMessage chatMessage = ChatMessage.builder().roomId(chatMessageRequest.getRoomId()).sender(userResponse.getNickname()).message(chatMessageRequest.getMessage()).build();
+        ChatMessage chatMessage = ChatMessage.builder().roomId(chatMessageRequest.getRoomId()).senderId(userResponse.getId()).senderNickname(userResponse.getNickname()).message(chatMessageRequest.getMessage()).build();
         kafkaTemplate.send(topic.name(), chatMessage);
     }
 }
