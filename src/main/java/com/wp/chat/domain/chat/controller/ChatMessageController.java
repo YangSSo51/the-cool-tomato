@@ -2,9 +2,7 @@ package com.wp.chat.domain.chat.controller;
 
 import com.wp.chat.domain.chat.dto.request.ChatMessageRequest;
 import com.wp.chat.domain.chat.entity.ChatMessage;
-import com.wp.chat.global.common.request.AccessTokenRequest;
 import com.wp.chat.global.common.response.UserResponse;
-import com.wp.chat.global.common.service.AuthClient;
 import com.wp.chat.global.common.service.UserClient;
 import lombok.RequiredArgsConstructor;
 import org.apache.kafka.clients.admin.NewTopic;
