@@ -15,6 +15,8 @@ import java.time.LocalDateTime;
 @Builder
 @Schema(description = "개인 회원 정보 수정을 위한 응답 객체")
 public class ModifyUserResponse {
+    Long userId;
+    String nickname;
     String profileImg;
     Auth auth;
     String accessToken;

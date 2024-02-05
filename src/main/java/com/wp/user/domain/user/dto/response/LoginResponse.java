@@ -13,6 +13,8 @@ import lombok.NoArgsConstructor;
 @Builder
 @Schema(description = "로그인을 위한 응답 객체")
 public class LoginResponse {
+    Long userId;
+    String nickname;
     String profileImg;
     Auth auth;
     String accessToken;

@@ -122,6 +122,8 @@ public class UserServiceImpl implements UserService {
         // 토큰 발급
         IssueTokenResponse issueTokenResponse = authClient.issueToken(IssueTokenRequest.builder().userId(user.getId()).auth(user.getAuth()).build());
         return LoginResponse.builder()
+                .userId(user.getId())
+                .nickname(user.getNickname())
                 .profileImg(user.getProfileImg())
                 .auth(user.getAuth())
                 .accessToken(issueTokenResponse.getAccessToken())
@@ -227,6 +229,8 @@ public class UserServiceImpl implements UserService {
         user.setBirthday(modifyUserRequest.getBirthday());
 
         ModifyUserResponse modifyUserResponse = ModifyUserResponse.builder()
+                .userId(user.getId())
+                .nickname(user.getNickname())
                 .profileImg(user.getProfileImg())
                 .auth(user.getAuth())
                 .build();
