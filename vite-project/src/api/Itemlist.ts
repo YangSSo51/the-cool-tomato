@@ -23,7 +23,8 @@ async function ItemAddFunction(data: {
         const response = await http.post("/products", data);
         return response;
     } catch (error) {
-        alert("안댐");
+        console.error(error);
+        
     }
 }
 

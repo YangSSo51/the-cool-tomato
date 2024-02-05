@@ -6,7 +6,6 @@ import Chat from "../components/broadcast//Chat";
 import Menu from "../components/broadcast//Menu";
 
 function Broadcast() {
-    console.log("Broadcast");
     return (
         <Flex direction="column" h="100vh">
             <Header />
