@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Schema(description = "Token Request DTO")
+@Schema(description = "User Request DTO")
 public class UserRequestDto {
     @NotBlank(message = "userId가 입력되지 않았습니다.")
     private String userId;

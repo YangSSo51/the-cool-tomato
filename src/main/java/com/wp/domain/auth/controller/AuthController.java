@@ -42,6 +42,14 @@ public class AuthController {
         jwtTokenProviderService.deleteRefreshToken(userId);
         return new ResponseEntity<>(SuccessResponse.<Boolean>builder().data(true).status(200).message("토큰 삭제 성공").build(), HttpStatus.OK);
     }
+    @ResponseBody
+    @DeleteMapping("/id")
+    @Operation(summary = "유저 ID 기반 토큰 삭제", description = "유저 ID를 기반으로 Refresh 토큰을 삭제합니다.")
+    public ResponseEntity<SuccessResponse<Boolean>> deleteIdToken(@RequestBody @Validated DeleteIdTokenRequestDto deleteIdTokenRequestDto){
+        jwtTokenProviderService.deleteRefreshToken(deleteIdTokenRequestDto.getUserId());
+        return new ResponseEntity<>(SuccessResponse.<Boolean>builder().data(true).status(200).message("유저 ID 기반 토큰 삭제 성공").build(), HttpStatus.OK);
+    }
+
 
     @ResponseBody
     @PostMapping("/validationToken")

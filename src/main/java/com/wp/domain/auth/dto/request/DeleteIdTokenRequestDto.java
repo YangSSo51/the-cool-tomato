@@ -11,8 +11,8 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Schema(description = "Access Token Request DTO")
-public class AccessTokenRequestDto {
-    @NotBlank(message = "Access Token을 입력해주세요.")
-    private String accessToken;
+@Schema(description = "Delete Id Token Request DTO")
+public class DeleteIdTokenRequestDto {
+    @NotBlank(message = "userId가 입력되지 않았습니다.")
+    private String userId;
 }
