@@ -16,7 +16,7 @@ function BroadcastScreen() {
         console.log("flag", flag);
     };
     return (
-        <Box w={"27%"} flex="1" overflow="auto" p={6}>
+        <Box w={"33%"} flex="1" overflow="auto" p={6}>
             <Text
                 fontSize="2xl"
                 fontWeight="bold"
