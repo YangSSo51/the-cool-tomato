@@ -26,6 +26,8 @@ public class LiveBroadcast {
     private Long id;
 
     @Column(nullable = false)
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "seller_id")
     private Long sellerId;
     private String broadcastTitle;
     private String content;
@@ -39,7 +41,6 @@ public class LiveBroadcast {
     private Long viewCount;
     private String sessionId;
     private String topicId;
-    private String stormapplicationId;
 
     @CreationTimestamp
     private LocalDateTime registerDate;
@@ -47,5 +48,6 @@ public class LiveBroadcast {
     @UpdateTimestamp
     private LocalDateTime modificationTime;
 
+    @Column(nullable = false)
     private Boolean isDeleted;
 }

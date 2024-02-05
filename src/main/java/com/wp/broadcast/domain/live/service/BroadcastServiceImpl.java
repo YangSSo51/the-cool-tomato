@@ -5,13 +5,16 @@ import com.wp.broadcast.domain.live.dto.controller.request.ReservationRequestDto
 import com.wp.broadcast.domain.live.dto.controller.request.StartRequestDto;
 import com.wp.broadcast.domain.live.dto.controller.request.StopRequestDto;
 import com.wp.broadcast.domain.live.entity.LiveBroadcast;
+import com.wp.broadcast.domain.live.entity.User;
 import com.wp.broadcast.domain.live.repository.LiveBroadcastRepository;
 import com.wp.broadcast.domain.live.utils.MediateOpenviduConnection;
 import com.wp.broadcast.global.common.code.ErrorCode;
 import com.wp.broadcast.global.exception.BusinessExceptionHandler;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
@@ -19,17 +22,17 @@ import java.util.Map;
 import java.util.NoSuchElementException;
 
 @Service
-@NoArgsConstructor
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class BroadcastServiceImpl implements BroadcastService{
 
-    @Autowired
-    MediateOpenviduConnection mediateOpenviduConnection;
-    @Autowired
-    LiveBroadcastRepository liveBroadcastRepository;
+    private final MediateOpenviduConnection mediateOpenviduConnection;
+    private final LiveBroadcastRepository liveBroadcastRepository;
+    private final StringRedisTemplate redisTemplate;
+    private final String KEY="ranking";
 
     @Override
     public Long reserveBroadcast(ReservationRequestDto reservation, Long sellerId) {
+        User user = User.builder().id(sellerId).build();
         LiveBroadcast liveBroadcast = LiveBroadcast.builder()
                 .sellerId(sellerId)
                 .broadcastTitle(reservation.getBroadcastTitle())
@@ -40,6 +43,7 @@ public class BroadcastServiceImpl implements BroadcastService{
                 .broadcastStartDate(reservation.getBroadcastStartDate())
                 .broadcastStatus(false)
                 .viewCount(0L)
+                .isDeleted(false)
                 .build();
         LiveBroadcast save = liveBroadcastRepository.save(liveBroadcast);
         return save.getId();
@@ -64,6 +68,7 @@ public class BroadcastServiceImpl implements BroadcastService{
             liveBroadcast.setTopicId(sessionId);
             liveBroadcastRepository.save(liveBroadcast);
 
+            redisTemplate.opsForZSet().add(KEY, String.valueOf(start.getLiveBroadcastId()), 0);
             Map<String, String> result = new HashMap<>();
             result.put("topicId", sessionId);
             result.put("token", token);
@@ -98,6 +103,7 @@ public class BroadcastServiceImpl implements BroadcastService{
     public String participateBroadcast(ParticipationRequestDto participation) {
         try {
             LiveBroadcast liveBroadcast = liveBroadcastRepository.findById(participation.getLiveBroadcastId()).orElseThrow();
+            redisTemplate.opsForZSet().incrementScore(KEY, String.valueOf(participation.getLiveBroadcastId()), 1);
             return mediateOpenviduConnection.getToken(liveBroadcast.getSessionId(), "구매자");
         }catch (NoSuchElementException e) {
             throw new BusinessExceptionHandler("방송 내역이 없습니다.", ErrorCode.NOT_FOUND_ERROR);
