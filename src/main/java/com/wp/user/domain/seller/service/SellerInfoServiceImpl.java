@@ -3,7 +3,6 @@ import com.wp.user.domain.seller.dto.request.AddSellerInfoRequest;
 import com.wp.user.domain.seller.dto.response.GetSellerInfoListResponse;
 import com.wp.user.domain.seller.dto.response.GetSellerInfoResponse;
 import com.wp.user.domain.seller.dto.response.GetSellerResponse;
-import com.wp.user.domain.seller.dto.response.ModifySellerStatusResponse;
 import com.wp.user.domain.seller.entity.SellerInfo;
 import com.wp.user.domain.seller.repository.SellerInfoRepository;
 import com.wp.user.domain.user.entity.Auth;
@@ -11,9 +10,8 @@ import com.wp.user.domain.user.entity.User;
 import com.wp.user.domain.user.repository.UserRepository;
 import com.wp.user.global.common.code.ErrorCode;
 import com.wp.user.global.common.request.AccessTokenRequest;
+import com.wp.user.global.common.request.DeleteTokenRequest;
 import com.wp.user.global.common.request.ExtractionRequest;
-import com.wp.user.global.common.request.TokenRequest;
-import com.wp.user.global.common.response.IssueTokenResponse;
 import com.wp.user.global.common.service.AuthClient;
 import com.wp.user.global.common.service.JwtService;
 import com.wp.user.global.exception.BusinessExceptionHandler;
@@ -136,7 +134,7 @@ public class SellerInfoServiceImpl implements SellerInfoService {
     // 판매자 전환 신청 승인
     @Override
     @Transactional
-    public ModifySellerStatusResponse modifySellerStatusTrue(HttpServletRequest httpServletRequest, Long sellerInfoId) {
+    public void modifySellerStatusTrue(HttpServletRequest httpServletRequest, Long sellerInfoId) {
         // 헤더 Access Token 추출
         String accessToken = jwtService.resolveAccessToken(httpServletRequest);
         authClient.validateToken(AccessTokenRequest.builder().accessToken(accessToken).build());
@@ -161,26 +159,17 @@ public class SellerInfoServiceImpl implements SellerInfoService {
         }
         sellerInfo.setApprovalStatus(true);
         sellerInfo.getUser().setAuth(Auth.SELLER);
-        // 토큰 재발급
-//
-        return ModifySellerStatusResponse.builder()
-                .userId(sellerInfo.getUser().getId())
-                .nickname(sellerInfo.getUser().getNickname())
-                .profileImg(sellerInfo.getUser().getProfileImg())
-                .auth(sellerInfo.getUser().getAuth())
-                .accessToken("")
-                .refreshToken("")
-                .build();
+        // 토큰 삭제
+        authClient.deleteTokenByUserId(DeleteTokenRequest.builder().userId(String.valueOf(sellerInfo.getUser().getId())).build());
     }
 
     // 판매자 전환 신청 철회
     @Override
     @Transactional
-    public ModifySellerStatusResponse modifySellerStatusFalse(HttpServletRequest httpServletRequest, Long sellerInfoId) {
+    public void modifySellerStatusFalse(HttpServletRequest httpServletRequest, Long sellerInfoId) {
         // 헤더 Access Token 추출
         String accessToken = jwtService.resolveAccessToken(httpServletRequest);
         authClient.validateToken(AccessTokenRequest.builder().accessToken(accessToken).build());
-        String refreshToken = jwtService.resolveRefreshToken(httpServletRequest);
         // 권한이 관리자일 경우만 철회
         Map<String, String> infos = authClient.extraction(ExtractionRequest.builder().accessToken(accessToken).infos(List.of("auth")).build()).getInfos();
         try {
@@ -201,14 +190,7 @@ public class SellerInfoServiceImpl implements SellerInfoService {
         }
         sellerInfo.setApprovalStatus(false);
         sellerInfo.getUser().setAuth(Auth.BUYER);
-        // 토큰 재발급
-        return ModifySellerStatusResponse.builder()
-                .userId(sellerInfo.getUser().getId())
-                .nickname(sellerInfo.getUser().getNickname())
-                .profileImg(sellerInfo.getUser().getProfileImg())
-                .auth(sellerInfo.getUser().getAuth())
-                .accessToken("")
-                .refreshToken("")
-                .build();
+        // 토큰 삭제
+        authClient.deleteTokenByUserId(DeleteTokenRequest.builder().userId(String.valueOf(sellerInfo.getUser().getId())).build());
     }
 }

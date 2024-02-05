@@ -6,7 +6,6 @@ import com.wp.user.global.common.response.SuccessResponse;
 import feign.FeignException;
 import feign.Response;
 import feign.codec.Decoder;
-import feign.codec.StringDecoder;
 import org.springframework.core.ResolvableType;
 
 import java.io.IOException;

@@ -1,24 +1,22 @@
 package com.wp.user.global.common.service;
 
-import com.wp.user.global.common.request.AccessTokenRequest;
-import com.wp.user.global.common.request.ExtractionRequest;
-import com.wp.user.global.common.request.IssueTokenRequest;
-import com.wp.user.global.common.request.TokenRequest;
+import com.wp.user.global.common.request.*;
 import com.wp.user.global.common.response.ExtractionResponse;
 import com.wp.user.global.common.response.IssueTokenResponse;
-import com.wp.user.global.common.response.SuccessResponse;
 import com.wp.user.global.config.FeignClientConfig;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-@FeignClient(name = "auth", url = "http://3.39.6.29:8080/v1/auth", configuration = FeignClientConfig.class)
+@FeignClient(name = "auth", url = "http://i10a501.p.ssafy.io:8080/v1/auth", configuration = FeignClientConfig.class)
 public interface AuthClient {
     @PostMapping
     IssueTokenResponse issueToken(@RequestBody IssueTokenRequest issueTokenRequest);
     @DeleteMapping
     String deleteToken(@RequestBody AccessTokenRequest accessTokenRequest);
+    @DeleteMapping("/id")
+    String deleteTokenByUserId(@RequestBody DeleteTokenRequest deleteTokenRequest);
     @PostMapping("/validationToken")
     String validateToken(@RequestBody AccessTokenRequest accessTokenRequest);
     @PostMapping("/reissue")
