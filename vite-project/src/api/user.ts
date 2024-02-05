@@ -15,7 +15,6 @@ async function loginUser(data: { loginId: string; password: string }) {
         const response = await http.post(`${url}/login`, data);
         const responseData = response.data
         if (responseData.status === 201) {
-            console.log("로그인");
             return responseData
         }
     } catch (error) {
@@ -151,7 +150,6 @@ async function findIdAPI(data: {email: string}) {
 }
 
 async function findPwAPI(data: {loginId: string, email: string}) {
-    console.log("비번 찾자.. 할수잇어")
     try {
         const response = await http.post(`${url}/find-password`, data)
         if (response.status === 201) {

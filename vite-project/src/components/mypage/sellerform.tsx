@@ -10,7 +10,6 @@ export default function Sellerform() {
     const dispatch = useDispatch();
     const user = useSelector((state: RootState) => state.user);
     const accessToken = user.accessToken;
-    console.log(user)
     const [isSubmitted, setIsSubmitted] = useState(false);
     const [businessNumber, setBusinessNumber] = useState<string>("");
     const [businessContent, setBusinessContent] = useState<string>("");
@@ -149,7 +148,7 @@ export default function Sellerform() {
     }
 
     return (
-        <Box w="75%" bg="white" rounded="lg" overflow="hidden">
+        <Box bg="white" w="full" rounded="lg" overflow="hidden">
             <Box h="full" pl="4">
                 <Flex justify="center" direction="column" align="center" h="full">
                 { !isSubmitted ? (

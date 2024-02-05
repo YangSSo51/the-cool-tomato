@@ -1,22 +1,18 @@
-import { Box, Flex, Text } from "@chakra-ui/layout";
-import { Avatar, Button, Card, Image, Stack, CardBody, Heading, CardFooter } from "@chakra-ui/react";
+import { Box, Flex } from "@chakra-ui/layout";
+import { Button, Image } from "@chakra-ui/react";
+import { useNavigate } from "react-router-dom";
 
-function ItemsofItems() {
-    const productsInfo = {
-        imageUrl: 'https://flexible.img.hani.co.kr/flexible/normal/640/480/imgdb/original/2023/1109/20231109503652.jpg',
-        imageAlt: 'Rear view of modern home with pool',
-        productName: '유기농흙밭 튼튼거대꿀맛고구마',
-        productContent: '저희집 거대밭에서 꺼내놓은 ',
-        price: 98150,
-        deliveryCharge: 8512,
-        quantity: 34,
-        paymentLink: 4,
-      }
+function ItemsofItems(props) {
+    const navigate = useNavigate();
+    
+    function onclick() {
+        navigate(`/v1/items/detail/${props.sellerItem.productId}`);
+    }
 
     return (
         <Flex justifyContent="space-between" alignItems="center" my="4" mx="auto" p="2" borderWidth='1px' borderRadius='lg' overflow='hidden'>
             <Flex p="2">
-                <Image mr="2" boxSize="100px" src={productsInfo.imageUrl} alt={productsInfo.imageAlt} />
+                <Image mr="2" boxSize="100px" src={props.sellerItem.imgSrc} />
 
                 <Box ml="2" pt="4">
 
@@ -27,12 +23,12 @@ function ItemsofItems() {
                         lineHeight='tight'
                         noOfLines={1}
                         >
-                        {productsInfo.productName}
+                        {props.sellerItem.productName}
                     </Box>
 
                     <Box>
                         <Box as='span' color='gray.600' fontSize='sm'>
-                            {productsInfo.productContent}
+                            {props.sellerItem.productContent}
                         </Box>
                     </Box>
 
@@ -44,20 +40,20 @@ function ItemsofItems() {
                             fontSize='xs'
                             textTransform='uppercase'
                             >
-                            가격 {productsInfo.price} &bull; 배송비 {productsInfo.deliveryCharge} &bull; 수량 {productsInfo.quantity}
+                            가격 {props.sellerItem.price} &bull; 배송비 {props.sellerItem.deliveryCharge} &bull; 수량 {props.quantity}
                             &nbsp; 
-                            판매링크 {productsInfo.paymentLink} 
+                            판매링크 {props.sellerItem.paymentLink} 
                         </Box>
                     </Box>
                 </Box>
             </Flex>
 
             <Box>
-                <Button>
+                <Button mr="2">
                     수정
                 </Button>
-                <Button>
-                    상세페이지 확인
+                <Button onClick={onclick}>
+                    상세
                 </Button>
             </Box>
         </Flex>

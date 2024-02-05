@@ -1,43 +1,70 @@
-import { Box, Heading, Text, Flex, Badge } from "@chakra-ui/layout";
-import { Avatar } from "@chakra-ui/react";
+import { Box, Text, Flex, Badge } from "@chakra-ui/layout";
+import { Avatar, Button } from "@chakra-ui/react";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { RootState } from "../../../redux/stores/store";
+import { getFollowingListAPI } from "../../../api/user";
 
 export default function Following() {
+    const navigate = useNavigate();
+    const user = useSelector((state: RootState) => state.user);
+    const accessToken = user.accessToken;
+    const [following, setFollowing] = useState([]);
+    const followingData = following.map((item, index) => (
+        <FollowingItem key={index} following={item} />
+    ));
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await getFollowingListAPI(accessToken)
+                if (response.data.list) {
+                  setFollowing(response.data.list)
+                } else {
+                  console.error('조회는 성공했는데 팔로잉 목록이 엄서용');
+                  setFollowing([]);  // set to empty array as fallback
+                }
+            } catch (error) {
+                console.error(error)
+                setFollowing([]);  // set to empty array as fallback
+            }
+        };
+        fetchData();
+    }, [])
+    
+
+    function onclick() {
+        navigate(`/v1/live/list`);
+    }
 
     return (
-        <Box w="75%" bg="white" rounded="lg" overflow="hidden">
-            <Box h="full" pl={4}>
-                <Box h="full" flexDir="column" p={4}>
-                    <Heading size="lg" fontWeight="bold" mb={4}>
-                    팔로잉 목록
-                    </Heading>
-
-                    {Array.from({ length: 3 }).map((_, index) => (
-                    <Box key={index} w="full" borderBottom="1px" pb={4} mb={4} >
-                        <Avatar mt="4" size="xl" src="https://raw.githubusercontent.com/printilikepenguin/forUserContent/master/profile.png" />
-                        <Box>
-                        <Text color="gray.700" fontWeight="medium">
-                            userId{index + 1}
-                        </Text>
-                        <Text color="gray.500">nickname{index + 1}</Text>
-                        </Box>
-                    </Box>
-                    ))}
-                    
-                    <Flex>
-                        <Avatar src='https://bit.ly/sage-adebayo' />
-                        <Box ml='3'>
-                            <Text fontWeight='bold'>
-                            Segun Adebayo
-                            <Badge ml='1' colorScheme='green'>
-                                New
-                            </Badge>
-                            </Text>
-                            <Text fontSize='sm'>UI Engineer</Text>
-                        </Box>
-                    </Flex>
-                    
-                </Box>
-            </Box>
+        <Box flexDirection="column" w="90%" h="full" mb="10">
+            <Flex flexDir="column" h="full" m="auto">
+                    {followingData.length ? followingData : 
+                        <Flex m="auto" flexDir="column">
+                            <Text fontSize='5xl' color="gray.500" mb="5">팔로잉한 사람이 없습니다!</Text>
+                            <Button colorScheme="themeGreen" onClick={onclick}>라이브 구경하러 가기</Button>
+                        </Flex>
+                    }                    
+            </Flex>
         </Box>
     )
+}
+
+function FollowingItem(props) {
+    return (
+        <Flex>
+            <Avatar src='https://bit.ly/sage-adebayo' />
+            <Box ml='3'>
+                <Text fontWeight='bold'>
+                Segun Adebayo
+                <Badge ml='1' colorScheme='green'>
+                    New
+                </Badge>
+                </Text>
+                <Text fontSize='sm'>UI Engineer</Text>
+            </Box>
+        </Flex>
+    );
 }

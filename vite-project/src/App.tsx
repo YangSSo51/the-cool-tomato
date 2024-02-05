@@ -19,6 +19,8 @@ import MainPage from "./pages/MainPage";
 import LiveAddForm from "./pages/LiveAddForm";
 import BuyerLive from "./pages/BuyerLive";
 import ItemAdd from "./pages/ItemAdd";
+import NoticePage from "./pages/NoticePage"
+import ProfilePage from "./pages/ProfilePage";
 
 function App() {
     return (
@@ -57,6 +59,8 @@ function App() {
                             element={<FindAccountPage type="result" />}
                         />
                         <Route path="ItemAdd" element={<ItemAdd />}></Route>
+                        <Route path="board/notice" element={<NoticePage />} />
+                        <Route path="seller/profile/:sellerId" element={<ProfilePage />} />
                     </Route>
                     <Route
                         path="v1/broadcast/:roomId"
@@ -66,6 +70,7 @@ function App() {
                         path="v1/live/:roomId"
                         element={<BuyerLive />}
                     ></Route>
+
                 </Routes>
             </ChakraProvider>
         </>

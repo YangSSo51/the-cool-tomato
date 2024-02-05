@@ -70,13 +70,3 @@ export interface ItemDetailInterface {
     quantity: number;
     registerDate: string
 }
-
-export type broadcastInfo = {
-    accessToken: string;
-    broadcastTitle: string;
-    content: string;
-    script: string;
-    ttsSetting: boolean;
-    chatbotSetting: boolean;
-    broadcastStartDate: string;
-}
