@@ -1,9 +1,6 @@
 package com.wp.domain.auth.controller;
 
-import com.wp.domain.auth.dto.request.AccessTokenRequestDto;
-import com.wp.domain.auth.dto.request.ExtractionRequestDto;
-import com.wp.domain.auth.dto.request.TokenRequestDto;
-import com.wp.domain.auth.dto.request.UserRequestDto;
+import com.wp.domain.auth.dto.request.*;
 import com.wp.domain.auth.dto.response.ExtractionResponseDto;
 import com.wp.domain.auth.dto.response.TokenResponseDto;
 import com.wp.domain.auth.service.JwtTokenProviderService;
@@ -22,7 +19,7 @@ import java.util.Map;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(value = "/v1/auth")
-@Tag(name = "Auth", description = "인증/인강  API Doc")
+@Tag(name = "Auth", description = "인증/인가  API Doc")
 public class AuthController {
 
     @Autowired
@@ -75,4 +72,16 @@ public class AuthController {
         ExtractionResponseDto extractionResponseDto = ExtractionResponseDto.builder().infos(infos).build();
         return new ResponseEntity<>(SuccessResponse.<ExtractionResponseDto>builder().data(extractionResponseDto).status(200).message("토큰 정보 추출 성공").build(), HttpStatus.OK);
     }
+
+    @ResponseBody
+    @PostMapping("/reissue/auth")
+    @Operation(summary = "토큰 권한 변환 후 재발급", description = "토큰을 권한 변환 후 재발급합니다.")
+    public ResponseEntity<SuccessResponse<TokenResponseDto>> reissueAuthToken(@RequestBody @Validated ReissueAuthRequestDto reissueAuthRequestDto){
+        String userId = jwtTokenProviderService.getUserId(reissueAuthRequestDto.getAccessToken());
+        jwtTokenProviderService.validateRefreshToken(reissueAuthRequestDto.getRefreshToken(), userId);
+        jwtTokenProviderService.deleteRefreshToken(userId);
+        TokenResponseDto token = jwtTokenProviderService.createToken(userId, reissueAuthRequestDto.getAuth());
+        return new ResponseEntity<>(SuccessResponse.<TokenResponseDto>builder().data(token).status(201).message("토큰 권환 변경 후 재발급 성공").build(), HttpStatus.OK);
+    }
+
 }
