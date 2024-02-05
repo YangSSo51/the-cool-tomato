@@ -75,7 +75,6 @@ public enum ErrorCode {
     // Transaction Delete Error
     DELETE_ERROR(500, "T003", "Delete Transaction Error Exception"),
 
-<<<<<<< HEAD
     NO_ELEMENT_ERROR(500, "C001", "No Such Element Exception"),
 
     // 인증
@@ -90,13 +89,10 @@ public enum ErrorCode {
     // 사용자의 Token이 아님
     NOT_MATCH_TOKEN_ERROR(401, "G017", "Not Match Token Exception"),
     // 이미 토큰을 발행함
-    EXIST_TOKEN_ERROR(401, "G018", "Wrong Token Exception"),
-
+    EXIST_TOKEN_ERROR(401, "G018", "Wrong Token Exception")
 
     ; // End
-=======
-    NO_ELEMENT_ERROR(500,"T004" ,"No Element Error Exception" ); // End
->>>>>>> origin/develop
+
 
     /**
      * ******************************* Error Code Constructor ***************************************
