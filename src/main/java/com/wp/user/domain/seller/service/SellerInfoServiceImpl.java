@@ -164,6 +164,8 @@ public class SellerInfoServiceImpl implements SellerInfoService {
         // 토큰 재발급
 //
         return ModifySellerStatusResponse.builder()
+                .userId(sellerInfo.getUser().getId())
+                .nickname(sellerInfo.getUser().getNickname())
                 .profileImg(sellerInfo.getUser().getProfileImg())
                 .auth(sellerInfo.getUser().getAuth())
                 .accessToken("")
@@ -201,6 +203,8 @@ public class SellerInfoServiceImpl implements SellerInfoService {
         sellerInfo.getUser().setAuth(Auth.BUYER);
         // 토큰 재발급
         return ModifySellerStatusResponse.builder()
+                .userId(sellerInfo.getUser().getId())
+                .nickname(sellerInfo.getUser().getNickname())
                 .profileImg(sellerInfo.getUser().getProfileImg())
                 .auth(sellerInfo.getUser().getAuth())
                 .accessToken("")

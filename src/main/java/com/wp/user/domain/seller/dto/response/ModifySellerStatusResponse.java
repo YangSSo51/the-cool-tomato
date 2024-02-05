@@ -11,6 +11,8 @@ import lombok.*;
 @Builder
 @Schema(description = "판매자 상태 전환을 위한 응답 객체")
 public class ModifySellerStatusResponse {
+    Long userId;
+    String nickname;
     String profileImg;
     Auth auth;
     String accessToken;
