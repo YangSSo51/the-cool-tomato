@@ -21,16 +21,7 @@ import "froala-editor/js/plugins.pkgd.min.js";
 import { ItemAddFunction } from "../api/Itemlist";
 import { useNavigate } from "react-router-dom";
 import { formatNumberWithComma } from "../components/common/Comma";
-
-interface InterfaceValues {
-    categoryId: number;
-    productName: string;
-    productContent: string;
-    paymentLink: string;
-    price: number;
-    deliveryCharge: number;
-    quantity: number;
-}
+import { AddItemInterface } from "../types/DataTypes"
 
 export default function ItemAdd() {
     const editorRef = useRef(null);
@@ -40,7 +31,7 @@ export default function ItemAdd() {
         autofocus: true,
         attribution: false,
     };
-    const [values, setValues] = useState<InterfaceValues>({
+    const [values, setValues] = useState<AddItemInterface>({
         categoryId: 0,
         productName: "",
         productContent: "",

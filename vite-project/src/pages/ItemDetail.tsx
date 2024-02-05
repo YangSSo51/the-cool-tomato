@@ -11,7 +11,7 @@ import {
     TabPanel,
 } from "@chakra-ui/react";
 import ItemDetailDetail from "../components/item/ItemDetailDetail";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import ItemDetailReview from "../components/item/ItemDetailReview";
 import ItemDetailQnA from "../components/item/ItemDetailQnA";
 import { useEffect, useState } from "react";
@@ -19,6 +19,11 @@ import { ItemDetailInterface } from "../types/DataTypes";
 import { ItemDetailFetch } from "../api/Itemlist";
 
 export default function ItemDetail() {
+    const navigate = useNavigate()
+    const BuyNow = () => {
+        navigate("https://naver.com")
+    }
+    
     const [fetchData, setFetchData] = useState<
         ItemDetailInterface | undefined
     >();
@@ -101,7 +106,7 @@ export default function ItemDetail() {
                                         borderRadius={"md"}
                                         bg={"themeGreen.500"}
                                     >
-                                        <Text color={"white"}>바로 구매</Text>
+                                        <Text color={"white"} onClick={BuyNow}>바로 구매</Text>
                                     </Button>
                                 </Box>
                             </Flex>

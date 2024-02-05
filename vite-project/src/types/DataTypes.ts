@@ -71,6 +71,16 @@ export interface ItemDetailInterface {
     registerDate: string
 }
 
+export interface AddItemInterface {
+    categoryId: number;
+    productName: string;
+    productContent: string;
+    paymentLink: string;
+    price: number;
+    deliveryCharge: number;
+    quantity: number;
+}
+
 export type broadcastInfo = {
     accessToken: string;
     broadcastTitle: string;

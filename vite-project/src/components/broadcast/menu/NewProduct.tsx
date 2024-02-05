@@ -10,30 +10,39 @@ import {
     Input,
     Select,
 } from "@chakra-ui/react";
-import { formatNumberWithComma } from "../../common/Comma";
 
 import "../../../css/FileUpload.css";
 import { useCallback, useEffect, useRef, useState } from "react";
+import { ItemAddFunction } from "../../../api/Itemlist";
+import { AddItemInterface } from "../../../types/DataTypes"
 
 export default function NewProduct() {
+    const [Submitform, SetSubmitform] = useState<AddItemInterface>()
+
+    const onSubmit = () => {
+        
+    }
+
     const inputEl = useRef(null);
-    const [fileName, setFileName] = useState("");
-    const fileInputHandler = useCallback((e : React.ChangeEvent<HTMLInputElement>) => {
-        const files = e.target && e.target.files;
+    const [fileName, setFileName] = useState<string>('');
+    const fileInputHandler = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+        const files = e.target.files;
         if (files && files[0]) {
-            setFileName(e.currentTarget.files[0]);
+            setFileName(files[0].name);
         }
     }, []);
 
     useEffect(() => {
-        if (inputEl.current !== null) {
-            inputEl.current.addEventListener("input", fileInputHandler);
+        const currentInputEl = inputEl.current;
+        if (currentInputEl) {
+            currentInputEl.addEventListener("input", fileInputHandler);
         }
         return () => {
-            inputEl.current &&
-                inputEl.current.removeEventListener("input", fileInputHandler);
+            if (currentInputEl) {
+                currentInputEl.removeEventListener("input", fileInputHandler);
+            }
         };
-    }, [inputEl, fileInputHandler]);
+    }, [fileInputHandler]);
 
     return (
         <>
@@ -107,19 +116,21 @@ export default function NewProduct() {
                         <Box className="Container">
                             <label htmlFor="file">
                                 <Box className="StyledFileInput">
-                                    <Box className="AttachmentButton">
-                                        🔗 파일 업로드하기
-                                    </Box>
+
                                     {fileName ? (
                                         <Box className="AttachedFile">
                                             {fileName}
                                         </Box>
                                     ) : (
-                                        ""
+                                        <Box className="AttachmentButton">
+                                            🔗 파일 업로드하기
+                                        </Box>
+
                                     )}
                                 </Box>
+                                <Input className="Input" type="file" id="file" ref={inputEl} disabled={fileName ? true : false} />
                             </label>
-                            <Input className="Input" type="file" id="file" ref={inputEl} />
+
                         </Box>
                     </Box>
 
@@ -132,7 +143,7 @@ export default function NewProduct() {
                         <Select
                             mt={"1rem"}
                             placeholder="카테고리를 선택해주세요"
-                            // onChange={handleCategory}
+                        // onChange={handleCategory}
                         >
                             <option value="0">농산물</option>
                             <option value="1">수산물</option>
@@ -144,7 +155,7 @@ export default function NewProduct() {
                         <Button
                             bgColor={"themeGreen.500"}
                             mr={3}
-                            // onClick={onSubmit}
+                        // onClick={onSubmit}
                         >
                             <Text as={"samp"} color={"white"}>
                                 등록
