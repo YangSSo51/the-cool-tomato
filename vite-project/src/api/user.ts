@@ -27,7 +27,6 @@ async function loginUser(data: { loginId: string; password: string }) {
                   if (error.response.data.divisionCode === 'B003') {
                       throw new Error("비밀번호가 일치하지 않습니다.");
                     } else {
-                        console.log("미가입");
                         throw new Error("가입된 아이디가 아닙니다.");
                     }
                 }

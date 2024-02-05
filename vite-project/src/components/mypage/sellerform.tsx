@@ -120,7 +120,7 @@ export default function Sellerform() {
         change(inputValue);
     }
     
-    async function onSubmit(event: React.SyntheticEvent): void {
+    async function onSubmit(event: React.SyntheticEvent): Promise<void> {
         event.preventDefault();
         // TODO: 회원가입 비동기 통신
         if (businessNumber === '') {

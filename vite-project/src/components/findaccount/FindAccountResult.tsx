@@ -1,9 +1,12 @@
 import { Text, Container, Button } from "@chakra-ui/react";
+import { useNavigate } from "react-router-dom";
 
 function FindAccountResult() {
-    function onClick(): void {
-        alert("FindAccountResult onClick");
+    const navigate = useNavigate();
+    function onclick() {
+        navigate("/v1/login");
     }
+
     return (
         <>
             <Container
@@ -32,9 +35,9 @@ function FindAccountResult() {
                     colorScheme="themeGreen"
                     borderRadius="3xl"
                     py={1}
-                    onClick={onClick}
+                    onClick={onclick}
                 >
-                    메인으로
+                    로그인하러가기
                 </Button>
             </Container>
         </>
