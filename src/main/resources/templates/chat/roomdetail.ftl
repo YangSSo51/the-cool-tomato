@@ -51,6 +51,8 @@
         el: '#app',
         data: {
             roomId: '',
+            senderId: 0,
+            senderNickname: '',
             sender: '',
             message: '',
             messages: []
@@ -58,10 +60,12 @@
         created() {
             this.roomId = localStorage.getItem('wschat.roomId');
             this.sender = localStorage.getItem('wschat.sender');
+            this.senderId = localStorage.getItem('wschat.senderId');
+            this.senderNickname = localStorage.getItem('wschat.senderNickname');
         },
         methods: {
             sendMessage: function() {
-                ws.send("/pub/chat/message", {Authorization: "Bearer " + this.sender}, JSON.stringify({roomId:this.roomId, message:this.message}));
+                ws.send("/pub/chat/message", {Authorization: "Bearer " + this.sender}, JSON.stringify({roomId:this.roomId, senderId:this.senderId, senderNickname:this.senderNickname, message:this.message}));
                 this.message = '';
             },
             recvMessage: function(recv) {

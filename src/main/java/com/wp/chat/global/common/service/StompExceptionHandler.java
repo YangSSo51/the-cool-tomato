@@ -2,6 +2,7 @@ package com.wp.chat.global.common.service;
 
 import com.wp.chat.global.common.code.ErrorCode;
 import com.wp.chat.global.exception.BusinessExceptionHandler;
+import com.wp.chat.global.exception.GlobalExceptionHandler;
 import org.springframework.http.HttpStatus;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageDeliveryException;

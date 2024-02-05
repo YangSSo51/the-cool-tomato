@@ -46,11 +46,13 @@
         methods: {
             enterRoom: function(roomId) {
                 var sender = prompt('Access Token을 입력해 주세요.');
-                if(sender != "") {
-                    localStorage.setItem('wschat.sender', sender);
-                    localStorage.setItem('wschat.roomId', roomId);
-                    location.href="/chat/room/enter/"+roomId;
-                }
+                var senderId = prompt('userId를 입력해 주세요.');
+                var senderNickname = prompt('닉네임을 입력해 주세요.');
+                localStorage.setItem('wschat.sender', sender);
+                localStorage.setItem('wschat.roomId', roomId);
+                localStorage.setItem('wschat.senderId', senderId);
+                localStorage.setItem('wschat.senderNickname', senderNickname);
+                location.href="/chat/room/enter/"+roomId;
             }
         }
     });
