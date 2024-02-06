@@ -2,7 +2,7 @@ import { Flex } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { getSellerDetailAPI } from "../api/user";
 import { useParams } from "react-router-dom";
-import SellerHeader from "../components/sellerprofile/sellerheader";
+import SellerHeader from "../components/sellerprofile/Sellerheader";
 import SellerPosts from "../components/sellerprofile/SellerPosts";
 
 function ProfilePage() {

@@ -9,8 +9,6 @@ export default function SellerHeader(props) {
     const [following, setFollowing] = useState(false)
     const [followerCount, setFollowerCount] = useState<number>(Number(props.sellerInfo.followerCount));
 
-    console.log(following)
-
     const onClickFollow = () => {
         followSellerAPI(props.sellerId, true, user.accessToken).then((result) => {
             if (result === 1) {

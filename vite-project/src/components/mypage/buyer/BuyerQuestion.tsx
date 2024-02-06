@@ -13,7 +13,7 @@ export default function Question() {
     const accessToken = user.accessToken;
     const [questions, setQuestions] = useState([]);
     const questionsData = questions.map((item, index) => (
-        <BuyerQnaItems key={index} questions={item} />
+        <BuyerQnaItems key={index} questions={item} accessToken={accessToken} />
     ));
 
     function onclick() {
@@ -23,7 +23,7 @@ export default function Question() {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await buyerGetQnaAPI(1,10)
+                const response = await buyerGetQnaAPI(1,10, accessToken)
                 setQuestions(response.data.list)
             } catch (error) {
                 console.error(error)

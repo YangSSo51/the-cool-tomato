@@ -31,7 +31,7 @@ function Items() {
         <Box flexDirection="column" w="90%" h="full">
             <Button onClick={onclick} colorScheme='yellow'>상품등록</Button>
             { sellerItem && sellerItem.map((item, index) => {
-                return <ItemsofItems sellerItem={sellerItem[index]} i={index} />
+                return <ItemsofItems sellerItem={sellerItem[index]} key={index} />
                 })
             }
         </Box>

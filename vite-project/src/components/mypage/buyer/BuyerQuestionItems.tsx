@@ -5,7 +5,8 @@ import { Image, Badge, Accordion,
     AccordionPanel,
     AccordionIcon } from "@chakra-ui/react";
 
-function BuyerQnaItems() {
+function BuyerQnaItems(props) {
+    console.log(props)
   
     return (
         <>
