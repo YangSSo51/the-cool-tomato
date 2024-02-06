@@ -20,8 +20,10 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 import java.util.Map;
 
@@ -122,15 +124,16 @@ public class ProductController {
         return new ResponseEntity<>(response,HttpStatus.OK);
     }
 
-    @PostMapping
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "상품 등록",description = "판매자가 상품을 등록함")
     public ResponseEntity<?> saveProduct(HttpServletRequest httpServletRequest,
-                                         @RequestBody @Valid ProductCreateRequest productRequest){
+                                         @RequestPart @Valid ProductCreateRequest productRequest,
+                                         @RequestPart(required = false) MultipartFile file){
         //판매자 권한이 있는지 확인
         String accessToken = jwtService.resolveAccessToken(httpServletRequest);
         // 헤더 Access Token 추출
         authClient.validateToken(AccessTokenRequest.builder().accessToken(accessToken).build());
-        // 권한이 구매자일 경우만 저장
+        // 권한이 판매자일 경우만 저장
         Map<String, String> infos = authClient.extraction(ExtractionRequest.builder().accessToken(accessToken).infos(List.of("userId", "auth")).build()).getInfos();
 
         if(!infos.get("auth").equals("SELLER")) {
@@ -140,7 +143,7 @@ public class ProductController {
 
         Long userId = Long.valueOf(infos.get("userId"));
         //상품을 등록함
-        productService.saveProduct(productRequest,userId);
+        productService.saveProduct(productRequest,userId,file);
 
         SuccessResponse response = SuccessResponse.builder()
                                     .status(SuccessCode.INSERT_SUCCESS.getStatus())
@@ -149,15 +152,16 @@ public class ProductController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @PutMapping
+    @PutMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "상품 수정",description = "판매자가 상품 정보를 수정함")
     public ResponseEntity<?> updateProduct(HttpServletRequest httpServletRequest,
-                                           @RequestBody @Valid ProductUpdateRequest productRequest){
+                                           @RequestPart @Valid ProductUpdateRequest productRequest,
+                                           @RequestPart(required = false) MultipartFile file){
         //판매자 권한이 있는지 확인
         String accessToken = jwtService.resolveAccessToken(httpServletRequest);
         // 헤더 Access Token 추출
         authClient.validateToken(AccessTokenRequest.builder().accessToken(accessToken).build());
-        // 권한이 구매자일 경우만 저장
+        // 권한이 판매자일 경우만 저장
         Map<String, String> infos = authClient.extraction(ExtractionRequest.builder().accessToken(accessToken).infos(List.of("userId", "auth")).build()).getInfos();
 
         if(!infos.get("auth").equals("SELLER")) {
@@ -168,7 +172,7 @@ public class ProductController {
         Long userId = Long.valueOf(infos.get("userId"));
 
         //상품 정보를 수정함
-        productService.updateProduct(productRequest,userId);
+        productService.updateProduct(productRequest,userId,file);
 
         SuccessResponse response = SuccessResponse.builder()
                 .status(SuccessCode.UPDATE_SUCCESS.getStatus())
@@ -185,7 +189,7 @@ public class ProductController {
         String accessToken = jwtService.resolveAccessToken(httpServletRequest);
         // 헤더 Access Token 추출
         authClient.validateToken(AccessTokenRequest.builder().accessToken(accessToken).build());
-        // 권한이 구매자일 경우만 저장
+        // 권한이 판매자일 경우만 저장
         Map<String, String> infos = authClient.extraction(ExtractionRequest.builder().accessToken(accessToken).infos(List.of("userId", "auth")).build()).getInfos();
 
         if(!infos.get("auth").equals("SELLER")) {

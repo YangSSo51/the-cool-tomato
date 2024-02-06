@@ -43,4 +43,8 @@ public class Product {
         this.deliveryCharge = productRequest.getDeliveryCharge();
         this.quantity = productRequest.getQuantity();
     }
+
+    public void changeImgSrc(String imgSrc) {
+        this.imgSrc = imgSrc;
+    }
 }

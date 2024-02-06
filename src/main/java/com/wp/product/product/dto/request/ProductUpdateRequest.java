@@ -26,6 +26,9 @@ public class ProductUpdateRequest {
     @Schema(description = "상품 구매처를 입력해주세요")
     private String paymentLink;
 
+    @Schema(description = "이미지 경로")
+    private String imgSrc;
+
     @Schema(defaultValue = "0",description = "상품 금액을 입력해주세요")
     private int price;
 
