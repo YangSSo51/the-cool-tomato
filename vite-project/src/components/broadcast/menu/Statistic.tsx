@@ -1,6 +1,6 @@
 import { Doughnut } from "react-chartjs-2";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
-import { Center, Text } from "@chakra-ui/react";
+import { Box, Center, Text } from "@chakra-ui/react";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
@@ -33,13 +33,15 @@ export default function Statistic() {
     };
 
     return (
-        <>
+        <Box overflowY={"hidden"}>
             <Center mb={"1.5rem"}>
                 <Text fontSize={"4xl"} as={"b"}>
                     실시간 통계
                 </Text>
             </Center>
-            <Doughnut data={dataDoughnut} />;
-        </>
+            <Box bgSize={"1rem"}>
+                <Doughnut data={dataDoughnut} />;
+            </Box>
+        </Box>
     );
 }

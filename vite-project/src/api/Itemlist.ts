@@ -1,3 +1,4 @@
+import { AddItemInterface } from "../types/DataTypes";
 import { itemAxios } from "./http";
 import { AxiosHeaders } from "axios";
 
@@ -12,15 +13,7 @@ async function ItemListDetailFetch(data: { id: number }) {
     return response;
 }
 
-async function ItemAddFunction(data: {
-    categoryId: number;
-    productName: string;
-    productContent: string;
-    paymentLink: string;
-    price: number;
-    deliveryCharge: number;
-    quantity: number;
-}) {
+async function ItemAddFunction(data: AddItemInterface) {
     try {
         const response = await http.post(`${URL}`, data);
         return response;
@@ -65,11 +58,20 @@ async function sellersMyproductsAPI() {
     }
 }
 
+async function SellerBroadcastFetch(data : {page: number; size: number}) {
+    const response = await http.get('products/my/list', {
+        params: {page: data.page, size: data.size}
+})
+    return response.data.data.list
+}
+
+
 export {
     ItemListDetailFetch,
     ItemAddFunction,
     ItemListFetch,
     ItemDetailDelete,
     ItemDetailFetch,
-    sellersMyproductsAPI
+    sellersMyproductsAPI,
+    SellerBroadcastFetch
 };
