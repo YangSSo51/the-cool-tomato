@@ -1,5 +1,6 @@
 import { Box, Flex, Center } from "@chakra-ui/layout";
-import { Avatar, Button, List, ListItem } from "@chakra-ui/react";
+import { Avatar, Button, List, ListItem, Breadcrumb, BreadcrumbItem, BreadcrumbLink } from "@chakra-ui/react";
+import { ChevronRightIcon } from "@chakra-ui/icons";
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
@@ -99,7 +100,18 @@ export default function SellerPage() {
                     </Box>
 
                     <Box w={{ base: "100%", lg: "75%" }} bg="white" p="5" rounded="lg" className="custom-scrollbar">
-                        <Flex justify="center" align="center" h="full">
+                        <Flex justify="center" direction="column" align="center" h="full">
+                            
+                            <Breadcrumb mb="10" spacing='8px' separator={<ChevronRightIcon color='gray.500' />}>
+                                <BreadcrumbItem>
+                                    <BreadcrumbLink>마이페이지</BreadcrumbLink>
+                                </BreadcrumbItem>
+
+                                <BreadcrumbItem isCurrentPage>
+                                    <BreadcrumbLink>{categories[tab].title}</BreadcrumbLink>
+                                </BreadcrumbItem>
+                            </Breadcrumb>
+
                             {categories[tab].component}
                         </Flex>
                     </Box>

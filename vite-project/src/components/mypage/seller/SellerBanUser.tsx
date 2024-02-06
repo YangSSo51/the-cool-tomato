@@ -3,7 +3,7 @@ import { Avatar, Badge } from "@chakra-ui/react";
 
 function BanUser() {
     return (
-        <Box flexDirection="column" w="90%" h="full" overflowY="scroll">
+        <Box flexDirection="column" w="90%" h="full">
             <Text>차단차단</Text>
             <Flex>
                 <Avatar src='https://bit.ly/sage-adebayo' />

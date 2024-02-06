@@ -11,6 +11,7 @@ import BuyerComponent from "./NavComponent/BuyerComponent";
 import ProfileBuyerComponent from "./NavComponent/NavBuyerProfileComponent";
 import ProfileSellerComponent from "./NavComponent/NavSellerProfileComponent";
 import LogoutProfileComponent from "./NavComponent/LogoutProfileComponent";
+import ProfileAdminComponent from "./NavComponent/NavAdminProfileComponent";
 
 function NavBar() {
     const navigate = useNavigate();
@@ -55,6 +56,8 @@ function NavBar() {
                     <ProfileBuyerComponent />
                 ) : user.accessToken && myAuth === "SELLER" ? (
                     <ProfileSellerComponent />
+                ) : user.accessToken && myAuth === "ADMIN" ? (
+                    <ProfileAdminComponent />
                 ) : (
                     <LogoutProfileComponent />
                 )}

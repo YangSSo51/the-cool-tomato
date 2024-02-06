@@ -90,3 +90,11 @@ export type broadcastInfo = {
     chatbotSetting: boolean;
     broadcastStartDate: string;
 }
+
+export type followerItem = {
+    id: number;
+    loginId: string;
+    nickname: string;
+    profileImg: string;
+    userId: number;
+}

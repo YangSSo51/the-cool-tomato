@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../redux/stores/store";
 import BuyerQnaItems from "./BuyerQuestionItems";
+import { buyerGetQnaAPI } from "../../../api/itemQnA";
 
 export default function Question() {
     const navigate = useNavigate();
@@ -19,17 +20,17 @@ export default function Question() {
         navigate(`/v1/items/list/0`);
     }
 
-    // useEffect(() => {
-    //     const fetchData = async () => {
-    //         try {
-    //             const response = await "임의의 API"(accessToken)
-    //             setReviews(response.data.list)
-    //         } catch (error) {
-    //             console.error(error)
-    //         }
-    //     };
-    //     fetchData();
-    // }, [])
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await buyerGetQnaAPI(1,10)
+                setQuestions(response.data.list)
+            } catch (error) {
+                console.error(error)
+            }
+        };
+        fetchData();
+    }, [])
 
     return (
         <Box flexDirection="column" w="90%" h="full" mb="10">

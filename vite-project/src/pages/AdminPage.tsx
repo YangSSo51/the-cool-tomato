@@ -12,21 +12,20 @@ import Following from "../components/mypage/buyer/BuyerFollowing";
 import Reviews from "../components/mypage/buyer/BuyerReviews";
 import Reviewed from "../components/mypage/buyer/BuyerReviewed";
 import Question from "../components/mypage/buyer/BuyerQuestion";
-import Sellerform from "../components/mypage/Sellerform";
 
-export default function BuyerPage() {
+
+export default function AdminPage() {
     const user = useSelector((state: RootState) => state.user);
     console.log(user)
     const navigate = useNavigate();
     const [ boxHeight, setBoxHeight ] = useState("85vh");
     const [ tab, setTab ] = useState(0);
     const [ categoryTabs, setCategoryTabs ] = useState([
-        { id: 0, isSelected: true , name: '최근 본 상품', component: <Recent /> },
-        { id: 1, isSelected: false , name: '팔로잉 목록', component: <Following /> },
-        { id: 2, isSelected: false , name: '작성 가능한 리뷰', component: <Reviews /> },
-        { id: 3, isSelected: false , name: '작성한 리뷰', component: <Reviewed /> },
-        { id: 4, isSelected: false , name: '내가 한 문의', component: <Question /> },
-        { id: 5, isSelected: false , name: '판매자 신청', component: <Sellerform /> },
+        { id: 0, isSelected: true , name: '공지사항 관리', component: <Recent /> },
+        { id: 1, isSelected: false , name: 'FAQ 작성', component: <Following /> },
+        { id: 2, isSelected: false , name: '판매자 신청 확인', component: <Reviews /> },
+        { id: 3, isSelected: false , name: '판매자 전체 조회', component: <Reviewed /> },
+        { id: 4, isSelected: false , name: '회원 전체 조회', component: <Question /> },
     ]);
 
     const changeSelect = (e) => {
@@ -47,23 +46,15 @@ export default function BuyerPage() {
     return (
         <Box minH="100vh" mb="10" paddingBlock="6rem">
 
-            <Center fontFamily="GmkBold" fontSize={{ base: "4rem", md: "5rem", lg: "6rem" }} color={"themeGreen.500"}>
-                마이페이지
+            <Center fontFamily="GmkBold" fontSize={{ base: "4rem", md: "5rem", lg: "6rem" }} color={"purple"}>
+                관리자 페이지
             </Center>
 
-            <Flex m="auto" border="2px" borderColor="themeGreen.500" rounded="lg" w="85vw" overflow="scroll" minH={boxHeight}>
+            <Flex m="auto" border="2px" borderColor="purple" rounded="lg" w="85vw" overflow="scroll" minH={boxHeight}>
                 <Flex m="auto" direction={{ base: "column", lg: "row"}} rounded="lg" w="80vw" maxH={{ base:"auto", lg: "80vh"}} px="2">
                     <Box w={{ base: "100%", lg: "25%" }} pr="4">
                         <Box w="full" bg="white" rounded="lg" overflow="hidden">
                             <Flex direction="column" align="center" py="6">
-
-                                <Button
-                                    mb="4"
-                                    onClick={() => {
-                                    navigate("/v1/seller/");
-                                    }}
-                                >판매자 정보 보기
-                                </Button>
 
                                 <Avatar mt="4" size="xl" src={user.profileImg} />
 

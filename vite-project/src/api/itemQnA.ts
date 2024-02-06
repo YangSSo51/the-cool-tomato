@@ -47,12 +47,21 @@ async function qnaDetailAPI(data: { productQuestionId: number }) {
     }
 }
 
-async function buyerGetQnaAPI(params: type) {
+async function buyerGetQnaAPI(page: number, size: number, accessToken: string) {
     try {
-        const response = await http.get(`${url}/buyer/my/list`);
+        const response = await http.get(`${url}/buyer/my/list`, {
+            params: {
+                page,
+                size
+            },
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": "Bearer " + accessToken
+            }
+        });
         const responseData = response.data;
         if (responseData.status === 200) {
-            console.log("응~잘돼");
+            console.log(responseData);
             return responseData;
         } else {
             console.log("안돼~");
@@ -63,15 +72,22 @@ async function buyerGetQnaAPI(params: type) {
     }
 }
 
-async function sellerGetQnaAPI(params: type) {
+
+async function sellerGetQnaAPI(page: number, size: number, accessToken: string) {
     try {
-        const response = await http.get(`${url}/buyer/my/list`);
+        const response = await http.get(`${url}/seller/my/list`, {
+            params: {
+                page,
+                size
+            }
+        });
         const responseData = response.data;
         if (responseData.status === 200) {
-            console.log("응~잘돼");
+            console.log("문의조회성공");
+            console.log(responseData)
             return responseData;
         } else {
-            console.log("안돼~");
+            console.log("문의조회안돼~");
         }
     } catch (error) {
         console.error(error);

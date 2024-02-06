@@ -293,7 +293,7 @@ async function followSellerAPI(sellerId: number, alarmSetting: boolean, accessTo
         const responseData = response.data;
         if (responseData.status === 201) {
             console.log("팔로우 등록 성공");
-            return responseData;
+            return 1;
         }
     } catch (error) {
         console.log("팔로우 등록 실패");
@@ -333,7 +333,7 @@ async function unfollowSellerAPI(sellerId: number, accessToken: string) {
         const responseData = response.data;
         if (responseData.status === 200) {
             console.log("팔로우 취소 성공");
-            return responseData;
+            return 1;
         }
     } catch (error) {
         console.log("팔로우 취소 실패");

@@ -1,12 +1,15 @@
 import { Box, Flex } from "@chakra-ui/layout";
-import { Image, Badge, Button, Accordion,
+import { Image, Badge, Button, Accordion,Input, InputGroup, InputRightElement,
     AccordionItem,
     AccordionButton,
     AccordionPanel,
     AccordionIcon } from "@chakra-ui/react";
-import { AddIcon, MinusIcon } from "@chakra-ui/icons";
 
 function QnaItems() {
+    const handleSendresponse = () => {
+        //
+    }
+
     const qnaInfo = {
       imageUrl: 'https://www.vegannews.co.kr/data/photos/20230727/art_1688713002447_e60ce1.png',
       imageAlt: 'Rear view of modern home with pool',
@@ -42,46 +45,26 @@ function QnaItems() {
                 </h2>
                 <AccordionPanel pb={4}>
                     {qnaInfo.content}
-                    <input type="text" placeholder="안보이는데 있어요 고칠거에요좀만기다려주세요"/>
+                    <InputGroup>
+                        <Input mt="3" type="text" placeholder="문의답변" />
+                        <InputRightElement mt="3" pr="2" w="5rem">
+                            <Button
+                                h="1.75rem"
+                                size="m"
+                                colorScheme="themeGreen"
+                                variant="ghost"
+                                onClick={handleSendresponse}
+                                borderRadius="md"
+                                _hover={{
+                                    bg: "themeGreen.500",
+                                    color: "white",
+                                }}
+                            >
+                                답변하기
+                            </Button>
+                        </InputRightElement>   
+                    </InputGroup>
                 </AccordionPanel>
-            </AccordionItem>
-
-            <AccordionItem>
-                {({ isExpanded }) => (
-                    <>
-                    <h2>
-                        <AccordionButton>
-                            
-                        <Image mr="2" boxSize="100px" src={qnaInfo.imageUrl} alt={qnaInfo.imageAlt} />
-                        <Flex alignItems='baseline'>
-                            <Badge colorScheme='green'>답변완료</Badge>
-                            <Box
-                                color='gray.500'
-                                fontWeight='semibold'
-                                letterSpacing='wide'
-                                fontSize='xs'
-                                textTransform='uppercase'
-                                ml='2'
-                                >
-                                {qnaInfo.title} 
-                            </Box>
-                        </Flex>
-                            {isExpanded ? (
-                                <MinusIcon fontSize='12px' />
-                                ) : (
-                                    <AddIcon fontSize='12px' />
-                                    )}
-                        </AccordionButton>
-                    </h2>
-                    <AccordionPanel pb={4}>
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                        eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
-                        minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-                        aliquip ex ea commodo consequat.
-                        <input type="text" placeholder="안보이는데 있어요 고칠거에요좀만기다려주세요"/>
-                    </AccordionPanel>
-                </>
-                )}
             </AccordionItem>
         </Accordion>
     </>

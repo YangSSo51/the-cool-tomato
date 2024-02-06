@@ -1,10 +1,11 @@
-import { Box, Text, Flex, Badge } from "@chakra-ui/layout";
+import { Box, Text, Flex } from "@chakra-ui/layout";
 import { Avatar, Button } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../redux/stores/store";
-import { getFollowingListAPI } from "../../../api/user";
+import { getFollowingListAPI, unfollowSellerAPI } from "../../../api/user";
+import { followerItem } from "../../../types/DataTypes";
 
 export default function Following() {
     const navigate = useNavigate();
@@ -12,15 +13,16 @@ export default function Following() {
     const accessToken = user.accessToken;
     const [following, setFollowing] = useState([]);
     const followingData = following.map((item, index) => (
-        <FollowingItem key={index} following={item} />
+        <FollowingItem key={index} following={item} accessToken={accessToken} />
     ));
 
     useEffect(() => {
         const fetchData = async () => {
             try {
                 const response = await getFollowingListAPI(accessToken)
-                if (response.data.list) {
-                  setFollowing(response.data.list)
+                console.log(response.data)
+                if (response.data.follow) {
+                  setFollowing(response.data.follow)
                 } else {
                   console.error('조회는 성공했는데 팔로잉 목록이 엄서용');
                   setFollowing([]);  // set to empty array as fallback
@@ -52,19 +54,35 @@ export default function Following() {
     )
 }
 
-function FollowingItem(props) {
+function FollowingItem({following, accessToken} : {following: followerItem, accessToken: string}) {
+    console.log(following)
+
+    
+    const onClickUnfollow = () => {
+        unfollowSellerAPI(following.userId, accessToken).then((result) => {
+            if (result === 1) {
+                //이 팔로잉 목록을 삭제
+            } else {
+                // sellerId: number, alarmSetting: boolean, accessToken: string 
+            }
+        });
+    };
+
     return (
-        <Flex>
-            <Avatar src='https://bit.ly/sage-adebayo' />
-            <Box ml='3'>
-                <Text fontWeight='bold'>
-                Segun Adebayo
-                <Badge ml='1' colorScheme='green'>
-                    New
-                </Badge>
-                </Text>
-                <Text fontSize='sm'>UI Engineer</Text>
-            </Box>
+        <Flex p="2" m="2" justifyContent="space-between">
+            <Flex>
+                <Avatar src={following.profileImg} />
+                <Box ml='3'>
+                    <Text fontWeight='bold'>
+                    {following.nickname}
+                    </Text>
+                    <Text fontSize='sm'>상메? ㅎ 없으니까 심심하냐</Text>
+                </Box>
+            </Flex>
+
+            <Button onClick={onClickUnfollow} color="white" backgroundColor="themeGreen.500" _hover={{ backgroundColor: "white", color: "red" }}>
+                팔로잉중</Button>
         </Flex>
+
     );
 }

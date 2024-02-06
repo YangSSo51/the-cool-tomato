@@ -21,6 +21,7 @@ import BuyerLive from "./pages/BuyerLive";
 import ItemAdd from "./pages/ItemAdd";
 import NoticePage from "./pages/NoticePage"
 import ProfilePage from "./pages/ProfilePage";
+import AdminPage from "./pages/AdminPage";
 
 function App() {
     return (
@@ -36,6 +37,7 @@ function App() {
                         <Route path="calendar" element={<Calendar />} />
                         <Route path="buyer" element={<BuyerPage />} />
                         <Route path="seller" element={<SellerPage />} />
+                        <Route path="admin" element={<AdminPage />} />
                         <Route path="userinfo" element={<UserinfoPage />} />
                         <Route path="login" element={<LoginPage />} />
                         <Route
