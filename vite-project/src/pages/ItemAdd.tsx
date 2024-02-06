@@ -10,8 +10,9 @@ import {
     FormLabel,
     Select,
     FormHelperText,
+    Icon,
 } from "@chakra-ui/react";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import ReactDOM from "react-dom/client";
 
 import "froala-editor/css/froala_style.min.css";
@@ -21,7 +22,9 @@ import "froala-editor/js/plugins.pkgd.min.js";
 import { ItemAddFunction } from "../api/Itemlist";
 import { useNavigate } from "react-router-dom";
 import { formatNumberWithComma } from "../components/common/Comma";
-import { AddItemInterface } from "../types/DataTypes"
+import { AddItemInterface } from "../types/DataTypes";
+import { CloseIcon } from "@chakra-ui/icons";
+import { FaRegEdit } from "react-icons/fa";
 
 export default function ItemAdd() {
     const editorRef = useRef(null);
@@ -39,10 +42,17 @@ export default function ItemAdd() {
         price: 0,
         deliveryCharge: 1000,
         quantity: 100,
+        imgSrc: "",
     });
     const navigate = useNavigate();
     const [TitleInput, setTitleInput] = useState("");
     const TitleError = TitleInput === "";
+
+    function EditIcon() {
+        return (
+            <Icon mt={"0.5rem"} boxSize={"1.8rem"} ml={"3rem"} as={FaRegEdit} />
+        );
+    }
 
     // Editor & Editor Values
     useEffect(() => {
@@ -55,19 +65,19 @@ export default function ItemAdd() {
     // 입력값
     const handleNumber = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
-        let onlyNumber = parseInt(value.replace(/[^0-9]/g, ''))
+        let onlyNumber = parseInt(value.replace(/[^0-9]/g, ""));
 
         if (onlyNumber >= 100000000) {
-            onlyNumber = 100
+            onlyNumber = 100;
         }
 
-        if (isNaN(onlyNumber) || onlyNumber < 100) {
-            onlyNumber = 100
+        if (isNaN(onlyNumber)) {
+            onlyNumber = 0;
         }
 
         setValues((prevValues) => ({
             ...prevValues,
-            [name]: Number(onlyNumber),
+            [name]: onlyNumber,
         }));
     };
 
@@ -96,27 +106,66 @@ export default function ItemAdd() {
     };
 
     const onSubmit = async () => {
-        console.log(values)
-        if (values.price >= 1000 && values.categoryId && values.productName.length >= 1 && values.productContent.length >= 1) {
+        if (
+            values.price >= 1000 &&
+            values.categoryId &&
+            values.productName.length >= 1 &&
+            values.productContent.length >= 1
+        ) {
             try {
                 await ItemAddFunction(values);
                 navigate("/v1/items/list/0");
             } catch (error) {
-                alert("등록 실패했습니다. 상품을 다시 설정해주세요.")
+                alert("등록 실패했습니다. 상품을 다시 설정해주세요.");
             }
-        }
-        else if (!values.price) {
-            alert("가격을 설정해주세요")
-        }
-        else if (!values.categoryId) {
-            alert("카테고리를 설정해주세요")
-        }
-        else if (!values.productContent) {
-            alert("컨텐츠 내용을 적어주세요")
+        } else if (!values.price) {
+            alert("가격을 설정해주세요");
+        } else if (!values.categoryId) {
+            alert("카테고리를 설정해주세요");
+        } else if (!values.productContent) {
+            alert("컨텐츠 내용을 적어주세요");
         } else if (!values.productName) {
-            alert("상품명을 설정해주세요")
+            alert("상품명을 설정해주세요");
+        } else if (!values.imgSrc) {
+            alert("사진을 등록해주세요");
         }
     };
+
+    const inputEl = useRef(null);
+    const [fileName, setFileName] = useState<string>("");
+    const fileInputHandler = useCallback(
+        (e: React.ChangeEvent<HTMLInputElement>) => {
+            const files = e.target.files;
+            if (files && files[0]) {
+                setFileName(files[0].name);
+            }
+        },
+        []
+    );
+
+    useEffect(() => {
+        const currentInputEl = inputEl.current;
+        if (currentInputEl) {
+            currentInputEl.addEventListener("input", fileInputHandler);
+            setValues((prevValues) => ({
+                ...prevValues,
+                ["imgSrc"]: fileName,
+            }));
+        }
+        return () => {
+            if (currentInputEl) {
+                currentInputEl.removeEventListener("input", fileInputHandler);
+            }
+        };
+    }, [fileInputHandler, fileName]);
+
+    const ClearFile = () => {
+        setFileName("");
+    };
+
+    useEffect(() => {
+        console.log(values)
+    }, [values])
 
     return (
         <>
@@ -127,7 +176,7 @@ export default function ItemAdd() {
                     </Text>
                 </Center>
                 <Center mt={"3rem"} p={"1rem"} display={"block"}>
-                    <Box p={"2rem"}>
+                    <Box p={"2rem"} mb={"1rem"}>
                         <Text fontSize={"2xl"} as={"b"}>
                             상품명
                         </Text>
@@ -156,7 +205,7 @@ export default function ItemAdd() {
                         </FormControl>
                     </Box>
 
-                    <Box p={"2rem"}>
+                    <Box p={"2rem"} mb={"1rem"}>
                         <Text fontSize={"2xl"} as={"b"}>
                             가격
                         </Text>
@@ -171,9 +220,7 @@ export default function ItemAdd() {
                                 type="text"
                                 name="price"
                                 onChange={handleNumber}
-                                value={
-                                    formatNumberWithComma(values.price)
-                                }
+                                value={formatNumberWithComma(values.price)}
                                 placeholder=" "
                             />
 
@@ -187,7 +234,81 @@ export default function ItemAdd() {
                         </FormControl>
                     </Box>
 
-                    <Box mt={"1rem"} p={"2rem"}>
+                    <Box mt={"2.5rem"} p={"2rem"} mb={"1rem"}>
+                        <Text fontSize={"2xl"} as={"b"}>
+                            상품 사진 등록
+                        </Text>
+
+                        <Box className="Container">
+                            {fileName ? (
+                                <Center>
+                                    <Flex direction={"row"}>
+                                        <Text
+                                            fontSize={"2rem"}
+                                            as={"b"}
+                                            mr={"0.5rem"}
+                                        >
+                                            업로드 된 파일
+                                            <span style={{"marginLeft" : "2rem"}}>:</span>
+                                        </Text>
+                                    </Flex>
+
+                                    <Box
+                                        className="AttachedFile"
+                                        style={{
+                                            fontSize: "2rem",
+                                            marginLeft: "1rem",
+                                        }}
+                                    >
+                                        {fileName}
+                                    </Box>
+                                    <Flex alignItems="center">
+                                        <Input
+                                            className="Input"
+                                            type="file"
+                                            id="file"
+                                            ref={inputEl}
+                                            disabled={fileName ? false : true}
+                                            style={{ display: "none" }}
+                                        />
+
+                                        <label
+                                            htmlFor="file"
+                                            style={{ marginLeft: "1rem" }}
+                                        >
+                                            <EditIcon />
+                                        </label>
+
+                                        <CloseIcon
+                                            ml={"2rem"}
+                                            boxSize={"1rem"}
+                                            onClick={ClearFile}
+                                        />
+                                    </Flex>
+                                </Center>
+                            ) : (
+                                <>
+                                    <Input
+                                        className="Input"
+                                        type="file"
+                                        id="file"
+                                        ref={inputEl}
+                                        disabled={fileName ? true : false}
+                                        style={{ display: "none" }}
+                                    />
+
+                                    <label
+                                        htmlFor="file"
+                                        className="AttachmentButton"
+                                    >
+                                        🔗 사진 업로드하기
+                                    </label>
+                                </>
+                            )}
+                        </Box>
+                    </Box>
+
+                    <Box mt={"1rem"} p={"3rem"}>
                         <Text fontSize={"2xl"} as={"b"}>
                             내용
                         </Text>
@@ -200,7 +321,7 @@ export default function ItemAdd() {
                         </Box>
                     </Box>
 
-                    <Box p={"2rem"}>
+                    <Box p={"3rem"}>
                         <Flex>
                             <Text fontSize={"2xl"} as={"b"}>
                                 카테고리

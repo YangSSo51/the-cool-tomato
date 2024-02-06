@@ -79,6 +79,7 @@ export interface AddItemInterface {
     price: number;
     deliveryCharge: number;
     quantity: number;
+    imgSrc: string;
 }
 
 export type broadcastInfo = {
