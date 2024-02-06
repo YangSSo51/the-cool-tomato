@@ -3,6 +3,8 @@ package com.wp.product.product.service;
 import com.wp.product.category.entity.Category;
 import com.wp.product.global.common.code.ErrorCode;
 import com.wp.product.global.exception.BusinessExceptionHandler;
+import com.wp.product.global.file.service.FileUploadService;
+import com.wp.product.global.file.service.S3UploadService;
 import com.wp.product.product.dto.request.ProductCreateRequest;
 import com.wp.product.product.dto.request.ProductSearchRequest;
 import com.wp.product.product.dto.request.ProductUpdateRequest;
@@ -14,6 +16,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+import java.io.IOException;
 import java.util.*;
 
 @Slf4j
@@ -22,7 +26,7 @@ import java.util.*;
 public class ProductServiceImpl implements ProductService{
 
     private final ProductRepository productRepository;
-
+    private final S3UploadService s3UploadService;
 
     @Override
     public Map<String, Object> searchProduct(ProductSearchRequest productSearchRequest) {
@@ -104,13 +108,22 @@ public class ProductServiceImpl implements ProductService{
     }
 
     @Override
-    public void saveProduct(ProductCreateRequest productRequest, Long userId){
+    public void saveProduct(ProductCreateRequest productRequest, Long userId, MultipartFile file){
+        String imgSrc = "";
+        try {
+            imgSrc = s3UploadService.saveFile(file);
+            System.out.println("이미지 파일 : "+imgSrc);
+        }catch (IOException e){
+            log.debug(e.getMessage());
+            throw new BusinessExceptionHandler("파일 업로드에 실패했습니다",ErrorCode.FAIL_FILE_UPLOAD);
+        }
         //상품 등록 객체 생성
         Product product = Product.builder()
                         .category(Category.builder().categoryId(productRequest.getCategoryId()).build())
                         .sellerId(userId)
                         .productName(productRequest.getProductName())
                         .productContent(productRequest.getProductContent())
+                        .imgSrc(imgSrc)
                         .paymentLink(productRequest.getPaymentLink())
                         .price(productRequest.getPrice())
                         .deliveryCharge(productRequest.getDeliveryCharge())
@@ -126,7 +139,7 @@ public class ProductServiceImpl implements ProductService{
     }
 
     @Override
-    public void updateProduct(ProductUpdateRequest productRequest, Long userId) {
+    public void updateProduct(ProductUpdateRequest productRequest, Long userId, MultipartFile file) {
         //상품번호로 조회된 상품이 있는지 확인
         Long productId = productRequest.getProductId();
         //TODO : 작성자와 동일한 아이디의 수정요청인지 확인 필요
@@ -136,10 +149,21 @@ public class ProductServiceImpl implements ProductService{
             Product product = result.orElseThrow();
 
             boolean equals = userId.equals(product.getSellerId());
-            if(!equals){
+            //판매자 아이디랑 같은지 확인
+            if (!equals) {
                 throw new Exception();
             }
 
+            //파일이 있다가 삭제됨
+            if(product.getImgSrc() != null && productRequest.getImgSrc() == null){
+                s3UploadService.deleteImage(product.getImgSrc());
+            }
+
+            //새로운 파일 등록
+            if (file !=null){
+                String imgSrc = s3UploadService.saveFile(file);
+                product.changeImgSrc(imgSrc);
+            }
             //상품 정보 수정
             product.change(productRequest);
             productRepository.save(product);
@@ -159,15 +183,19 @@ public class ProductServiceImpl implements ProductService{
 
         try{
             boolean equals = userId.equals(product.getSellerId());
+            //판매자 아이디랑 같은지 확인
             if(!equals){
                 throw new Exception();
             }
+            log.info("파일 삭제 : "+product.getImgSrc());
+            //이미지 삭제
+            s3UploadService.deleteImage(product.getImgSrc());
+
+            //상품 번호로 상품 삭제
+            productRepository.deleteById(productId);
         }catch (Exception e){
             log.info(e.getMessage());
-            throw new BusinessExceptionHandler("삭제 권한이 없습니다",ErrorCode.BAD_REQUEST_ERROR);
+            throw new BusinessExceptionHandler("삭제 중 에러가 발생했습니다",ErrorCode.BAD_REQUEST_ERROR);
         }
-
-        //상품 번호로 상품 삭제
-        productRepository.deleteById(productId);
     }
 }

@@ -77,6 +77,11 @@ public enum ErrorCode {
 
     NO_ELEMENT_ERROR(500, "C001", "No Such Element Exception"),
 
+    //파일 업로드
+    FAIL_FILE_UPLOAD(500,"F001","Fail File Upload Excetion"),
+
+    FAIL_FILE_DELETE(500,"F002","Fail File Delete Excetion"),
+
     // 인증
     // Token 기간 만료
     EXPIRED_TOKEN_ERROR(401, "G013", "Expired Token Exception"),
