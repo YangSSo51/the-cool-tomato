@@ -25,33 +25,33 @@ public class User {
     @Column(name = "user_id")
     private Long id;
 
-    @Column(length = 10, nullable = false)
-    @Enumerated(value = EnumType.STRING)
-    private Auth auth;
-
-    @Column(length = 50, nullable = false, unique = true)
-    private String loginId;
-
-    @Column(nullable = false)
-    @JsonIgnore
-    private String password;
-
-    @Column(length = 100, nullable = false, unique = true)
-    private String email;
-
+//    @Column(length = 10, nullable = false)
+//    @Enumerated(value = EnumType.STRING)
+//    private Auth auth;
+//
+//    @Column(length = 50, nullable = false, unique = true)
+//    private String loginId;
+//
+//    @Column(nullable = false)
+//    @JsonIgnore
+//    private String password;
+//
+//    @Column(length = 100, nullable = false, unique = true)
+//    private String email;
+//
     @Column(nullable = false, length = 50)
     private String nickname;
-
-    @Column(nullable = false, length = '1')
-    @Enumerated(value = EnumType.STRING)
-    private Sex sex;
-
-    @Column(nullable = false)
-    private LocalDate birthday;
-
-    private String profileImg;
-
-    @CreatedDate
-    @Column(updatable = false)
-    private LocalDateTime joinDate;
+//
+//    @Column(nullable = false, length = '1')
+//    @Enumerated(value = EnumType.STRING)
+//    private Sex sex;
+//
+//    @Column(nullable = false)
+//    private LocalDate birthday;
+//
+//    private String profileImg;
+//
+//    @CreatedDate
+//    @Column(updatable = false)
+//    private LocalDateTime joinDate;
 }

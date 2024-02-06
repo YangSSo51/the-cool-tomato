@@ -25,10 +25,10 @@ public class LiveBroadcast {
     @Column(name = "live_broadcast_id", nullable = false)
     private Long id;
 
-    @Column(nullable = false)
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "seller_id")
-    private Long sellerId;
+//    @Column(nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "seller_id")
+    private User user;
     private String broadcastTitle;
     private String content;
     private String script;

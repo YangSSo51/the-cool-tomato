@@ -4,6 +4,6 @@ import com.wp.broadcast.domain.live.dto.common.LiveBroadcastInfos;
 
 import java.util.List;
 
-public class SearchBroadcastSellerResponse {
+public class SearchBySellerResponse {
     List<LiveBroadcastInfos> liveBroadcastInfosList;
 }

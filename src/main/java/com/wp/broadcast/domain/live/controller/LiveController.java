@@ -25,7 +25,7 @@ import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping(value = "/v1/live")
+@RequestMapping(value = "/v1/live/broadcast")
 @Tag(name = "live", description = "라이브 API Doc")
 public class LiveController {
 

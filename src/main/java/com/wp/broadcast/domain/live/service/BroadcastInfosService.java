@@ -1,15 +1,16 @@
 package com.wp.broadcast.domain.live.service;
 
+import com.wp.broadcast.domain.live.dto.common.LiveBroadcastInfos;
 import com.wp.broadcast.domain.live.dto.controller.response.GetBroadcastListResponseDto;
-import com.wp.broadcast.domain.live.dto.controller.response.GetCarouselResponseDto;
-import com.wp.broadcast.domain.live.dto.controller.response.SearchBroadcastSellerResponse;
-import com.wp.broadcast.domain.live.dto.controller.response.SearchBroadcastTitleResponse;
+import com.wp.broadcast.domain.live.dto.controller.response.SearchBySellerResponse;
+
+import java.util.List;
 
 public interface BroadcastInfosService {
 
-    public GetCarouselResponseDto getCarousel();
+    public List<LiveBroadcastInfos> getCarousel();
     public GetBroadcastListResponseDto getLivebBroadcastList(int page, int size);
-    public SearchBroadcastTitleResponse searchLivebBroadcastTitle(String titleKeyword);
-    public SearchBroadcastSellerResponse searchLivebBroadcastSeller(String sellerKeyword);
+    public List<LiveBroadcastInfos> searchLivebBroadcastTitle(String keyword, int page, int size);
+    public SearchBySellerResponse searchLivebBroadcastSeller(String sellerKeyword);
 
 }
