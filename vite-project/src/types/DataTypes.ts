@@ -1,6 +1,6 @@
 export type userInfo = {
     profileImgFile: File | null;
-    profileImg: string  | null;
+    profileImg: string | null;
     password: string | null;
     newPassword: string | null;
     nickname: string;
@@ -68,7 +68,7 @@ export interface ItemDetailInterface {
     price: number;
     deliveryCharge: number;
     quantity: number;
-    registerDate: string
+    registerDate: string;
 }
 
 export type broadcastInfo = {
@@ -79,4 +79,11 @@ export type broadcastInfo = {
     ttsSetting: boolean;
     chatbotSetting: boolean;
     broadcastStartDate: string;
+};
+
+export interface liveProductPrice {
+    productId: number;
+    originalPrice: number;
+    price: number;
+    discount: number;
 }

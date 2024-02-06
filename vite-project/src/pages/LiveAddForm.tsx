@@ -17,12 +17,21 @@ import { RootState } from "../redux/stores/store";
 import LiveItemAdd from "../components/broadcast/LiveItemAdd";
 import AddGoods from "../components/broadcast/AddGoods";
 import { reserveLive } from "../api/openVidu";
-
+import { ItemDetailInterface, liveProductPrice } from "../types/DataTypes";
 
 export default function LiveAddForm() {
     const user = useSelector((state: RootState) => state.user);
     const accessToken = user.accessToken;
     const [isSelected, isSelectedState] = useState(false);
+    const [selectedProductId, setSelectedProductId] = useState<
+        Map<number, liveProductPrice>
+    >(new Map());
+    const [products, setProducts] = useState<Array<ItemDetailInterface>>([]);
+    const [mainProductId, setMainProductId] = useState<number>(0);
+    const [isOpen, setIsOpen] = useState(false);
+    const [page, setPage] = useState<number>(0);
+    const size = 5;
+
     const [title, setTitle] = useState("");
     const [startDate, setStartDate] = useState("");
     const [priceEndDate, setPriceEndDate] = useState("");
@@ -30,18 +39,18 @@ export default function LiveAddForm() {
     const [chatbotSetting, setChatbotSetting] = useState(false);
     const [memo, setMemo] = useState("");
 
-    const onSetSelected = ( x : boolean ): void => {
+    const onSetSelected = (x: boolean): void => {
         isSelectedState(x);
-    }
-    
+    };
+
     async function onSubmit(event: React.SyntheticEvent): Promise<void> {
         event.preventDefault();
         if (title === "") {
-            alert("방송 제목을 입력해주세요!")
+            alert("방송 제목을 입력해주세요!");
         } else if (startDate === "") {
-            alert("방송 시작 시간을 확인해주세요!")
+            alert("방송 시작 시간을 확인해주세요!");
         } else if (priceEndDate === "") {
-            alert("상품들의 할인가 적용 시간을 정해주세요!")
+            alert("상품들의 할인가 적용 시간을 정해주세요!");
         } else {
             const broadcastData = {
                 accessToken: accessToken,
@@ -50,11 +59,15 @@ export default function LiveAddForm() {
                 script: memo,
                 ttsSetting: faqSetting,
                 chatbotSetting: chatbotSetting,
-                broadcastStartDate: startDate
+                broadcastStartDate: startDate,
             };
             const response = await reserveLive(broadcastData);
-            console.log(response)
+            console.log(response);
         }
+    }
+
+    function onOpen() {
+        setIsOpen(true);
     }
 
     return (
@@ -116,13 +129,46 @@ export default function LiveAddForm() {
                                     display="flex"
                                     flexDirection="column"
                                 >
-                                    <AddGoods isSelected={isSelected} isSelectedState={onSetSelected} />
+                                    <AddGoods
+                                        isSelected={isSelected}
+                                        isSelectedState={onSetSelected}
+                                        products={products}
+                                        setProducts={setProducts}
+                                        selectedProductId={selectedProductId}
+                                        setSelectedProductId={
+                                            setSelectedProductId
+                                        }
+                                        mainProductId={mainProductId}
+                                        setMainProductId={setMainProductId}
+                                        setIsOpen={setIsOpen}
+                                    />
                                 </Box>
                             ) : (
                                 <Center maxH={"100%"} minH={"40rem"}>
-                                    <LiveItemAdd isSelected={isSelected} isSelectedState={onSetSelected} />
+                                    <Button
+                                        colorScheme="teal"
+                                        variant="link"
+                                        onClick={onOpen}
+                                    >
+                                        <Text as={"b"} fontSize={"3xl"}>
+                                            라이브 할 상품 클릭
+                                        </Text>
+                                    </Button>
                                 </Center>
                             )}
+                            <LiveItemAdd
+                                isSelected={isSelected}
+                                isSelectedState={onSetSelected}
+                                products={products}
+                                setProducts={setProducts}
+                                selectedProductId={selectedProductId}
+                                setSelectedProductId={setSelectedProductId}
+                                page={page}
+                                setPage={setPage}
+                                size={size}
+                                isOpen={isOpen}
+                                setIsOpen={setIsOpen}
+                            />
                         </Box>
                     </Box>
 
@@ -145,13 +191,27 @@ export default function LiveAddForm() {
                             <Text fontSize={"xl"} as={"b"}>
                                 자주 묻는 질문 설정 (챗봇)
                             </Text>
-                            <Switch ml={"2rem"} size={"lg"} isChecked={faqSetting} onChange={(e) => setFaqSetting(e.target.checked)} />
+                            <Switch
+                                ml={"2rem"}
+                                size={"lg"}
+                                isChecked={faqSetting}
+                                onChange={(e) =>
+                                    setFaqSetting(e.target.checked)
+                                }
+                            />
                         </Box>
                         <Box p={"2rem"}>
                             <Text fontSize={"xl"} as={"b"}>
                                 채팅을 자동으로 읽어주기 설정
                             </Text>
-                            <Switch ml={"2rem"} size={"lg"} isChecked={chatbotSetting} onChange={(e) => setChatbotSetting(e.target.checked)} />
+                            <Switch
+                                ml={"2rem"}
+                                size={"lg"}
+                                isChecked={chatbotSetting}
+                                onChange={(e) =>
+                                    setChatbotSetting(e.target.checked)
+                                }
+                            />
                         </Box>
                     </Flex>
 
@@ -168,7 +228,12 @@ export default function LiveAddForm() {
                     </Box>
 
                     <Center mt={"1rem"}>
-                        <Button onClick={onSubmit} bgColor={"themeGreen.500"} color="white" mr={3}>
+                        <Button
+                            onClick={onSubmit}
+                            bgColor={"themeGreen.500"}
+                            color="white"
+                            mr={3}
+                        >
                             등록
                         </Button>
                         <Button bgColor={"themeRed.500"} color="white">
