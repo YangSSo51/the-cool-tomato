@@ -6,7 +6,7 @@ import { useParams } from "react-router-dom";
 import { ItemDetailInterface } from "../../types/DataTypes";
 
 export default function ItemComponent() {
-    const [dummylist, setDummylist] = useState<ItemDetailInterface | undefined>();
+    const [dummylist, setDummylist] = useState<Array<ItemDetailInterface> | undefined>();
     const { currentpage } = useParams() as { currentpage: string };
 
     useEffect(() => {
@@ -31,6 +31,7 @@ export default function ItemComponent() {
                     >
                         <Goods
                             id={data?.productId}
+                            // profile = {data.profile}
                             img={data?.imgSrc}
                             title={data?.productName}
                             price={data?.price}

@@ -70,3 +70,23 @@ export interface ItemDetailInterface {
     quantity: number;
     registerDate: string
 }
+
+export interface AddItemInterface {
+    categoryId: number;
+    productName: string;
+    productContent: string;
+    paymentLink: string;
+    price: number;
+    deliveryCharge: number;
+    quantity: number;
+}
+
+export type broadcastInfo = {
+    accessToken: string;
+    broadcastTitle: string;
+    content: string;
+    script: string;
+    ttsSetting: boolean;
+    chatbotSetting: boolean;
+    broadcastStartDate: string;
+}

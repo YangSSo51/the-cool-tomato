@@ -9,6 +9,7 @@ import {
     Container,
     FormLabel,
     Select,
+    FormHelperText,
 } from "@chakra-ui/react";
 import React, { useEffect, useRef, useState } from "react";
 import ReactDOM from "react-dom/client";
@@ -19,16 +20,8 @@ import FroalaEditorComponent from "react-froala-wysiwyg";
 import "froala-editor/js/plugins.pkgd.min.js";
 import { ItemAddFunction } from "../api/Itemlist";
 import { useNavigate } from "react-router-dom";
-
-interface InterfaceValues {
-    categoryId: number;
-    productName: string;
-    productContent: string;
-    paymentLink: string;
-    price: number;
-    deliveryCharge: number;
-    quantity: number;
-}
+import { formatNumberWithComma } from "../components/common/Comma";
+import { AddItemInterface } from "../types/DataTypes"
 
 export default function ItemAdd() {
     const editorRef = useRef(null);
@@ -38,7 +31,7 @@ export default function ItemAdd() {
         autofocus: true,
         attribution: false,
     };
-    const [values, setValues] = useState<InterfaceValues>({
+    const [values, setValues] = useState<AddItemInterface>({
         categoryId: 0,
         productName: "",
         productContent: "",
@@ -48,6 +41,8 @@ export default function ItemAdd() {
         quantity: 100,
     });
     const navigate = useNavigate();
+    const [TitleInput, setTitleInput] = useState("");
+    const TitleError = TitleInput === "";
 
     // Editor & Editor Values
     useEffect(() => {
@@ -60,13 +55,24 @@ export default function ItemAdd() {
     // 입력값
     const handleNumber = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
+        let onlyNumber = parseInt(value.replace(/[^0-9]/g, ''))
+
+        if (onlyNumber >= 100000000) {
+            onlyNumber = 100
+        }
+
+        if (isNaN(onlyNumber) || onlyNumber < 100) {
+            onlyNumber = 100
+        }
+
         setValues((prevValues) => ({
             ...prevValues,
-            [name]: Number(value),
+            [name]: Number(onlyNumber),
         }));
     };
 
     const handleString = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setTitleInput(e.target.value);
         const { name, value } = e.target;
         setValues((prevValues) => ({
             ...prevValues,
@@ -90,12 +96,25 @@ export default function ItemAdd() {
     };
 
     const onSubmit = async () => {
-
-        try {
-            await ItemAddFunction(values);
-            navigate('/v1/items/list/0')
-        } catch (error) {
-            console.error(error);
+        console.log(values)
+        if (values.price >= 1000 && values.categoryId && values.productName.length >= 1 && values.productContent.length >= 1) {
+            try {
+                await ItemAddFunction(values);
+                navigate("/v1/items/list/0");
+            } catch (error) {
+                alert("등록 실패했습니다. 상품을 다시 설정해주세요.")
+            }
+        }
+        else if (!values.price) {
+            alert("가격을 설정해주세요")
+        }
+        else if (!values.categoryId) {
+            alert("카테고리를 설정해주세요")
+        }
+        else if (!values.productContent) {
+            alert("컨텐츠 내용을 적어주세요")
+        } else if (!values.productName) {
+            alert("상품명을 설정해주세요")
         }
     };
 
@@ -117,15 +136,23 @@ export default function ItemAdd() {
                             variant="floating"
                             id="first-name"
                             isRequired
-                            isInvalid
+                            isInvalid={TitleError}
                         >
                             <Input
                                 type="text"
                                 name="productName"
                                 onChange={handleString}
                                 placeholder=" "
+                                maxLength={10}
                             />
-                            <FormLabel>제목을 입력해주세요</FormLabel>
+
+                            <FormHelperText>
+                                제목은 10자 아래로 설정해주세요
+                            </FormHelperText>
+
+                            {TitleInput.length >= 1 ? null : (
+                                <FormLabel>제목을 입력해주세요</FormLabel>
+                            )}
                         </FormControl>
                     </Box>
 
@@ -138,15 +165,25 @@ export default function ItemAdd() {
                             variant="floating"
                             id="first-name"
                             isRequired
-                            isInvalid
+                            isInvalid={values.price === 0}
                         >
                             <Input
-                                type="number"
+                                type="text"
                                 name="price"
                                 onChange={handleNumber}
+                                value={
+                                    formatNumberWithComma(values.price)
+                                }
                                 placeholder=" "
                             />
-                            <FormLabel>가격을 입력해주세요</FormLabel>
+
+                            <FormHelperText>
+                                가격은 100원 단위로 설정해주세요
+                            </FormHelperText>
+
+                            {values.price > 0 ? null : (
+                                <FormLabel>가격을 입력해주세요</FormLabel>
+                            )}
                         </FormControl>
                     </Box>
 
