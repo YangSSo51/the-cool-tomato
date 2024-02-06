@@ -1,5 +1,6 @@
 package com.wp.user.domain.block.service;
 
+import com.wp.user.domain.block.dto.request.BlockedIdListRequest;
 import com.wp.user.domain.block.dto.response.GetBlockManageListResponse;
 import com.wp.user.domain.block.entity.BlockManage;
 import com.wp.user.domain.block.repository.BlockManageRepository;
@@ -18,6 +19,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -47,22 +49,23 @@ public class BlockManageServiceImpl implements  BlockManageService {
             throw new BusinessExceptionHandler(ErrorCode.NOT_SELLER);
         }
         // 차단 목록
-        List<BlockManage> blockManages = blockManageRepository.findAllBySellerId(Long.valueOf(infos.get("userId")));
+        return getBlockManagesBySellerId(Long.valueOf(infos.get("userId")));
+    }
+
+    // 차단 목록 조회
+    @Override
+    public GetBlockManageListResponse getBlockManagesBySellerId(Long sellerId) {
+        // 차단 목록
+        List<BlockManage> blockManages = blockManageRepository.findAllBySellerId(sellerId);
         return GetBlockManageListResponse.from(blockManages);
     }
 
     // 차단 등록
     @Override
     @Transactional
-    public void addBlocked(HttpServletRequest httpServletRequest, Long blockedId) {
-        String accessToken = jwtService.resolveAccessToken(httpServletRequest);
-        // 인증
-        authClient.validateToken(AccessTokenRequest.builder().accessToken(accessToken).build());
-        Map<String, String> infos = authClient.extraction(ExtractionRequest.builder().accessToken(accessToken).infos(List.of("userId", "auth")).build()).getInfos();
-        // 차단된 사용자
-        User blocked = userRepository.findById(blockedId).orElseThrow(() -> new BusinessExceptionHandler(ErrorCode.NOT_FOUND_USER_ID));
+    public void addBlocked(BlockedIdListRequest blockedIdListRequest) {
         // 판매자
-        User seller = userRepository.findById(Long.valueOf(infos.get("userId"))).orElseThrow(() -> new BusinessExceptionHandler(ErrorCode.NOT_FOUND_SELLER_ID));
+        User seller = userRepository.findById(blockedIdListRequest.getSellerId()).orElseThrow(() -> new BusinessExceptionHandler(ErrorCode.NOT_FOUND_SELLER_ID));
         try {
             if(!seller.getAuth().equals(Auth.SELLER)) {
                 throw new BusinessExceptionHandler(ErrorCode.NOT_SELLER);
@@ -70,25 +73,33 @@ public class BlockManageServiceImpl implements  BlockManageService {
         } catch (Exception e) {
             throw new BusinessExceptionHandler(ErrorCode.NOT_SELLER);
         }
-        BlockManage blockManage = BlockManage.builder().blocked(blocked).seller(seller).build();
-        blockManageRepository.save(blockManage);
+        List<User> blockedList = userRepository.findAllById(blockedIdListRequest.getBlockedIds());
+        List<BlockManage> blockManageList = new ArrayList<>();
+        for (User blocked : blockedList) {
+            BlockManage blockManage = BlockManage.builder().seller(seller).blocked(blocked).build();
+            blockManageList.add(blockManage);
+        }
+        blockManageRepository.saveAll(blockManageList);
     }
 
     // 차단 삭제
     @Override
     @Transactional
-    public void removeBlocked(HttpServletRequest httpServletRequest, Long blockedId) {
-        String accessToken = jwtService.resolveAccessToken(httpServletRequest);
-        // 인증
-        authClient.validateToken(AccessTokenRequest.builder().accessToken(accessToken).build());
-        Map<String, String> infos = authClient.extraction(ExtractionRequest.builder().accessToken(accessToken).infos(List.of("userId", "auth")).build()).getInfos();
+    public void removeBlocked(BlockedIdListRequest blockedIdListRequest) {
+        User seller = userRepository.findById(blockedIdListRequest.getSellerId()).orElseThrow(() -> new BusinessExceptionHandler(ErrorCode.NOT_FOUND_SELLER_ID));
         try {
-            if(!infos.get("auth").equals(Auth.SELLER)) {
+            if(!seller.getAuth().equals(Auth.SELLER)) {
                 throw new BusinessExceptionHandler(ErrorCode.NOT_SELLER);
             }
         } catch (Exception e) {
             throw new BusinessExceptionHandler(ErrorCode.NOT_SELLER);
         }
-        blockManageRepository.deleteByBlockedIdAndSellerId(blockedId, Long.valueOf(infos.get("userId")));
+        List<User> blockedList = userRepository.findAllById(blockedIdListRequest.getBlockedIds());
+        List<BlockManage> blockManageList = new ArrayList<>();
+        for (User blocked : blockedList) {
+            BlockManage blockManage = BlockManage.builder().seller(seller).blocked(blocked).build();
+            blockManageList.add(blockManage);
+        }
+        blockManageRepository.deleteAll(blockManageList);
     }
 }
