@@ -23,6 +23,7 @@ public class ProductServiceImpl implements ProductService{
 
     private final ProductRepository productRepository;
 
+
     @Override
     public Map<String, Object> searchProduct(ProductSearchRequest productSearchRequest) {
         //검색 조건에 맞는 상품 리스트 조회
@@ -103,11 +104,11 @@ public class ProductServiceImpl implements ProductService{
     }
 
     @Override
-    public void saveProduct(ProductCreateRequest productRequest){
+    public void saveProduct(ProductCreateRequest productRequest, Long userId){
         //상품 등록 객체 생성
         Product product = Product.builder()
                         .category(Category.builder().categoryId(productRequest.getCategoryId()).build())
-                        .sellerId(1L)                   // TODO : 등록하는 사용자 정보로 등록
+                        .sellerId(userId)
                         .productName(productRequest.getProductName())
                         .productContent(productRequest.getProductContent())
                         .paymentLink(productRequest.getPaymentLink())
@@ -125,7 +126,7 @@ public class ProductServiceImpl implements ProductService{
     }
 
     @Override
-    public void updateProduct(ProductUpdateRequest productRequest) {
+    public void updateProduct(ProductUpdateRequest productRequest, Long userId) {
         //상품번호로 조회된 상품이 있는지 확인
         Long productId = productRequest.getProductId();
         //TODO : 작성자와 동일한 아이디의 수정요청인지 확인 필요
@@ -133,6 +134,12 @@ public class ProductServiceImpl implements ProductService{
 
         try {
             Product product = result.orElseThrow();
+
+            boolean equals = userId.equals(product.getSellerId());
+            if(!equals){
+                throw new Exception();
+            }
+
             //상품 정보 수정
             product.change(productRequest);
             productRepository.save(product);
@@ -145,11 +152,20 @@ public class ProductServiceImpl implements ProductService{
     }
 
     @Override
-    public void deleteProduct(Long productId) {
+    public void deleteProduct(Long productId, Long userId) {
         //상품 번호로 상품 조회
-        //TODO : 작성자와 동일한 아이디의 삭제요청인지 확인 필요
-        productRepository.findById(productId)
-                .orElseThrow(()->new BusinessExceptionHandler("상품이 존재하지 않습니다",ErrorCode.NO_ELEMENT_ERROR));
+        Product product = productRepository.findById(productId)
+                .orElseThrow(() -> new BusinessExceptionHandler("상품이 존재하지 않습니다", ErrorCode.NO_ELEMENT_ERROR));
+
+        try{
+            boolean equals = userId.equals(product.getSellerId());
+            if(!equals){
+                throw new Exception();
+            }
+        }catch (Exception e){
+            log.info(e.getMessage());
+            throw new BusinessExceptionHandler("삭제 권한이 없습니다",ErrorCode.BAD_REQUEST_ERROR);
+        }
 
         //상품 번호로 상품 삭제
         productRepository.deleteById(productId);

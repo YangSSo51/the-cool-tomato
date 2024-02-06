@@ -16,9 +16,9 @@ public interface ProductService {
 
     ProductFindResponse findProductById(Long productId);
 
-    void saveProduct(ProductCreateRequest productRequest);
+    void saveProduct(ProductCreateRequest productRequest, Long userId);
 
-    void updateProduct(ProductUpdateRequest productRequest);
+    void updateProduct(ProductUpdateRequest productReques, Long userId);
 
-    void deleteProduct(Long productId);
+    void deleteProduct(Long productId, Long userId);
 }
