@@ -7,20 +7,21 @@ import { RootState } from "../../../redux/stores/store";
 import { getFollowingListAPI, unfollowSellerAPI } from "../../../api/user";
 import { followerItem } from "../../../types/DataTypes";
 
+interface UpdateFollowingFunc {
+    (userId: string): void;
+}
+
 export default function Following() {
     const navigate = useNavigate();
     const user = useSelector((state: RootState) => state.user);
     const accessToken = user.accessToken;
     const [following, setFollowing] = useState([]);
-    const followingData = following.map((item, index) => (
-        <FollowingItem key={index} following={item} accessToken={accessToken} />
-    ));
+    
 
     useEffect(() => {
         const fetchData = async () => {
             try {
                 const response = await getFollowingListAPI(accessToken)
-                console.log(response.data)
                 if (response.data.follow) {
                   setFollowing(response.data.follow)
                 } else {
@@ -33,7 +34,12 @@ export default function Following() {
             }
         };
         fetchData();
-    }, [])
+    }, [])  // Remove 'following' from dependencies
+
+    // 팔로잉 상태 업데이트 함수
+    const updateFollowing = (userId: number) => {
+        setFollowing(following.filter((item) => item.userId !== userId));
+    };
     
 
     function onclick() {
@@ -43,7 +49,13 @@ export default function Following() {
     return (
         <Box flexDirection="column" w="90%" h="full" mb="10">
             <Flex flexDir="column" h="full" m="auto">
-                    {followingData.length ? followingData : 
+                    {following.length ? following.map((item, index) => (
+                        <FollowingItem 
+                            key={index} 
+                            following={item} 
+                            accessToken={accessToken}
+                            i={index}
+                            updateFollowing={updateFollowing} />)) : 
                         <Flex m="auto" flexDir="column">
                             <Text fontSize='5xl' color="gray.500" mb="5">팔로잉한 사람이 없습니다!</Text>
                             <Button colorScheme="themeGreen" onClick={onclick}>라이브 구경하러 가기</Button>
@@ -54,14 +66,14 @@ export default function Following() {
     )
 }
 
-function FollowingItem({following, accessToken} : {following: followerItem, accessToken: string}) {
+function FollowingItem({following, accessToken, updateFollowing} : {following: followerItem, accessToken: string, i:number, updateFollowing: UpdateFollowingFunc}) {
     console.log(following)
 
     
     const onClickUnfollow = () => {
         unfollowSellerAPI(following.userId, accessToken).then((result) => {
             if (result === 1) {
-                //이 팔로잉 목록을 삭제
+                updateFollowing(following.userId);
             } else {
                 // sellerId: number, alarmSetting: boolean, accessToken: string 
             }

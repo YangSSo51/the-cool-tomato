@@ -7,7 +7,8 @@ import { followSellerAPI, unfollowSellerAPI } from "../../api/user";
 export default function SellerHeader(props) {
     const user = useSelector((state: RootState) => state.user);
     const [following, setFollowing] = useState(false)
-    const [followerCount, setFollowerCount] = useState<number>(Number(props.sellerInfo.followerCount));
+    const [ isLoading, setIsLoading ] = useState(false)
+    const [followerCount, setFollowerCount] = useState(0);
 
     const onClickFollow = () => {
         followSellerAPI(props.sellerId, true, user.accessToken).then((result) => {
@@ -31,13 +32,14 @@ export default function SellerHeader(props) {
         });
     };
 
-    // useEffect(() => {
-    //     if (props.sellerInfo.followerCount) {
-    //       setFollowerCount(props.sellerInfo.followerCount);
-    //     }
-    //   }, [props.sellerInfo]);
+    useEffect(() => {
+      if (props.sellerInfo.followerCount != 0) {
+        setFollowerCount(props.sellerInfo.followerCount);
+        setIsLoading(true);
+      }
+    }, []);
 
-    console.log(props.sellerInfo) // {}
+    console.log(props.sellerInfo.followerCount) // {}
 
     return (
         <>
@@ -55,13 +57,11 @@ export default function SellerHeader(props) {
                 <Box flex="1" textAlign="center" mr="5">
                     <Text fontWeight="bold">팔로워</Text>
                 {
-                    following ? (
-                        <Text>{props.sellerInfo.followerCount}</Text>
-                    ) : (
-                        <Text>{followerCount}</Text>
-                    )
+                    isLoading ?
+                    <Text>{followerCount}</Text>
+                    : 
+                    <Text>{props.sellerInfo.followerCount} hello</Text>
                 }
-                    <Text>{props.sellerInfo.followerCount}</Text>
                     
                 </Box>
                 {

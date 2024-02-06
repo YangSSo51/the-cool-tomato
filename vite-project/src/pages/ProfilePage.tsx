@@ -8,6 +8,7 @@ import SellerPosts from "../components/sellerprofile/SellerPosts";
 function ProfilePage() {
     const { sellerId } = useParams<{ sellerId: string }>();
     const sellerIdNumber = parseInt(sellerId);
+    const [ test, setTest ] = useState(false)
 
     const [sellerInfo, setSellerInfo] = useState({})
     // const [products, setProducts] = useState([])
@@ -18,6 +19,7 @@ function ProfilePage() {
             try {
                 const response = await getSellerDetailAPI(sellerIdNumber)
                 setSellerInfo(response.data)
+                setTest(true)
                 console.log(response.data)
             } catch (error) {
                 console.error(error)
@@ -36,7 +38,12 @@ function ProfilePage() {
                 mb={"2rem"}
                 maxW={"100vw"}
             >
-                <SellerHeader sellerId={sellerIdNumber} sellerInfo={sellerInfo} />
+                {
+                    test ? 
+                    <SellerHeader sellerId={sellerIdNumber} sellerInfo={sellerInfo} />
+                    :
+                    <h1>loading</h1>
+                }
                 <SellerPosts />
             </Flex>
         </>

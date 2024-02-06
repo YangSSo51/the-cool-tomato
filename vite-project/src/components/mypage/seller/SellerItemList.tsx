@@ -12,16 +12,17 @@ function Items() {
     const [sellerItem, setSellerItem] = useState([])
 
     useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const response = await sellersMyproductsAPI()
-                setSellerItem(response.data.list)
-            } catch (error) {
-                console.error(error)
-            }
+        const fetchData = () => {
+            sellersMyproductsAPI()
+                .then((response) => {
+                    setSellerItem(response.data.list);
+                })
+                .catch((error) => {
+                    console.error(error);
+                });
         };
         fetchData();
-    }, [])
+    }, []);
     
     function onclick() {
         navigate("/v1/ItemAdd");
