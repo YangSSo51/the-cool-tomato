@@ -67,6 +67,7 @@ export default function SellerPage() {
                 판매자 마이페이지
             </Center>
             
+            
             <Flex m="auto" border="2px" borderColor="themeLightGreen.500" overflow="scroll" rounded="lg" w="85vw" minH={{ base:"85vh", lg: "85vh"}}>
                 <Flex m="auto" direction={{ base: "column", lg: "row"}} rounded="lg" w="80vw" maxH={{ base:"auto", lg: "80vh"}} px="2">
                     <Box w={{ base: "100%", lg: "25%" }} pr="4" >

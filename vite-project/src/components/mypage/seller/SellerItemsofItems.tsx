@@ -2,63 +2,76 @@ import { Box, Flex } from "@chakra-ui/layout";
 import { Button, Image } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 import { ItemDetailInterface } from "../../../types/DataTypes";
+import { ItemDetailDelete } from "../../../api/Itemlist";
 
-function ItemsofItems({sellerItem} : {sellerItem: ItemDetailInterface}) {
+function ItemsofItems({ sellerItem }: { sellerItem: ItemDetailInterface }) {
     const navigate = useNavigate();
-    
+
     function onclick() {
         navigate(`/v1/items/detail/${sellerItem.productId}`);
     }
 
+    const DeleteFunction = () => {
+        ItemDetailDelete(sellerItem.productId)
+    };
+
     return (
-        <Flex justifyContent="space-between" alignItems="center" my="4" mx="auto" p="2" borderWidth='1px' borderRadius='lg' overflow='hidden'>
+        <Flex
+            justifyContent="space-between"
+            alignItems="center"
+            my="4"
+            mx="auto"
+            p="2"
+            borderWidth="1px"
+            borderRadius="lg"
+            overflow="hidden"
+        >
             <Flex p="2">
                 <Image mr="2" boxSize="100px" src={sellerItem.imgSrc} />
 
                 <Box ml="2" pt="4">
-
                     <Box
-                        mt='1'
-                        fontWeight='semibold'
-                        as='h4'
-                        lineHeight='tight'
+                        mt="1"
+                        fontWeight="semibold"
+                        as="h4"
+                        lineHeight="tight"
                         noOfLines={1}
-                        >
+                    >
                         {sellerItem.productName}
                     </Box>
 
                     <Box>
-                        <Box as='span' color='gray.600' fontSize='sm'>
+                        <Box as="span" color="gray.600" fontSize="sm">
                             {sellerItem.productContent}
                         </Box>
                     </Box>
 
-                    <Box display='flex' alignItems='baseline'>
+                    <Box display="flex" alignItems="baseline">
                         <Box
-                            color='gray.500'
-                            fontWeight='semibold'
-                            letterSpacing='wide'
-                            fontSize='xs'
-                            textTransform='uppercase'
-                            >
-                            가격 {sellerItem.price} &bull; 배송비 {sellerItem.deliveryCharge} &bull; 수량 {sellerItem.quantity}
-                            &nbsp; 
-                            판매링크 {sellerItem.paymentLink} 
+                            color="gray.500"
+                            fontWeight="semibold"
+                            letterSpacing="wide"
+                            fontSize="xs"
+                            textTransform="uppercase"
+                        >
+                            가격 {sellerItem.price} &bull; 배송비{" "}
+                            {sellerItem.deliveryCharge} &bull; 수량{" "}
+                            {sellerItem.quantity}
+                            &nbsp; 판매링크 {sellerItem.paymentLink}
                         </Box>
                     </Box>
                 </Box>
             </Flex>
 
-            <Box>
-                <Button mr="2">
-                    수정
+            <Flex direction={"column"}>
+                <Button colorScheme="red" mb={"0.5rem"} onClick={DeleteFunction}>
+                    삭제
                 </Button>
-                <Button onClick={onclick}>
-                    상세
-                </Button>
-            </Box>
+                <Button mb={"0.5rem"}>수정</Button>
+                <Button onClick={onclick}>상세</Button>
+            </Flex>
         </Flex>
-    )
+    );
 }
 
-export default ItemsofItems
+export default ItemsofItems;
