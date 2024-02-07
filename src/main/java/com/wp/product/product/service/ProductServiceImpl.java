@@ -3,7 +3,6 @@ package com.wp.product.product.service;
 import com.wp.product.category.entity.Category;
 import com.wp.product.global.common.code.ErrorCode;
 import com.wp.product.global.exception.BusinessExceptionHandler;
-import com.wp.product.global.file.service.FileUploadService;
 import com.wp.product.global.file.service.S3UploadService;
 import com.wp.product.product.dto.request.ProductCreateRequest;
 import com.wp.product.product.dto.request.ProductSearchRequest;
