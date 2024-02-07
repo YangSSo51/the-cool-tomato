@@ -21,7 +21,7 @@ function openViduDirectAxios() {
 
 function liveAxios() {
     return axios.create({
-        baseURL: "http://i10a501.p.ssafy.io:8083/v1/live",
+        baseURL: "http://i10a501.p.ssafy.io:8083/v1",
         headers: {
             "Content-Type": "application/json",
         },

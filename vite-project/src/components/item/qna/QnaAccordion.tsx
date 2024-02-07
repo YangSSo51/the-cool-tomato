@@ -132,7 +132,7 @@ function QnaAccordion({
                         {data.questionContent}
                     </Text>
                 </AccordionPanel>
-                {data.answer === 0 ? (
+                {data.answer === 1 ? (
                     <AccordionPanel py={7}>
                         <Box>
                             <Text
