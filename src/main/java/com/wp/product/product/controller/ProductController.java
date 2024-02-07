@@ -43,13 +43,15 @@ public class ProductController {
     @Operation(summary = "상품 목록 조회",description = "카테고리 ID로 상품 목록 조회 ")
     public ResponseEntity<?> searchProduct(@RequestParam(defaultValue = "0") int page,
                                            @RequestParam(defaultValue = "10") int size,
-                                           @RequestParam(required = false,name = "category-id") Long categoryId){
+                                           @RequestParam(required = false,name = "category-id") Long categoryId,
+                                           @RequestParam(required = false) Long sellerId){
 
         //상품 목록 조회 request 만듦
         ProductSearchRequest productSearchRequest = ProductSearchRequest.builder()
                                                                         .page(page)
                                                                         .size(size)
-                                                                        .categoryId(categoryId).build();
+                                                                        .categoryId(categoryId)
+                                                                        .sellerId(sellerId).build();
 
         //카테고리 ID로 상품 목록 조회
         Map<String, Object> productFindResponses = productService.searchProduct(productSearchRequest);
