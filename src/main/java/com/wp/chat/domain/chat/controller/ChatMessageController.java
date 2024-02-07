@@ -15,7 +15,7 @@ public class ChatMessageController {
     private final KafkaTemplate<String, ChatMessage> kafkaTemplate;
     private final NewTopic topic;
 
-    @MessageMapping("/chat/message")
+    @MessageMapping("/message")
     @Transactional
     public void message(ChatMessageRequest chatMessageRequest) {
         ChatMessage chatMessage = ChatMessage.builder().roomId(chatMessageRequest.getRoomId()).senderId(chatMessageRequest.getSenderId()).senderNickname(chatMessageRequest.getSenderNickname()).message(chatMessageRequest.getMessage()).build();

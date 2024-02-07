@@ -29,7 +29,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
         // stomp websocket endpoint 설정( ws://localhost:8080/v1/ws-stomp )
-        registry.setErrorHandler(stompExceptionHandler).addEndpoint("/v1/ws-stomp").setAllowedOriginPatterns(WEB_SOCKET_HOST).withSockJS();
+        registry.setErrorHandler(stompExceptionHandler).addEndpoint("/v1/chat/ws-stomp").setAllowedOriginPatterns(WEB_SOCKET_HOST).withSockJS();
     }
 
     @Override

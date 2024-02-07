@@ -19,7 +19,7 @@ public class KafkaConsumer {
     @KafkaListener(topics = "${spring.kafka.template.default-topic}", groupId = "${spring.kafka.consumer.group-id}")
     public void sendMessage(ChatMessage chatMessage) {
         try {
-            messagingTemplate.convertAndSend("/sub/chat/room/" + chatMessage.getRoomId(), chatMessage); // Websocket 구독자에게 채팅 메시지 Send
+            messagingTemplate.convertAndSend("/sub/room/" + chatMessage.getRoomId(), chatMessage); // Websocket 구독자에게 채팅 메시지 Send
         } catch (Exception e) {
             log.error(e.getMessage());
         }
