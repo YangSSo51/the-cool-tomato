@@ -41,6 +41,9 @@ public class ProductSearchImpl extends QuerydslRepositorySupport implements Prod
         if(request.getCategoryId() !=null){
             builder.and(category.categoryId.eq(request.getCategoryId()));
         }
+        if(request.getSellerId() != null ){
+            builder.and(product.sellerId.eq(request.getSellerId()));
+        }
 
         //QueryDSL을 쓰는 경우 response DTO는 반드시 setter, NoArgsConstructor 설정이 되어있어야함
         List<ProductFindResponse> list =  queryFactory.select(Projections.bean(ProductFindResponse.class,
