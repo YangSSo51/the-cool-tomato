@@ -79,6 +79,12 @@ public enum ErrorCode {
     /**
      * ******************************* Business Error CodeList ***************************************
      */
+    // 회원 관리
+    BUSINESS_EXCEPTION_ERROR(200, "B999", "Business Exception Error"),
+    NOT_FOUND_USER_ID(401, "B001", "회원을 찾을 수 없습니다."),
+    // 판매자
+    NOT_SELLER(401, "B002", "판매자가 아닙니다."),
+    NOT_FOUND_SELLER_ID(401, "B003", "판매자를 찾을 수 없습니다."),
     /**
      * ******************************* Custom Error CodeList ***************************************
      */

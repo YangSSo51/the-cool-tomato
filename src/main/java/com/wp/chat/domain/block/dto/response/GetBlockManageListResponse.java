@@ -1,6 +1,6 @@
 package com.wp.chat.domain.block.dto.response;
 
-import com.wp.user.domain.block.entity.BlockManage;
+import com.wp.chat.domain.block.entity.BlockManage;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 

@@ -1,6 +1,6 @@
 package com.wp.chat.domain.block.repository;
 
-import com.wp.user.domain.block.entity.BlockManage;
+import com.wp.chat.domain.block.entity.BlockManage;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

@@ -1,6 +1,6 @@
 package com.wp.chat.domain.block.entity;
 
-import com.wp.user.domain.user.entity.User;
+import com.wp.chat.global.common.entity.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

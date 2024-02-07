@@ -1,4 +1,4 @@
-package com.wp.chat.global.common.code;
+package com.wp.chat.global.common.entity;
 
 public enum Auth {
     ADMIN, SELLER, BUYER
