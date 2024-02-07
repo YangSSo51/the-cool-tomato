@@ -10,9 +10,10 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import java.io.ByteArrayInputStream;
-import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -30,11 +31,15 @@ public class S3UploadService {
         amazonS3.putObject(bucket, folderPath + "/", new ByteArrayInputStream(new byte[0]), new ObjectMetadata());
         return folderPath;
     }
-    public String saveFile(MultipartFile multipartFile) throws IOException {
-        if(!multipartFile.isEmpty()) {
+    public String saveFile(MultipartFile multipartFile) {
+        if(multipartFile!= null && !multipartFile.isEmpty()) {
             String folderPath = makeDir();
             String uuid = UUID.randomUUID().toString();
             String originalFilename = uuid+multipartFile.getOriginalFilename();
+
+            //파일 확장자 확인
+            validateFileExtension(multipartFile.getOriginalFilename());
+
             System.out.println("파일명 : "+originalFilename);
             ObjectMetadata metadata = new ObjectMetadata();
             metadata.setContentLength(multipartFile.getSize());
@@ -52,15 +57,27 @@ public class S3UploadService {
 
     public void deleteImage(String imgsrc)  {
         try {
+            if(imgsrc !=null && !"".equals(imgsrc)) {
 //            String path = imgsrc.substring(0,imgsrc.lastIndexOf(bucket)+);
             String fileName = imgsrc.substring(imgsrc.lastIndexOf(bucket)+bucket.length()+1);
 //            System.out.println(path);
             System.out.println(fileName);
 
             amazonS3.deleteObject(bucket, fileName);
+            }
         }catch (Exception e){
             log.debug(e.getMessage());
             throw new BusinessExceptionHandler("사진 삭제 중 에러 발생", ErrorCode.FAIL_FILE_DELETE);
+        }
+    }
+
+    // 파일 확장자 체크
+    private void validateFileExtension(String originalFilename) {
+        String fileExtension = originalFilename.substring(originalFilename.lastIndexOf(".") + 1).toLowerCase();
+        List<String> allowedExtensions = Arrays.asList("jpg", "png", "jpeg");
+
+        if (!allowedExtensions.contains(fileExtension)) {
+            throw new BusinessExceptionHandler("지원하지 않는 파일 확장자입니다", ErrorCode.NOT_IMAGE_EXTENSION);
         }
     }
 }

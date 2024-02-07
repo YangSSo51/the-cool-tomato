@@ -115,14 +115,8 @@ public class ProductServiceImpl implements ProductService{
     @Transactional
     public void saveProduct(ProductCreateRequest productRequest, Long userId, MultipartFile file){
         String imgSrc = "";
-        try {
-            if(file!= null) {
-                imgSrc = s3UploadService.saveFile(file);
-            }
-        }catch (IOException e){
-            log.debug(e.getMessage());
-            throw new BusinessExceptionHandler("파일 업로드에 실패했습니다",ErrorCode.FAIL_FILE_UPLOAD);
-        }
+        imgSrc = s3UploadService.saveFile(file);
+
         //상품 등록 객체 생성
         Product product = Product.builder()
                         .category(Category.builder().categoryId(productRequest.getCategoryId()).build())
@@ -203,9 +197,8 @@ public class ProductServiceImpl implements ProductService{
 //            liveProductRepository.deleteById(productId);
 //
             //이미지 삭제
-            if(product.getImgSrc() !=null && !"".equals(product.getImgSrc())) {
-                s3UploadService.deleteImage(product.getImgSrc());
-            }
+            s3UploadService.deleteImage(product.getImgSrc());
+
             //상품 번호로 상품 삭제
             productRepository.deleteById(productId);
         }catch (Exception e){
