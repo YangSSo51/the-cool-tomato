@@ -14,7 +14,7 @@ function BuyerQnaItems(props) {
             <AccordionItem>
                 <h2>
                     <AccordionButton>
-                        <Image mr="2" boxSize="100px" src={qnaInfo.imageUrl} alt={qnaInfo.imageAlt} />
+                        {/* <Image mr="2" boxSize="100px" src={qnaInfo.imageUrl} alt={qnaInfo.imageAlt} /> */}
                         <Flex alignItems='baseline'>
                             <Badge colorScheme='red'>새문의</Badge>
                             <Box
@@ -25,14 +25,14 @@ function BuyerQnaItems(props) {
                                 textTransform='uppercase'
                                 ml='2'
                                 >
-                                {qnaInfo.title} 
+                                {/* {qnaInfo.title}  */}
                             </Box>
                         </Flex>
                         <AccordionIcon />
                     </AccordionButton>
                 </h2>
                 <AccordionPanel pb={4}>
-                    {qnaInfo.content}
+                    {/* {qnaInfo.content} */}
                     <input type="text" placeholder="안보이는데 있어요 고칠거에요좀만기다려주세요"/>
                 </AccordionPanel>
             </AccordionItem>
