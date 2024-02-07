@@ -73,7 +73,7 @@ async function buyerGetQnaAPI(page: number, size: number, accessToken: string) {
 }
 
 
-async function sellerGetQnaAPI(page: number, size: number, accessToken: string) {
+async function sellerGetQnaAPI(page: number, size: number) {
     try {
         const response = await http.get(`${url}/seller/my/list`, {
             params: {
@@ -83,8 +83,6 @@ async function sellerGetQnaAPI(page: number, size: number, accessToken: string) 
         });
         const responseData = response.data;
         if (responseData.status === 200) {
-            console.log("문의조회성공");
-            console.log(responseData)
             return responseData;
         } else {
             console.log("문의조회안돼~");

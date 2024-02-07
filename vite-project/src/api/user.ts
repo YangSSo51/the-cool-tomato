@@ -290,7 +290,6 @@ async function followSellerAPI(sellerId: number, alarmSetting: boolean, accessTo
         });
         const responseData = response.data;
         if (responseData.status === 201) {
-            console.log("팔로우 등록 성공");
             return 1;
         }
     } catch (error) {
@@ -309,9 +308,10 @@ async function checkFollowAPI(sellerId: number, accessToken: string) {
             }
         });
         const responseData = response.data;
-        if (responseData.status === 200) {
-            console.log("팔로우 여부 조회 성공");
-            return responseData;
+        if (responseData.data.follow === true) {
+            return 1;
+        } else {
+            return 2;
         }
     } catch (error) {
         console.log("팔로우 여부 조회 실패");
@@ -330,7 +330,6 @@ async function unfollowSellerAPI(sellerId: number, accessToken: string) {
         });
         const responseData = response.data;
         if (responseData.status === 200) {
-            console.log("팔로우 취소 성공");
             return 1;
         }
     } catch (error) {
@@ -370,7 +369,6 @@ async function getFollowerListAPI(accessToken: string) {
         });
         const responseData = response.data;
         if (responseData.status === 200) {
-            console.log("팔로워 목록 조회 성공");
             return responseData;
         }
     } catch (error) {

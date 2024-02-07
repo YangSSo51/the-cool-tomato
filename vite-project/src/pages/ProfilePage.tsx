@@ -2,15 +2,26 @@ import { Flex } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { getSellerDetailAPI } from "../api/user";
 import { useParams } from "react-router-dom";
-import SellerHeader from "../components/sellerprofile/Sellerheader";
-import SellerPosts from "../components/sellerprofile/SellerPosts";
+import SellerHeader from "../components/sellerprofile/Profileheader";
+import SellerPosts from "../components/sellerprofile/ProfilePosts";
 
 function ProfilePage() {
     const { sellerId } = useParams<{ sellerId: string }>();
-    const sellerIdNumber = parseInt(sellerId);
+    const sellerIdNumber = parseInt(sellerId!);
     const [ test, setTest ] = useState(false)
 
-    const [sellerInfo, setSellerInfo] = useState({})
+    const [sellerInfo, setSellerInfo] = useState({
+        auth : "",
+        bitrhday: "",
+        followerCount: 0,
+        joinDate: "",
+        loginId: "",
+        nickname: "",
+        profileImg: "",
+        sellerInfoId: 0,
+        sex: "",
+        userId: 0
+    })
     // const [products, setProducts] = useState([])
 
 
@@ -20,7 +31,6 @@ function ProfilePage() {
                 const response = await getSellerDetailAPI(sellerIdNumber)
                 setSellerInfo(response.data)
                 setTest(true)
-                console.log(response.data)
             } catch (error) {
                 console.error(error)
             }

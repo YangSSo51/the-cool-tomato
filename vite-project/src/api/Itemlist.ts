@@ -41,10 +41,10 @@ async function ItemDetailFetch(id: number) {
 
 async function sellersMyproductsAPI() {
     try {
-        const response = await http.get(`${URL}/my/list`, {
+        const response = await http.get(`${URL}/my/list/`, {
             params: {
                 page: 1,
-                size: 10
+                size: 10,
             }
         })
         return response.data

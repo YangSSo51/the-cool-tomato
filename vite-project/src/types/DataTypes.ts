@@ -99,3 +99,16 @@ export type followerItem = {
     profileImg: string;
     userId: number;
 }
+
+export type SellerInfo = {
+    auth : string;
+    bitrhday: string;
+    followerCount: number;
+    joinDate: string;
+    loginId: string;
+    nickname: string;
+    profileImg: string;
+    sellerInfoId: number;
+    sex: string;
+    userId: number;
+}

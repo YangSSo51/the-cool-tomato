@@ -2,16 +2,17 @@ import { Flex, Box, Text, Button, Avatar } from "@chakra-ui/react"
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/stores/store";
-import { followSellerAPI, unfollowSellerAPI } from "../../api/user";
+import { followSellerAPI, unfollowSellerAPI, checkFollowAPI } from "../../api/user";
+import { SellerInfo } from "../../types/DataTypes";
 
-export default function SellerHeader(props) {
+export default function SellerHeader( { sellerId , sellerInfo } : {sellerId : number, sellerInfo: SellerInfo}) {
     const user = useSelector((state: RootState) => state.user);
-    const [following, setFollowing] = useState(false)
+    const [ following, setFollowing ] = useState(false)
     const [ isLoading, setIsLoading ] = useState(false)
-    const [followerCount, setFollowerCount] = useState(0);
+    const [ followerCount, setFollowerCount ] = useState(0);
 
     const onClickFollow = () => {
-        followSellerAPI(props.sellerId, true, user.accessToken).then((result) => {
+        followSellerAPI(sellerId, true, user.accessToken).then((result) => {
             if (result === 1) {
                 setFollowing(true)
                 setFollowerCount((followerCount) => followerCount + 1);
@@ -22,7 +23,7 @@ export default function SellerHeader(props) {
     };
 
     const onClickUnfollow = () => {
-        unfollowSellerAPI(props.sellerId, user.accessToken).then((result) => {
+        unfollowSellerAPI(sellerId, user.accessToken).then((result) => {
             if (result === 1) {
                 setFollowing(false)
                 setFollowerCount((followerCount) => followerCount - 1);
@@ -33,21 +34,30 @@ export default function SellerHeader(props) {
     };
 
     useEffect(() => {
-      if (props.sellerInfo.followerCount != 0) {
-        setFollowerCount(props.sellerInfo.followerCount);
+      if (sellerInfo.followerCount != 0) {
+        setFollowerCount(sellerInfo.followerCount);
         setIsLoading(true);
       }
     }, []);
 
-    console.log(props.sellerInfo.followerCount) // {}
+    // 초기에 팔로잉 여부 조회 함수: 왜안먹지?????
+    useEffect(() => {
+        checkFollowAPI(sellerId, user.accessToken).then((result) => {
+            if (result === 1) {
+                setFollowing(true)
+            } else {
+                setFollowing(false)
+            }
+        })
+    }, [following])
 
     return (
         <>
             <Flex align="center" mb={4}>
-                <Avatar size="xl" name="Username" src={props.sellerInfo.profileImg} />
+                <Avatar size="xl" name="Username" src={sellerInfo.profileImg} />
                 <Box ml={5} mr={10}>
                     <Text fontSize="3xl" fontWeight="bold">
-                        {props.sellerInfo.nickname}
+                        {sellerInfo.nickname}
                     </Text>
                 </Box>
                 <Box flex="1" textAlign="center" mr="5" w="7rem">
@@ -60,7 +70,7 @@ export default function SellerHeader(props) {
                     isLoading ?
                     <Text>{followerCount}</Text>
                     : 
-                    <Text>{props.sellerInfo.followerCount} hello</Text>
+                    <Text>{sellerInfo.followerCount}</Text>
                 }
                     
                 </Box>
