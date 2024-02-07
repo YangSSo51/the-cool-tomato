@@ -1,6 +1,6 @@
 export type userInfo = {
     profileImgFile: File | null;
-    profileImg: string  | null;
+    profileImg: string | null;
     password: string | null;
     newPassword: string | null;
     nickname: string;
@@ -68,7 +68,7 @@ export interface ItemDetailInterface {
     price: number;
     deliveryCharge: number;
     quantity: number;
-    registerDate: string
+    registerDate: string;
 }
 
 export interface AddItemInterface {
@@ -90,7 +90,7 @@ export type broadcastInfo = {
     ttsSetting: boolean;
     chatbotSetting: boolean;
     broadcastStartDate: string;
-}
+};
 
 export type followerItem = {
     id: number;
@@ -98,10 +98,10 @@ export type followerItem = {
     nickname: string;
     profileImg: string;
     userId: number;
-}
+};
 
 export type SellerInfo = {
-    auth : string;
+    auth: string;
     bitrhday: string;
     followerCount: number;
     joinDate: string;
@@ -137,4 +137,22 @@ export type AdminUserInfo = {
     birthday: string;
     profileImg: string;
     joinDate: string;
+}
+
+export interface liveProductPrice {
+    productId: number;
+    originalPrice: number;
+    price: number;
+    discount: number;
+}
+
+export interface liveProduct {
+    productId: number;
+    liveId: number;
+    liveFlatPrice: number;
+    liveRatePrice: number;
+    livePriceStartDate: string;
+    livePriceEndDate: string;
+    mainProductSetting: boolean;
+    seq: number;
 }
