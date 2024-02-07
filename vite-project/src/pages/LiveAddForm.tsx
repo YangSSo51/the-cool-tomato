@@ -81,19 +81,19 @@ export default function LiveAddForm() {
             broadcastStartDate: start_date.toISOString(),
         };
 
-        reserveLive(liveReservationData)
-            .then((res) => {
-                console.log("LiveAddForm onSubmit reserveLive res");
-                console.log(res);
-                liveId = res.data.liveBroadcaseId;
-            })
+        liveId = await reserveLive(liveReservationData)
             .catch((error) => {
                 console.log("LiveAddForm onSubmit reserveLive Error");
                 throw error;
+            })
+            .then((res) => {
+                console.log("LiveAddForm onSubmit reserveLive res");
+                console.log(res);
+                return res.data.liveBroadcaseId;
             });
 
         if (liveId === 0) {
-            alert("라이브 예약에 실패했습니다");
+            alert("라이브 아이디가 0입니다.");
             return;
         }
 

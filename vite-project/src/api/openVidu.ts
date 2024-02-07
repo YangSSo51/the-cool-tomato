@@ -3,7 +3,7 @@ import { broadcastInfo } from "../types/DataTypes";
 
 const http = liveAxios();
 
-const url = "/live";
+const url = "/live/broadcast";
 
 async function getLiveStartToken(data: {
     accessToken: string;
