@@ -46,11 +46,11 @@ export default function SellerHeader(props) {
             <Flex align="center" mb={4}>
                 <Avatar size="xl" name="Username" src={props.sellerInfo.profileImg} />
                 <Box ml={5} mr={10}>
-                    <Text fontSize="xl" fontWeight="bold">
+                    <Text fontSize="3xl" fontWeight="bold">
                         {props.sellerInfo.nickname}
                     </Text>
                 </Box>
-                <Box flex="1" textAlign="center" mr="5">
+                <Box flex="1" textAlign="center" mr="5" w="7rem">
                     <Text fontWeight="bold">판매상품수</Text>
                     <Text>123</Text>
                 </Box>

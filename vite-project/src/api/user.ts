@@ -36,8 +36,6 @@ async function loginUser(data: { loginId: string; password: string }) {
 }
 
 async function logoutAPI(accessToken: string) {
-    console.log("로그아웃")
-    console.log(accessToken)
     try {
         const response = await http.delete(`${url}/logout`, {
             headers: {
