@@ -3,7 +3,8 @@ import {
     ItemDetailInterface,
     liveProductPrice,
 } from "../../../types/DataTypes";
-import { Wrap, WrapItem, Center, Checkbox } from "@chakra-ui/react";
+import { Wrap, WrapItem, Center } from "@chakra-ui/react";
+import ProductTableBody from "./ProductTableBody";
 
 interface ProductTableProps {
     products: Array<ItemDetailInterface>;
@@ -54,46 +55,12 @@ function ProductTable({
             {products.map((product) => {
                 const id = product.productId;
                 return (
-                    <Wrap
+                    <ProductTableBody
                         key={product.productId}
-                        borderBottom="1px solid grey"
-                        spacing="0.1rem"
-                    >
-                        <WrapItem>
-                            <Center w="6rem" h="2.5rem">
-                                {id}
-                            </Center>
-                        </WrapItem>
-                        <WrapItem>
-                            <Center w="22rem" h="2.5rem">
-                                {product.productName}
-                            </Center>
-                        </WrapItem>
-                        <WrapItem>
-                            <Center w="6rem" h="2.5rem">
-                                {product.quantity}
-                            </Center>
-                        </WrapItem>
-                        <WrapItem>
-                            <Center w="9rem" h="2.5rem">
-                                {product.price}
-                            </Center>
-                        </WrapItem>
-                        <WrapItem>
-                            <Center w="4rem" h="2.5rem">
-                                <Checkbox
-                                    size="lg"
-                                    colorScheme="green"
-                                    data-productid={id}
-                                    data-price={product.price}
-                                    onChange={(e) =>
-                                        handleCheck(e, id, product.price)
-                                    }
-                                    defaultChecked={selectedProductId.has(id)}
-                                ></Checkbox>
-                            </Center>
-                        </WrapItem>
-                    </Wrap>
+                        product={product}
+                        selectedProductId={selectedProductId}
+                        handleCheck={handleCheck}
+                    />
                 );
             })}
         </>

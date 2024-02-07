@@ -74,6 +74,9 @@ export default function LiveItemAdd({
         id: number,
         price: number
     ) {
+        console.log("LiveItemAdd handleCheck");
+        // console.log(e.target);
+        // console.log(e.target.checked);
         if (e.target.checked) {
             const initLivePrice: liveProductPrice = {
                 productId: id,

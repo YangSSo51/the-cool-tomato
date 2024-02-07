@@ -17,11 +17,20 @@ import { RootState } from "../redux/stores/store";
 import LiveItemAdd from "../components/broadcast/LiveItemAdd";
 import AddGoods from "../components/broadcast/AddGoods";
 import { reserveLive } from "../api/openVidu";
-import { ItemDetailInterface, liveProductPrice } from "../types/DataTypes";
+import {
+    ItemDetailInterface,
+    broadcastInfo,
+    liveProduct,
+    liveProductPrice,
+} from "../types/DataTypes";
+import { useNavigate } from "react-router-dom";
+import { postLiveProduct } from "../api/liveProduct";
 
 export default function LiveAddForm() {
-    const user = useSelector((state: RootState) => state.user);
-    const accessToken = user.accessToken;
+    const accessToken = useSelector(
+        (state: RootState) => state.user.accessToken
+    );
+    const navigate = useNavigate();
     const [isSelected, isSelectedState] = useState(false);
     const [selectedProductId, setSelectedProductId] = useState<
         Map<number, liveProductPrice>
@@ -36,7 +45,7 @@ export default function LiveAddForm() {
     const [startDate, setStartDate] = useState("");
     const [priceEndDate, setPriceEndDate] = useState("");
     const [faqSetting, setFaqSetting] = useState(false);
-    const [chatbotSetting, setChatbotSetting] = useState(false);
+    const [ttsSetting, setTtsSetting] = useState(false);
     const [memo, setMemo] = useState("");
 
     const onSetSelected = (x: boolean): void => {
@@ -45,29 +54,124 @@ export default function LiveAddForm() {
 
     async function onSubmit(event: React.SyntheticEvent): Promise<void> {
         event.preventDefault();
-        if (title === "") {
-            alert("방송 제목을 입력해주세요!");
-        } else if (startDate === "") {
-            alert("방송 시작 시간을 확인해주세요!");
-        } else if (priceEndDate === "") {
-            alert("상품들의 할인가 적용 시간을 정해주세요!");
-        } else {
-            const broadcastData = {
-                accessToken: accessToken,
-                broadcastTitle: title,
-                content: "이게 뭐임 방송상품?",
-                script: memo,
-                ttsSetting: faqSetting,
-                chatbotSetting: chatbotSetting,
-                broadcastStartDate: startDate,
-            };
-            const response = await reserveLive(broadcastData);
-            console.log(response);
+        const now_date = new Date();
+        let start_date = new Date(startDate);
+        let end_date = new Date(priceEndDate);
+        let now_broadcast = false;
+        let liveId = 0;
+
+        if (startDate === "" || now_date > start_date) {
+            // 시작 시간을 지정하지 않으면 지금으로 설정
+            start_date = now_date;
+            now_broadcast = true;
         }
+        if (priceEndDate === "" || now_date > end_date) {
+            // 할인 종료 시간은 필수로 설정하도록 유도
+            alert("할인 종료 시간을 설정해주세요");
+            return;
+        }
+
+        const liveReservationData: broadcastInfo = {
+            accessToken,
+            broadcastTitle: title,
+            content: "라이브 방송",
+            script: memo,
+            ttsSetting,
+            chatbotSetting: faqSetting,
+            broadcastStartDate: start_date.toISOString(),
+        };
+
+        reserveLive(liveReservationData)
+            .then((res) => {
+                console.log("LiveAddForm onSubmit reserveLive res");
+                console.log(res);
+                liveId = res.data.liveBroadcaseId;
+            })
+            .catch((error) => {
+                console.log("LiveAddForm onSubmit reserveLive Error");
+                throw error;
+            });
+
+        if (liveId === 0) {
+            alert("라이브 예약에 실패했습니다");
+            return;
+        }
+
+        const liveProductArray = filterLiveProduct(
+            liveId,
+            start_date.toISOString().split("T")[0],
+            end_date.toISOString().split("T")[0]
+        );
+        // 라이브 상품 등록
+        postLiveProduct(liveProductArray, accessToken).catch((error) => {
+            console.log("LiveAddForm onSubmit postLiveProduct Error");
+            throw error;
+        });
+
+        // 시작 시간이 지금보다 이전이면 방송 화면으로 이동
+        if (now_broadcast) {
+            navigate(`/v1/broadcast/${liveId}`);
+        } else {
+            navigate("/v1/seller");
+        }
+        // console.log("LiveAddForm onSubmit");
+        // console.log("now_date");
+        // console.log(now_date);
+        // console.log("startDate");
+        // console.log(startDate);
+        // console.log("start_date");
+        // console.log(start_date);
+        // console.log("priceEndDate");
+        // console.log(priceEndDate);
+        // console.log("end_date");
+        // console.log(end_date);
+        // console.log("title");
+        // console.log(title);
+        // console.log("memo");
+        // console.log(memo);
+        // console.log("faqSetting");
+        // console.log(faqSetting);
+        // console.log("chatbotSetting");
+        // console.log(chatbotSetting);
+        // console.log("selectedProductId");
+        // console.log(selectedProductId);
+        // console.log("mainProductId");
+        // console.log(mainProductId);
+        // console.log("products");
+        // console.log(products);
+    }
+
+    function filterLiveProduct(
+        liveId: number,
+        start_date: string,
+        end_date: string
+    ): Array<liveProduct> {
+        const temp = Array.from(selectedProductId);
+        let seq = 0;
+        if (mainProductId === 0) {
+            setMainProductId(temp[0][0]);
+        }
+        const result = temp.map((x) => {
+            return {
+                productId: x[0],
+                liveId,
+                liveFlatPrice: x[1].price,
+                liveRatePrice: x[1].discount,
+                livePriceStartDate: start_date,
+                livePriceEndDate: end_date,
+                mainProductSetting: x[0] === mainProductId,
+                seq: seq++,
+            };
+        });
+        return result;
     }
 
     function onOpen() {
         setIsOpen(true);
+    }
+
+    function handleCancel() {
+        navigate("/v1/main");
     }
 
     return (
@@ -103,14 +207,16 @@ export default function LiveAddForm() {
                         <Text fontSize={"xl"} as={"b"}>
                             라이브 시작 시간
                         </Text>
-                        <Input
-                            mt={"1rem"}
-                            placeholder="Select Date and Time"
-                            size="md"
-                            type="datetime-local"
-                            value={startDate}
-                            onChange={(e) => setStartDate(e.target.value)}
-                        />
+                        <FormControl isRequired>
+                            <Input
+                                mt={"1rem"}
+                                placeholder="Select Date and Time"
+                                size="md"
+                                type="datetime-local"
+                                value={startDate}
+                                onChange={(e) => setStartDate(e.target.value)}
+                            />
+                        </FormControl>
                     </Box>
 
                     <Box p={"3rem"}>
@@ -176,14 +282,18 @@ export default function LiveAddForm() {
                         <Text fontSize={"xl"} as={"b"}>
                             라이브 할인이 끝나는 시간을 설정해주세요
                         </Text>
-                        <Input
-                            mt={"1rem"}
-                            placeholder="Select Date and Time"
-                            size="md"
-                            type="datetime-local"
-                            value={priceEndDate}
-                            onChange={(e) => setPriceEndDate(e.target.value)}
-                        />
+                        <FormControl isRequired>
+                            <Input
+                                mt={"1rem"}
+                                placeholder="Select Date and Time"
+                                size="md"
+                                type="datetime-local"
+                                value={priceEndDate}
+                                onChange={(e) =>
+                                    setPriceEndDate(e.target.value)
+                                }
+                            />
+                        </FormControl>
                     </Box>
 
                     <Flex>
@@ -207,9 +317,9 @@ export default function LiveAddForm() {
                             <Switch
                                 ml={"2rem"}
                                 size={"lg"}
-                                isChecked={chatbotSetting}
+                                isChecked={ttsSetting}
                                 onChange={(e) =>
-                                    setChatbotSetting(e.target.checked)
+                                    setTtsSetting(e.target.checked)
                                 }
                             />
                         </Box>
@@ -236,7 +346,11 @@ export default function LiveAddForm() {
                         >
                             등록
                         </Button>
-                        <Button bgColor={"themeRed.500"} color="white">
+                        <Button
+                            bgColor={"themeRed.500"}
+                            color="white"
+                            onClick={handleCancel}
+                        >
                             취소
                         </Button>
                     </Center>

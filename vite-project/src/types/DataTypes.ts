@@ -87,3 +87,14 @@ export interface liveProductPrice {
     price: number;
     discount: number;
 }
+
+export interface liveProduct {
+    productId: number;
+    liveId: number;
+    liveFlatPrice: number;
+    liveRatePrice: number;
+    livePriceStartDate: string;
+    livePriceEndDate: string;
+    mainProductSetting: boolean;
+    seq: number;
+}
