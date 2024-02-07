@@ -23,6 +23,7 @@ async function ItemAddFunction(data: AddItemInterface) {
     }
 }
 
+// ITEM조회 params가 바뀌어서 수정했습니다 충돌나면 요걸로 해주세욤
 async function ItemListFetch(
     data: { 
         page?: number; 
