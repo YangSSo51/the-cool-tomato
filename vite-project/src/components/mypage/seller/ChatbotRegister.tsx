@@ -12,27 +12,41 @@ import {
     Input,
     Text,
     Textarea,
+    Menu,
+    MenuButton,
+    MenuList,
+    MenuOptionGroup,
+    MenuItemOption
 } from "@chakra-ui/react";
 import { useState, ChangeEvent } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../redux/stores/store";
 
+// 임시로 지정
+interface ChatbotData {
+    roomId: number;
+    livetitle: string;
+}
+
 function ChatbotRegistrationModal({
     isOpen,
     handleModalOpen,
+    dummydata,
     // 함수,
 }: {
     isOpen: boolean;
     handleModalOpen: () => void;
+    dummydata: ChatbotData[]
     // 함수: (인자: 타입) => void;
 }) {
-    const [chatbotCommand, setChatbotCommand] = useState("");
+    const [roomNumber, setRoomNumber] = useState(0)
+    const [roomTitle, setRoomTitle] = useState("라이브를 선택해주세요")
+    const [chatbotKeyword, setChatbotKeyword] = useState("");
     const [chatbotContent, setChatbotContent] = useState("");
-    const accessToken = useSelector((state: RootState) => state.user.accessToken);
+    // const accessToken = useSelector((state: RootState) => state.user.accessToken);
 
-
-    const handleInputCommand = (e: ChangeEvent<HTMLInputElement>) =>
-        setChatbotCommand(e.target.value);
+    const handleInputKeyword = (e: ChangeEvent<HTMLInputElement>) =>
+        setChatbotKeyword(e.target.value);
 
     const handleInputChange = (e: ChangeEvent<HTMLTextAreaElement>) =>
         setChatbotContent(e.target.value);
@@ -72,15 +86,37 @@ function ChatbotRegistrationModal({
                     <ModalBody>
                         <FormControl my={2}  isRequired>
                             <FormLabel>
-                                <Text as={"b"}>명령어</Text>
+                                <Text as={"b"}>챗봇 설정할 방송</Text>
+                            </FormLabel>
+                            <Menu closeOnSelect={false}>
+                                <MenuButton as={Button} width="100%">
+                                    {roomTitle}
+                                </MenuButton>
+                                <MenuList w="100%">
+                                    <MenuOptionGroup defaultValue="1" title='라이브이름' type='radio'>
+                                        {dummydata.map((item) => (
+                                            <MenuItemOption 
+                                                key={item.roomId} 
+                                                value={item.roomId.toString()}
+                                                onClick={() => {setRoomNumber(item.roomId); setRoomTitle(item.livetitle);}}
+                                                >
+                                                {item.livetitle}
+                                            </MenuItemOption>
+                                        ))}
+                                    </MenuOptionGroup>
+                                </MenuList>
+                            </Menu>
+
+                            <FormLabel mt="5">
+                                <Text as={"b"}>키워드</Text>
                             </FormLabel>
                             <Input
                                 focusBorderColor="themeGreen.500"
-                                placeholder="command"
+                                placeholder="Keyword"
                                 size="md"
                                 mb="5"
-                                value={chatbotCommand}
-                                onChange={handleInputCommand}
+                                value={chatbotKeyword}
+                                onChange={handleInputKeyword}
                             />
 
                             <FormLabel>

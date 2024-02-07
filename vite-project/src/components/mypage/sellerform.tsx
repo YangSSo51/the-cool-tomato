@@ -181,7 +181,7 @@ export default function Sellerform() {
                     </Button>
                 </form>
                 ) : (
-                <Alert status='success' textAlign='center' mb="10">
+                <Alert status='success' textAlign='center' mb="10" m="auto">
                     <AlertIcon />
                     판매자 신청이 완료되었습니다! <br />
                     판매자 전환은 영업일 기준 3일 이내 완료됩니다.
