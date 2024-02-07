@@ -20,7 +20,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
-public class BlockManage implements Serializable {
+public class BlockManage {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "block_manage_id")

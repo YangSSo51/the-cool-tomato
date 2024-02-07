@@ -55,7 +55,7 @@ public class BlockManageController {
     @PostMapping("/add")
     @CacheEvict(cacheNames = BLOCKED_LIST, key = "#blockListRequest.sellerId")
     @Operation(summary = "차단 일괄 등록", description = "판매자는 구매자 ID로 구매자를 차단 합니다.")
-    public ResponseEntity<SuccessResponse<?>> addFollow(@Valid @RequestBody BlockedIdListRequest blockListRequest) {
+    public ResponseEntity<SuccessResponse<?>> addBlocked(@Valid @RequestBody BlockedIdListRequest blockListRequest) {
         blockManageService.addBlocked(blockListRequest);
         SuccessResponse<?> response = SuccessResponse.builder()
                 .status(SuccessCode.INSERT_SUCCESS.getStatus())
@@ -67,7 +67,7 @@ public class BlockManageController {
     @DeleteMapping("/remove")
     @CacheEvict(cacheNames = BLOCKED_LIST, key = "#blockListRequest.sellerId")
     @Operation(summary = "차단 일괄 삭제", description = "판매자는 구매자 ID로 구매자를 차단을 취소 합니다.")
-    public ResponseEntity<SuccessResponse<?>> removeFollow(@Valid @RequestBody BlockedIdListRequest blockListRequest) {
+    public ResponseEntity<SuccessResponse<?>> removeBlocked(@Valid @RequestBody BlockedIdListRequest blockListRequest) {
         blockManageService.removeBlocked(blockListRequest);
         SuccessResponse<?> response = SuccessResponse.builder()
                 .status(SuccessCode.DELETE_SUCCESS.getStatus())

@@ -19,9 +19,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -74,6 +72,8 @@ public class BlockManageServiceImpl implements  BlockManageService {
             throw new BusinessExceptionHandler(ErrorCode.NOT_SELLER);
         }
         List<User> blockedList = userRepository.findAllById(blockedIdListRequest.getBlockedIds());
+        System.out.println(blockedIdListRequest.getBlockedIds().size());
+        System.out.println(blockedList.size());
         List<BlockManage> blockManageList = new ArrayList<>();
         for (User blocked : blockedList) {
             BlockManage blockManage = BlockManage.builder().seller(seller).blocked(blocked).build();
