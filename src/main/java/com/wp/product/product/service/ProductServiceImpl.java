@@ -4,12 +4,15 @@ import com.wp.product.category.entity.Category;
 import com.wp.product.global.common.code.ErrorCode;
 import com.wp.product.global.exception.BusinessExceptionHandler;
 import com.wp.product.global.file.service.S3UploadService;
+import com.wp.product.liveproduct.repository.LiveProductRepository;
 import com.wp.product.product.dto.request.ProductCreateRequest;
 import com.wp.product.product.dto.request.ProductSearchRequest;
 import com.wp.product.product.dto.request.ProductUpdateRequest;
 import com.wp.product.product.dto.response.ProductFindResponse;
 import com.wp.product.product.entity.Product;
 import com.wp.product.product.repository.ProductRepository;
+import com.wp.product.productquestion.repository.ProductQuestionRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -25,6 +28,8 @@ import java.util.*;
 public class ProductServiceImpl implements ProductService{
 
     private final ProductRepository productRepository;
+    private final ProductQuestionRepository productQuestionRepository;
+    private final LiveProductRepository liveProductRepository;
     private final S3UploadService s3UploadService;
 
     @Override
@@ -107,11 +112,13 @@ public class ProductServiceImpl implements ProductService{
     }
 
     @Override
+    @Transactional
     public void saveProduct(ProductCreateRequest productRequest, Long userId, MultipartFile file){
         String imgSrc = "";
         try {
-            imgSrc = s3UploadService.saveFile(file);
-            System.out.println("이미지 파일 : "+imgSrc);
+            if(file!= null) {
+                imgSrc = s3UploadService.saveFile(file);
+            }
         }catch (IOException e){
             log.debug(e.getMessage());
             throw new BusinessExceptionHandler("파일 업로드에 실패했습니다",ErrorCode.FAIL_FILE_UPLOAD);
@@ -138,6 +145,7 @@ public class ProductServiceImpl implements ProductService{
     }
 
     @Override
+    @Transactional
     public void updateProduct(ProductUpdateRequest productRequest, Long userId, MultipartFile file) {
         //상품번호로 조회된 상품이 있는지 확인
         Long productId = productRequest.getProductId();
@@ -154,7 +162,7 @@ public class ProductServiceImpl implements ProductService{
             }
 
             //파일이 있다가 삭제됨
-            if(product.getImgSrc() != null && productRequest.getImgSrc() == null){
+            if((product.getImgSrc() != null && "".equals(product.getImgSrc())) && "".equals(productRequest.getImgSrc())){
                 s3UploadService.deleteImage(product.getImgSrc());
             }
 
@@ -175,6 +183,7 @@ public class ProductServiceImpl implements ProductService{
     }
 
     @Override
+    @Transactional
     public void deleteProduct(Long productId, Long userId) {
         //상품 번호로 상품 조회
         Product product = productRepository.findById(productId)
@@ -186,10 +195,17 @@ public class ProductServiceImpl implements ProductService{
             if(!equals){
                 throw new Exception();
             }
-            log.info("파일 삭제 : "+product.getImgSrc());
-            //이미지 삭제
-            s3UploadService.deleteImage(product.getImgSrc());
 
+            //상품 문의 먼저 삭제
+            productQuestionRepository.deleteProductQuestionByProductId(productId);
+
+//            //라이브 상품 삭제
+//            liveProductRepository.deleteById(productId);
+//
+            //이미지 삭제
+            if(product.getImgSrc() !=null && !"".equals(product.getImgSrc())) {
+                s3UploadService.deleteImage(product.getImgSrc());
+            }
             //상품 번호로 상품 삭제
             productRepository.deleteById(productId);
         }catch (Exception e){
