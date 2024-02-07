@@ -53,7 +53,6 @@ function ProductTable({
             </Wrap>
             {/* 상품 표 내용 */}
             {products.map((product) => {
-                const id = product.productId;
                 return (
                     <ProductTableBody
                         key={product.productId}

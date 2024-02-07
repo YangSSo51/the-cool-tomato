@@ -1,21 +1,5 @@
-import {
-    Table,
-    TableContainer,
-    Tbody,
-    Td,
-    Th,
-    Thead,
-    Tr,
-} from "@chakra-ui/table";
-import {
-    Button,
-    CloseButton,
-    Flex,
-    FormControl,
-    Input,
-    Switch,
-    Text,
-} from "@chakra-ui/react";
+import { TableContainer } from "@chakra-ui/table";
+import { Button, Flex, Text } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { ItemDetailInterface, liveProductPrice } from "../../types/DataTypes";
 import LiveProductTable from "./liveproduct/LiveProductTable";

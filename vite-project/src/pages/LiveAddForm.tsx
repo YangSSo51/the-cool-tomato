@@ -56,7 +56,7 @@ export default function LiveAddForm() {
         event.preventDefault();
         const now_date = new Date();
         let start_date = new Date(startDate);
-        let end_date = new Date(priceEndDate);
+        const end_date = new Date(priceEndDate);
         let now_broadcast = false;
         let liveId = 0;
 
