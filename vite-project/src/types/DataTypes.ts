@@ -112,3 +112,29 @@ export type SellerInfo = {
     sex: string;
     userId: number;
 }
+
+export type MyQna = {
+    answer: number;
+    answerContent: string;
+    answerRegisterDate: string;
+    productContent: string;
+    productId: number;
+    productName: string;
+    productQuestionBoardId: number;
+    questionContent: string;
+    questionRegisterDate: string;
+    writerId: number;
+    writerNickname: string
+}
+
+export type AdminUserInfo = {
+    id: number;
+    auth: string;
+    loginId: string;
+    email: string;
+    nickname: string;
+    sex: string;
+    birthday: string;
+    profileImg: string;
+    joinDate: string;
+}

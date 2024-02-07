@@ -25,9 +25,7 @@ async function postItemQnA(
     accessToken: string
 ) {
     headers.set("Authorization", `Bearer ${accessToken}`);
-    // return await http.post(url, data, { headers });
-    const response =  await http.post(url, data, { headers });
-    console.log(response.data)
+    return await http.post(url, data, { headers });
 }
 
 // 구매자(문의 등록자)가 상품 문의를 삭제함
@@ -73,6 +71,7 @@ async function sellerGetQnaAPI(page: number, size: number) {
         });
         const responseData = response.data;
         if (responseData.status === 200) {
+            // console.log(responseData)
             return responseData;
         } else {
             console.log("문의조회안돼~");

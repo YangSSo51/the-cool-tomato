@@ -3,12 +3,12 @@ import { Badge, Accordion,
     AccordionItem,
     AccordionButton,
     AccordionPanel,
-    AccordionIcon 
+    AccordionIcon,
+    Divider
 } from "@chakra-ui/react";
-import { ItemQnA } from "../../../types/DataTypes";
+import { MyQna } from "../../../types/DataTypes";
 
-function BuyerQnaItems(questions : ItemQnA) {
-    console.log(questions)
+function BuyerQnaItems({questions} : {questions : MyQna}) {
   
     return (
         <>
@@ -17,24 +17,31 @@ function BuyerQnaItems(questions : ItemQnA) {
                 <h2>
                     <AccordionButton>
                         <Flex alignItems='baseline'>
-                            <Badge colorScheme='red'>새문의</Badge>
+                            {questions.answer === 0 && (
+                                    <Badge colorScheme="yellow">미답변</Badge>
+                                )}
+                                {questions.answer === 1 && (
+                                    <Badge colorScheme="green">답변완료</Badge>
+                                )}
+
                             <Box
                                 color='gray.500'
                                 fontWeight='semibold'
                                 letterSpacing='wide'
-                                fontSize='xs'
+                                fontSize='m'
                                 textTransform='uppercase'
                                 ml='2'
                                 >
-                                {/* {qnaInfo.title}  */}
+                                문의한 상품: {questions.productName}
                             </Box>
                         </Flex>
                         <AccordionIcon />
                     </AccordionButton>
                 </h2>
                 <AccordionPanel pb={4}>
-                    {/* {qnaInfo.content} */}
-                    <input type="text" placeholder="안보이는데 있어요 고칠거에요좀만기다려주세요"/>
+                    {questions.questionContent}
+                    <Divider />
+                    {questions.answerContent}
                 </AccordionPanel>
             </AccordionItem>
         </Accordion>
