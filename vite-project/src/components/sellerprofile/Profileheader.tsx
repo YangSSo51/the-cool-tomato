@@ -5,8 +5,9 @@ import { RootState } from "../../redux/stores/store";
 import { followSellerAPI, unfollowSellerAPI, checkFollowAPI } from "../../api/user";
 import { SellerInfo } from "../../types/DataTypes";
 
-export default function SellerHeader( { sellerId , sellerInfo } : {sellerId : number, sellerInfo: SellerInfo}) {
+export default function SellerHeader( { sellerId , sellerInfo, productsCount } : {sellerId : number, sellerInfo: SellerInfo, productsCount: number}) {
     const user = useSelector((state: RootState) => state.user);
+    const count = productsCount
     const [ following, setFollowing ] = useState(false)
     const [ isLoading, setIsLoading ] = useState(false)
     const [ followerCount, setFollowerCount ] = useState(0);
@@ -62,7 +63,7 @@ export default function SellerHeader( { sellerId , sellerInfo } : {sellerId : nu
                 </Box>
                 <Box flex="1" textAlign="center" mr="5" w="7rem">
                     <Text fontWeight="bold">판매상품수</Text>
-                    <Text>123</Text>
+                    <Text>{count}</Text>
                 </Box>
                 <Box flex="1" textAlign="center" mr="5">
                     <Text fontWeight="bold">팔로워</Text>

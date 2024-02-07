@@ -23,12 +23,19 @@ async function ItemAddFunction(data: AddItemInterface) {
     }
 }
 
-async function ItemListFetch(data: { page: number; size: number }) {
+async function ItemListFetch(
+    data: { 
+        page?: number; 
+        size?: number; 
+        'category-id'?: string; 
+        sellerId?: number; 
+    }) {
     const response = await http.get(`${URL}/list`, {
-        params: { page: data.page, size: data.size },
+        params: data,
     });
     return response.data.data;
 }
+
 
 async function ItemDetailDelete(id: number) {
     await http.delete(`${URL}/${id}`);
@@ -44,15 +51,10 @@ async function sellersMyproductsAPI() {
         const response = await http.get(`${URL}/my/list/`, {
             params: {
                 page: 1,
-                size: 10,
+                size: 32,
             }
         })
         return response.data
-        // const responseData = response.data;
-        // console.log(responseData)
-        // if (responseData.status === 200) {
-        //     return responseData;
-        // }
     } catch (error) {
         console.error(error);
         throw error;

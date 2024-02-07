@@ -67,8 +67,6 @@ export default function Following() {
 }
 
 function FollowingItem({following, accessToken, updateFollowing} : {following: followerItem, accessToken: string, i:number, updateFollowing: UpdateFollowingFunc}) {
-    console.log(following)
-
     
     const onClickUnfollow = () => {
         unfollowSellerAPI(following.userId, accessToken).then((result) => {

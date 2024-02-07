@@ -270,7 +270,6 @@ async function getSellerDetailAPI(sellerId: number) {
         const response = await http.get(`${url}/sellers/${sellerId}`);
         const responseData = response.data;
         if (responseData.status === 200) {
-            console.log("판매자 상세정보 조회 성공");
             return responseData;
         }
     } catch (error) {
@@ -349,7 +348,6 @@ async function getFollowingListAPI(accessToken: string) {
         });
         const responseData = response.data;
         if (responseData.status === 200) {
-            console.log("팔로잉 목록 조회 성공");
             return responseData;
         }
     } catch (error) {

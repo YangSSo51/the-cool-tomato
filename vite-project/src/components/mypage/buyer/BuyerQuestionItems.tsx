@@ -1,12 +1,14 @@
 import { Box, Flex } from "@chakra-ui/layout";
-import { Image, Badge, Accordion,
+import { Badge, Accordion,
     AccordionItem,
     AccordionButton,
     AccordionPanel,
-    AccordionIcon } from "@chakra-ui/react";
+    AccordionIcon 
+} from "@chakra-ui/react";
+import { ItemQnA } from "../../../types/DataTypes";
 
-function BuyerQnaItems(props) {
-    console.log(props)
+function BuyerQnaItems(questions : ItemQnA) {
+    console.log(questions)
   
     return (
         <>
@@ -14,7 +16,6 @@ function BuyerQnaItems(props) {
             <AccordionItem>
                 <h2>
                     <AccordionButton>
-                        {/* <Image mr="2" boxSize="100px" src={qnaInfo.imageUrl} alt={qnaInfo.imageAlt} /> */}
                         <Flex alignItems='baseline'>
                             <Badge colorScheme='red'>새문의</Badge>
                             <Box

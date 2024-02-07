@@ -16,7 +16,6 @@ import Sellerform from "../components/mypage/Sellerform";
 
 export default function BuyerPage() {
     const user = useSelector((state: RootState) => state.user);
-    console.log(user)
     const navigate = useNavigate();
     const [ boxHeight, setBoxHeight ] = useState("85vh");
     const [ tab, setTab ] = useState(0);
