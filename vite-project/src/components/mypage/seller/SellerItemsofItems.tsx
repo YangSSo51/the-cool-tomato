@@ -5,8 +5,9 @@ import { Button, Image } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 import { ItemDetailInterface } from "../../../types/DataTypes";
 import { ItemDetailDelete } from "../../../api/Itemlist";
+import React from "react";
 
-function ItemsofItems({ sellerItem }: { sellerItem: ItemDetailInterface }) {
+function ItemsofItems( { sellerItem , onDelete } : {sellerItem : ItemDetailInterface, onDelete: (productId : number) => void}  ) {
     const navigate = useNavigate();
 
     function onclick() {
@@ -14,7 +15,9 @@ function ItemsofItems({ sellerItem }: { sellerItem: ItemDetailInterface }) {
     }
 
     const DeleteFunction = () => {
-        ItemDetailDelete(sellerItem.productId)
+        ItemDetailDelete(sellerItem.productId).then(() => {
+            onDelete(sellerItem.productId)
+        }).catch((err) => {console.log(err)})
     };
 
     return (

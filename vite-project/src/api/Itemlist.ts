@@ -43,15 +43,16 @@ async function sellersMyproductsAPI() {
     try {
         const response = await http.get(`${URL}/my/list`, {
             params: {
-                page: 0,
+                page: 1,
                 size: 10
             }
         })
-        const responseData = response.data;
-        console.log(responseData)
-        if (responseData.status === 200) {
-            return responseData;
-        }
+        return response.data
+        // const responseData = response.data;
+        // console.log(responseData)
+        // if (responseData.status === 200) {
+        //     return responseData;
+        // }
     } catch (error) {
         console.error(error);
         throw error;

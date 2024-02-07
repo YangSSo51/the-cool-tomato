@@ -1,29 +1,33 @@
 import { Box } from "@chakra-ui/layout";
 import { Button } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import ItemsofItems from "./SellerItemsofItems";
 import { sellersMyproductsAPI } from "../../../api/Itemlist";
+import { ItemDetailInterface } from "../../../types/DataTypes";
 
 
 function Items() {
     const navigate = useNavigate();
-    const [sellerItem, setSellerItem] = useState([])
+    const [sellerItem, setSellerItem] = useState<Array<ItemDetailInterface>>([])
+
 
     useEffect(() => {
-        const fetchData = () => {
-            sellersMyproductsAPI()
-                .then((response) => {
-                    setSellerItem(response.data.list);
-                })
-                .catch((error) => {
-                    console.error(error);
-                });
-        };
-        fetchData();
+        sellersMyproductsAPI()
+            .then((response) => {
+                setSellerItem(response.data.list);
+            })
+            .catch((error) => {
+                console.error(error);
+            });
     }, []);
-    
+
+    const handleItemDelete = (productId : number) => {
+        const updatedItems = sellerItem.filter(item => item.productId !== productId);
+        setSellerItem(updatedItems)
+    }
+
     function onclick() {
         navigate("/v1/ItemAdd");
     }
@@ -31,9 +35,9 @@ function Items() {
     return (
         <Box flexDirection="column" w="90%" h="full">
             <Button onClick={onclick} colorScheme='yellow'>상품등록</Button>
-            { sellerItem && sellerItem.map((item, index) => {
-                return <ItemsofItems sellerItem={sellerItem[index]} key={index} />
-                })
+            {sellerItem.map((item) => {
+                return <ItemsofItems sellerItem = {item} onDelete={handleItemDelete} key={item.productId} />
+            })
             }
         </Box>
     )
