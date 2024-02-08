@@ -1,4 +1,4 @@
-import { AddItemInterface } from "../types/DataTypes";
+import { UploadImage } from "../types/DataTypes";
 import { itemAxios } from "./http";
 import { AxiosHeaders } from "axios";
 
@@ -13,9 +13,12 @@ async function ItemListDetailFetch(data: { id: number }) {
     return response;
 }
 
-async function ItemAddFunction(data: AddItemInterface) {
+async function ItemAddFunction(data : UploadImage, at: string) {
     try {
-        const response = await http.post(`${URL}`, data);
+        headers.set("Authorization", `Bearer ${at}`);
+        headers.set("Content-Type", "multipart/form-data");
+        const response = await http.post(`${URL}`, data, { headers: headers });
+        
         return response;
     } catch (error) {
         console.error(error);
@@ -35,8 +38,9 @@ async function ItemListFetch(data: {
     return response.data.data;
 }
 
-async function ItemDetailDelete(id: number) {
-    await http.delete(`${URL}/${id}`);
+async function ItemDetailDelete(id: number, at: string) {
+    headers.set("Authorization", `Bearer ${at}`);
+    await http.delete(`${URL}/${id}`, { headers: headers });
 }
 
 async function ItemDetailFetch(id: number) {
@@ -44,14 +48,15 @@ async function ItemDetailFetch(id: number) {
     return response.data.data;
 }
 
-async function sellersMyproductsAPI() {
+async function sellersMyproductsAPI(page: number, size: number, at: string) {
+    headers.set("Authorization", `Bearer ${at}`);
     try {
         const response = await http.get(`${URL}/my/list/`, {
             params: {
-                page: 1,
-                size: 32,
-            },
-        });
+                page: page,
+                size: size,
+            }, headers:headers
+        }, );
         return response.data;
     } catch (error) {
         console.error(error);
@@ -61,7 +66,7 @@ async function sellersMyproductsAPI() {
 
 async function SellerBroadcastFetch(data: { page: number; size: number }) {
     const response = await http.get("products/my/list", {
-        params: { page: data.page, size: data.size },
+        params: { page: data.page, size: data.size, },
     });
     return response.data.data.list;
 }

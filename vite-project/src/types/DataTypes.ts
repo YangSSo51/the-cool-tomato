@@ -79,7 +79,6 @@ export interface AddItemInterface {
     price: number;
     deliveryCharge: number;
     quantity: number;
-    imgSrc: string;
 }
 
 export type broadcastInfo = {
@@ -98,7 +97,12 @@ export type followerItem = {
     nickname: string;
     profileImg: string;
     userId: number;
-};
+}
+
+export type UploadImage =  {
+    file: File
+    type: string
+}
 
 export type SellerInfo = {
     auth: string;

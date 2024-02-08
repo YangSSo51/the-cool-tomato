@@ -20,8 +20,11 @@ import { AddItemInterface } from "../../../types/DataTypes";
 import { CloseIcon } from "@chakra-ui/icons";
 import { FaRegEdit } from "react-icons/fa";
 import { formatNumberWithComma } from "../../../components/common/Comma";
+import { useSelector } from "react-redux";
+import { RootState } from "../../../redux/stores/store";
 
 export default function NewProduct() {
+    const accessToken = useSelector((state : RootState) => state.user.accessToken)
     const [values, setValues] = useState<AddItemInterface>({
         categoryId: 0,
         productName: "",
@@ -31,7 +34,6 @@ export default function NewProduct() {
         price: 0,
         deliveryCharge: 1000,
         quantity: 100,
-        imgSrc: "",
     });
 
     const TitleError = values.productName === "";
@@ -74,11 +76,10 @@ export default function NewProduct() {
             values.price >= 100 &&
             values.categoryId &&
             values.productName.length >= 1 &&
-            values.productContent.length >= 1 &&
-            values.imgSrc.length >= 1
+            values.productContent.length >= 1
         ) {
             try {
-                await ItemAddFunction(values);
+                await ItemAddFunction(values, accessToken);
                 alert("상품이 정상적으로 등록되었습니다");
             } catch (error) {
                 alert("등록 실패했습니다. 상품을 다시 설정해주세요.");
@@ -89,44 +90,42 @@ export default function NewProduct() {
             alert("카테고리를 설정해주세요");
         } else if (!values.productName) {
             alert("상품명을 설정해주세요");
-        } else if (!values.imgSrc) {
-            alert("사진을 등록해주세요");
         }
     };
 
 
     // 사진 등록
-    const inputEl = useRef(null);
-    const [fileName, setFileName] = useState<string>("");
-    const fileInputHandler = useCallback(
-        (e: React.ChangeEvent<HTMLInputElement>) => {
-            const files = e.target.files;
-            if (files && files[0]) {
-                setFileName(files[0].name);
-            }
-        },
-        []
-    );
+    // const inputEl = useRef(null);
+    // const [fileName, setFileName] = useState<string>("");
+    // const fileInputHandler = useCallback(
+    //     (e: React.ChangeEvent<HTMLInputElement>) => {
+    //         const files = e.target.files;
+    //         if (files && files[0]) {
+    //             setFileName(files[0].name);
+    //         }
+    //     },
+    //     []
+    // );
 
-    useEffect(() => {
-        const currentInputEl = inputEl.current;
-        if (currentInputEl) {
-            currentInputEl.addEventListener("input", fileInputHandler);
-            setValues((prevValues) => ({
-                ...prevValues,
-                ["imgSrc"]: fileName,
-            }));
-        }
-        return () => {
-            if (currentInputEl) {
-                currentInputEl.removeEventListener("input", fileInputHandler);
-            }
-        };
-    }, [fileInputHandler, fileName]);
+    // useEffect(() => {
+    //     const currentInputEl = inputEl.current;
+    //     if (currentInputEl) {
+    //         currentInputEl.addEventListener("input", fileInputHandler);
+    //         setValues((prevValues) => ({
+    //             ...prevValues,
+    //             ["imgSrc"]: fileName,
+    //         }));
+    //     }
+    //     return () => {
+    //         if (currentInputEl) {
+    //             currentInputEl.removeEventListener("input", fileInputHandler);
+    //         }
+    //     };
+    // }, [fileInputHandler, fileName]);
 
-    const ClearFile = () => {
-        setFileName("");
-    };
+    // const ClearFile = () => {
+    //     setFileName("");
+    // };
     // 여기까지
 
 
@@ -207,7 +206,7 @@ export default function NewProduct() {
                         </FormControl>
                     </Box>
 
-                    <Box mt={"2.5rem"}>
+                    {/* <Box mt={"2.5rem"}>
                         <Text fontSize={"2xl"} as={"b"}>
                             사진
                         </Text>
@@ -266,7 +265,7 @@ export default function NewProduct() {
                                 </>
                             )}
                         </Box>
-                    </Box>
+                    </Box> */}
 
                     <Box mt={"2.5rem"}>
                         <Flex>
