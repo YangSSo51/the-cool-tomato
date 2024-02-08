@@ -28,7 +28,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     // STOMP 엔드포인트를 등록하는 메서드
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
-        // stomp websocket endpoint 설정( ws://localhost:8080/v1/ws-stomp )
+        // stomp websocket endpoint 설정( ws://localhost:8085/v1/chat/ws-stomp )
         registry.setErrorHandler(stompExceptionHandler).addEndpoint("/v1/chat/ws-stomp").setAllowedOriginPatterns(WEB_SOCKET_HOST).withSockJS();
     }
 
