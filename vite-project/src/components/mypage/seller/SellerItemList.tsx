@@ -17,7 +17,7 @@ function Items() {
 
 
     useEffect(() => {
-        sellersMyproductsAPI(0, 1, accessToken)
+        sellersMyproductsAPI(0, 16, accessToken)
             .then((response) => {
                 console.log(response)
                 setSellerItem(response.data.list);

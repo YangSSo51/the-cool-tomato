@@ -5,7 +5,7 @@ const http = itemAxios();
 const headers = new AxiosHeaders();
 headers.set("Content-Type", "application/json;charset=utf-8");
 
-const URL = '/products';
+const URL = "/products";
 
 async function ItemListDetailFetch(data: { id: number }) {
     const response = await http.get(`${URL}/${data.id}`);
@@ -25,22 +25,21 @@ async function ItemAddFunction(data : FormData, at: string) {
 }
 
 // ITEM조회 params가 바뀌어서 수정했습니다 충돌나면 요걸로 해주세욤
-async function ItemListFetch(
-    data: { 
-        page?: number; 
-        size?: number; 
-        'category-id'?: string; 
-        sellerId?: number; 
-    }) {
+async function ItemListFetch(data: {
+    page?: number;
+    size?: number;
+    "category-id"?: string;
+    sellerId?: number;
+}) {
     const response = await http.get(`${URL}/list`, {
         params: data,
     });
     return response.data.data;
 }
 
-
-async function ItemDetailDelete(id: number) {
-    await http.delete(`${URL}/${id}`);
+async function ItemDetailDelete(id: number, at: string) {
+    headers.set("Authorization", `Bearer ${at}`);
+    await http.delete(`${URL}/${id}`, { headers: headers });
 }
 
 async function ItemDetailFetch(id: number) {
@@ -64,13 +63,20 @@ async function sellersMyproductsAPI(page: number, size: number, at: string) {
     }
 }
 
-async function SellerBroadcastFetch(data : {page: number; size: number}) {
-    const response = await http.get('products/my/list', {
-        params: {page: data.page, size: data.size}
-})
-    return response.data.data.list
+async function SellerBroadcastFetch(data: { page: number; size: number }) {
+    const response = await http.get("products/my/list", {
+        params: { page: data.page, size: data.size, },
+    });
+    return response.data.data.list;
 }
 
+async function ItemListSellerGet(
+    params: { page: number; size: number },
+    accessToken: string
+) {
+    headers.set("Authorization", `Bearer ${accessToken}`);
+    return await http.get("/products/my/list", { headers, params });
+}
 
 export {
     ItemListDetailFetch,
@@ -79,5 +85,6 @@ export {
     ItemDetailDelete,
     ItemDetailFetch,
     sellersMyproductsAPI,
-    SellerBroadcastFetch
+    SellerBroadcastFetch,
+    ItemListSellerGet,
 };

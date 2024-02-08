@@ -11,6 +11,7 @@ import {
     Select,
     FormHelperText,
     Icon,
+    Img,
 } from "@chakra-ui/react";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import ReactDOM from "react-dom/client";
@@ -109,39 +110,6 @@ export default function ItemAdd() {
         }));
     };
 
-    const [fileName, setFileName] = useState<UploadImage | undefined>();
-
-    const fileInputHandler = useCallback(
-        (e: React.ChangeEvent<HTMLInputElement>) => {
-            const files = e.target.files;
-            console.log(files);
-            if (files && files[0]) {
-                setFileName({
-                    file: files[0],
-                    type: files[0].name,
-                });
-            }
-        },
-        []
-    );
-
-    // useEffect(() => {
-    //     const currentInputEl = inputEl.current;
-    //     if (currentInputEl) {
-    //         currentInputEl.addEventListener("input", fileInputHandler);
-    //     }
-    //     return () => {
-    //         if (currentInputEl) {
-    //             currentInputEl.removeEventListener("input", fileInputHandler);
-    //         }
-    //     };
-    // }, [fileInputHandler, fileName]);
-
-    const ClearFile = () => {
-        setFileName(undefined);
-    };
-
-    const formData = new FormData();
     const onSubmit = async () => {
         if (fileName !== undefined) {
             if (
@@ -279,7 +247,6 @@ export default function ItemAdd() {
                                             
                                             disabled={fileName ? false : true}
                                             style={{ display: "none" }}
-                                            onClick={() => fileInputHandler}
                                         />
 
                                         <label
@@ -303,8 +270,7 @@ export default function ItemAdd() {
                                         type="file"
                                         accept="image/jpg, image/jpeg, image/png"
                                         id="file"
-                                        
-                                        onClick={() => fileInputHandler}
+                                        ref={inputEl}
                                         disabled={fileName ? true : false}
                                         style={{ display: "none" }}
                                     />

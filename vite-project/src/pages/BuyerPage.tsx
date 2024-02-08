@@ -12,7 +12,7 @@ import Following from "../components/mypage/buyer/BuyerFollowing";
 import Reviews from "../components/mypage/buyer/BuyerReviews";
 import Reviewed from "../components/mypage/buyer/BuyerReviewed";
 import Question from "../components/mypage/buyer/BuyerQuestion";
-import Sellerform from "../components/mypage/Sellerform";
+import Sellerform from "../components/mypage/sellerform";
 
 export default function BuyerPage() {
     const user = useSelector((state: RootState) => state.user);
@@ -28,12 +28,13 @@ export default function BuyerPage() {
         { id: 5, isSelected: false , name: '판매자 신청', component: <Sellerform /> },
     ]);
 
-    const changeSelect = (e) => {
-        setTab(e.target.value)
+    const changeSelect = (e: React.MouseEvent<HTMLLIElement, MouseEvent>) => {
+        const selectedIndex = parseInt(e.currentTarget.getAttribute('data-index') || "0");
+        setTab(selectedIndex);
         setCategoryTabs(categoryTabs.map((item, index) => {
             return {
               ...item,
-              isSelected: e.target.value == index,
+              isSelected: index === selectedIndex,
             };
           })
         );
@@ -81,10 +82,11 @@ export default function BuyerPage() {
                                         key={category.id}
                                         value={category.id}
                                         padding=".5rem 1rem"
-                                        className={category.isSelected ? "active" : null}
+                                        className={category.isSelected ? "active" : ""}
                                         onClick={(e) => changeSelect(e)}
                                         _hover={{ color: "themeRed.500", cursor:"pointer" }}
                                         _active={{ color: "themeRed.500", bg: "themeRed.100" }}
+                                        data-index={category.id}
                                         >{category.name}
                                         </ListItem>
                                     ))}

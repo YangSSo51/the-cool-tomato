@@ -3,9 +3,9 @@ import { Avatar, Button, Text, Select, FormControl, FormLabel, InputGroup, Input
 import { ViewIcon, ViewOffIcon, CheckIcon } from "@chakra-ui/icons";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
-import { RootState } from "../redux/stores/store";
-import { getMyInfoAPI, postMyInfoAPI } from "../api/user";
+// import { useSelector } from "react-redux";
+// import { RootState } from "../redux/stores/store";
+// import { getMyInfoAPI, postMyInfoAPI, deleteMyInfoAPI } from "../api/user";
 
 export default function UserinfoPage() {
     const navigate = useNavigate()
@@ -27,13 +27,13 @@ export default function UserinfoPage() {
     const [isPasswordValid, setIsPasswordValid] = useState(false)
     const [validMessage, setValidMessage] = useState("")
 
-    function handlePassword(e: React.ChangeEvent<HTMLInputElement>) {
-        const inputValue = e.target.value;
-        const regex = /^(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[!@#$%^&*]).{8,}$/;
-        // 체크아이콘 표시를 위해
-        setCheck(regex.test(inputValue));
-        setPassword(inputValue);
-    }
+//     function handlePassword(e: React.ChangeEvent<HTMLInputElement>) {
+//         const inputValue = e.target.value;
+//         const regex = /^(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[!@#$%^&*]).{8,}$/;
+//         // 체크아이콘 표시를 위해
+//         setCheck(regex.test(inputValue));
+//         setPassword(inputValue);
+//     }
 
     function handlePassword2(e: React.ChangeEvent<HTMLInputElement>) {
         const inputValue = e.target.value;
@@ -109,7 +109,9 @@ export default function UserinfoPage() {
                                 마이페이지로 돌아가기
                                 </Button>
 
-                                <Avatar mt="4" mb="4" size="xl" src={user.profileImg} />
+                                <Avatar mt="4" mb="4" size="xl" 
+                                    // src={profileImg} 
+                                    />
                                 
                                 <Menu>
                                     <MenuButton
@@ -125,17 +127,22 @@ export default function UserinfoPage() {
                                         프로필 사진 수정
                                     </MenuButton>
                                     <MenuList>
+
                                         <MenuItem>
-                                            <input type="file" id="avatar" name="avatar" accept="image/png, image/jpeg, image/jpg" />
+                                            <input type="file" id="avatar" name="avatar" accept="image/png, image/jpeg, image/jpg" 
+                                                // onChange={handleFileChange}
+                                            />
                                         </MenuItem>
-                                        <MenuItem>현재 사진 삭제</MenuItem>
+                                        <MenuItem 
+                                            // onClick={onclickDeletePic}
+                                        >현재 사진 삭제</MenuItem>
                                     </MenuList>
                                 </Menu>
 
                                 <Button
                                     mt="4"
                                     colorScheme="red"
-                                    // onClick={handleDeleteAccount}
+                                    // onClick={() => {deleteMyInfoAPI(user.accessToken)}}
                                 >회원 탈퇴
                                 </Button>
                             </Flex>
@@ -153,7 +160,7 @@ export default function UserinfoPage() {
                             </Button>
                         
                         <form    
-                            onSubmit={onSubmit}
+                            // onSubmit={onSubmit}
                             style={{ width: "100%" }}
                         >
                             <FormControl my={2}>
@@ -162,7 +169,7 @@ export default function UserinfoPage() {
                                 </FormLabel>
                                 <Input
                                     focusBorderColor="themeGreen.500"
-                                    placeholder={loginId}
+                                    // placeholder={loginId}
                                     size="md"
                                     disabled
                                 />
@@ -179,13 +186,13 @@ export default function UserinfoPage() {
                                         placeholder="password"
                                         size="md"
                                         autoComplete="current-password"
-                                        value={password}
-                                        onChange={handlePassword}
-                                        type={show ? 'text' : 'password'}
+                                        // value={password}
+                                        // onChange={handlePassword}
+                                        // type={show ? 'text' : 'password'}
                                         id="password"
                                     />
                                     <InputRightElement>
-                                        {check ? (
+                                        {/* {check ? (
                                             <CheckIcon color="green.500" mr={"1"} />
                                             ) : (
                                                 ''
@@ -195,8 +202,8 @@ export default function UserinfoPage() {
                                             <ViewIcon color="grey" />
                                         ) : (
                                             <ViewOffIcon color="grey" />
-                                        )}    
-                                        </Button>
+                                        )}     */}
+                                        {/* </Button> */}
                                     </InputRightElement>
                                 </InputGroup>
                             </FormControl>
@@ -236,8 +243,8 @@ export default function UserinfoPage() {
                                     placeholder="nickname"
                                     size="md"
                                     autoComplete="nickname"
-                                    value={nickname}
-                                    onChange={(e) => {setNickname(e.target.value);}}
+                                    // value={nickname}
+                                    // onChange={(e) => {setNickname(e.target.value);}}
                                 />
                             </FormControl>
 
@@ -247,8 +254,8 @@ export default function UserinfoPage() {
                                 </FormLabel>
                                 <Select
                                     placeholder=""
-                                    value={sex}
-                                    onChange={(e) => setSex(e.target.value)}
+                                    // value={sex}
+                                    // onChange={(e) => setSex(e.target.value)}
                                 >
                                     <option value="M">남자</option>
                                     <option value="F">여자</option>
@@ -265,8 +272,8 @@ export default function UserinfoPage() {
                                     size="md"
                                     type="date"
                                     autoComplete="bday"
-                                    value={birthday}
-                                    onChange={(e) => setBirthday(e.target.value)}
+                                    // value={birthday}
+                                    // onChange={(e) => setBirthday(e.target.value)}
                                 ></Input>
                             </FormControl>
                             <Button

@@ -7,7 +7,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "../redux/stores/store";
 import "../css/SellerPage.css"
 
-import Notice from "../components/mypage/admin/notice";
+import Notice from "../components/mypage/admin/Notice";
 import AcceptSeller from "../components/mypage/admin/AcceptSeller";
 import ManagingAll from "../components/mypage/admin/ManagingAll";
 
@@ -22,15 +22,15 @@ export default function AdminPage() {
         { id: 2, isSelected: false , name: '판매자 신청 조회', component: <AcceptSeller /> },
     ]);
 
-    const changeSelect = (e) => {
-        setTab(e.target.value)
+    const changeSelect = (e: React.MouseEvent<HTMLLIElement, MouseEvent>) => {
+        const selectedIndex = parseInt(e.currentTarget.getAttribute("data-index") || "");
+        setTab(selectedIndex);
         setCategoryTabs(categoryTabs.map((item, index) => {
             return {
-              ...item,
-              isSelected: e.target.value == index,
+                ...item,
+                isSelected: index === selectedIndex,
             };
-          })
-        );
+        }));
     }
 
     useEffect(() => {
@@ -67,10 +67,11 @@ export default function AdminPage() {
                                         key={category.id}
                                         value={category.id}
                                         padding=".5rem 1rem"
-                                        className={category.isSelected ? "active" : null}
+                                        className={category.isSelected ? "active" : ""}
                                         onClick={(e) => changeSelect(e)}
                                         _hover={{ color: "themeRed.500", cursor:"pointer" }}
                                         _active={{ color: "themeRed.500", bg: "themeRed.100" }}
+                                        data-index={category.id} // 데이터 속성 추가
                                         >{category.name}
                                         </ListItem>
                                     ))}

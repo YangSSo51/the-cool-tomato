@@ -6,19 +6,28 @@ import { useNavigate } from "react-router-dom";
 import { ItemDetailInterface } from "../../../types/DataTypes";
 import { ItemDetailDelete } from "../../../api/Itemlist";
 import React from "react";
+import { useSelector } from "react-redux";
+import { RootState } from "../../../redux/stores/store";
 
 function ItemsofItems( { sellerItem , onDelete } : {sellerItem : ItemDetailInterface, onDelete: (productId : number) => void}  ) {
     const navigate = useNavigate();
+    const accessToken = useSelector((state: RootState) => {
+        return state.user.accessToken
+    })
 
     function onclick() {
         navigate(`/v1/items/detail/${sellerItem.productId}`);
     }
 
     const DeleteFunction = () => {
-        ItemDetailDelete(sellerItem.productId).then(() => {
+        ItemDetailDelete(sellerItem.productId, accessToken).then(() => {
             onDelete(sellerItem.productId)
         }).catch((err) => {console.log(err)})
     };
+
+    const EditFunction = () => {
+        
+    }
 
     return (
         <Flex
@@ -72,7 +81,7 @@ function ItemsofItems( { sellerItem , onDelete } : {sellerItem : ItemDetailInter
                 <Button colorScheme="red" mb={"0.5rem"} onClick={DeleteFunction}>
                     삭제
                 </Button>
-                <Button mb={"0.5rem"}>수정</Button>
+                <Button mb={"0.5rem"} onClick={EditFunction}>수정</Button>
                 <Button onClick={onclick}>상세</Button>
             </Flex>
         </Flex>
