@@ -1,3 +1,4 @@
+import { UploadImage } from "../types/DataTypes";
 import { itemAxios } from "./http";
 import { AxiosHeaders } from "axios";
 
@@ -6,17 +7,13 @@ const headers = new AxiosHeaders();
 headers.set("Content-Type", "application/json;charset=utf-8");
 
 const URL = "/products";
-const URL = "/products";
 
 async function ItemListDetailFetch(data: { id: number }) {
     const response = await http.get(`${URL}/${data.id}`);
     return response;
 }
 
-async function ItemAddFunction(data, at: string) {
-    for (const [key, value] of data.entries()) {
-        console.log(value)
-    }
+async function ItemAddFunction(data : UploadImage, at: string) {
     try {
         headers.set("Authorization", `Bearer ${at}`);
         headers.set("Content-Type", "multipart/form-data");
@@ -89,6 +86,6 @@ export {
     ItemDetailDelete,
     ItemDetailFetch,
     sellersMyproductsAPI,
-    SellerBroadcastFetch,,
+    SellerBroadcastFetch,
     ItemListSellerGet,
 };

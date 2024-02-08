@@ -142,12 +142,12 @@ export default function ItemAdd() {
         ) {
             // formData.append("productRequest", JSON.stringify(values));
             // formData.append("file", data, fileName.file);
-            try {
-                await ItemAddFunction(formData, accessToken);
-                navigate("/v1/items/list/0");
-            } catch (error) {
-                alert("등록 실패했습니다. 상품을 다시 설정해주세요.");
-            }
+            // try {
+            //     await ItemAddFunction(, accessToken);
+            //     navigate("/v1/items/list/0");
+            // } catch (error) {
+            //     alert("등록 실패했습니다. 상품을 다시 설정해주세요.");
+            // }
         } else if (!values.price) {
             alert("가격을 설정해주세요");
         } else if (!values.categoryId) {
