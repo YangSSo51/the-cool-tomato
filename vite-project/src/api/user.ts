@@ -21,7 +21,7 @@ async function loginUser(data: { loginId: string; password: string }) {
         if (error instanceof AxiosError) {
             console.error(error);
             if (error.response) {
-              console.log(error.response.data.reason); // 'reason' 출력
+            //   console.log(error.response.data.reason); // 'reason' 출력
               if (error.response.status === 401) {
                   if (error.response.data.divisionCode === 'B003') {
                       throw new Error("비밀번호가 일치하지 않습니다.");
@@ -36,8 +36,6 @@ async function loginUser(data: { loginId: string; password: string }) {
 }
 
 async function logoutAPI(accessToken: string) {
-    console.log("로그아웃")
-    console.log(accessToken)
     try {
         const response = await http.delete(`${url}/logout`, {
             headers: {
@@ -45,10 +43,6 @@ async function logoutAPI(accessToken: string) {
                 "Authorization": "Bearer " + accessToken
             }
         });
-        const responseData = response.data;
-        if (responseData.status === 200) {
-            console.log("로그아웃 성공")
-            }
         return response
     } catch(error) {
         console.log(error)
@@ -180,6 +174,7 @@ async function getMyInfoAPI(accessToken: string) {
         const responseData = response.data;
         if (responseData.status === 200) {
             console.log("정보조회성공")
+            console.log(responseData)
         }
         return responseData
     } catch(error) {
@@ -272,7 +267,6 @@ async function getSellerDetailAPI(sellerId: number) {
         const response = await http.get(`${url}/sellers/${sellerId}`);
         const responseData = response.data;
         if (responseData.status === 200) {
-            console.log("판매자 상세정보 조회 성공");
             return responseData;
         }
     } catch (error) {
@@ -292,7 +286,6 @@ async function followSellerAPI(sellerId: number, alarmSetting: boolean, accessTo
         });
         const responseData = response.data;
         if (responseData.status === 201) {
-            console.log("팔로우 등록 성공");
             return 1;
         }
     } catch (error) {
@@ -311,9 +304,10 @@ async function checkFollowAPI(sellerId: number, accessToken: string) {
             }
         });
         const responseData = response.data;
-        if (responseData.status === 200) {
-            console.log("팔로우 여부 조회 성공");
-            return responseData;
+        if (responseData.data.follow === true) {
+            return 1;
+        } else {
+            return 2;
         }
     } catch (error) {
         console.log("팔로우 여부 조회 실패");
@@ -332,7 +326,6 @@ async function unfollowSellerAPI(sellerId: number, accessToken: string) {
         });
         const responseData = response.data;
         if (responseData.status === 200) {
-            console.log("팔로우 취소 성공");
             return 1;
         }
     } catch (error) {
@@ -352,7 +345,6 @@ async function getFollowingListAPI(accessToken: string) {
         });
         const responseData = response.data;
         if (responseData.status === 200) {
-            console.log("팔로잉 목록 조회 성공");
             return responseData;
         }
     } catch (error) {
@@ -372,7 +364,6 @@ async function getFollowerListAPI(accessToken: string) {
         });
         const responseData = response.data;
         if (responseData.status === 200) {
-            console.log("팔로워 목록 조회 성공");
             return responseData;
         }
     } catch (error) {
@@ -383,12 +374,16 @@ async function getFollowerListAPI(accessToken: string) {
 
 // 관리자 API
 // 모든 회원 정보 조회
-async function getAllUsersAPI(page: number, size: number) {
+async function getAllUsersAPI(page: number, size: number, accessToken: string) {
     try {
         const response = await http.get(`${url}/admin`, {
             params: {
                 page,
                 size
+            },
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": "Bearer " + accessToken
             }
         });
         const responseData = response.data;
@@ -401,6 +396,7 @@ async function getAllUsersAPI(page: number, size: number) {
         throw error;
     }
 }
+
 
 // 관리자가 회원을 강제로 탈퇴시키는 함수
 async function deleteUserByAdminAPI(id: number) {
@@ -418,12 +414,16 @@ async function deleteUserByAdminAPI(id: number) {
 }
 
 // 관리자의 판매자 전환 신청 목록 조회 함수
-async function getSellerApplicationsAPI(page: number, size: number) {
+async function getSellerApplicationsAPI(page: number, size: number, accessToken: string) {
     try {
         const response = await http.get(`${url}/sellers/admin`, {
             params: {
                 page,
                 size
+            },
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": "Bearer " + accessToken
             }
         });
         const responseData = response.data;

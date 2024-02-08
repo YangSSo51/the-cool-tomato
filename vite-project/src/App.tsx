@@ -31,11 +31,17 @@ function App() {
             <ChakraProvider theme={Theme}>
                 <Fonts />
                 <Routes>
+                    <Route path="/" element={<LayOut />}>
+                        <Route element={<MainPage />} />
+                    </Route>
                     <Route path="/v1" element={<LayOut />}>
                         <Route path="main" element={<MainPage />} />
                         <Route path="search" element={<Search />} />
                         <Route path="live/list" element={<LiveList />} />
-                        <Route path="items/list/:currentpage" element={<ItemList />} />
+                        <Route
+                            path="items/list/:currentpage"
+                            element={<ItemList />}
+                        />
                         <Route path="calendar" element={<Calendar />} />
                         <Route path="buyer" element={<BuyerPage />} />
                         <Route path="seller" element={<SellerPage />} />

@@ -29,10 +29,10 @@ function LoginForm() {
 
     async function onSubmit(event: React.SyntheticEvent): Promise<void> {
         event.preventDefault();
-        console.log("LoginForm onSubmit ID: " + id);
-        console.log("LoginForm onSubmit Password: " + password);
+        // console.log("LoginForm onSubmit ID: " + id);
+        // console.log("LoginForm onSubmit Password: " + password);
 
-        console.log("Login Submit");
+        // console.log("Login Submit");
         await dispatch(loginUserThunk({ loginId:id, password }));
     }
 
@@ -41,13 +41,13 @@ function LoginForm() {
     // }, [dispatch])
 
     useEffect(() => {
-        console.log("Login Result: " + user.auth);
-        console.log("Login Result type: " + typeof user.auth);
+        // console.log("Login Result: " + user.auth);
+        // console.log("Login Result type: " + typeof user.auth);
         if (user.auth !== "FAIL" && user.auth !== "INIT") {
-            console.log("Login Success");
+            // console.log("Login Success");
             navigate("/v1/main");
         } else if (user.auth === "FAIL") {
-            console.log("Login Fail");
+            // console.log("Login Fail");
         }
     }, [user, navigate]);
 

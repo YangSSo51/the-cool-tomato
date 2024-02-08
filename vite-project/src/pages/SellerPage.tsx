@@ -11,7 +11,7 @@ import LiveList from "../components/mypage/seller/SellerLiveList";
 import Items from "../components/mypage/seller/SellerItemList";
 import Follwers from "../components/mypage/seller/SellerFollwers";
 import Qna from "../components/mypage/seller/SellerQna";
-import Chatbot from "../components/mypage/seller/SellerChatbot";
+import Chatbot from "../components/mypage/seller/ChatbotTab";
 import BanUser from "../components/mypage/seller/SellerBanUser";
 import BlockWord from "../components/mypage/seller/SellerBlockWord";
 import "../css/SellerPage.css";

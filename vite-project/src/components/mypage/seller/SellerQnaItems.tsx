@@ -33,7 +33,7 @@ function QnaItems() {
                                 color='gray.500'
                                 fontWeight='semibold'
                                 letterSpacing='wide'
-                                fontSize='xs'
+                                fontSize='m'
                                 textTransform='uppercase'
                                 ml='2'
                                 >

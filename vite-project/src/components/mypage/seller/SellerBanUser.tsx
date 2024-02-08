@@ -1,10 +1,20 @@
 import { Box, Text, Flex } from "@chakra-ui/layout";
-import { Avatar, Badge } from "@chakra-ui/react";
+import { Avatar, Badge, Button } from "@chakra-ui/react";
 
 function BanUser() {
+
+    // const onClickUnBan = () => {
+    //     unfollowSellerAPI(following.userId, accessToken).then((result) => {
+    //         if (result === 1) {
+    //             updateFollowing(following.userId);
+    //         } else {
+    //             // sellerId: number, alarmSetting: boolean, accessToken: string 
+    //         }
+    //     });
+    // };
+
     return (
-        <Box flexDirection="column" w="90%" h="full">
-            <Text>차단차단</Text>
+        <Flex justifyContent="space-between" w="90%" h="full">
             <Flex>
                 <Avatar src='https://bit.ly/sage-adebayo' />
                 <Box ml='3'>
@@ -17,7 +27,14 @@ function BanUser() {
                     <Text fontSize='sm'>UI Engineer</Text>
                 </Box>
             </Flex>
-        </Box>
+
+            <Button 
+                // onClick={onClickUnBan} 
+                color="white" 
+                backgroundColor="themeGreen.500" 
+                _hover={{ backgroundColor: "white", color: "red" }}>
+                차단해제</Button>
+        </Flex>
     )
 }
 

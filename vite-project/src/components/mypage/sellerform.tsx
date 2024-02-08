@@ -39,7 +39,7 @@ export default function Sellerform() {
     },
     {
         title : '판매자 설명',
-        enTitle : 'Seller\'s Legal Name',
+        enTitle : 'Seller\'s Introduction',
         // rule : 한글 혹은 영문만 가능,
         key : businessContent,
         change : setBusinessContent
@@ -88,14 +88,6 @@ export default function Sellerform() {
                 } else {
                     inputValue = values.slice(0, 3) + '-' + values.slice(3, 5) + '-' + values.slice(5, 10);
                 }
-                break;
-            case '판매자 실명':
-                // 한글 혹은 영문
-                regex = /[^가-힣a-zA-Z]/g;
-                if (regex.test(inputValue)) {
-                    message = "한글 혹은 영어만 입력할 수 있습니다";
-                }
-                
                 break;
             case '업체 연락처':
                 regex = /[^0-9-]/gi;
@@ -181,7 +173,7 @@ export default function Sellerform() {
                     </Button>
                 </form>
                 ) : (
-                <Alert status='success' textAlign='center' mb="10">
+                <Alert status='success' textAlign='center' mb="10" m="auto">
                     <AlertIcon />
                     판매자 신청이 완료되었습니다! <br />
                     판매자 전환은 영업일 기준 3일 이내 완료됩니다.

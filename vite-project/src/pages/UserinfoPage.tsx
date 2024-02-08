@@ -1,5 +1,5 @@
 import { Box, Flex,  Center } from "@chakra-ui/layout";
-import { Avatar, Button, Text, Select, FormControl, FormLabel, InputGroup, Input, InputRightElement} from "@chakra-ui/react";
+import { Avatar, Button, Text, Select, FormControl, FormLabel, InputGroup, Input, InputRightElement, Menu, MenuButton, MenuList, MenuItem} from "@chakra-ui/react";
 import { ViewIcon, ViewOffIcon, CheckIcon } from "@chakra-ui/icons";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -91,15 +91,28 @@ export default function UserinfoPage() {
                                 마이페이지로 돌아가기
                                 </Button>
 
-                                <Avatar mt="4" size="xl" src={user.profileImg} />
+                                <Avatar mt="4" mb="4" size="xl" src={user.profileImg} />
                                 
-                                <Button
-                                    mt="4"
-                                    onClick={() => {
-                                    navigate("/v1/userinfo");
-                                    }}
-                                >프로필 사진 수정
-                                </Button>
+                                <Menu>
+                                    <MenuButton
+                                        px={4}
+                                        py={2}
+                                        transition='all 0.2s'
+                                        borderRadius='md'
+                                        borderWidth='1px'
+                                        _hover={{ bg: 'gray.400' }}
+                                        _expanded={{ bg: 'blue.400' }}
+                                        _focus={{ boxShadow: 'outline' }}
+                                    >
+                                        프로필 사진 수정
+                                    </MenuButton>
+                                    <MenuList>
+                                        <MenuItem>
+                                            <input type="file" id="avatar" name="avatar" accept="image/png, image/jpeg, image/jpg" />
+                                        </MenuItem>
+                                        <MenuItem>현재 사진 삭제</MenuItem>
+                                    </MenuList>
+                                </Menu>
 
                                 <Button
                                     mt="4"
@@ -111,7 +124,7 @@ export default function UserinfoPage() {
                         </Box>
                     </Box>
 
-                    <Box w="75%" bg="white" rounded="lg" overflowY="scroll" className="custom-scrollbar">
+                    <Box w="75%" bg="white" rounded="lg" className="custom-scrollbar">
                         <Flex justify="center" align="center" h="full">
 
                         <form    

@@ -6,7 +6,7 @@ import { AxiosResponse } from "axios";
 const loginUserThunk = createAsyncThunk(
     "user/login",
     async (idpw: { loginId: string; password: string }, thunkAPI) => {
-        console.log("loginUserThunk idpw: " + JSON.stringify(idpw));
+        // console.log("loginUserThunk idpw: " + JSON.stringify(idpw));
         const response: AxiosResponse = await loginUser(idpw);
         return response.data;
     }
@@ -15,7 +15,6 @@ const loginUserThunk = createAsyncThunk(
 const logoutUserThunk = createAsyncThunk(
     "user/logout",
     async (accessToken: string, thunkAPI) => {
-        console.log("logoutUserThunk: " + JSON.stringify(accessToken));
         const response: AxiosResponse = await logoutAPI(accessToken);
         return response.data;
     }

@@ -6,6 +6,7 @@ const headers = new AxiosHeaders();
 headers.set("Content-Type", "application/json;charset=utf-8");
 
 const URL = "/products";
+const URL = "/products";
 
 async function ItemListDetailFetch(data: { id: number }) {
     const response = await http.get(`${URL}/${data.id}`);
@@ -27,9 +28,15 @@ async function ItemAddFunction(data, at: string) {
     }
 }
 
-async function ItemListFetch(data: { page: number; size: number }) {
+// ITEM조회 params가 바뀌어서 수정했습니다 충돌나면 요걸로 해주세욤
+async function ItemListFetch(data: {
+    page?: number;
+    size?: number;
+    "category-id"?: string;
+    sellerId?: number;
+}) {
     const response = await http.get(`${URL}/list`, {
-        params: { page: data.page, size: data.size },
+        params: data,
     });
     return response.data.data;
 }
@@ -47,7 +54,7 @@ async function ItemDetailFetch(id: number) {
 async function sellersMyproductsAPI(page: number, size: number, at: string) {
     headers.set("Authorization", `Bearer ${at}`);
     try {
-        const response = await http.get(`${URL}/my/list`, {
+        const response = await http.get(`${URL}/my/list/`, {
             params: {
                 page: page,
                 size: size,
@@ -67,7 +74,13 @@ async function SellerBroadcastFetch(data: { page: number; size: number }) {
     return response.data.data.list;
 }
 
-// async function ItemDetailEdit() {}
+async function ItemListSellerGet(
+    params: { page: number; size: number },
+    accessToken: string
+) {
+    headers.set("Authorization", `Bearer ${accessToken}`);
+    return await http.get("/products/my/list", { headers, params });
+}
 
 export {
     ItemListDetailFetch,
@@ -76,5 +89,6 @@ export {
     ItemDetailDelete,
     ItemDetailFetch,
     sellersMyproductsAPI,
-    SellerBroadcastFetch,
+    SellerBroadcastFetch,,
+    ItemListSellerGet,
 };
