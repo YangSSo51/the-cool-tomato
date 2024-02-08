@@ -1,4 +1,4 @@
-package com.wp.user.global.common.service;
+package com.wp.user.global.file.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.http.MediaType;

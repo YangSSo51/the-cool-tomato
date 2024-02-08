@@ -16,6 +16,7 @@ import com.wp.user.global.common.response.IssueTokenResponse;
 import com.wp.user.global.common.service.AuthClient;
 import com.wp.user.global.common.service.JwtService;
 import com.wp.user.global.exception.BusinessExceptionHandler;
+import com.wp.user.global.file.service.S3UploadService;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.InternetAddress;
 import jakarta.mail.internet.MimeMessage;
@@ -48,6 +49,7 @@ public class UserServiceImpl implements UserService {
     private final BCryptPasswordEncoder passwordEncoder;
     private final JavaMailSender javaMailSender;
     private final AuthClient authClient;
+    private final S3UploadService s3UploadService;
 
     // 회원가입
     @Override
@@ -221,7 +223,9 @@ public class UserServiceImpl implements UserService {
         // 프로필 수정
         else if(profileImgFile != null && !profileImgFile.isEmpty()) {
             // 파일 업로드
-            user.setProfileImg("");
+            String imgSrc = "";
+            imgSrc = s3UploadService.saveFile(profileImgFile);
+            user.setProfileImg(imgSrc);
         }
         // 닉네임, 성별, 생년월일 수정
         user.setNickname(modifyUserRequest.getNickname());
