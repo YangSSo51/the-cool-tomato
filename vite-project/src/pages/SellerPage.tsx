@@ -2,7 +2,7 @@ import { Box, Flex, Center } from "@chakra-ui/layout";
 import { Avatar, Button, List, ListItem, Breadcrumb, BreadcrumbItem, BreadcrumbLink } from "@chakra-ui/react";
 import { ChevronRightIcon } from "@chakra-ui/icons";
 import { useNavigate } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useSelector } from "react-redux";
 
 import { RootState } from "../redux/stores/store";
@@ -34,17 +34,16 @@ export default function SellerPage() {
         // { id: 9, title: "테스트2", isSelected: false, component: <TestComponent title="테스트2"/>},
     ]);
 
-    const changeSelect = (e) => {
-        setTab(e.target.value)
-        setCategories(
-            categories.map((item, index) => {
-                return {
-                    ...item,
-                    isSelected: e.target.value == index,
-                };
-            })
-        );
-    };
+    const changeSelect = (e: React.MouseEvent<HTMLLIElement, MouseEvent>) => {
+        const selectedIndex = parseInt(e.currentTarget.getAttribute("data-index") || "");
+        setTab(selectedIndex);
+        setCategories(categories.map((item, index) => {
+            return {
+                ...item,
+                isSelected: index === selectedIndex,
+            };
+        }));
+    }
 
     const categoryList = categories.map((item, index) => {
         return (
@@ -53,8 +52,9 @@ export default function SellerPage() {
                 value={index}
                 padding=".5rem 1rem"    
                 cursor="pointer"
-                className={item.isSelected ? "active" : null}
+                className={item.isSelected ? "active" : ""}
                 onClick={(e) => changeSelect(e)}
+                data-index={item.id}
             >{item.title}
             </ListItem>
         );

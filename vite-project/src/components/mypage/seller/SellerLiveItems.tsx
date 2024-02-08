@@ -1,6 +1,6 @@
-import { Box, Flex, Text } from "@chakra-ui/layout";
-import { Avatar, Button, Image, Badge } from "@chakra-ui/react";
-import { StarIcon } from "@chakra-ui/icons";
+import { Box, Flex } from "@chakra-ui/layout";
+import { Image, Badge, Button } from "@chakra-ui/react";
+
 
 function LiveItems() {
     const LiveInfo = {

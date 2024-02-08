@@ -162,8 +162,6 @@ async function findPwAPI(data: {loginId: string, email: string}) {
 }
 
 async function getMyInfoAPI(accessToken: string) {
-    console.log("회원정보수정용 조회받깅")
-    console.log(accessToken)
     try {
         const response = await http.get(`${url}`, {
             headers: {
@@ -172,10 +170,6 @@ async function getMyInfoAPI(accessToken: string) {
             }
         });
         const responseData = response.data;
-        if (responseData.status === 200) {
-            console.log("정보조회성공")
-            console.log(responseData)
-        }
         return responseData
     } catch(error) {
         console.log(error)

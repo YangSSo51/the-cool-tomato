@@ -10,7 +10,7 @@ import { useRef } from "react";
 
 function PlanItems() {
     const { isOpen, onOpen, onClose } = useDisclosure();
-    const cancelRef = useRef();
+    const cancelRef = useRef(null);
     const broadcastInfo = {
       imageUrl: 'https://www.vegannews.co.kr/data/photos/20230727/art_1688713002447_e60ce1.png',
       imageAlt: 'Rear view of modern home with pool',
