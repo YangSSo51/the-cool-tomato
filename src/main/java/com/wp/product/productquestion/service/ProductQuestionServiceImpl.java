@@ -70,17 +70,16 @@ public class ProductQuestionServiceImpl implements ProductQuestionService{
 
     @Override
     public ProductQuestionResponse findProductQuestion(Long productQuestionId) {
-        //TODO : 판매자 아이디 확인 필요
         Optional<ProductQuestionResponse> result = productQuestionRepository.findProductQuestion(productQuestionId);
         result.orElseThrow(()-> new BusinessExceptionHandler("조회된 상품문의가 없습니다",ErrorCode.NO_ELEMENT_ERROR));
         return result.get();
     }
 
     @Override
-    public void saveProductQuestion(ProductQuestionCreateRequest productQuestionRequest) {
+    public void saveProductQuestion(ProductQuestionCreateRequest productQuestionRequest,Long writerId) {
         //상품 문의 객체 생성
         ProductQuestion productQuestion = ProductQuestion.builder()
-                .writerId(1L)
+                .writerId(writerId)
                 .questionContent(productQuestionRequest.getQuestionContent())
                 .product(Product.builder().productId(productQuestionRequest.getProductId()).build())
                 .build();
@@ -93,14 +92,14 @@ public class ProductQuestionServiceImpl implements ProductQuestionService{
     }
 
     @Override
-    public void updateProducQuestion(ProductQuestionUpdateRequest productQuestionRequest) {
+    public void updateProducQuestion(ProductQuestionUpdateRequest productQuestionRequest,Long sellerId) {
         //상품 문의 게시판 번호로 조회된 상품이 있는지 확인
         Long productQuestionId = productQuestionRequest.getProductQuestionBoardId();
-        //TODO : 판매자의 수정요청인지 확인 필요
         Optional<ProductQuestion> result = productQuestionRepository.findById(productQuestionId);
 
         try {
             ProductQuestion productQuestion = result.orElseThrow();
+
             //상품 문의 등록
             productQuestion.change(productQuestionRequest);
             productQuestionRepository.save(productQuestion);
@@ -112,11 +111,17 @@ public class ProductQuestionServiceImpl implements ProductQuestionService{
     }
 
     @Override
-    public void deleteProducQuestion(Long productQuestionId) {
+    public void deleteProducQuestion(Long productQuestionId,Long writerId) {
         //상품 번호로 상품 조회
         //TODO : 작성자와 동일한 아이디의 삭제요청인지 확인 필요
-        productQuestionRepository.findById(productQuestionId)
-                .orElseThrow(()->new BusinessExceptionHandler("상품 문의가 존재하지 않습니다",ErrorCode.NO_ELEMENT_ERROR));
+        ProductQuestion productQuestion = productQuestionRepository.findById(productQuestionId)
+                .orElseThrow(() -> new BusinessExceptionHandler("상품 문의가 존재하지 않습니다", ErrorCode.NO_ELEMENT_ERROR));
+
+        boolean equals = writerId.equals(productQuestion.getWriterId());
+        //판매자 아이디랑 같은지 확인
+        if (!equals) {
+            throw new BusinessExceptionHandler("상품 문의 삭제 권한이 존재하지 않음",ErrorCode.DELETE_ERROR);
+        }
 
         //문의 게시판 아이디로 문의 삭제
         productQuestionRepository.deleteById(productQuestionId);

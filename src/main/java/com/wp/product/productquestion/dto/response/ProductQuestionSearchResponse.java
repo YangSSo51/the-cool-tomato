@@ -15,6 +15,7 @@ public class ProductQuestionSearchResponse {
     private Long writerId;
     private String writerNickname;
     private Long productId;
+    private String imgSrc;
     private String questionContent;
     private String answerContent;
     private LocalDateTime questionRegisterDate;
