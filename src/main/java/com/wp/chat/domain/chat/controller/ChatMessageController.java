@@ -1,10 +1,11 @@
 package com.wp.chat.domain.chat.controller;
 
-import com.wp.chat.domain.block.dto.response.GetBlockManageListResponse;
-import com.wp.chat.domain.block.entity.BlockManage;
 import com.wp.chat.domain.block.service.BlockManageService;
 import com.wp.chat.domain.chat.dto.request.ChatMessageRequest;
 import com.wp.chat.domain.chat.entity.ChatMessage;
+import com.wp.chat.domain.chat.service.ChatMessageService;
+import com.wp.chat.global.common.code.ErrorCode;
+import com.wp.chat.global.exception.BusinessExceptionHandler;
 import lombok.RequiredArgsConstructor;
 import org.apache.kafka.clients.admin.NewTopic;
 import org.springframework.kafka.core.KafkaTemplate;
@@ -17,15 +18,12 @@ import java.util.List;
 @RequiredArgsConstructor
 @Controller
 public class ChatMessageController {
-    private final KafkaTemplate<String, ChatMessage> kafkaTemplate;
-    private final NewTopic topic;
-    private final BlockManageService blockManageService;
+
+    private final ChatMessageService chatMessageService;
 
     @MessageMapping("/message")
     @Transactional
     public void message(ChatMessageRequest chatMessageRequest) {
-        GetBlockManageListResponse blockManages = blockManageService.getBlockManagesBySellerId(1L);
-        ChatMessage chatMessage = ChatMessage.builder().roomId(chatMessageRequest.getRoomId()).senderId(chatMessageRequest.getSenderId()).senderNickname(chatMessageRequest.getSenderNickname()).message(chatMessageRequest.getMessage()).build();
-        kafkaTemplate.send(topic.name(), chatMessage);
+        chatMessageService.sendMessage(chatMessageRequest);
     }
 }

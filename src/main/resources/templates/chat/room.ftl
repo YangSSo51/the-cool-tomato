@@ -24,11 +24,7 @@
             <label class="input-group-text">방 ID</label>
         </div>
     </div>
-    <ul class="list-group">
-        <li class="list-group-item list-group-item-action" v-for="item in chatrooms" v-bind:key="item.roomId" v-on:click="enterRoom(item.roomId)">
-            {{item.roomId}}
-        </li>
-    </ul>
+    <button v-on:click="enterRoom">채팅방 입장</button>
 </div>
 <!-- JavaScript -->
 <script src="/webjars/vue/2.5.16/dist/vue.min.js"></script>
@@ -36,20 +32,14 @@
 <script>
     var vm = new Vue({
         el: '#app',
-        data: {
-            room_name : '',
-            chatrooms: [
-                {roomId : "1"},
-                {roomId : "2"}
-            ]
-        },
         methods: {
-            enterRoom: function(roomId) {
+            enterRoom: function() {
+                var roomId = prompt('roomId를 입력해주세요.');
                 var sender = prompt('Access Token을 입력해 주세요.');
                 var senderId = prompt('userId를 입력해 주세요.');
                 var senderNickname = prompt('닉네임을 입력해 주세요.');
-                localStorage.setItem('wschat.sender', sender);
                 localStorage.setItem('wschat.roomId', roomId);
+                localStorage.setItem('wschat.sender', sender);
                 localStorage.setItem('wschat.senderId', senderId);
                 localStorage.setItem('wschat.senderNickname', senderNickname);
                 location.href="/chat/room/enter/"+roomId;
