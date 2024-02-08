@@ -33,6 +33,7 @@ public class BroadcastServiceImpl implements BroadcastService{
     private final StringRedisTemplate redisTemplate;
     private final String RANK="ranking";
     private final String VIEW="view";
+    private final String HS="broadcast_info";
 
     @Override
     public Long reserveBroadcast(ReservationRequestDto reservation, Long sellerId) {
@@ -77,6 +78,9 @@ public class BroadcastServiceImpl implements BroadcastService{
             redisTemplate.opsForHash().put(VIEW, String.valueOf(start.getLiveBroadcastId()), "0");
             redisTemplate.expire(RANK, 3, TimeUnit.DAYS);
             redisTemplate.expire(VIEW, 3, TimeUnit.DAYS);
+
+            redisTemplate.opsForHash().put(HS, String.valueOf(start.getLiveBroadcastId()), String.valueOf(sellerId));
+            redisTemplate.expire(HS, 3, TimeUnit.DAYS);
 
             Map<String, String> result = new HashMap<>();
             result.put("topicId", sessionId);
