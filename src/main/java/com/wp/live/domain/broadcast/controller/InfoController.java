@@ -1,5 +1,6 @@
 package com.wp.live.domain.broadcast.controller;
 
+import com.wp.live.domain.broadcast.dto.controller.response.SearchByDateResponseDto;
 import com.wp.live.domain.broadcast.dto.controller.response.GetCarouselResponseDto;
 import com.wp.live.domain.broadcast.dto.controller.response.SearchBySellerResponse;
 import com.wp.live.domain.broadcast.dto.controller.response.SearchByTitleResponseDto;
@@ -11,6 +12,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDateTime;
 
 @RestController
 @RequiredArgsConstructor
@@ -42,5 +45,13 @@ public class InfoController {
     public ResponseEntity<SuccessResponse<SearchByTitleResponseDto>> searchByTitle(@RequestParam String keyword, @RequestParam int page, @RequestParam int size){
         SearchByTitleResponseDto result = broadcastInfosService.searchLivebBroadcastTitle(keyword, page, size);
         return new ResponseEntity<>(SuccessResponse.<SearchByTitleResponseDto>builder().data(result).status(200).message("제목 기반 검색 결과 반환 성공").build(), HttpStatus.OK);
+    }
+
+    @ResponseBody
+    @GetMapping("/search/date")
+    @Operation(summary = "날짜 기반 방송 목록 검색", description = "방속 제목을 기반으로 방송 목록 반환합니다.")
+    public ResponseEntity<SuccessResponse<SearchByDateResponseDto>> searchByDate(@RequestParam String date, int page, int size) {
+        SearchByDateResponseDto result = broadcastInfosService.searchLiveBroadcastDate(date, page, size);
+        return new ResponseEntity<>(SuccessResponse.<SearchByDateResponseDto>builder().data(result).status(200).message("날짜 기반 방송 목록 검색").build(), HttpStatus.OK);
     }
 }

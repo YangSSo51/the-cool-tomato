@@ -15,4 +15,5 @@ public class BroadcastInfo {
     private String nickName;
     private Long viewCount;
     private Long sellerId;
+    private Boolean broadcastStatus;
 }

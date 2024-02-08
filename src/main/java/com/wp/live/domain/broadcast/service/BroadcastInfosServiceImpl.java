@@ -1,6 +1,7 @@
 package com.wp.live.domain.broadcast.service;
 
 import com.wp.live.domain.broadcast.dto.common.BroadcastInfo;
+import com.wp.live.domain.broadcast.dto.controller.response.SearchByDateResponseDto;
 import com.wp.live.domain.broadcast.dto.controller.response.SearchBySellerResponse;
 import com.wp.live.domain.broadcast.dto.controller.response.SearchByTitleResponseDto;
 import com.wp.live.domain.broadcast.repository.LiveBroadcastRepository;
@@ -21,6 +22,7 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.ZSetOperations;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.*;
 
 @Service
@@ -125,6 +127,30 @@ public class BroadcastInfosServiceImpl implements BroadcastInfosService{
                 infos.add(info);
             }
             return SearchBySellerResponse.builder().page(page).size(size).total(queryResults.getTotalPages()).broadcastInfoList(infos).build();
+        }catch (NoSuchElementException e1){
+            throw new BusinessExceptionHandler(ErrorCode.BAD_REQUEST_ERROR); //DB에 데이터가 없을 때 - JPA
+        }catch (Exception e2){
+            throw new BusinessExceptionHandler(ErrorCode.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @Override
+    public SearchByDateResponseDto searchLiveBroadcastDate(String startDate, int page, int size) {
+        try {
+            Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "id"));
+            Page<LiveBroadcast> queryResults = liveBroadcastRepository.findLiveBroadcastsByStartDateAndNotDeleted(startDate, pageable);
+            List<BroadcastInfo> infos = new ArrayList<>();
+            for (LiveBroadcast queryResult : queryResults) {
+                BroadcastInfo info = BroadcastInfo.builder()
+                        .liveBroadcastId(queryResult.getId())
+                        .broadcastTitle(queryResult.getBroadcastTitle())
+                        .sellerId(queryResult.getUser().getId())
+                        .nickName(queryResult.getUser().getNickname())
+                        .broadcastStatus(queryResult.getBroadcastStatus())
+                        .build();
+                infos.add(info);
+            }
+            return SearchByDateResponseDto.builder().page(page).size(size).total(queryResults.getTotalPages()).broadcastInfoList(infos).build();
         }catch (NoSuchElementException e1){
             throw new BusinessExceptionHandler(ErrorCode.BAD_REQUEST_ERROR); //DB에 데이터가 없을 때 - JPA
         }catch (Exception e2){
