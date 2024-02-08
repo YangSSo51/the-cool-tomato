@@ -38,7 +38,6 @@ function SignUpForm() {
     const [isPasswordValid, setIsPasswordValid] = useState(false);
     const [isEmailValid, setIsEmailValid] = useState(false);
     const [sendcode, setSendcode] = useState(false)
-    const [isNicknameValid, setIsNicknameValid] = useState(false);
 
     // 안내메시지
     const [validMessage, setValidMessage] = useState({
@@ -334,7 +333,7 @@ function SignUpForm() {
                         size="md"
                         autoComplete="nickname"
                         value={nickname}
-                        onChange={(e) => {setNickname(e.target.value); setIsNicknameValid(e.target.value.length > 0);} }
+                        onChange={(e) => {setNickname(e.target.value);} }
                     />
 
                 </FormControl>
