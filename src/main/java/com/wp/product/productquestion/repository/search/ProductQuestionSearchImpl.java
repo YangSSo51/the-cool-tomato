@@ -4,6 +4,7 @@ import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.CaseBuilder;
 import com.querydsl.jpa.JPQLQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.wp.product.product.entity.QProduct;
 import com.wp.product.productquestion.dto.request.ProductQuestionSearchRequest;
 import com.wp.product.productquestion.dto.response.ProductQuestionResponse;
 import com.wp.product.productquestion.dto.response.ProductQuestionSearchResponse;
@@ -41,6 +42,7 @@ public class ProductQuestionSearchImpl extends QuerydslRepositorySupport impleme
                                 qProductQuestionBoard.writerId,
                                 qUser.nickname.as("writerNickname"),
                                 qProductQuestionBoard.product.productId,
+                                qProductQuestionBoard.product.imgSrc,
                                 qProductQuestionBoard.questionContent,
                                 qProductQuestionBoard.answerContent,
                                 qProductQuestionBoard.questionRegisterDate,
@@ -82,6 +84,7 @@ public class ProductQuestionSearchImpl extends QuerydslRepositorySupport impleme
                         qUser.nickname.as("writerNickname"),
                         qProductQuestionBoard.product.productId,
                         qProductQuestionBoard.product.sellerId,
+                        qProductQuestionBoard.product.imgSrc,
                         qProductQuestionBoard.product.productContent,
                         qProductQuestionBoard.product.productName,
                         qProductQuestionBoard.questionContent,
@@ -109,13 +112,16 @@ public class ProductQuestionSearchImpl extends QuerydslRepositorySupport impleme
         Pageable pageable = PageRequest.of(request.getPage(), request.getSize());    //페이징
 
         QProductQuestion qProductQuestionBoard = QProductQuestion.productQuestion;
-        QUser qUser = QUser.user;
+        QUser qWriter = QUser.user;
+        QUser qSeller = QUser.user;
+        QProduct product = QProduct.product;
 
         List<ProductQuestionMyListResponse> list = queryFactory.select(Projections.bean(ProductQuestionMyListResponse.class,
                         qProductQuestionBoard.productQuestionBoardId,
                         qProductQuestionBoard.writerId,
-                        qUser.nickname.as("writerNickname"),
+                        qWriter.nickname.as("writerNickname"),
                         qProductQuestionBoard.product.productId,
+                        qProductQuestionBoard.product.imgSrc,
                         qProductQuestionBoard.product.productName,
                         qProductQuestionBoard.product.productContent,
                         qProductQuestionBoard.questionContent,
@@ -128,10 +134,12 @@ public class ProductQuestionSearchImpl extends QuerydslRepositorySupport impleme
                                 .otherwise(0).as("answer")
                 ))
                 .from(qProductQuestionBoard)
-                .leftJoin(qUser)
-                .on(qUser.userId.eq(qProductQuestionBoard.writerId))
-                .fetchJoin()
+                .leftJoin(qWriter)
+                .on(qWriter.userId.eq(qProductQuestionBoard.writerId))  //작성사 정보로 닉네임 조회하기 위함
+                .leftJoin(qSeller)
+                .on(qSeller.userId.eq(product.sellerId))        //판매자 정보로 상품 조회하기 위함
                 .where(qProductQuestionBoard.product.sellerId.eq(request.getSellerId()))
+                .where(product.sellerId.eq(request.getSellerId()))
                 .offset(request.getPage()*request.getSize())
                 .limit(request.getSize())
                 .orderBy(qProductQuestionBoard.answerContent.asc(),qProductQuestionBoard.questionRegisterDate.desc())
@@ -157,6 +165,7 @@ public class ProductQuestionSearchImpl extends QuerydslRepositorySupport impleme
                         qProductQuestionBoard.writerId,
                         qUser.nickname.as("writerNickname"),
                         qProductQuestionBoard.product.productId,
+                        qProductQuestionBoard.product.imgSrc,
                         qProductQuestionBoard.product.productName,
                         qProductQuestionBoard.product.productContent,
                         qProductQuestionBoard.questionContent,

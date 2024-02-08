@@ -16,9 +16,9 @@ public interface ProductQuestionService {
 
     ProductQuestionResponse findProductQuestion(Long productQuestionId);
 
-    void saveProductQuestion(ProductQuestionCreateRequest productQuestionRequest);
+    void saveProductQuestion(ProductQuestionCreateRequest productQuestionRequest, Long writerId);
 
-    void updateProducQuestion(ProductQuestionUpdateRequest productQuestionRequest);
+    void updateProducQuestion(ProductQuestionUpdateRequest productQuestionRequest,Long sellerId);
 
-    void deleteProducQuestion(Long productQuestionId);
+    void deleteProducQuestion(Long productQuestionId,Long writerId);
 }
