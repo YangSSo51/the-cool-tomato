@@ -109,7 +109,6 @@ export default function ItemAdd() {
         }));
     };
 
-    const inputEl = useRef<HTMLInputElement>(null);
     const [fileName, setFileName] = useState<UploadImage | undefined>();
 
     const fileInputHandler = useCallback(
@@ -126,41 +125,6 @@ export default function ItemAdd() {
         []
     );
 
-    const ClearFile = () => {
-        setFileName(undefined);
-    };
-
-    const formData = new FormData();
-    const onSubmit = async () => {
-        // if (fileName !== undefined) {
-        //     const data = new Blob([fileName.type], { type: "file" });
-        if (
-            values.price >= 100 &&
-            values.categoryId &&
-            values.productName.length >= 1 &&
-            values.productContent.length >= 1
-        ) {
-            // formData.append("productRequest", JSON.stringify(values));
-            // formData.append("file", data, fileName.file);
-            // try {
-            //     await ItemAddFunction(, accessToken);
-            //     navigate("/v1/items/list/0");
-            // } catch (error) {
-            //     alert("등록 실패했습니다. 상품을 다시 설정해주세요.");
-            // }
-        } else if (!values.price) {
-            alert("가격을 설정해주세요");
-        } else if (!values.categoryId) {
-            alert("카테고리를 설정해주세요");
-        } else if (!values.productContent) {
-            alert("컨텐츠 내용을 적어주세요");
-        } else if (!values.productName) {
-            alert("상품명을 설정해주세요");
-        } else {
-            alert("?");
-        }
-    };
-
     // useEffect(() => {
     //     const currentInputEl = inputEl.current;
     //     if (currentInputEl) {
@@ -172,6 +136,41 @@ export default function ItemAdd() {
     //         }
     //     };
     // }, [fileInputHandler, fileName]);
+
+    const ClearFile = () => {
+        setFileName(undefined);
+    };
+
+    const formData = new FormData();
+    const onSubmit = async () => {
+        if (fileName !== undefined) {
+            if (
+                values.price >= 100 &&
+                values.categoryId &&
+                values.productName.length >= 1 &&
+                values.productContent.length >= 1
+            ) {
+                formData.append("productRequest", JSON.stringify(values));
+                formData.append("file", fileName.file);
+                try {
+                    await ItemAddFunction(formData, accessToken);
+                    navigate("/v1/items/list/0");
+                } catch (error) {
+                    alert("등록 실패했습니다. 상품을 다시 설정해주세요.");
+                }
+            } else if (!values.price) {
+                alert("가격을 설정해주세요");
+            } else if (!values.categoryId) {
+                alert("카테고리를 설정해주세요");
+            } else if (!values.productContent) {
+                alert("컨텐츠 내용을 적어주세요");
+            } else if (!values.productName) {
+                alert("상품명을 설정해주세요");
+            } else {
+                alert("?");
+            }
+        }
+    };
 
     return (
         <>
@@ -277,7 +276,7 @@ export default function ItemAdd() {
                                             className="Input"
                                             type="file"
                                             id="file"
-                                            ref={inputEl}
+                                            
                                             disabled={fileName ? false : true}
                                             style={{ display: "none" }}
                                             onClick={() => fileInputHandler}
@@ -304,7 +303,8 @@ export default function ItemAdd() {
                                         type="file"
                                         accept="image/jpg, image/jpeg, image/png"
                                         id="file"
-                                        ref={inputEl}
+                                        
+                                        onClick={() => fileInputHandler}
                                         disabled={fileName ? true : false}
                                         style={{ display: "none" }}
                                     />

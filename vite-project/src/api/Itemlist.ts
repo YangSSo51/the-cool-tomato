@@ -1,4 +1,3 @@
-import { UploadImage } from "../types/DataTypes";
 import { itemAxios } from "./http";
 import { AxiosHeaders } from "axios";
 
@@ -13,7 +12,7 @@ async function ItemListDetailFetch(data: { id: number }) {
     return response;
 }
 
-async function ItemAddFunction(data : UploadImage, at: string) {
+async function ItemAddFunction(data : FormData, at: string) {
     try {
         headers.set("Authorization", `Bearer ${at}`);
         headers.set("Content-Type", "multipart/form-data");
@@ -51,7 +50,7 @@ async function ItemDetailFetch(id: number) {
 async function sellersMyproductsAPI(page: number, size: number, at: string) {
     headers.set("Authorization", `Bearer ${at}`);
     try {
-        const response = await http.get(`${URL}/my/list/`, {
+        const response = await http.get(`${URL}/my/list`, {
             params: {
                 page: page,
                 size: size,

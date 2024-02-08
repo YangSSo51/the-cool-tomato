@@ -1,14 +1,18 @@
 import { Text } from "@chakra-ui/layout";
 import { Box, Center } from "@chakra-ui/react";
-import { SellerBroadcastFetch } from "../../../api/Itemlist";
+import { sellersMyproductsAPI } from "../../../api/Itemlist";
 import { useEffect, useState } from "react";
 import { AddItemInterface } from "../../../types/DataTypes";
 import SellerProductList from "../SellerProductList";
+import { useSelector } from "react-redux";
+import { RootState } from "../../../redux/stores/store";
 
 export default function ProductList() {
     const [Data, setData] = useState<Array<AddItemInterface> | undefined>();
+    const accessToken = useSelector((state: RootState) => {return state.user.accessToken})
+    
     useEffect(() => {
-        SellerBroadcastFetch({ page: 0, size: 8 }).then((res) => {
+        sellersMyproductsAPI(0, 8, accessToken).then((res) => {
             setData(res);
         });
     }, []);
