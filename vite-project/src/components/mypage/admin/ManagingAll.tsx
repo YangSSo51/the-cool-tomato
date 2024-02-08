@@ -12,7 +12,7 @@
 // import { getAllUsersAPI } from "../../../api/user";
 // import { AdminUserInfo } from "../../../types/DataTypes";
 
-// function ManagingAll() {
+function ManagingAll() {
 //     const user = useSelector((state: RootState) => state.user);
 //     const [allUserData, setAllUserData] = useState([])
 
@@ -27,14 +27,15 @@
 //         })
 //     })
 
-//     return (
-//         <Box flexDirection="column" w="90%" h="full">
+    return (
+        "HIHI"
+        //         <Box flexDirection="column" w="90%" h="full">
 //             <UserList allUserData={allUserData} />
 //         </Box>
-//     )
-// }
+    )
+}
 
-// export default ManagingAll;
+export default ManagingAll;
 
 
 // function UserList({ allUserData }: { allUserData: AdminUserInfo[]}) {

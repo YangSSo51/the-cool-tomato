@@ -31,7 +31,7 @@
 //     content: string;
 // }
 
-// function Notice() {
+function Notice() {
 //     const user = useSelector((state: RootState) => state.user);
 //     const [modalOpen, setModalOpen] = useState(false);
 //     const dummydata: ChatbotData[] = [
@@ -79,7 +79,8 @@
 //         setModalOpen(!modalOpen);
 //     }
 
-//     return (
+    return (
+        "HI"
 //         <Box flexDirection="column" w="90%" h="full">
             
 //             {user.auth === 'admin' && (
@@ -102,10 +103,10 @@
 
 //             <NoticeList dummydata={dummydata} />
 //         </Box>
-//     )
-// }
+    )
+}
 
-// export default Notice;
+export default Notice;
 
 // function NoticeRegister({
 //     isOpen,

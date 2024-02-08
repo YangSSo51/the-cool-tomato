@@ -49,7 +49,7 @@ async function buyerGetQnaAPI(page: number, size: number, accessToken: string) {
         });
         const responseData = response.data;
         if (responseData.status === 200) {
-            console.log(responseData);
+            // console.log(responseData);
             return responseData;
         } else {
             console.log("안돼~");

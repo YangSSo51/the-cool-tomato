@@ -1,14 +1,14 @@
-// import { Box, Flex,  Center } from "@chakra-ui/layout";
-// import { Avatar, Button, Text, Select, FormControl, FormLabel, InputGroup, Input, InputRightElement, Menu, MenuButton, MenuList, MenuItem} from "@chakra-ui/react";
+import { Box, Flex,  Center } from "@chakra-ui/layout";
+import { Avatar, Button, Text, Select, FormControl, FormLabel, InputGroup, Input, InputRightElement, Menu, MenuButton, MenuList, MenuItem} from "@chakra-ui/react";
 // import { ViewIcon, ViewOffIcon, CheckIcon } from "@chakra-ui/icons";
 // import { useEffect, useState } from "react";
-// import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 // import { useSelector } from "react-redux";
 // import { RootState } from "../redux/stores/store";
 // import { getMyInfoAPI, postMyInfoAPI, deleteMyInfoAPI } from "../api/user";
 
-// export default function UserinfoPage() {
-//     const navigate = useNavigate()
+export default function UserinfoPage() {
+    const navigate = useNavigate()
 //     const user = useSelector((state: RootState) => state.user);
 //     const accessToken = user.accessToken;
 //     const refreshToken = user.refreshToken;
@@ -81,201 +81,207 @@
 //     }
    
 
-//     return (
-//         <Box minH="100vh" mb="10" paddingBlock="6rem">
-//             <Center className="response_title" fontFamily="GmkBold" fontSize={{ base: "4rem", md: "5rem", lg: "6rem" }} color={"themeFontGreen.500"}>
-//                 회원정보수정
-//             </Center>
+    return (
+        <Box minH="100vh" mb="10" paddingBlock="6rem">
+            <Center className="response_title" fontFamily="GmkBold" fontSize={{ base: "4rem", md: "5rem", lg: "6rem" }} color={"themeFontGreen.500"}>
+                회원정보수정
+            </Center>
 
-//             <Flex m="auto"  border="2px" borderColor="themeFontGreen.500" overflow="scroll" rounded="lg" w="85vw" minH="85vh">
-//                 <Flex m="auto" direction={{ base: "column", lg: "row"}} rounded="lg" w="80vw" maxH={{ base:"auto", lg: "80vh"}} px="2">
-//                     <Box w={{ base: "100%", lg: "25%" }} pr="4" >
-//                         <Box w="full" bg="white" rounded="lg" overflow="hidden">
-//                             <Flex direction="column" align="center" py="6">
+            <Flex m="auto"  border="2px" borderColor="themeFontGreen.500" overflow="scroll" rounded="lg" w="85vw" minH="85vh">
+                <Flex m="auto" direction={{ base: "column", lg: "row"}} rounded="lg" w="80vw" maxH={{ base:"auto", lg: "80vh"}} px="2">
+                    <Box w={{ base: "100%", lg: "25%" }} pr="4" >
+                        <Box w="full" bg="white" rounded="lg" overflow="hidden">
+                            <Flex direction="column" align="center" py="6">
 
-//                                 <Button
-//                                     mb="4"
-//                                     onClick={() => {
-//                                         navigate("/v1/buyer/");
-//                                     }}
-//                                 >
-//                                 마이페이지로 돌아가기
-//                                 </Button>
+                                <Button
+                                    mb="4"
+                                    onClick={() => {
+                                        navigate("/v1/buyer/");
+                                    }}
+                                >
+                                마이페이지로 돌아가기
+                                </Button>
 
-//                                 <Avatar mt="4" mb="4" size="xl" src={profileImg} />
+                                <Avatar mt="4" mb="4" size="xl" 
+                                    // src={profileImg} 
+                                    />
                                 
-//                                 <Menu>
-//                                     <MenuButton
-//                                         px={4}
-//                                         py={2}
-//                                         transition='all 0.2s'
-//                                         borderRadius='md'
-//                                         borderWidth='1px'
-//                                         _hover={{ bg: 'gray.400' }}
-//                                         _expanded={{ bg: 'blue.400' }}
-//                                         _focus={{ boxShadow: 'outline' }}
-//                                     >
-//                                         프로필 사진 수정
-//                                     </MenuButton>
-//                                     <MenuList>
+                                <Menu>
+                                    <MenuButton
+                                        px={4}
+                                        py={2}
+                                        transition='all 0.2s'
+                                        borderRadius='md'
+                                        borderWidth='1px'
+                                        _hover={{ bg: 'gray.400' }}
+                                        _expanded={{ bg: 'blue.400' }}
+                                        _focus={{ boxShadow: 'outline' }}
+                                    >
+                                        프로필 사진 수정
+                                    </MenuButton>
+                                    <MenuList>
 
-//                                         <MenuItem>
-//                                             <input type="file" id="avatar" name="avatar" accept="image/png, image/jpeg, image/jpg" onChange={handleFileChange} />
-//                                         </MenuItem>
-//                                         <MenuItem onClick={onclickDeletePic}>현재 사진 삭제</MenuItem>
-//                                     </MenuList>
-//                                 </Menu>
+                                        <MenuItem>
+                                            <input type="file" id="avatar" name="avatar" accept="image/png, image/jpeg, image/jpg" 
+                                                // onChange={handleFileChange}
+                                            />
+                                        </MenuItem>
+                                        <MenuItem 
+                                            // onClick={onclickDeletePic}
+                                        >현재 사진 삭제</MenuItem>
+                                    </MenuList>
+                                </Menu>
 
-//                                 <Button
-//                                     mt="4"
-//                                     colorScheme="red"
-//                                     onClick={() => {deleteMyInfoAPI(user.accessToken)}}
-//                                 >회원 탈퇴
-//                                 </Button>
-//                             </Flex>
-//                         </Box>
-//                     </Box>
+                                <Button
+                                    mt="4"
+                                    colorScheme="red"
+                                    // onClick={() => {deleteMyInfoAPI(user.accessToken)}}
+                                >회원 탈퇴
+                                </Button>
+                            </Flex>
+                        </Box>
+                    </Box>
 
-//                     <Box w="75%" bg="white" rounded="lg" className="custom-scrollbar">
-//                         <Flex justify="center" align="center" h="full">
+                    <Box w="75%" bg="white" rounded="lg" className="custom-scrollbar">
+                        <Flex justify="center" align="center" h="full">
 
-//                         <form    
-//                             onSubmit={onSubmit}
-//                             style={{ width: "100%" }}
-//                         >
-//                             <FormControl my={2}>
-//                                 <FormLabel>
-//                                     <Text as={"b"}>아이디</Text>
-//                                 </FormLabel>
-//                                 <Input
-//                                     focusBorderColor="themeGreen.500"
-//                                     placeholder={loginId}
-//                                     size="md"
-//                                     disabled
-//                                 />
-//                             </FormControl>
+                        <form    
+                            // onSubmit={onSubmit}
+                            style={{ width: "100%" }}
+                        >
+                            <FormControl my={2}>
+                                <FormLabel>
+                                    <Text as={"b"}>아이디</Text>
+                                </FormLabel>
+                                <Input
+                                    focusBorderColor="themeGreen.500"
+                                    // placeholder={loginId}
+                                    size="md"
+                                    disabled
+                                />
+                            </FormControl>
                             
-//                             <FormControl my={2}>
-//                                 <FormLabel>
-//                                     <Text as={"b"}>현재 비밀번호</Text>
-//                                 </FormLabel>
+                            <FormControl my={2}>
+                                <FormLabel>
+                                    <Text as={"b"}>현재 비밀번호</Text>
+                                </FormLabel>
                                 
-//                                 <InputGroup size="md" mb={2}>
-//                                     <Input
-//                                         focusBorderColor="themeGreen.500"
-//                                         placeholder="password"
-//                                         size="md"
-//                                         autoComplete="current-password"
-//                                         value={password}
-//                                         onChange={handlePassword}
-//                                         type={show ? 'text' : 'password'}
-//                                         id="password"
-//                                     />
-//                                     <InputRightElement>
-//                                         {check ? (
-//                                             <CheckIcon color="green.500" mr={"1"} />
-//                                             ) : (
-//                                                 ''
-//                                         )}
-//                                         <Button h='1.75rem' size='sm' variant="ghost" onClick={handleClick}>
-//                                         {show ? (
-//                                             <ViewIcon color="grey" />
-//                                         ) : (
-//                                             <ViewOffIcon color="grey" />
-//                                         )}    
-//                                         </Button>
-//                                     </InputRightElement>
-//                                 </InputGroup>
-//                             </FormControl>
+                                <InputGroup size="md" mb={2}>
+                                    <Input
+                                        focusBorderColor="themeGreen.500"
+                                        placeholder="password"
+                                        size="md"
+                                        autoComplete="current-password"
+                                        // value={password}
+                                        // onChange={handlePassword}
+                                        // type={show ? 'text' : 'password'}
+                                        id="password"
+                                    />
+                                    <InputRightElement>
+                                        {/* {check ? (
+                                            <CheckIcon color="green.500" mr={"1"} />
+                                            ) : (
+                                                ''
+                                        )}
+                                        <Button h='1.75rem' size='sm' variant="ghost" onClick={handleClick}>
+                                        {show ? (
+                                            <ViewIcon color="grey" />
+                                        ) : (
+                                            <ViewOffIcon color="grey" />
+                                        )}     */}
+                                        {/* </Button> */}
+                                    </InputRightElement>
+                                </InputGroup>
+                            </FormControl>
                                 
-//                             <FormControl my={2}>
+                            <FormControl my={2}>
 
-//                                 <FormLabel>
-//                                     <Text as={"b"}>새 비밀번호</Text>
-//                                 </FormLabel>
-//                                 <InputGroup size="md">
-//                                     <Input
-//                                         focusBorderColor="themeGreen.500"
-//                                         placeholder="new password"
-//                                         size="md"
-//                                         // value={passwordAgain}
-//                                         // onChange={handlePasswordConfirm}
-//                                         // type={show2 ? 'text' : 'password'}
-//                                         id="newPassword"
-//                                         />
-//                                     {/* <InputRightElement>
-//                                         {check2 ? (
-//                                             <CheckIcon color="green.500" mr={"1"} />
-//                                             ) : (
-//                                                 ''
-//                                                 )}
-//                                         <Button h='1.75rem' size='sm' variant="ghost" onClick={handleClick2}>
-//                                             {show2 ? (
-//                                                 <ViewIcon color="grey" />
-//                                                 ) : (
-//                                                     <ViewOffIcon color="grey" />
-//                                                     )}
-//                                         </Button>
-//                                     </InputRightElement> */}
-//                                 </InputGroup>
-//                             </FormControl>
+                                <FormLabel>
+                                    <Text as={"b"}>새 비밀번호</Text>
+                                </FormLabel>
+                                <InputGroup size="md">
+                                    <Input
+                                        focusBorderColor="themeGreen.500"
+                                        placeholder="new password"
+                                        size="md"
+                                        // value={passwordAgain}
+                                        // onChange={handlePasswordConfirm}
+                                        // type={show2 ? 'text' : 'password'}
+                                        id="newPassword"
+                                        />
+                                    {/* <InputRightElement>
+                                        {check2 ? (
+                                            <CheckIcon color="green.500" mr={"1"} />
+                                            ) : (
+                                                ''
+                                                )}
+                                        <Button h='1.75rem' size='sm' variant="ghost" onClick={handleClick2}>
+                                            {show2 ? (
+                                                <ViewIcon color="grey" />
+                                                ) : (
+                                                    <ViewOffIcon color="grey" />
+                                                    )}
+                                        </Button>
+                                    </InputRightElement> */}
+                                </InputGroup>
+                            </FormControl>
 
-//                             <FormControl my={2}>
-//                                 <FormLabel>
-//                                     <Text as={"b"}>닉네임</Text>
-//                                 </FormLabel>
-//                                 <Input
-//                                     focusBorderColor="themeGreen.500"
-//                                     placeholder="nickname"
-//                                     size="md"
-//                                     autoComplete="nickname"
-//                                     value={nickname}
-//                                     onChange={(e) => {setNickname(e.target.value);}}
-//                                 />
-//                             </FormControl>
+                            <FormControl my={2}>
+                                <FormLabel>
+                                    <Text as={"b"}>닉네임</Text>
+                                </FormLabel>
+                                <Input
+                                    focusBorderColor="themeGreen.500"
+                                    placeholder="nickname"
+                                    size="md"
+                                    autoComplete="nickname"
+                                    // value={nickname}
+                                    // onChange={(e) => {setNickname(e.target.value);}}
+                                />
+                            </FormControl>
 
-//                             <FormControl my={2}>
-//                                 <FormLabel>
-//                                     <Text as={"b"}>성별</Text>
-//                                 </FormLabel>
-//                                 <Select
-//                                     placeholder=""
-//                                     value={sex}
-//                                     onChange={(e) => setSex(e.target.value)}
-//                                 >
-//                                     <option value="M">남자</option>
-//                                     <option value="F">여자</option>
-//                                 </Select>
+                            <FormControl my={2}>
+                                <FormLabel>
+                                    <Text as={"b"}>성별</Text>
+                                </FormLabel>
+                                <Select
+                                    placeholder=""
+                                    // value={sex}
+                                    // onChange={(e) => setSex(e.target.value)}
+                                >
+                                    <option value="M">남자</option>
+                                    <option value="F">여자</option>
+                                </Select>
                                 
-//                             </FormControl>
-//                             <FormControl my={2}>
-//                                 <FormLabel>
-//                                     <Text as={"b"}>생년월일</Text>
-//                                 </FormLabel>
-//                                 <Input
-//                                     focusBorderColor="themeGreen.500"
-//                                     placeholder="birthday"
-//                                     size="md"
-//                                     type="date"
-//                                     autoComplete="bday"
-//                                     value={birthday}
-//                                     onChange={(e) => setBirthday(e.target.value)}
-//                                 ></Input>
-//                             </FormControl>
-//                             <Button
-//                                 my={4}
-//                                 w="95%"
-//                                 colorScheme="themeGreen"
-//                                 type="submit"
-//                                 borderRadius="3xl"
-//                             >
-//                                 정보수정하기
-//                             </Button>
-//                         </form>
-//                         </Flex>
-//                     </Box>
-//                 </Flex>
-//             </Flex>
-//         </Box>
-//     );
-
+                            </FormControl>
+                            <FormControl my={2}>
+                                <FormLabel>
+                                    <Text as={"b"}>생년월일</Text>
+                                </FormLabel>
+                                <Input
+                                    focusBorderColor="themeGreen.500"
+                                    placeholder="birthday"
+                                    size="md"
+                                    type="date"
+                                    autoComplete="bday"
+                                    // value={birthday}
+                                    // onChange={(e) => setBirthday(e.target.value)}
+                                ></Input>
+                            </FormControl>
+                            <Button
+                                my={4}
+                                w="95%"
+                                colorScheme="themeGreen"
+                                type="submit"
+                                borderRadius="3xl"
+                            >
+                                정보수정하기
+                            </Button>
+                        </form>
+                        </Flex>
+                    </Box>
+                </Flex>
+            </Flex>
+        </Box>
+    );
+}

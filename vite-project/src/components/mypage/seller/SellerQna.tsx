@@ -21,7 +21,7 @@ function Qna() {
         const fetchData = async () => {
             try {
                 const response = await sellerGetQnaAPI(1, 16)
-                console.log(response)
+                // console.log(response)
                 setSellerQnaList(response.data.list)
             } catch (error) {
                 console.error(error)
