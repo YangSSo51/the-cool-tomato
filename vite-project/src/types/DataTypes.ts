@@ -81,6 +81,17 @@ export interface AddItemInterface {
     quantity: number;
 }
 
+export interface ItemInfo {
+    categoryId: number;
+    productName: string;
+    productContent: string;
+    paymentLink: string;
+    price: number;
+    deliveryCharge: number;
+    quantity: number;
+    imgSrc: string;
+}
+
 export type broadcastInfo = {
     accessToken: string;
     broadcastTitle: string;
