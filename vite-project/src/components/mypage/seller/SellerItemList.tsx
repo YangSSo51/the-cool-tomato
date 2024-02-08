@@ -20,12 +20,12 @@ function Items() {
         sellersMyproductsAPI(page, 2, accessToken)
             .then((response) => {
                 setSellerItem(response.data.list);
-                currentPage.append(response.data.list);
+                
             })
             .catch((error) => {
                 console.error(error);
             });
-    }, [currentPage]);
+    }, [page]);
 
     const handleItemDelete = (productId : number) => {
         const updatedItems = sellerItem.filter(item => item.productId !== productId);
@@ -47,7 +47,7 @@ function Items() {
                 return <ItemsofItems sellerItem = {item} onDelete={handleItemDelete} key={item.productId} />
             })
             }
-            <Button onClick={setCurrentpage(setPage(page+1))}> 버어튼 크을릭 </Button>
+            <Button onClick={pageUpdate}> 버어튼 크을릭 </Button>
 
         </Box>
     )

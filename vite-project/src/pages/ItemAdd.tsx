@@ -13,7 +13,7 @@ import {
     Icon,
     Img,
 } from "@chakra-ui/react";
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import ReactDOM from "react-dom/client";
 
 import "froala-editor/css/froala_style.min.css";
@@ -34,12 +34,16 @@ export default function ItemAdd() {
         return state.user.accessToken;
     });
     const editorRef = useRef(null);
-    const config = {
-        editorClass: "custom-class",
-        heightMin: 700,
-        autofocus: true,
-        attribution: false,
-    };
+
+    const
+        config = {
+            editorClass: "custom-class",
+            heightMin: 600,
+            autofocus: true,
+            attribution: false,
+            imageUploadURL: "http://i10a501.p.ssafy.io:8082/v1/products/fileupload"
+        };
+
     const [values, setValues] = useState<AddItemInterface>({
         categoryId: 0,
         productName: "",
@@ -65,6 +69,7 @@ export default function ItemAdd() {
             const root = ReactDOM.createRoot(editorRef.current);
             root.render(<FroalaEditorComponent tag="textarea" />);
         }
+
     }, []);
 
     // 입력값
@@ -180,8 +185,8 @@ export default function ItemAdd() {
                         상품 등록
                     </Text>
                 </Center>
-                <Center mt={"3rem"} p={"1rem"} display={"block"}>
-                    <Box p={"2rem"} mb={"1rem"}>
+                <Center p={"1rem"} display={"block"}>
+                    <Box p={"2rem"} >
                         <Text fontSize={"2xl"} as={"b"}>
                             상품명
                         </Text>
@@ -210,7 +215,7 @@ export default function ItemAdd() {
                         </FormControl>
                     </Box>
 
-                    <Box p={"2rem"} mb={"1rem"}>
+                    <Box p={"2rem"}>
                         <Text fontSize={"2xl"} as={"b"}>
                             가격
                         </Text>
@@ -240,7 +245,7 @@ export default function ItemAdd() {
                     </Box>
 
                     <Box mt={"2.5rem"} p={"2rem"} mb={"1rem"}>
-                        <Text fontSize={"2xl"} as={"b"}>
+                        <Text fontSize={"2xl"} as={"b"} mb={"1rem"}>
                             상품 사진 등록
                         </Text>
 

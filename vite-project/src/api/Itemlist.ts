@@ -44,6 +44,7 @@ async function ItemDetailDelete(id: number, at: string) {
 
 async function ItemDetailFetch(id: number) {
     const response = await http.get(`${URL}/${id}`);
+    console.log(response.data.data)
     return response.data.data;
 }
 
