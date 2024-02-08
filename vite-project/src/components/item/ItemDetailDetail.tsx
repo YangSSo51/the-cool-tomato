@@ -6,8 +6,7 @@ export default function ItemDetailDetail(content : string | undefined) {
 
     return (
         <>
-            <div dangerouslySetInnerHTML = {{__html : JSON.stringify(content?.content)}}></div>
-            
+            <div dangerouslySetInnerHTML = {{__html : content ? content : ""}}></div>
         </>
     );
 }

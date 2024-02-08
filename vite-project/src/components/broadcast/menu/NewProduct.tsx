@@ -16,7 +16,7 @@ import {
 import "../../../css/FileUpload.css";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { ItemAddFunction } from "../../../api/Itemlist";
-import { AddItemInterface } from "../../../types/DataTypes";
+import { AddItemInterface, UploadImage } from "../../../types/DataTypes";
 import { CloseIcon } from "@chakra-ui/icons";
 import { FaRegEdit } from "react-icons/fa";
 import { formatNumberWithComma } from "../../../components/common/Comma";
@@ -24,7 +24,9 @@ import { useSelector } from "react-redux";
 import { RootState } from "../../../redux/stores/store";
 
 export default function NewProduct() {
-    const accessToken = useSelector((state : RootState) => state.user.accessToken)
+    const accessToken = useSelector(
+        (state: RootState) => state.user.accessToken
+    );
     const [values, setValues] = useState<AddItemInterface>({
         categoryId: 0,
         productName: "",
@@ -71,28 +73,50 @@ export default function NewProduct() {
         }));
     };
 
-    const onSubmit = async () => {
-        if (
-            values.price >= 100 &&
-            values.categoryId &&
-            values.productName.length >= 1 &&
-            values.productContent.length >= 1
-        ) {
-            try {
-                await ItemAddFunction(values, accessToken);
-                alert("상품이 정상적으로 등록되었습니다");
-            } catch (error) {
-                alert("등록 실패했습니다. 상품을 다시 설정해주세요.");
+    const [fileName, setFileName] = useState<UploadImage | undefined>(
+        undefined
+    );
+
+    const fileInputHandler = useCallback(
+        (e: React.ChangeEvent<HTMLInputElement>) => {
+            const files = e.target.files;
+            console.log(files);
+            if (files && files[0]) {
+                setFileName({
+                    file: files[0],
+                    type: files[0].name,
+                });
             }
-        } else if (!values.price) {
-            alert("가격을 설정해주세요");
-        } else if (!values.categoryId) {
-            alert("카테고리를 설정해주세요");
-        } else if (!values.productName) {
-            alert("상품명을 설정해주세요");
+        },
+        []
+    );
+
+    const formData = new FormData();
+    const onSubmit = async () => {
+        if (fileName !== undefined) {
+            formData.append("productRequest", JSON.stringify(values));
+            formData.append("file", fileName.file);
+            if (
+                values.price >= 100 &&
+                values.categoryId &&
+                values.productName.length >= 1 &&
+                values.productContent.length >= 1
+            ) {
+                try {
+                    await ItemAddFunction(formData, accessToken);
+                    alert("상품이 정상적으로 등록되었습니다");
+                } catch (error) {
+                    alert("등록 실패했습니다. 상품을 다시 설정해주세요.");
+                }
+            } else if (!values.price) {
+                alert("가격을 설정해주세요");
+            } else if (!values.categoryId) {
+                alert("카테고리를 설정해주세요");
+            } else if (!values.productName) {
+                alert("상품명을 설정해주세요");
+            }
         }
     };
-
 
     // 사진 등록
     // const inputEl = useRef(null);
@@ -128,17 +152,11 @@ export default function NewProduct() {
     // };
     // 여기까지
 
-
-    function EditIcon() {
-        return (
-            <Icon mt={"0.5rem"} boxSize={"1.8rem"} ml={"3rem"} as={FaRegEdit} />
-        );
-    }
-
-    // check function
-    // useEffect(() => {
-    //     console.log(values);
-    // }, [values]);
+    // function EditIcon() {
+    //     return (
+    //         <Icon mt={"0.5rem"} boxSize={"1.8rem"} ml={"3rem"} as={FaRegEdit} />
+    //     );
+    // }
 
     return (
         <>
@@ -266,6 +284,8 @@ export default function NewProduct() {
                             )}
                         </Box>
                     </Box> */}
+                    <Box onClick={() => fileInputHandler}>
+                    </Box>
 
                     <Box mt={"2.5rem"}>
                         <Flex>

@@ -1,48 +1,40 @@
-import { Box, Flex, Text } from "@chakra-ui/react";
-import GoodsList from "../item/dummylist/dummy";
-import "../../css/ItemListComponentcss.css";
-import { useEffect, useState } from "react";
+// import { Box, Flex, Text } from "@chakra-ui/react";
+// import GoodsList from "../item/dummylist/dummy";
+// import "../../css/ItemListComponentcss.css";
+// import { useEffect, useState } from "react";
 
 export default function CarouselComponent() {
-    const dummylist = GoodsList;
-    const [offset, setOffset] = useState(0);
+    // const dummylist = GoodsList;
+    // const [offset, setOffset] = useState(0);
 
-    useEffect(() => {
-        let start = null;
-        const totalWidth = dummylist.length * 100;
+    // useEffect(() => {
+    //     let start = null;
+    //     const totalWidth = dummylist.length * 100;
 
-        const step = (timestamp) => {
-            if (!start) start = timestamp;
+    //     const step = (timestamp) => {
+    //         if (!start) start = timestamp;
 
-            const elapsed = timestamp - start;
+    //         const elapsed = timestamp - start;
             
-            const newOffset = (elapsed * 0.003) % totalWidth;
+    //         const newOffset = (elapsed * 0.003) % totalWidth;
 
-            setOffset(newOffset);
+    //         setOffset(newOffset);
 
-            window.requestAnimationFrame(step)
+    //         window.requestAnimationFrame(step)
 
-        };
+    //     };
 
-        window.requestAnimationFrame(step);
+    //     window.requestAnimationFrame(step);
 
-        return () => {
-            window.cancelAnimationFrame(step);
-        };
-    }, []);
-// useEffect(() => {
-//     const totalSlides = dummylist.length;
-//     const interval = setInterval(() => {
-//         setSlideIndex((currentIndex) => (currentIndex + 1) % totalSlides);
-//     }, 5000);
-
-//     return () => clearInterval(interval);
-// }, [dummylist.length]);
+    //     return () => {
+    //         window.cancelAnimationFrame(step);
+    //     };
+    // }, []);
 
 
 return (
     <>
-        <Flex justify={"center"} className="MainText" mt={"1rem"}>
+        {/* <Flex justify={"center"} className="MainText" mt={"1rem"}>
             <Text mr={"2rem"} color={"themeFontGreen.500"}>
                 현재 <span style={{color:"red"}}>라이브</span> 중인 상품</Text>
         </Flex>
@@ -87,7 +79,7 @@ return (
                 h={"0.5px"}
                 backgroundColor={"themeGreen.500"}
             ></Box>
-        </Flex>
+        </Flex> */}
     </>
 );
 }
