@@ -1,4 +1,3 @@
-import { AddItemInterface } from "../types/DataTypes";
 import { itemAxios } from "./http";
 import { AxiosHeaders } from "axios";
 
@@ -13,13 +12,15 @@ async function ItemListDetailFetch(data: { id: number }) {
     return response;
 }
 
-async function ItemAddFunction(data: AddItemInterface) {
+async function ItemAddFunction(data : FormData, at: string) {
     try {
-        const response = await http.post(`${URL}`, data);
+        headers.set("Authorization", `Bearer ${at}`);
+        headers.set("Content-Type", "multipart/form-data");
+        const response = await http.post(`${URL}`, data, { headers: headers });
+        
         return response;
     } catch (error) {
         console.error(error);
-        
     }
 }
 
@@ -47,15 +48,16 @@ async function ItemDetailFetch(id: number) {
     return response.data.data;
 }
 
-async function sellersMyproductsAPI() {
+async function sellersMyproductsAPI(page: number, size: number, at: string) {
+    headers.set("Authorization", `Bearer ${at}`);
     try {
-        const response = await http.get(`${URL}/my/list/`, {
+        const response = await http.get(`${URL}/my/list`, {
             params: {
-                page: 1,
-                size: 32,
-            }
-        })
-        return response.data
+                page: page,
+                size: size,
+            }, headers:headers
+        }, );
+        return response.data;
     } catch (error) {
         console.error(error);
         throw error;

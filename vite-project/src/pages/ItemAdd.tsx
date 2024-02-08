@@ -22,11 +22,16 @@ import "froala-editor/js/plugins.pkgd.min.js";
 import { ItemAddFunction } from "../api/Itemlist";
 import { useNavigate } from "react-router-dom";
 import { formatNumberWithComma } from "../components/common/Comma";
-import { AddItemInterface } from "../types/DataTypes";
+import { AddItemInterface, UploadImage } from "../types/DataTypes";
 import { CloseIcon } from "@chakra-ui/icons";
 import { FaRegEdit } from "react-icons/fa";
+import { useSelector } from "react-redux";
+import { RootState } from "../redux/stores/store";
 
 export default function ItemAdd() {
+    const accessToken = useSelector((state: RootState) => {
+        return state.user.accessToken;
+    });
     const editorRef = useRef(null);
     const config = {
         editorClass: "custom-class",
@@ -42,12 +47,11 @@ export default function ItemAdd() {
         price: 0,
         deliveryCharge: 1000,
         quantity: 100,
-        imgSrc: "",
     });
+
     const navigate = useNavigate();
     const [TitleInput, setTitleInput] = useState("");
     const TitleError = TitleInput === "";
-
     function EditIcon() {
         return (
             <Icon mt={"0.5rem"} boxSize={"1.8rem"} ml={"3rem"} as={FaRegEdit} />
@@ -105,67 +109,68 @@ export default function ItemAdd() {
         }));
     };
 
-    const onSubmit = async () => {
-        if (
-            values.price >= 1000 &&
-            values.categoryId &&
-            values.productName.length >= 1 &&
-            values.productContent.length >= 1
-        ) {
-            try {
-                await ItemAddFunction(values);
-                navigate("/v1/items/list/0");
-            } catch (error) {
-                alert("등록 실패했습니다. 상품을 다시 설정해주세요.");
-            }
-        } else if (!values.price) {
-            alert("가격을 설정해주세요");
-        } else if (!values.categoryId) {
-            alert("카테고리를 설정해주세요");
-        } else if (!values.productContent) {
-            alert("컨텐츠 내용을 적어주세요");
-        } else if (!values.productName) {
-            alert("상품명을 설정해주세요");
-        } else if (!values.imgSrc) {
-            alert("사진을 등록해주세요");
-        }
-    };
+    const [fileName, setFileName] = useState<UploadImage | undefined>();
 
-    const inputEl = useRef(null);
-    const [fileName, setFileName] = useState<string>("");
     const fileInputHandler = useCallback(
         (e: React.ChangeEvent<HTMLInputElement>) => {
             const files = e.target.files;
+            console.log(files);
             if (files && files[0]) {
-                setFileName(files[0].name);
+                setFileName({
+                    file: files[0],
+                    type: files[0].name,
+                });
             }
         },
         []
     );
 
-    useEffect(() => {
-        const currentInputEl = inputEl.current;
-        if (currentInputEl) {
-            currentInputEl.addEventListener("input", fileInputHandler);
-            setValues((prevValues) => ({
-                ...prevValues,
-                ["imgSrc"]: fileName,
-            }));
-        }
-        return () => {
-            if (currentInputEl) {
-                currentInputEl.removeEventListener("input", fileInputHandler);
-            }
-        };
-    }, [fileInputHandler, fileName]);
+    // useEffect(() => {
+    //     const currentInputEl = inputEl.current;
+    //     if (currentInputEl) {
+    //         currentInputEl.addEventListener("input", fileInputHandler);
+    //     }
+    //     return () => {
+    //         if (currentInputEl) {
+    //             currentInputEl.removeEventListener("input", fileInputHandler);
+    //         }
+    //     };
+    // }, [fileInputHandler, fileName]);
 
     const ClearFile = () => {
-        setFileName("");
+        setFileName(undefined);
     };
 
-    useEffect(() => {
-        console.log(values)
-    }, [values])
+    const formData = new FormData();
+    const onSubmit = async () => {
+        if (fileName !== undefined) {
+            if (
+                values.price >= 100 &&
+                values.categoryId &&
+                values.productName.length >= 1 &&
+                values.productContent.length >= 1
+            ) {
+                formData.append("productRequest", JSON.stringify(values));
+                formData.append("file", fileName.file);
+                try {
+                    await ItemAddFunction(formData, accessToken);
+                    navigate("/v1/items/list/0");
+                } catch (error) {
+                    alert("등록 실패했습니다. 상품을 다시 설정해주세요.");
+                }
+            } else if (!values.price) {
+                alert("가격을 설정해주세요");
+            } else if (!values.categoryId) {
+                alert("카테고리를 설정해주세요");
+            } else if (!values.productContent) {
+                alert("컨텐츠 내용을 적어주세요");
+            } else if (!values.productName) {
+                alert("상품명을 설정해주세요");
+            } else {
+                alert("?");
+            }
+        }
+    };
 
     return (
         <>
@@ -249,7 +254,11 @@ export default function ItemAdd() {
                                             mr={"0.5rem"}
                                         >
                                             업로드 된 파일
-                                            <span style={{"marginLeft" : "2rem"}}>:</span>
+                                            <span
+                                                style={{ marginLeft: "2rem" }}
+                                            >
+                                                :
+                                            </span>
                                         </Text>
                                     </Flex>
 
@@ -260,16 +269,17 @@ export default function ItemAdd() {
                                             marginLeft: "1rem",
                                         }}
                                     >
-                                        {fileName}
+                                        {fileName.type}
                                     </Box>
                                     <Flex alignItems="center">
                                         <Input
                                             className="Input"
                                             type="file"
                                             id="file"
-                                            ref={inputEl}
+                                            
                                             disabled={fileName ? false : true}
                                             style={{ display: "none" }}
+                                            onClick={() => fileInputHandler}
                                         />
 
                                         <label
@@ -291,8 +301,10 @@ export default function ItemAdd() {
                                     <Input
                                         className="Input"
                                         type="file"
+                                        accept="image/jpg, image/jpeg, image/png"
                                         id="file"
-                                        ref={inputEl}
+                                        
+                                        onClick={() => fileInputHandler}
                                         disabled={fileName ? true : false}
                                         style={{ display: "none" }}
                                     />
