@@ -15,6 +15,7 @@ public class ProductQuestionMyListResponse {
     private Long writerId;
     private String writerNickname;
     private Long productId;
+    private String imgSrc;
     private String productName;
     private String productContent;
     private String questionContent;
