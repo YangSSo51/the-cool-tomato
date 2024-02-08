@@ -22,12 +22,11 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.ZSetOperations;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.*;
 
 @Service
 @RequiredArgsConstructor
-public class BroadcastInfosServiceImpl implements BroadcastInfosService{
+public class BroadcastSearchServiceImpl implements BroadcastSearchService {
 
     private final LiveBroadcastSearchRepository liveBroadcastSearchRepository;
     private final UserSearchRepository userSearchRepository;
@@ -95,7 +94,7 @@ public class BroadcastInfosServiceImpl implements BroadcastInfosService{
                 infos.add(info);
             }
 
-            return SearchByTitleResponseDto.builder().page(page).size(size).total(elsResults.getTotalPages()).broadcastInfoList(infos).build();
+            return SearchByTitleResponseDto.builder().totalSize(elsResults.getTotalElements()).totalPage(elsResults.getTotalPages()).broadcastInfoList(infos).build();
         }catch (NoSuchElementException e1){
             throw new BusinessExceptionHandler(ErrorCode.BAD_REQUEST_ERROR); //DB에 데이터가 없을 때 - JPA
         }catch (Exception e2){
@@ -126,7 +125,7 @@ public class BroadcastInfosServiceImpl implements BroadcastInfosService{
                         .build();
                 infos.add(info);
             }
-            return SearchBySellerResponse.builder().page(page).size(size).total(queryResults.getTotalPages()).broadcastInfoList(infos).build();
+            return SearchBySellerResponse.builder().totalSize(queryResults.getTotalElements()).totalPage(queryResults.getTotalPages()).broadcastInfoList(infos).build();
         }catch (NoSuchElementException e1){
             throw new BusinessExceptionHandler(ErrorCode.BAD_REQUEST_ERROR); //DB에 데이터가 없을 때 - JPA
         }catch (Exception e2){
@@ -150,7 +149,7 @@ public class BroadcastInfosServiceImpl implements BroadcastInfosService{
                         .build();
                 infos.add(info);
             }
-            return SearchByDateResponseDto.builder().page(page).size(size).total(queryResults.getTotalPages()).broadcastInfoList(infos).build();
+            return SearchByDateResponseDto.builder().totalSize(queryResults.getTotalElements()).totalPage(queryResults.getTotalPages()).broadcastInfoList(infos).build();
         }catch (NoSuchElementException e1){
             throw new BusinessExceptionHandler(ErrorCode.BAD_REQUEST_ERROR); //DB에 데이터가 없을 때 - JPA
         }catch (Exception e2){

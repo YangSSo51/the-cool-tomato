@@ -12,15 +12,18 @@ import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
 import java.util.Collection;
+import java.util.Optional;
 
 @Repository
 @Transactional
 public interface LiveBroadcastRepository extends JpaRepository<LiveBroadcast, Long> {
     @EntityGraph(attributePaths = {"user"})
+    public Optional<LiveBroadcast> findById(Long id);
+    @EntityGraph(attributePaths = {"user"})
     public Page<LiveBroadcast> findAllByBroadcastStatus(Boolean broadcastStatus, Pageable pageable);
     public Page<LiveBroadcast> findByUserIdIn(Collection<Long> id, Pageable pageable);
     @EntityGraph(attributePaths = {"user"})
-    public Page<LiveBroadcast> findByBroadcastStartDateAndIsDeleted(LocalDateTime statDate, Boolean isDeleted, Pageable pageable);
+    public Page<LiveBroadcast> findByUserIdAndIsDeleted(Long id, Boolean isDeleted, Pageable pageable);
     @EntityGraph(attributePaths = {"user"})
     @Query("SELECT lb FROM LiveBroadcast lb WHERE FUNCTION('DATE_FORMAT', lb.broadcastStartDate, '%y-%m-%d') = :startDate AND lb.isDeleted = false")
     public Page<LiveBroadcast> findLiveBroadcastsByStartDateAndNotDeleted(@Param("startDate") String startDate, Pageable pageable);

@@ -1,6 +1,7 @@
 package com.wp.live.domain.broadcast.service;
 
 import com.wp.live.domain.broadcast.utils.AuthConnection;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -33,5 +34,13 @@ public class AuthServiceImpl implements AuthService{
         info.add("auth");
         Map<String, Map<String, String>> result = authConnection.getInfo(token, info);
         return result.get("infos").get("auth");
+    }
+
+    public String resolveAccessToken(HttpServletRequest httpServletRequest) {
+        String bearerToken = httpServletRequest.getHeader("Authorization");
+        if (bearerToken != null && bearerToken.startsWith("Bearer ")) {
+            return bearerToken.substring(7);
+        }
+        return null;
     }
 }

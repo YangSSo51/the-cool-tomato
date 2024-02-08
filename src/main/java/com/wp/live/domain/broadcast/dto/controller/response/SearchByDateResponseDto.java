@@ -13,8 +13,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class SearchByDateResponseDto {
-    private int page;
-    private int size;
-    private int total;
+    private Long totalSize;
+    private Integer totalPage;
     private List<BroadcastInfo> broadcastInfoList;
 }

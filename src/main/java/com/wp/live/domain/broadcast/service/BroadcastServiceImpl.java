@@ -1,14 +1,12 @@
 package com.wp.live.domain.broadcast.service;
 
 import com.wp.live.domain.broadcast.dto.common.BroadcastInfo;
-import com.wp.live.domain.broadcast.dto.controller.request.ReservationRequestDto;
+import com.wp.live.domain.broadcast.dto.controller.request.*;
+import com.wp.live.domain.broadcast.dto.controller.response.GetBroadcastInfoResponseDto;
 import com.wp.live.domain.broadcast.dto.controller.response.GetBroadcastListResponseDto;
 import com.wp.live.domain.broadcast.entity.LiveBroadcast;
 import com.wp.live.domain.broadcast.entity.User;
 import com.wp.live.domain.broadcast.repository.LiveBroadcastRepository;
-import com.wp.live.domain.broadcast.dto.controller.request.ParticipationRequestDto;
-import com.wp.live.domain.broadcast.dto.controller.request.StartRequestDto;
-import com.wp.live.domain.broadcast.dto.controller.request.StopRequestDto;
 import com.wp.live.domain.broadcast.utils.MediateOpenviduConnection;
 import com.wp.live.global.common.code.ErrorCode;
 import com.wp.live.global.exception.BusinessExceptionHandler;
@@ -132,7 +130,7 @@ public class BroadcastServiceImpl implements BroadcastService{
     }
 
     @Override
-    public GetBroadcastListResponseDto getLivebBroadcastList(int page, int size) {
+    public GetBroadcastListResponseDto getBroadcastList(int page, int size) {
         try {
             Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "id"));
             Page<LiveBroadcast> queryResults = liveBroadcastRepository.findAllByBroadcastStatus(true, pageable);
@@ -148,10 +146,116 @@ public class BroadcastServiceImpl implements BroadcastService{
                         .build();
                 infos.add(info);
             }
-
-            return GetBroadcastListResponseDto.builder().page(page).size(size).total(queryResults.getTotalPages()).broadcastInfoList(infos).build();
+            return GetBroadcastListResponseDto.builder().totalSize(queryResults.getTotalElements()).totalPage(queryResults.getTotalPages()).broadcastInfoList(infos).build();
         }catch (NoSuchElementException e1){
-            throw new BusinessExceptionHandler(ErrorCode.BAD_REQUEST_ERROR); //DB에 데이터가 없을 때 - JPA
+            throw new BusinessExceptionHandler("방송 내역이 없습니다.", ErrorCode.BAD_REQUEST_ERROR); //DB에 데이터가 없을 때 - JPA
+        }catch (Exception e2){
+            throw new BusinessExceptionHandler(ErrorCode.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @Override
+    public void updateBroadcastInfo(UpdateReservationRequestDto info) {
+        try {
+            LiveBroadcast liveBroadcast = liveBroadcastRepository.findById(info.getBroadcastId()).orElseThrow();
+            liveBroadcast.setBroadcastTitle(info.getBroadcastTitle());
+            liveBroadcast.setContent(info.getContent());
+            liveBroadcast.setScript(info.getScript());
+            liveBroadcast.setTtsSetting(info.getTtsSetting());
+            liveBroadcast.setChatbotSetting(info.getChatbotSetting());
+            liveBroadcast.setBroadcastStartDate(info.getBroadcastStartDate());
+            liveBroadcastRepository.save(liveBroadcast);
+        }catch (NoSuchElementException e1){
+            throw new BusinessExceptionHandler("방송 내역이 없습니다.", ErrorCode.BAD_REQUEST_ERROR); //DB에 데이터가 없을 때 - JPA
+        }catch (Exception e2){
+            throw new BusinessExceptionHandler("아이고 미안합니다. 김현종에게 문의해주세요~", ErrorCode.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @Override
+    public GetBroadcastInfoResponseDto getBroadcastInfo(Long broadcastId) {
+        try {
+            LiveBroadcast liveBroadcast = liveBroadcastRepository.findById(broadcastId).orElseThrow();
+            return GetBroadcastInfoResponseDto.builder()
+                    .broadcastTitle(liveBroadcast.getBroadcastTitle())
+                    .content(liveBroadcast.getContent())
+                    .script(liveBroadcast.getScript())
+                    .ttsSetting(liveBroadcast.getTtsSetting())
+                    .chatbotSetting(liveBroadcast.getChatbotSetting())
+                    .broadcastStartDate(liveBroadcast.getBroadcastStartDate())
+                    .broadcastEndDate(liveBroadcast.getBroadcastEndDate())
+                    .build();
+        }catch (NoSuchElementException e1){
+            throw new BusinessExceptionHandler("방송 내역이 없습니다.", ErrorCode.BAD_REQUEST_ERROR); //DB에 데이터가 없을 때 - JPA
+        }catch (Exception e2){
+            throw new BusinessExceptionHandler("아이고 미안합니다. 김현종에게 문의해주세요~", ErrorCode.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @Override
+    public GetBroadcastListResponseDto getReservationBroadcastListById(Long id, int page, int size) {
+        try {
+            Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "id"));
+            Page<LiveBroadcast> queryResults = liveBroadcastRepository.findByUserIdAndIsDeleted(id, false, pageable);
+            List<BroadcastInfo> infos = new ArrayList<>();
+            for (LiveBroadcast queryResult : queryResults) {
+                BroadcastInfo info = BroadcastInfo.builder()
+                        .liveBroadcastId(queryResult.getId())
+                        .broadcastTitle(queryResult.getBroadcastTitle())
+                        .sellerId(queryResult.getUser().getId())
+                        .nickName(queryResult.getUser().getNickname())
+                        .build();
+                infos.add(info);
+            }
+            return GetBroadcastListResponseDto.builder().totalSize(queryResults.getTotalElements()).totalPage(queryResults.getTotalPages()).broadcastInfoList(infos).build();
+        }catch (NoSuchElementException e1){
+            throw new BusinessExceptionHandler("방송 내역이 없습니다.", ErrorCode.BAD_REQUEST_ERROR); //DB에 데이터가 없을 때 - JPA
+        }catch (Exception e2){
+            e2.printStackTrace();
+            throw new BusinessExceptionHandler(ErrorCode.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @Override
+    public GetBroadcastListResponseDto getStopBroadcastListById(Long id, int page, int size) {
+        try {
+            Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "id"));
+            Page<LiveBroadcast> queryResults = liveBroadcastRepository.findByUserIdAndIsDeleted(id, true, pageable);
+            List<BroadcastInfo> infos = new ArrayList<>();
+            for (LiveBroadcast queryResult : queryResults) {
+                BroadcastInfo info = BroadcastInfo.builder()
+                        .liveBroadcastId(queryResult.getId())
+                        .broadcastTitle(queryResult.getBroadcastTitle())
+                        .sellerId(queryResult.getUser().getId())
+                        .viewCount(queryResult.getViewCount())
+                        .nickName(queryResult.getUser().getNickname())
+                        .build();
+                infos.add(info);
+            }
+
+            return GetBroadcastListResponseDto.builder().totalSize(queryResults.getTotalElements()).totalPage(queryResults.getTotalPages()).broadcastInfoList(infos).build();
+        }catch (NoSuchElementException e1){
+            throw new BusinessExceptionHandler("방송 내역이 없습니다.", ErrorCode.BAD_REQUEST_ERROR); //DB에 데이터가 없을 때 - JPA
+        }catch (Exception e2){
+            throw new BusinessExceptionHandler(ErrorCode.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @Override
+    public void deleteBroadcast(Long broadcastId, Long sellerId) {
+        LiveBroadcast liveBroadcast;
+        try {
+            liveBroadcast = liveBroadcastRepository.findById(broadcastId).orElseThrow();
+            if(!liveBroadcast.getUser().getId().equals(sellerId))throw new BusinessExceptionHandler("올바른 판매자가 아닙니다.", ErrorCode.FORBIDDEN_ERROR);
+        }catch (NoSuchElementException e1){
+            throw new BusinessExceptionHandler("방송 내역이 없습니다.", ErrorCode.BAD_REQUEST_ERROR); //DB에 데이터가 없을 때 - JPA
+        }
+
+        try {
+            liveBroadcast.setIsDeleted(true);
+            liveBroadcastRepository.save(liveBroadcast);
+        }catch (NoSuchElementException e1){
+            throw new BusinessExceptionHandler("방송 내역이 없습니다.", ErrorCode.BAD_REQUEST_ERROR); //DB에 데이터가 없을 때 - JPA
         }catch (Exception e2){
             throw new BusinessExceptionHandler(ErrorCode.INTERNAL_SERVER_ERROR);
         }

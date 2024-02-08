@@ -3,6 +3,7 @@ package com.wp.live.domain.broadcast.utils;
 import com.wp.live.domain.broadcast.dto.utils.request.GetInfoRequestDto;
 import com.wp.live.domain.broadcast.dto.utils.request.ValidationRequestDto;
 import com.wp.live.domain.broadcast.dto.utils.response.ResponseDto;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;

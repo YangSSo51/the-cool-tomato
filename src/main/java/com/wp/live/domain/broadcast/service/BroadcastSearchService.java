@@ -5,9 +5,7 @@ import com.wp.live.domain.broadcast.dto.controller.response.SearchBySellerRespon
 import com.wp.live.domain.broadcast.dto.controller.response.SearchByTitleResponseDto;
 import com.wp.live.domain.broadcast.dto.controller.response.GetCarouselResponseDto;
 
-import java.time.LocalDateTime;
-
-public interface BroadcastInfosService {
+public interface BroadcastSearchService {
     public GetCarouselResponseDto getCarousel();
     public SearchByTitleResponseDto searchLivebBroadcastTitle(String keyword, int page, int size);
     public SearchBySellerResponse searchLivebBroadcastSeller(String sellerKeyword, int page, int size);

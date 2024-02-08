@@ -1,10 +1,8 @@
 package com.wp.live.domain.broadcast.service;
 
-import com.wp.live.domain.broadcast.dto.controller.request.ReservationRequestDto;
+import com.wp.live.domain.broadcast.dto.controller.request.*;
+import com.wp.live.domain.broadcast.dto.controller.response.GetBroadcastInfoResponseDto;
 import com.wp.live.domain.broadcast.dto.controller.response.GetBroadcastListResponseDto;
-import com.wp.live.domain.broadcast.dto.controller.request.ParticipationRequestDto;
-import com.wp.live.domain.broadcast.dto.controller.request.StartRequestDto;
-import com.wp.live.domain.broadcast.dto.controller.request.StopRequestDto;
 
 import java.util.Map;
 
@@ -14,5 +12,11 @@ public interface BroadcastService {
     public Map<String, String> startBroadcast(StartRequestDto start, Long sellerId);
     public void stopBroadcast(StopRequestDto stop, Long sellerId);
     public String participateBroadcast(ParticipationRequestDto participation);
-    public GetBroadcastListResponseDto getLivebBroadcastList(int page, int size);
+    public GetBroadcastListResponseDto getBroadcastList(int page, int size);
+    public void updateBroadcastInfo(UpdateReservationRequestDto info);
+    public GetBroadcastInfoResponseDto getBroadcastInfo(Long broadcastId);
+    public GetBroadcastListResponseDto getReservationBroadcastListById(Long id, int page, int size);
+    public GetBroadcastListResponseDto getStopBroadcastListById(Long id, int page, int size);
+    public void deleteBroadcast(Long broadcastId, Long sellerId);
+
 }
