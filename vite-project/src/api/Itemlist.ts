@@ -51,7 +51,7 @@ async function ItemDetailFetch(id: number) {
 async function sellersMyproductsAPI(page: number, size: number, at: string) {
     headers.set("Authorization", `Bearer ${at}`);
     try {
-        const response = await http.get(`${URL}/seller/my/list`, {
+        const response = await http.get(`${URL}/my/list`, {
             params: {
                 page: page,
                 size: size,
