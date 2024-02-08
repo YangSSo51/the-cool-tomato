@@ -1,4 +1,4 @@
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import { ChakraProvider } from "@chakra-ui/react";
 import { Theme, Fonts } from "./theme/Theme";
 import LayOut from "./components/common/Layout";
@@ -19,11 +19,10 @@ import MainPage from "./pages/MainPage";
 import LiveAddForm from "./pages/LiveAddForm";
 import BuyerLive from "./pages/BuyerLive";
 import ItemAdd from "./pages/ItemAdd";
-import NoticePage from "./pages/NoticePage"
+import NoticePage from "./pages/NoticePage";
 import ProfilePage from "./pages/ProfilePage";
 import AdminPage from "./pages/AdminPage";
 import ItemEditPage from "./pages/ItemEditPage";
-
 
 function App() {
     return (
@@ -31,9 +30,7 @@ function App() {
             <ChakraProvider theme={Theme}>
                 <Fonts />
                 <Routes>
-                    <Route path="/" element={<LayOut />}>
-                        <Route element={<MainPage />} />
-                    </Route>
+                    <Route path="/" element={<Navigate to={"/v1/main"} />} />
                     <Route path="/v1" element={<LayOut />}>
                         <Route path="main" element={<MainPage />} />
                         <Route path="search" element={<Search />} />
@@ -70,8 +67,14 @@ function App() {
                         />
                         <Route path="ItemAdd" element={<ItemAdd />}></Route>
                         <Route path="board/notice" element={<NoticePage />} />
-                        <Route path="seller/profile/:sellerId" element={<ProfilePage />} />
-                        <Route path="items/edit/:itemId" element={<ItemEditPage />}></Route>
+                        <Route
+                            path="seller/profile/:sellerId"
+                            element={<ProfilePage />}
+                        />
+                        <Route
+                            path="items/edit/:itemId"
+                            element={<ItemEditPage />}
+                        ></Route>
                     </Route>
                     <Route
                         path="v1/broadcast/:roomId"
@@ -81,7 +84,6 @@ function App() {
                         path="v1/live/:roomId"
                         element={<BuyerLive />}
                     ></Route>
-
                 </Routes>
             </ChakraProvider>
         </>

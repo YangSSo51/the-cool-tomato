@@ -7,7 +7,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "../redux/stores/store";
 import "../css/SellerPage.css"
 
-import Notice from "../components/mypage/admin/notice";
+import Notice from "../components/mypage/admin/Notice";
 import AcceptSeller from "../components/mypage/admin/AcceptSeller";
 import ManagingAll from "../components/mypage/admin/ManagingAll";
 
