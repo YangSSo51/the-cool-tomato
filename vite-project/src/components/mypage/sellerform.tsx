@@ -135,7 +135,6 @@ export default function Sellerform() {
             await registerSellerAPI(sellerData, accessToken)
             setIsSubmitted(true)
             dispatch(setAuthSeller());
-        console.log('온서브밋')
         }
     }
 

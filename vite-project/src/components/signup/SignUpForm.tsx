@@ -39,7 +39,7 @@ function SignUpForm() {
     const [isEmailValid, setIsEmailValid] = useState(false);
     const [sendcode, setSendcode] = useState(false)
     const [isNicknameValid, setIsNicknameValid] = useState(false);
-    console.log("유효성통과 다 트루냐???", isUsernameValid, isPasswordValid, isEmailValid, isNicknameValid)
+
     // 안내메시지
     const [validMessage, setValidMessage] = useState({
         idMessage: "",
