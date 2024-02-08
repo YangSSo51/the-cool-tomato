@@ -2,14 +2,14 @@ import { Box, Text, Flex } from "@chakra-ui/layout";
 import { Button } from "@chakra-ui/react";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
-import { RootState } from "../../../redux/stores/store";
+// import { useSelector } from "react-redux";
+// import { RootState } from "../../../redux/stores/store";
 import { sellerGetQnaAPI } from "../../../api/itemQnA";
 import QnaItems from "./SellerQnaItems";
 
 function Qna() {
     const navigate = useNavigate();
-    const user = useSelector((state: RootState) => state.user);
+    // const user = useSelector((state: RootState) => state.user);
 
     const [sellerQnaList, setSellerQnaList] = useState([])
 
