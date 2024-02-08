@@ -40,7 +40,11 @@ public class S3UploadService {
             //파일 확장자 확인
             validateFileExtension(multipartFile.getOriginalFilename());
 
-            System.out.println("파일명 : "+originalFilename);
+            log.info("원본 파일명 : "+multipartFile.getOriginalFilename());
+            log.info("파일명 : "+originalFilename);
+            log.info("파일 타입 : " +multipartFile.getContentType());
+            log.info("파일 크기 : " +multipartFile.getSize());
+
             ObjectMetadata metadata = new ObjectMetadata();
             metadata.setContentLength(multipartFile.getSize());
             metadata.setContentType(multipartFile.getContentType());
