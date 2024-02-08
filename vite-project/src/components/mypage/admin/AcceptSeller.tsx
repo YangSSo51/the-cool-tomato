@@ -12,7 +12,7 @@
 // import { getSellerApplicationsAPI } from "../../../api/user";
 // import { AdminUserInfo } from "../../../types/DataTypes";
 
-// function AcceptSeller() {
+function AcceptSeller() {
 //     const user = useSelector((state: RootState) => state.user);
 //     const [allUserData, setAllUserData] = useState([])
 
@@ -27,14 +27,15 @@
 //         })
 //     })
 
-//     return (
+    return (
+        "HI"
 //         <Box flexDirection="column" w="90%" h="full">
 //             <UserList allUserData={allUserData} />
 //         </Box>
-//     )
-// }
+    )
+}
 
-// export default AcceptSeller;
+export default AcceptSeller;
 
 
 // function UserList({ allUserData }: { allUserData: AdminUserInfo[]}) {
