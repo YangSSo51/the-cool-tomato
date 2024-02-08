@@ -1,4 +1,4 @@
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import { ChakraProvider } from "@chakra-ui/react";
 import { Theme, Fonts } from "./theme/Theme";
 import LayOut from "./components/common/Layout";
@@ -19,21 +19,27 @@ import MainPage from "./pages/MainPage";
 import LiveAddForm from "./pages/LiveAddForm";
 import BuyerLive from "./pages/BuyerLive";
 import ItemAdd from "./pages/ItemAdd";
-import NoticePage from "./pages/NoticePage"
+import NoticePage from "./pages/NoticePage";
 import ProfilePage from "./pages/ProfilePage";
 import AdminPage from "./pages/AdminPage";
+import TestPage from "./pages/TestPage";
 
 function App() {
     return (
         <>
             <ChakraProvider theme={Theme}>
                 <Fonts />
+
                 <Routes>
+                    <Route path="/" element={<Navigate to="/v1/main" />} />
                     <Route path="/v1" element={<LayOut />}>
                         <Route path="main" element={<MainPage />} />
                         <Route path="search" element={<Search />} />
                         <Route path="live/list" element={<LiveList />} />
-                        <Route path="items/list/:currentpage" element={<ItemList />} />
+                        <Route
+                            path="items/list/:currentpage"
+                            element={<ItemList />}
+                        />
                         <Route path="calendar" element={<Calendar />} />
                         <Route path="buyer" element={<BuyerPage />} />
                         <Route path="seller" element={<SellerPage />} />
@@ -62,7 +68,11 @@ function App() {
                         />
                         <Route path="ItemAdd" element={<ItemAdd />}></Route>
                         <Route path="board/notice" element={<NoticePage />} />
-                        <Route path="seller/profile/:sellerId" element={<ProfilePage />} />
+                        <Route
+                            path="seller/profile/:sellerId"
+                            element={<ProfilePage />}
+                        />
+                        <Route path="test" element={<TestPage />} />
                     </Route>
                     <Route
                         path="v1/broadcast/:roomId"
@@ -72,7 +82,6 @@ function App() {
                         path="v1/live/:roomId"
                         element={<BuyerLive />}
                     ></Route>
-
                 </Routes>
             </ChakraProvider>
         </>
