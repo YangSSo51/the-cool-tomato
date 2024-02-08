@@ -223,8 +223,7 @@ public class UserServiceImpl implements UserService {
         // 프로필 수정
         else if(profileImgFile != null && !profileImgFile.isEmpty()) {
             // 파일 업로드
-            String imgSrc = "";
-            imgSrc = s3UploadService.saveFile(profileImgFile);
+            String imgSrc = s3UploadService.saveFile(profileImgFile);
             user.setProfileImg(imgSrc);
         }
         // 닉네임, 성별, 생년월일 수정
