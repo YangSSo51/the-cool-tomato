@@ -111,44 +111,31 @@ export default function ItemAdd() {
     };
 
     const [fileName, setFileName] = useState<UploadImage | undefined>();
-    const [preview, setPreview] = useState<string | null>(null)
-    const [previewURL, setPreviewUrl] = useState<string | null>('')
+    const [previewURL, setPreviewUrl] = useState<string | null>("");
 
-    // useEffect(() => {
-    //     if (fileName !== undefined) {
-    //         setPreview(<Img src={previewURL}></Img>)
-    //     } return () => {}
-    // }, [fileName])
+    useEffect(() => {
+        if (fileName?.file) {
+            const fileURL = URL.createObjectURL(fileName.file);
+            setPreviewUrl(fileURL);
 
-    const fileInputHandler = 
-        (e: React.ChangeEvent<HTMLInputElement>) => {
-            const reader = new FileReader()
-
-            // reader.onloadend = () => {
-            //     setPreviewUrl(reader.result)
-            // }
-
-            const files = e.target.files;
-            console.log(files);
-            if (files && files[0]) {
-                setFileName({
-                    file: files[0],
-                    type: files[0].name,
-                });
-            }
+            return () => {
+                URL.revokeObjectURL(fileURL);
+            };
+        } else {
+            setPreviewUrl(null);
         }
+    }, [fileName]);
 
-    // useEffect(() => {
-    //     const currentInputEl = inputEl.current;
-    //     if (currentInputEl) {
-    //         currentInputEl.addEventListener("input", fileInputHandler);
-    //     }
-    //     return () => {
-    //         if (currentInputEl) {
-    //             currentInputEl.removeEventListener("input", fileInputHandler);
-    //         }
-    //     };
-    // }, [fileInputHandler, fileName]);
+    const fileInputHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const files = e.target.files;
+        console.log(files);
+        if (files && files[0]) {
+            setFileName({
+                file: files[0],
+                type: files[0].name,
+            });
+        }
+    };
 
     const ClearFile = () => {
         setFileName(undefined);
@@ -259,56 +246,41 @@ export default function ItemAdd() {
 
                         <Box className="Container">
                             {fileName ? (
-                                <Center>
-                                    <Flex direction={"row"}>
-                                        <Text
-                                            fontSize={"2rem"}
-                                            as={"b"}
-                                            mr={"0.5rem"}
-                                        >
-                                            업로드 된 파일
-                                            <span
-                                                style={{ marginLeft: "2rem" }}
+                                <Box border={"1px solid black"} w={"100%"} >
+                                    <Center>
+                                        {previewURL && (
+                                            <Img
+                                                src={previewURL}
+                                                alt="Preview"
+                                            />
+                                        )}
+                                        <Flex alignItems="center">
+                                            <Input
+                                                className="Input"
+                                                type="file"
+                                                id="file"
+                                                disabled={
+                                                    fileName ? false : true
+                                                }
+                                                style={{ display: "none" }}
+                                                onChange={fileInputHandler}
+                                            />
+
+                                            <label
+                                                htmlFor="file"
+                                                style={{ marginLeft: "1rem" }}
                                             >
-                                                :
-                                            </span>
-                                        </Text>
-                                    </Flex>
+                                                <EditIcon />
+                                            </label>
 
-                                    <Box
-                                        className="AttachedFile"
-                                        style={{
-                                            fontSize: "2rem",
-                                            marginLeft: "1rem",
-                                        }}
-                                    >
-                                        {fileName.type}
-                                    </Box>
-                                    <Flex alignItems="center">
-                                        <Input
-                                            className="Input"
-                                            type="file"
-                                            id="file"
-                                            
-                                            disabled={fileName ? false : true}
-                                            style={{ display: "none" }}
-                                            onChange={fileInputHandler}
-                                        />
-
-                                        <label
-                                            htmlFor="file"
-                                            style={{ marginLeft: "1rem" }}
-                                        >
-                                            <EditIcon />
-                                        </label>
-
-                                        <CloseIcon
-                                            ml={"2rem"}
-                                            boxSize={"1rem"}
-                                            onClick={ClearFile}
-                                        />
-                                    </Flex>
-                                </Center>
+                                            <CloseIcon
+                                                ml={"2rem"}
+                                                boxSize={"1rem"}
+                                                onClick={ClearFile}
+                                            />
+                                        </Flex>
+                                    </Center>
+                                </Box>
                             ) : (
                                 <>
                                     <Input
@@ -316,7 +288,6 @@ export default function ItemAdd() {
                                         type="file"
                                         accept="image/jpg, image/jpeg, image/png"
                                         id="file"
-                                        
                                         onChange={fileInputHandler}
                                         disabled={fileName ? true : false}
                                         style={{ display: "none" }}
