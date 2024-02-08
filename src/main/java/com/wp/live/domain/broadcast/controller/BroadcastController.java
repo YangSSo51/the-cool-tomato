@@ -104,4 +104,45 @@ public class BroadcastController {
         GetBroadcastListResponseDto result = broadcastService.getLivebBroadcastList(page, size);
         return new ResponseEntity<>(SuccessResponse.<GetBroadcastListResponseDto>builder().data(result).status(200).message("방송 리스트 반환 성공").build(), HttpStatus.OK);
     }
+
+    @ResponseBody
+    @PutMapping("/reservation")
+    @Operation(summary = "예약 방송 설정 변경", description = "예약 방송 설정을 변경합니다.")
+    public ResponseEntity<SuccessResponse<GetBroadcastListResponseDto>> updateReservationBroadcast(@RequestBody @Validated ReservationRequestDto reservationRequestDto){
+        String accessToken = reservationRequestDto.getAccessToken();
+        if(authService.validateToken(accessToken)){
+            if(authService.getAuth(accessToken).equals("SELLER")){
+                Long userId = authService.getUserId(accessToken);
+                Long broadcastId = broadcastService.reserveBroadcast(reservationRequestDto, userId);
+                ReservationResponseDto result = ReservationResponseDto.builder().liveBroadcastId(broadcastId).build();
+                return new ResponseEntity<>(SuccessResponse.<ReservationResponseDto>builder().data(result).status(201).message("방송 예약 성공").build(), HttpStatus.OK);
+            }else{
+                throw new BusinessExceptionHandler("판매자만 가능한 기능입니다.", ErrorCode.FORBIDDEN_ERROR);
+            }
+        }else{
+            throw new BusinessExceptionHandler("만료된 토큰입니다.", ErrorCode.FORBIDDEN_ERROR);
+        }
+    }
+
+    @ResponseBody
+    @GetMapping("/reservation/info")
+    @Operation(summary = "예약 방송 상세", description = "예약된 방송의 상세 정보를 반환합니다.")
+    public ResponseEntity<SuccessResponse<GetBroadcastListResponseDto>> getReservationBroadcast(@RequestParam int broadcastId){
+        return null;
+    }
+
+    @ResponseBody
+    @GetMapping("/reservation")
+    @Operation(summary = "예약 방송 목록", description = "예약 방송 목록 반환합니다.")
+    public ResponseEntity<SuccessResponse<GetBroadcastListResponseDto>> getReservationBroadcasts(){
+        return null;
+    }
+
+    @ResponseBody
+    @DeleteMapping("/reservation")
+    @Operation(summary = "예약 방송 삭제", description = "예약된 방송을 삭제 합니다.")
+    public ResponseEntity<SuccessResponse<GetBroadcastListResponseDto>> deleteReservationBroadcasts(@RequestParam int broadcastId){
+       return null;
+    }
+
 }
