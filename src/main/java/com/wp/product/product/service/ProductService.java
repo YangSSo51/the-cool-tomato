@@ -22,4 +22,6 @@ public interface ProductService {
     void updateProduct(ProductUpdateRequest productReques, Long userId, MultipartFile file);
 
     void deleteProduct(Long productId, Long userId);
+
+    String saveProductFile(MultipartFile file);
 }
