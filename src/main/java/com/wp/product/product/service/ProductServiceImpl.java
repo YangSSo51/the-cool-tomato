@@ -206,4 +206,9 @@ public class ProductServiceImpl implements ProductService{
             throw new BusinessExceptionHandler("삭제 중 에러가 발생했습니다",ErrorCode.BAD_REQUEST_ERROR);
         }
     }
+
+    @Override
+    public String saveProductFile(MultipartFile file) {
+        return s3UploadService.saveFile(file);
+    }
 }

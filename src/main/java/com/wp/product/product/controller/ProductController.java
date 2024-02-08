@@ -24,6 +24,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -209,5 +210,25 @@ public class ProductController {
                 .message(SuccessCode.DELETE_SUCCESS.getMessage()).build();
 
         return new ResponseEntity<>(response,HttpStatus.OK);
+    }
+
+    @ResponseBody
+    @PostMapping(value = "/fileupload",consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @Operation(summary = "이미지 등록",description = "판매자가 이미지를 등록함")
+    public Map<String, String> saveProductFile(@RequestParam("file") MultipartFile file){
+        //상품을 이미지를 등록함
+        Map<String,String> map = new HashMap<>();
+
+        try {
+            String result = productService.saveProductFile(file);
+
+            log.debug("upload result : {}", result);
+            // {"link" : "/image/201905/e98ff4f7-93a3-4aeb-813b-12f20a03db96.jpg"}
+            map.put("link",result);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            map.put("error", ex.getMessage());
+        }
+        return map;
     }
 }
