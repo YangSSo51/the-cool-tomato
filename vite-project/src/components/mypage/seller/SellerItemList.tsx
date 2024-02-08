@@ -6,15 +6,18 @@ import React, { useEffect, useState } from "react";
 import ItemsofItems from "./SellerItemsofItems";
 import { sellersMyproductsAPI } from "../../../api/Itemlist";
 import { ItemDetailInterface } from "../../../types/DataTypes";
+import { useSelector } from "react-redux";
+import { RootState } from "../../../redux/stores/store";
 
 
 function Items() {
+    const accessToken = useSelector((state: RootState) => {return state.user.accessToken})
     const navigate = useNavigate();
     const [sellerItem, setSellerItem] = useState<Array<ItemDetailInterface>>([])
 
 
     useEffect(() => {
-        sellersMyproductsAPI()
+        sellersMyproductsAPI(0, 16, accessToken)
             .then((response) => {
                 setSellerItem(response.data.list);
             })

@@ -22,6 +22,8 @@ import ItemAdd from "./pages/ItemAdd";
 import NoticePage from "./pages/NoticePage"
 import ProfilePage from "./pages/ProfilePage";
 import AdminPage from "./pages/AdminPage";
+import ItemEditPage from "./pages/ItemEditPage";
+
 
 function App() {
     return (
@@ -63,6 +65,7 @@ function App() {
                         <Route path="ItemAdd" element={<ItemAdd />}></Route>
                         <Route path="board/notice" element={<NoticePage />} />
                         <Route path="seller/profile/:sellerId" element={<ProfilePage />} />
+                        <Route path="items/edit/:itemId" element={<ItemEditPage />}></Route>
                     </Route>
                     <Route
                         path="v1/broadcast/:roomId"
