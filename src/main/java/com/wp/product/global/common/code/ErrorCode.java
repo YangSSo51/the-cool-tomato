@@ -78,9 +78,12 @@ public enum ErrorCode {
     NO_ELEMENT_ERROR(500, "C001", "No Such Element Exception"),
 
     //파일 업로드
-    FAIL_FILE_UPLOAD(500,"F001","Fail File Upload Excetion"),
+    FAIL_FILE_UPLOAD(500,"F001","Fail File Upload Exception"),
 
-    FAIL_FILE_DELETE(500,"F002","Fail File Delete Excetion"),
+    FAIL_FILE_DELETE(500,"F002","Fail File Delete Exception"),
+
+    NOT_IMAGE_EXTENSION(500, "F003", "Image Extension Exception" ), // End
+
 
     // 인증
     // Token 기간 만료
@@ -94,9 +97,7 @@ public enum ErrorCode {
     // 사용자의 Token이 아님
     NOT_MATCH_TOKEN_ERROR(401, "G017", "Not Match Token Exception"),
     // 이미 토큰을 발행함
-    EXIST_TOKEN_ERROR(401, "G018", "Wrong Token Exception")
-
-    ; // End
+    EXIST_TOKEN_ERROR(401, "G018", "Wrong Token Exception");
 
 
     /**
