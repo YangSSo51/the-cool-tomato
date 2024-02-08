@@ -13,7 +13,7 @@ import {
     Icon,
     Img,
 } from "@chakra-ui/react";
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import ReactDOM from "react-dom/client";
 
 import "froala-editor/css/froala_style.min.css";
@@ -34,12 +34,16 @@ export default function ItemAdd() {
         return state.user.accessToken;
     });
     const editorRef = useRef(null);
-    const config = {
-        editorClass: "custom-class",
-        heightMin: 700,
-        autofocus: true,
-        attribution: false,
-    };
+
+    const
+        config = {
+            editorClass: "custom-class",
+            heightMin: 600,
+            autofocus: true,
+            attribution: false,
+            imageUploadURL: "http://i10a501.p.ssafy.io:8082/v1/products/fileupload"
+        };
+
     const [values, setValues] = useState<AddItemInterface>({
         categoryId: 0,
         productName: "",
@@ -65,6 +69,7 @@ export default function ItemAdd() {
             const root = ReactDOM.createRoot(editorRef.current);
             root.render(<FroalaEditorComponent tag="textarea" />);
         }
+
     }, []);
 
     // 입력값
@@ -110,6 +115,38 @@ export default function ItemAdd() {
         }));
     };
 
+    const [fileName, setFileName] = useState<UploadImage | undefined>();
+    const [previewURL, setPreviewUrl] = useState<string | null>("");
+
+    useEffect(() => {
+        if (fileName?.file) {
+            const fileURL = URL.createObjectURL(fileName.file);
+            setPreviewUrl(fileURL);
+
+            return () => {
+                URL.revokeObjectURL(fileURL);
+            };
+        } else {
+            setPreviewUrl(null);
+        }
+    }, [fileName]);
+
+    const fileInputHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const files = e.target.files;
+        console.log(files);
+        if (files && files[0]) {
+            setFileName({
+                file: files[0],
+                type: files[0].name,
+            });
+        }
+    };
+
+    const ClearFile = () => {
+        setFileName(undefined);
+    };
+
+    const formData = new FormData();
     const onSubmit = async () => {
         if (fileName !== undefined) {
             if (
@@ -148,8 +185,8 @@ export default function ItemAdd() {
                         상품 등록
                     </Text>
                 </Center>
-                <Center mt={"3rem"} p={"1rem"} display={"block"}>
-                    <Box p={"2rem"} mb={"1rem"}>
+                <Center p={"1rem"} display={"block"}>
+                    <Box p={"2rem"} >
                         <Text fontSize={"2xl"} as={"b"}>
                             상품명
                         </Text>
@@ -178,7 +215,7 @@ export default function ItemAdd() {
                         </FormControl>
                     </Box>
 
-                    <Box p={"2rem"} mb={"1rem"}>
+                    <Box p={"2rem"}>
                         <Text fontSize={"2xl"} as={"b"}>
                             가격
                         </Text>
@@ -208,61 +245,47 @@ export default function ItemAdd() {
                     </Box>
 
                     <Box mt={"2.5rem"} p={"2rem"} mb={"1rem"}>
-                        <Text fontSize={"2xl"} as={"b"}>
+                        <Text fontSize={"2xl"} as={"b"} mb={"1rem"}>
                             상품 사진 등록
                         </Text>
 
                         <Box className="Container">
                             {fileName ? (
-                                <Center>
-                                    <Flex direction={"row"}>
-                                        <Text
-                                            fontSize={"2rem"}
-                                            as={"b"}
-                                            mr={"0.5rem"}
-                                        >
-                                            업로드 된 파일
-                                            <span
-                                                style={{ marginLeft: "2rem" }}
+                                <Box border={"1px solid black"} w={"100%"} >
+                                    <Center>
+                                        {previewURL && (
+                                            <Img
+                                                src={previewURL}
+                                                alt="Preview"
+                                            />
+                                        )}
+                                        <Flex alignItems="center">
+                                            <Input
+                                                className="Input"
+                                                type="file"
+                                                id="file"
+                                                disabled={
+                                                    fileName ? false : true
+                                                }
+                                                style={{ display: "none" }}
+                                                onChange={fileInputHandler}
+                                            />
+
+                                            <label
+                                                htmlFor="file"
+                                                style={{ marginLeft: "1rem" }}
                                             >
-                                                :
-                                            </span>
-                                        </Text>
-                                    </Flex>
+                                                <EditIcon />
+                                            </label>
 
-                                    <Box
-                                        className="AttachedFile"
-                                        style={{
-                                            fontSize: "2rem",
-                                            marginLeft: "1rem",
-                                        }}
-                                    >
-                                        {fileName.type}
-                                    </Box>
-                                    <Flex alignItems="center">
-                                        <Input
-                                            className="Input"
-                                            type="file"
-                                            id="file"
-                                            
-                                            disabled={fileName ? false : true}
-                                            style={{ display: "none" }}
-                                        />
-
-                                        <label
-                                            htmlFor="file"
-                                            style={{ marginLeft: "1rem" }}
-                                        >
-                                            <EditIcon />
-                                        </label>
-
-                                        <CloseIcon
-                                            ml={"2rem"}
-                                            boxSize={"1rem"}
-                                            onClick={ClearFile}
-                                        />
-                                    </Flex>
-                                </Center>
+                                            <CloseIcon
+                                                ml={"2rem"}
+                                                boxSize={"1rem"}
+                                                onClick={ClearFile}
+                                            />
+                                        </Flex>
+                                    </Center>
+                                </Box>
                             ) : (
                                 <>
                                     <Input
@@ -270,7 +293,7 @@ export default function ItemAdd() {
                                         type="file"
                                         accept="image/jpg, image/jpeg, image/png"
                                         id="file"
-                                        ref={inputEl}
+                                        onChange={fileInputHandler}
                                         disabled={fileName ? true : false}
                                         style={{ display: "none" }}
                                     />
