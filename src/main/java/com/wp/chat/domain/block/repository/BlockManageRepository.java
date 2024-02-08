@@ -7,6 +7,7 @@ import java.util.List;
 
 public interface BlockManageRepository extends JpaRepository<BlockManage, Long> {
     List<BlockManage> findAllBySellerId(Long sellerId);
+    List<Long> findAllBlockedIdBySellerId(Long sellerId);
 
     void deleteByBlockedIdAndSellerId(Long blockedId, Long sellerId);
 }

@@ -1,6 +1,7 @@
 package com.wp.chat.domain.block.controller;
 
 import com.wp.chat.domain.block.dto.request.BlockedIdRequest;
+import com.wp.chat.domain.block.dto.response.GetBlockIdsListResponse;
 import com.wp.chat.domain.block.dto.response.GetBlockManageListResponse;
 import com.wp.chat.domain.block.service.BlockManageService;
 import com.wp.chat.global.common.code.SuccessCode;
@@ -23,18 +24,6 @@ import org.springframework.web.bind.annotation.*;
 @Tag(name = "차단 API", description = "차단 관리 용 API")
 public class BlockManageController {
     private final BlockManageService blockManageService;
-
-    @GetMapping("/{seller-id}")
-    @Operation(summary = "방송 시작 후 차단 목록 캐싱", description = "판매자의 차단 목록을 방송 시작 시 캐싱합니다.")
-    public ResponseEntity<SuccessResponse<?>> getBlockManagesCache(@NotNull(message = "판매자 회원 ID를 입력해 주세요.") @PathVariable(value = "seller-id") Long sellerId) {
-        GetBlockManageListResponse getBlockManageListResponse = blockManageService.getBlockManagesBySellerId(sellerId);
-        SuccessResponse<?> response = SuccessResponse.builder()
-                .status(SuccessCode.SELECT_SUCCESS.getStatus())
-                .message(SuccessCode.SELECT_SUCCESS.getMessage())
-                .data(getBlockManageListResponse)
-                .build();
-        return new ResponseEntity<>(response, HttpStatus.OK);
-    }
 
     @GetMapping
     @Operation(summary = "차단 목록 조회", description = "판매자의 차단 목록을 조회합니다.")
