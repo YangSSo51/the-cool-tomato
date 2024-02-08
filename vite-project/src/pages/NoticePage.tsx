@@ -1,5 +1,5 @@
 import { Center, Container } from "@chakra-ui/react";
-import Notice from "../components/mypage/admin/notice";
+import Notice from "../components/mypage/admin/Notice";
 
 function NoticePage() {
     return (
