@@ -1,6 +1,7 @@
 package com.wp.chat.domain.block.service;
 
 import com.wp.chat.domain.block.dto.request.BlockedIdRequest;
+import com.wp.chat.domain.block.dto.response.GetBlockIdsListResponse;
 import com.wp.chat.domain.block.dto.response.GetBlockManageListResponse;
 import com.wp.chat.domain.block.entity.BlockManage;
 import com.wp.chat.domain.block.repository.BlockManageRepository;
@@ -49,16 +50,17 @@ public class BlockManageServiceImpl implements  BlockManageService {
         } catch (Exception e) {
             throw new BusinessExceptionHandler(ErrorCode.NOT_SELLER);
         }
-        return getBlockManagesBySellerId(Long.valueOf(infos.get("userId")));
+        List<BlockManage> blockManages = blockManageRepository.findAllBySellerId(Long.valueOf(infos.get("userId")));
+        return GetBlockManageListResponse.from(blockManages);
     }
 
     // 차단 목록 조회 (sellerId)
 
     @Cacheable(cacheNames = BLOCK_LIST, key = "#sellerId", condition = "#sellerId != null", cacheManager = "cacheManager")
     @Override
-    public GetBlockManageListResponse getBlockManagesBySellerId(Long sellerId) {
-        List<BlockManage> blockManages = blockManageRepository.findAllBySellerId(sellerId);
-        return GetBlockManageListResponse.from(blockManages);
+    public GetBlockIdsListResponse getBlockManagesBySellerId(Long sellerId) {
+        List<Long> blockIds = blockManageRepository.findAllBlockedIdBySellerId(sellerId);
+        return GetBlockIdsListResponse.builder().blockIds(blockIds).build();
     }
 
     // 차단 등록
