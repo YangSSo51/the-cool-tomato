@@ -18,6 +18,7 @@ public class Chatbot {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long chatbotId;
     private Long roomId;
+    private Long sellerId;
     private String question;
     private String answer;
     @CreationTimestamp

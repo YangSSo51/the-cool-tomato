@@ -32,9 +32,10 @@ public class ChatbotServiceImpl implements ChatbotService{
     }
 
     @Override
-    public void save(ChatbotCreateRequest request) {
+    public void save(ChatbotCreateRequest request,Long userId) {
         Chatbot chatbot = Chatbot.builder()
                 .roomId(request.getRoomId())
+                .sellerId(userId)
                 .question(request.getQuestion())
                 .answer(request.getAnswer()).build();
         try {
@@ -45,17 +46,21 @@ public class ChatbotServiceImpl implements ChatbotService{
     }
 
     @Override
-    public void update(ChatbotUpdateRequest request) {
+    public void update(ChatbotUpdateRequest request,Long userId) {
         Optional<Chatbot> result = chatbotRepository.findById(request.getChatbotId());
 
         result.orElseThrow(()->
                 new BusinessExceptionHandler("해당 아이디로 조회된 챗봇이 없습니다.",ErrorCode.BAD_REQUEST_ERROR));
-
-        
-        Chatbot chatbot = result.get();
-        chatbot.change(request);
         
         try {
+            Chatbot chatbot = result.get();
+            boolean equals = userId.equals(chatbot.getSellerId());
+            //판매자 아이디랑 같은지 확인
+            if (!equals) {
+                throw new Exception();
+            }
+            chatbot.change(request);
+
             chatbotRepository.save(chatbot);
         }catch (Exception e){
             throw new BusinessExceptionHandler("챗봇 질의응답 수정에 실패했습니다", ErrorCode.UPDATE_ERROR);
@@ -63,8 +68,19 @@ public class ChatbotServiceImpl implements ChatbotService{
     }
 
     @Override
-    public void delete(Long chatbotId) {
+    public void delete(Long chatbotId,Long userId) {
+        Optional<Chatbot> result = chatbotRepository.findById(chatbotId);
+
+        result.orElseThrow(()->
+                new BusinessExceptionHandler("해당 아이디로 조회된 챗봇이 없습니다.",ErrorCode.BAD_REQUEST_ERROR));
+
         try {
+            Chatbot chatbot = result.get();
+            boolean equals = userId.equals(chatbot.getSellerId());
+            //판매자 아이디랑 같은지 확인
+            if (!equals) {
+                throw new Exception();
+            }
             chatbotRepository.deleteById(chatbotId);
         }catch (Exception e){
             throw new BusinessExceptionHandler("챗봇 질의응답 삭제 중 에러가 발생했습니다",ErrorCode.DELETE_ERROR);
