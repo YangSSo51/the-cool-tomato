@@ -4,4 +4,7 @@ spring:
   profiles:
     active: dev
   config:
-    import: optional:configserver:http://MASTER:8888
+    import: optional:configserver:http://172.30.1.50:8888
+
+
+
