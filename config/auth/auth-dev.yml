@@ -17,8 +17,14 @@ spring:
         format_sql: true
   data:
     redis:
-      host: localhost
-      port: 6379
+      main:
+        host: MASTER
+        port: 6379
+      replicas:
+        - host: SN01
+          port: 6379
+        - host: SN02
+          port: 6379
 
   jwt:
     header: Authorization
