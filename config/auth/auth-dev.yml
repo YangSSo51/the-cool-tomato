@@ -36,3 +36,9 @@ eureka:
   client:
     service-url:
       defaultZone: http://MASTER:8761/eureka
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://MASTER:8761/eureka
