@@ -18,12 +18,12 @@ spring:
   data:
     redis:
       main:
-        host: MASTER
+        host: 172.30.1.51
         port: 6379
       replicas:
-        - host: SN01
+        - host: 172.30.1.52
           port: 6379
-        - host: SN02
+        - host: 172.30.1.53
           port: 6379
 
   jwt:
@@ -43,4 +43,4 @@ eureka:
     register-with-eureka: true
     fetch-registry: true
     service-url:
-      defaultZone: http://MASTER:8761/eureka
+      defaultZone: http://172.30.1.50:8761/eureka
