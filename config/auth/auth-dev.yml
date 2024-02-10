@@ -15,16 +15,6 @@ spring:
     properties:
       hibernate:
         format_sql: true
-  data:
-    redis:
-      main:
-        host: 172.30.1.51
-        port: 6379
-      replicas:
-        - host: 172.30.1.52
-          port: 6379
-        - host: 172.30.1.53
-          port: 6379
 
   jwt:
     header: Authorization
@@ -44,3 +34,13 @@ eureka:
     fetch-registry: true
     service-url:
       defaultZone: http://172.30.1.50:8761/eureka
+redis:
+  master:
+    host: redis-master
+    port: 6379
+  nodes:
+    - host: redis-slave-1
+      port: 6379
+    - host: redis-slave-2
+      port: 6379
+  password: asdf134620!
