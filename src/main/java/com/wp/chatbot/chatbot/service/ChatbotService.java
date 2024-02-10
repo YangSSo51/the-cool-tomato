@@ -8,9 +8,9 @@ import java.util.Map;
 public interface ChatbotService {
     Map<String, Object> search(ChatbotSearchRequest request);
 
-    void save(ChatbotCreateRequest request);
+    void save(ChatbotCreateRequest request,Long userId);
 
-    void update(ChatbotUpdateRequest request);
+    void update(ChatbotUpdateRequest request,Long userId);
 
-    void delete(Long chatbotId);
+    void delete(Long chatbotId,Long userId);
 }

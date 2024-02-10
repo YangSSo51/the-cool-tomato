@@ -77,6 +77,20 @@ public enum ErrorCode {
 
     NO_ELEMENT_ERROR(500, "C001", "No Such Element Exception"),
 
+    // 인증
+    // Token 기간 만료
+    EXPIRED_TOKEN_ERROR(401, "G013", "Expired Token Exception"),
+    // 잘못된 Token
+    SECURITY_TOKEN_ERROR(401, "G014", "Security Token Exception"),
+    // 지원하지 않은 Token
+    UNSUPPORTED_TOKEN_ERROR(401, "G015", "Unsupported Token Exception"),
+    // 잘못된 Token
+    WRONG_TOKEN_ERROR(401, "G016", "Wrong Token Exception"),
+    // 사용자의 Token이 아님
+    NOT_MATCH_TOKEN_ERROR(401, "G017", "Not Match Token Exception"),
+    // 이미 토큰을 발행함
+    EXIST_TOKEN_ERROR(401, "G018", "Wrong Token Exception");
+
     ; // End
 
     /**

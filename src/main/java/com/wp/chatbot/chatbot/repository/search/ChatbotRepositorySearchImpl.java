@@ -42,12 +42,12 @@ public class ChatbotRepositorySearchImpl extends QuerydslRepositorySupport imple
                         chatbot.registerDate
                 ))
                 .from(chatbot)
-                .where(chatbot.roomId.eq(request.getRoomId()))
+                .where(chatbot.sellerId.eq(request.getSellerId()))
                 .orderBy(chatbot.registerDate.desc()).fetch();
 
         JPQLQuery<Long> countQuery = queryFactory.select(chatbot.count())
                 .from(chatbot)
-                .where(chatbot.roomId.eq(request.getRoomId()));
+                .where(chatbot.sellerId.eq(request.getSellerId()));
 
         return PageableExecutionUtils.getPage(result,pageable,countQuery::fetchOne);
     }
