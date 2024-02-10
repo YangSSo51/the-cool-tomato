@@ -1,5 +1,5 @@
 server:
-  port: 8081
+  port: 8080
 
 spring:
   application:
@@ -33,14 +33,15 @@ eureka:
     register-with-eureka: true
     fetch-registry: true
     service-url:
-      defaultZone: http://172.30.1.50:8761/eureka/
+      defaultZone: http://MASTER:8761/eureka/
+
 redis:
   master:
-    host: 172.30.1.51
+    host: MASTER
     port: 6379
   nodes:
-    - host: 172.30.1.52
+    - host: SN01
       port: 6379
-    - host: 172.30.1.53
+    - host: SN02
       port: 6379
   password: asdf134620!
