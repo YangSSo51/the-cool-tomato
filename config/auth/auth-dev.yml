@@ -34,10 +34,6 @@ eureka:
     # 표기되는 규칙 변경
     instance-id: ${spring.cloud.client.hostname}:${spring.application.instance_id:${random.value}}
   client:
-    service-url:
-      defaultZone: http://MASTER:8761/eureka
-eureka:
-  client:
     register-with-eureka: true
     fetch-registry: true
     service-url:
