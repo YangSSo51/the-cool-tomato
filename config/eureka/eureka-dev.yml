@@ -6,6 +6,8 @@ spring:
     name: discoveryservice
 
 eureka:
+  server:
+    response-cache-update-interval-ms: 3000
   instance:
     prefer-ip-address: true
   client:
