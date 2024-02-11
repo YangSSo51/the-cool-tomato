@@ -1,30 +1,69 @@
-import { Box, Flex } from "@chakra-ui/layout";
-import { Image, Badge, Button, useDisclosure, AlertDialog,
+import { Box, Flex, Text } from "@chakra-ui/layout";
+import { Badge, Button, useDisclosure, AlertDialog, Divider,
     AlertDialogBody,
     AlertDialogFooter,
     AlertDialogHeader,
     AlertDialogContent,
     AlertDialogOverlay,
     AlertDialogCloseButton, } from "@chakra-ui/react";
-import { useRef } from "react";
+import { useRef, useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import { RootState } from "../../../redux/stores/store";
+import { getLiveDetailAPI, getLiveStartToken } from "../../../api/openVidu";
+import { useNavigate } from "react-router-dom";
 
-function PlanItems() {
+interface broadcastInfo {
+    liveBroadcastId: number;
+    broadcastTitle: string;
+    nickName: string;
+    viewCount: number;
+    sellerId: number;
+    broadcastStatus: boolean;
+}
+
+interface broadcastDetailInfo {
+    broadcastTitle: string;
+    content: string;
+    script: string;
+    ttsSetting: boolean;
+    chatbotSetting: boolean;
+    broadcastStartDate: string;
+    broadcastEndDate: string;
+}
+
+function PlanItems({plans, onDelete} : {plans: broadcastInfo, onDelete: (liveBroadcastId: number) => void;}) {
+    const navigate = useNavigate();
     const { isOpen, onOpen, onClose } = useDisclosure();
     const cancelRef = useRef(null);
-    const broadcastInfo = {
-      imageUrl: 'https://www.vegannews.co.kr/data/photos/20230727/art_1688713002447_e60ce1.png',
-      imageAlt: 'Rear view of modern home with pool',
-      title: '병창농부의 특급 제안-소나무같은 브룩껄리',
-      time: '2024.01.25 오후 8:00 예정',
-      reviewCount: 34,
-      rating: 4,
+    const accessToken = useSelector((state: RootState) => state.user.accessToken);
+    const [planDetail, setPlanDetail] = useState<broadcastDetailInfo | null>(null);
+    const [ startdate, setStartdate ] = useState("")
+
+    useEffect(() => {
+        const fetchData = async () => {
+            const response = await getLiveDetailAPI({broadcastId: plans.liveBroadcastId}, accessToken)
+            setPlanDetail(response)
+            setStartdate(response.broadcastStartDate)
+        }
+        fetchData()
+    }, [plans.liveBroadcastId, accessToken])
+
+    const StartLive = () => {
+        getLiveStartToken({ accessToken, liveBroadcastId: plans.liveBroadcastId }).then(()=> {
+            navigate(`/v1/broadcast/${plans.liveBroadcastId}`)
+        }).catch((error) => {
+            console.log(error)
+        })
+    }
+
+    const DeleteLive = () => {
+        onDelete(plans.liveBroadcastId)
     }
   
     return (
       <Flex justifyContent="space-between" p="2" borderWidth='1px' borderRadius='lg' overflow='hidden'>
 
         <Flex p="2">
-            <Image mr="2" boxSize="100px" src={broadcastInfo.imageUrl} alt={broadcastInfo.imageAlt} />
             <Box>
                 <Box display='flex' alignItems='baseline'>
                     <Badge borderRadius='full' px='2' colorScheme='red'>
@@ -38,11 +77,11 @@ function PlanItems() {
                     as='h4'
                     lineHeight='tight'
                     noOfLines={1}
-                    >{broadcastInfo.title}
+                    >{plans.broadcastTitle}
                 </Box>
         
                 <Box>
-                    {broadcastInfo.time}
+                    방송예정일자 : {startdate}
                 </Box>
             </Box>
         </Flex>
@@ -62,21 +101,30 @@ function PlanItems() {
                     <AlertDialogHeader>라이브 정보 확인하기</AlertDialogHeader>
                     <AlertDialogCloseButton />
                     <AlertDialogBody>
-                        아래 내용과 지금 하려는 방송이 일치하시나용
+                        아래 내용과 지금 하려는 방송이 일치하시나요?
+                        <Divider m="2" />
+                        {planDetail && (
+                            <Box>
+                                <Text>방송 제목: {planDetail.broadcastTitle}</Text>
+                                <Text>내용: {planDetail.content}</Text>
+                                <Text>TTS 설정: {planDetail.ttsSetting ? "활성화" : "비활성화"}</Text>
+                                <Text>챗봇 설정: {planDetail.chatbotSetting ? "활성화" : "비활성화"}</Text>
+                            </Box>
+                        )}
                     </AlertDialogBody>
                     <AlertDialogFooter>
                         <Button ref={cancelRef} onClick={onClose}>
                         취소
                         </Button>
-                        <Button colorScheme='red' ml={3}>
+                        <Button colorScheme='red' ml={3} onClick={StartLive}>
                         방송시작!
                         </Button>
                     </AlertDialogFooter>
                     </AlertDialogContent>
                 </AlertDialog>
 
-            <Button>수정</Button>
-            <Button>등록취소</Button>
+            <Button onClick={() => {navigate(`/v1/live/edit/${plans.liveBroadcastId}`)}}>수정</Button>
+            <Button onClick={DeleteLive}>등록취소</Button>
         </Flex>
 
       </Flex>

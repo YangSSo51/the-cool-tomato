@@ -20,6 +20,8 @@ export type goodsField = {
 };
 
 export type UserState = {
+    userId: number;
+    nickname: string;
     profileImg: string;
     auth: "BUYER" | "SELLER" | "ADMIN" | "FAIL" | "INIT";
     accessToken: string;
@@ -108,12 +110,12 @@ export type followerItem = {
     nickname: string;
     profileImg: string;
     userId: number;
-}
+};
 
-export type UploadImage =  {
-    file: File
-    type: string
-}
+export type UploadImage = {
+    file: File;
+    type: string;
+};
 
 export type SellerInfo = {
     auth: string;
@@ -126,7 +128,7 @@ export type SellerInfo = {
     sellerInfoId: number;
     sex: string;
     userId: number;
-}
+};
 
 export type MyQna = {
     answer: number;
@@ -140,6 +142,18 @@ export type MyQna = {
     questionRegisterDate: string;
     writerId: number;
     writerNickname: string
+}
+
+export type AdminUserInfo = {
+    id: number;
+    auth: string;
+    loginId: string;
+    email: string;
+    nickname: string;
+    sex: string;
+    birthday: string;
+    profileImg: string;
+    joinDate: string;
 }
 
 export interface liveProductPrice {

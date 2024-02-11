@@ -37,4 +37,13 @@ function itemAxios() {
     });
 }
 
-export { mainAxios, openViduDirectAxios, liveAxios, itemAxios };
+function chatbotAxios() {
+    return axios.create({
+        baseURL: "http://i10a501.p.ssafy.io:8086/v1/",
+        headers: {
+            "Content-Type": "application/json;charset=utf-8",
+        },
+    });
+}
+
+export { mainAxios, openViduDirectAxios, liveAxios, itemAxios, chatbotAxios };

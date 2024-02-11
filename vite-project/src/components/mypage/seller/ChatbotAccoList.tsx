@@ -12,25 +12,74 @@ import {
     Tr,
     Th,
 } from "@chakra-ui/react";
-// import { useState, ChangeEvent } from "react";
-// import { useSelector } from "react-redux";
-// import { RootState } from "../../../redux/stores/store";
+import { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
+import { RootState } from "../../../redux/stores/store";
+import { 
+    GetChatbotListAPI, 
+    // EditChatbotAPI, 
+    DeleteChatbotAPI 
+} from "../../../api/chatbot";
 import ChatbotItem from "./ChatbotAccoItem";
 
-// 임시로 지정
-interface ChatbotData {
-    roomId: number;
-    livetitle: string;
+interface broadcastInfo {
+    liveBroadcastId: number;
+    broadcastTitle: string;
+    nickName: string;
+    viewCount: number;
+    sellerId: number;
+    broadcastStatus: boolean;
 }
 
-function ChatbotList({ dummydata }: { dummydata: ChatbotData[]}) {
-    // const user = useSelector((state: RootState) => state.user);
+interface chatbotInfo {
+    chatbotId: number;
+    roomId: number;
+    question: string;
+    answer: string;
+    registerDate: string;
+}
 
+function ChatbotList({ livePlans }: { livePlans: broadcastInfo[]}) {
+    const [chatbotList, setChatbotList] = useState<chatbotInfo[]>([]);
+    const user = useSelector((state: RootState) => state.user);
+
+    useEffect(() => {
+        const fetchData = async () => {
+            const response = await GetChatbotListAPI({page:0, size:100}, user.accessToken);
+            setChatbotList(response)
+        };
+        fetchData();
+        setChatbotList([{
+            "chatbotId" : 23,
+            "roomId": 15,
+            "question": "질문",
+            "answer": "응답",
+            "registerDate": "2024-02-11T18:20:12"
+          }])
+    }, [user.accessToken])
+
+    // const editChatbot = async (chatbotId: number) => {
+    //     try {
+    //         await EditChatbotAPI({ chatbotId, roomId: 0, question: "", answer: "" }, user.accessToken);
+    //         setChatbotList(prevChatbotList => prevChatbotList.filter(chatbot => chatbot.chatbotId !== chatbotId));
+    //     } catch (error) {
+    //         console.error("Error editing chatbot:", error);
+    //     }
+    // };
+
+    const deleteChatbot = async (chatbotId: number) => {
+        try {
+            await DeleteChatbotAPI(chatbotId, user.accessToken);
+            setChatbotList(prevChatbotList => prevChatbotList.filter(chatbot => chatbot.chatbotId !== chatbotId));
+        } catch (error) {
+            console.error("Error deleting chatbot:", error);
+        }
+    };
 
     return (
         <>
         <Accordion allowMultiple>
-            {dummydata.map((item, index) => (
+            {livePlans.map((item, index) => (
                 <AccordionItem key={index}>
                     {/* 아코디언 초기 상태 */}
                     <AccordionButton justifyContent="space-between">
@@ -42,7 +91,7 @@ function ChatbotList({ dummydata }: { dummydata: ChatbotData[]}) {
                             textTransform='uppercase'
                             ml='2'
                         >
-                            예약방송: {item.livetitle}
+                            예약방송제목: {item.broadcastTitle}
                         </Box>
                         <AccordionIcon />
                     </AccordionButton>
@@ -60,8 +109,11 @@ function ChatbotList({ dummydata }: { dummydata: ChatbotData[]}) {
                                 </Thead>
 
                                 <Tbody>
-                                    {/* props 분리해놨습니다 */}
-                                    <ChatbotItem />
+                                <ChatbotItem
+                                        chatbotList={chatbotList}
+                                        // editChatbot={editChatbot}
+                                        deleteChatbot={deleteChatbot}
+                                    />
                                 </Tbody>
                             </Table>
                         </TableContainer>
