@@ -3,7 +3,7 @@ server:
 
 eureka:
   client:
-    registry-fetch-interval-seconds: 10
+    registry-fetch-interval-seconds: 3
     disable-delta: true
     register-with-eureka: true
     fetch-registry: true
