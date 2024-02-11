@@ -28,11 +28,11 @@ mediate:
 
 redis:
   master:
-    host: MASTER
+    host: 172.30.1.51
     port: 6379
   nodes:
-    - host: SN01
+    - host: 172.30.1.52
       port: 6379
-    - host: SN02
+    - host: 172.30.1.53
       port: 6379
   password: asdf134620!
