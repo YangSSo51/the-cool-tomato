@@ -17,5 +17,5 @@ spring:
         - id: auth
           uri: lb://AUTH
           predicates:
-            - Path=/v1/auth/**
+            - Path=/v1/**
        
