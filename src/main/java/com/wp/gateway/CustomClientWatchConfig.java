@@ -23,4 +23,5 @@ public class CustomClientWatchConfig {
     public CustomConfigClientWatch configGitClientWatch(ConfigDataContextRefresher refresher, ConfigServicePropertySourceLocator locator) {
         return new CustomConfigClientWatch(refresher, locator);
     }
+
 }
