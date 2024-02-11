@@ -1,0 +1,28 @@
+server:
+  port: 8083
+
+spring:
+  application:
+    name: auth
+  datasource:
+    url: jdbc:mysql://kpc.chf1yiylcr3s.ap-northeast-2.rds.amazonaws.com:3306/wp?serverTimezone=UTC
+    username: kpc
+    password: asdf134620!
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        format_sql: true
+
+logging.level:
+  org.hibernate.SQL: debug
+  org.hibernate.type: trace
+
+auth:
+  url: http://MASTER:8000
+
+mediate:
+  url: http://3.39.6.29:8081
+
