@@ -7,7 +7,8 @@ import { getQnAList } from "../../api/itemQnA";
 import { useEffect, useState } from "react";
 import { ItemQnA } from "../../types/DataTypes";
 import { AxiosResponse } from "axios";
-
+import { useSelector } from "react-redux";
+import { RootState } from "../../redux/stores/store";
 function ItemDetailQnA() {
     const size = 5;
     const { id } = useParams() as { id: string };
@@ -75,7 +76,12 @@ function ItemDetailQnA() {
                 }
             }
         );
-    }, [page, productID]);
+    }, [page, productID]); 
+
+
+    const user = useSelector((state: RootState) => state.user);
+
+    console.log(user.accessToken)
     return (
         <>
             <Flex w={"90%"} justifyContent={"flex-end"}>

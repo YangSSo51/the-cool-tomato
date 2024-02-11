@@ -421,15 +421,12 @@ async function getSellerApplicationDetailAPI(sellerInfoId: number) {
 // 관리자의 판매자 전환 승인 함수
  function approveSellerApplicationAPI(sellerInfoId: number, accessToken: string) {
     try {
-        const response = http.put(`${url}/sellers/admin/approve/${sellerInfoId}`, {
+        http.put(`${url}/sellers/admin/approve/${sellerInfoId}`, {
             headers: {
                 "Content-Type": "application/json",
                 "Authorization": "Bearer " + accessToken
             }
         })
-        console.log(response)
-        const responseData = response.data;
-        return responseData;
     } catch (error) {
         console.log(error)
         console.log("판매자 전환 승인 실패");

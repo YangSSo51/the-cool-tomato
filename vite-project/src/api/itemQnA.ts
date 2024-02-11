@@ -13,7 +13,9 @@ async function getQnAList(params: {
     size: number;
     "product-id": number;
 }) {
-    return await http.get(url + "/list", { params });
+    // return await http.get(url + "/list", { params });
+    const response = await http.get(url + "/list", { params });
+    console.log(response)
 }
 
 // 구매자가 상품 문의를 등록함
