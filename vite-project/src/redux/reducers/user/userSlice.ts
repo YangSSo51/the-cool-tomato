@@ -1,9 +1,15 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { UserState } from "../../../types/DataTypes";
 // import { loginUserAction } from "../../actions/user/userAction";
-import { loginUserThunk, logoutUserThunk, testUserThunk } from "../../thunk/user/userThunk";
+import {
+    loginUserThunk,
+    logoutUserThunk,
+    testUserThunk,
+} from "../../thunk/user/userThunk";
 
 const initialState: UserState = {
+    userId: 0,
+    nickname: "",
     profileImg: "",
     auth: "INIT",
     accessToken: "",
@@ -19,8 +25,8 @@ const userSlice = createSlice({
             state.auth = "INIT";
         },
         setAuthSeller: (state) => {
-            state.auth = "SELLER"
-        }
+            state.auth = "SELLER";
+        },
     },
     extraReducers: (builder) => {
         builder
@@ -34,6 +40,8 @@ const userSlice = createSlice({
                 //         action.payload.profileImg
                 // );
                 // state = action.payload;
+                state.userId = action.payload.userId;
+                state.nickname = action.payload.nickname;
                 state.profileImg = action.payload.profileImg;
                 state.auth = action.payload.auth;
                 state.accessToken = action.payload.accessToken;
@@ -57,8 +65,12 @@ const userSlice = createSlice({
                 //     "userSlice logoutUserThunk.fulfilled action.payload: " +
                 //         action.payload
                 // );
+                state.userId = 0;
+                state.nickname = "";
+                state.profileImg = "";
                 state.accessToken = "";
-                state.auth = 'INIT';
+                state.auth = "INIT";
+                state.refreshToken = "";
             });
     },
 });
