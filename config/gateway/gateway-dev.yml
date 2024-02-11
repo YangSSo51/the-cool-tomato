@@ -13,7 +13,7 @@ eureka:
       mvc:
         routes:
           - id: auth
-            uri: lb://AUTH
+            uri: http://SN01:8080/
             predicates:
                 - Path=/v1/**
             filters:
