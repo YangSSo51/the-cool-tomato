@@ -77,7 +77,7 @@ public class BroadcastServiceImpl implements BroadcastService{
             redisTemplate.expire(RANK, 3, TimeUnit.DAYS);
             redisTemplate.expire(VIEW, 3, TimeUnit.DAYS);
 
-            redisTemplate.opsForHash().put(HS, String.valueOf(start.getLiveBroadcastId()), String.valueOf(sellerId));
+            redisTemplate.opsForHash().put(HS, liveBroadcast.getTopicId(), String.valueOf(sellerId));
             redisTemplate.expire(HS, 3, TimeUnit.DAYS);
 
             Map<String, String> result = new HashMap<>();
