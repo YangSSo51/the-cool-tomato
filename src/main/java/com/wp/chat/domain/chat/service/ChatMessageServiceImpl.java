@@ -23,7 +23,6 @@ public class ChatMessageServiceImpl implements ChatMessageService {
     private final NewTopic topic;
 
     @Override
-    @Transactional
     public void sendMessage(ChatMessageRequest chatMessageRequest) {
         ChatMessage chatMessage = ChatMessage.builder().roomId(chatMessageRequest.getRoomId()).senderId(chatMessageRequest.getSenderId()).senderNickname(chatMessageRequest.getSenderNickname()).message(chatMessageRequest.getMessage()).build();
         kafkaTemplate.send(topic.name(), chatMessage);

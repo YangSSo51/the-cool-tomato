@@ -16,12 +16,7 @@
 <div class="container" id="app" v-cloak>
     <div class="row">
         <div class="col-md-12">
-            <h3>채팅방 리스트</h3>
-        </div>
-    </div>
-    <div class="input-group">
-        <div class="input-group-prepend">
-            <label class="input-group-text">방 ID</label>
+            <h3>채팅방 테스트</h3>
         </div>
     </div>
     <button v-on:click="enterRoom">채팅방 입장</button>
