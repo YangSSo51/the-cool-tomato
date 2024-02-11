@@ -1,10 +1,8 @@
-server:
-  port: 8001
-
-eureka:
-  client:
-    register-with-eureka: true
-    fetch-registry: true
-    service-url:
-      defaultZone: http://MASTER:8761/eureka
+spring:
+  application:
+    name: gateway
+  profiles:
+    active: dev
+  config:
+    import: optional:configserver:http://MASTER:8888
 
