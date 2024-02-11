@@ -1,0 +1,54 @@
+server:
+  port: 8080
+
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/m5s?serverTimezone=UTC
+    username: kpc
+    password: asdf134620!
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        format_sql: true
+  data:
+    redis:
+      host: localhost
+      port: 6379
+  mail:
+    username: hyeseung2000@gmail.com
+    password: tcorfahrykuyffgx
+    host: smtp.gmail.com
+    port: 587
+    properties:
+      debug: true
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+      mime:
+        charset: UTF-8
+      transport:
+        protocol: smtp
+  cloud:
+    openfeign:
+      okhttp:
+        enabled: true
+    aws:
+      s3:
+        bucket: wp-ht-s3
+      credentials:
+        access-key: AKIA4MDWI2KWXGRMYXSC
+        secret-key: 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
+      region:
+        static: ap-northeast-2
+        auto: false
+      stack:
+        auto: false
+
+logging.level:
+  org.hibernate.SQL: debug
+  org.hibernate.type: trace
