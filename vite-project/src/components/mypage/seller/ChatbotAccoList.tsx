@@ -12,7 +12,7 @@ import {
     Tr,
     Th,
 } from "@chakra-ui/react";
-// import { useState, ChangeEvent } from "react";
+// import { useState, useEffect } from "react";
 // import { useSelector } from "react-redux";
 // import { RootState } from "../../../redux/stores/store";
 import ChatbotItem from "./ChatbotAccoItem";
@@ -24,8 +24,6 @@ interface ChatbotData {
 }
 
 function ChatbotList({ dummydata }: { dummydata: ChatbotData[]}) {
-    // const user = useSelector((state: RootState) => state.user);
-
 
     return (
         <>

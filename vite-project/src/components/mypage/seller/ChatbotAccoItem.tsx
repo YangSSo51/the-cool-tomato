@@ -10,6 +10,14 @@ import {
 function ChatbotItem() {
     // const user = useSelector((state: RootState) => state.user);
 
+    // useEffect(() => {
+    //     GetChatbotListAPI().then((response) => {
+    //         setChatbotList(response.data)
+    //     }).catch((error) => {
+    //         console.error(error)
+    //     })
+    // }, [])
+
     const onClickEdit = () => {
         // API().then((result) => {
         //  //

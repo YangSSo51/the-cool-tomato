@@ -4,6 +4,10 @@ import {
   } from '@chakra-ui/react'
 import { FaEdit } from "react-icons/fa";
 import { useState } from "react";
+// import { useState, useEffect } from "react";
+// import { GetChatbotListAPI } from "../../../api/chatbot";
+// import { useSelector } from "react-redux";
+// import { RootState } from "../../../redux/stores/store";
 import ChatbotRegistrationModal from "./ChatbotRegister";
 import ChatbotList from "./ChatbotAccoList"
 
@@ -14,6 +18,7 @@ interface ChatbotData {
 }
 
 function Chatbot() {
+    // const user = useSelector((state: RootState) => state.user);
     const [modalOpen, setModalOpen] = useState(false);
     const dummydata: ChatbotData[] = [
         {roomId : 1, livetitle : "불금을 빛낼 불타는 고구마"},

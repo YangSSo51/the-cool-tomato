@@ -19,8 +19,9 @@ import {
     MenuItemOption
 } from "@chakra-ui/react";
 import { useState, ChangeEvent } from "react";
-// import { useSelector } from "react-redux";
-// import { RootState } from "../../../redux/stores/store";
+import { useSelector } from "react-redux";
+import { RootState } from "../../../redux/stores/store";
+import { RegisterChatbotAPI } from "../../../api/chatbot";
 
 // 임시로 지정
 interface ChatbotData {
@@ -43,7 +44,7 @@ function ChatbotRegistrationModal({
     const [roomTitle, setRoomTitle] = useState("라이브를 선택해주세요")
     const [chatbotKeyword, setChatbotKeyword] = useState("");
     const [chatbotContent, setChatbotContent] = useState("");
-    // const accessToken = useSelector((state: RootState) => state.user.accessToken);
+    const accessToken = useSelector((state: RootState) => state.user.accessToken);
 
     const handleInputKeyword = (e: ChangeEvent<HTMLInputElement>) =>
         setChatbotKeyword(e.target.value);
@@ -57,17 +58,17 @@ function ChatbotRegistrationModal({
     };
 
     const registerChatbot = () => {
-        // const data = {
-        //     // 데이터
-        // };
-        // // post 함수
-        //     .then(() => {
-        //         // 함수
-        //         handleClose();
-        //     })
-        //     .catch((err) => {
-        //         console.log(err);
-        //     });
+        const data = {
+            roomId: roomNumber,
+            question: chatbotKeyword, 
+            answer: chatbotContent
+        };
+        RegisterChatbotAPI(data, accessToken).then(() => {
+                handleClose();
+            })
+            .catch((err) => {
+                console.log(err);
+            });
     };
 
     return (
