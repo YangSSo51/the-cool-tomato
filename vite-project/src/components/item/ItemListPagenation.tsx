@@ -6,7 +6,7 @@ import {
     Flex,
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { ItemListFetch } from "../../api/Itemlist";
 
 export default function ItemListpagenation() {
@@ -33,7 +33,7 @@ export default function ItemListpagenation() {
             <ChevronLeftIcon onClick={() => {}} />
             <Breadcrumb separator={""} ml={"1rem"} mr={"1rem"}>
                 {pages.map((i) => (
-                    <BreadcrumbItem ml={"0.5rem"} mr={"0.5rem"}>
+                    <BreadcrumbItem ml={"0.5rem"} mr={"0.5rem"} key={i}>
                         <BreadcrumbLink as={Link} to={`/v1/items/list/${i}`}>
                             {i + 1}
                         </BreadcrumbLink>

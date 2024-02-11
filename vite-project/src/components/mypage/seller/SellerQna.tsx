@@ -1,12 +1,16 @@
 import { Box, Text, Flex } from "@chakra-ui/layout";
 import { Button } from "@chakra-ui/react";
 import { useState, useEffect } from "react";
-import QnaItems from "./SellerQnaItems";
-import { sellerGetQnaAPI } from "../../../api/itemQnA";
 import { useNavigate } from "react-router-dom";
+// import { useSelector } from "react-redux";
+// import { RootState } from "../../../redux/stores/store";
+import { sellerGetQnaAPI } from "../../../api/itemQnA";
+import QnaItems from "./SellerQnaItems";
 
 function Qna() {
     const navigate = useNavigate();
+    // const user = useSelector((state: RootState) => state.user);
+
     const [sellerQnaList, setSellerQnaList] = useState([])
 
     function onclick() {
@@ -17,6 +21,7 @@ function Qna() {
         const fetchData = async () => {
             try {
                 const response = await sellerGetQnaAPI(1, 16)
+                // console.log(response)
                 setSellerQnaList(response.data.list)
             } catch (error) {
                 console.error(error)

@@ -21,7 +21,7 @@ async function loginUser(data: { loginId: string; password: string }) {
         if (error instanceof AxiosError) {
             console.error(error);
             if (error.response) {
-              console.log(error.response.data.reason); // 'reason' 출력
+            //   console.log(error.response.data.reason); // 'reason' 출력
               if (error.response.status === 401) {
                   if (error.response.data.divisionCode === 'B003') {
                       throw new Error("비밀번호가 일치하지 않습니다.");
@@ -30,7 +30,7 @@ async function loginUser(data: { loginId: string; password: string }) {
                     }
                 }
             }
-            console.log("에러에러에러에러에러");
+            // console.log("에러에러에러에러에러");
         }
     }
 }
@@ -43,10 +43,6 @@ async function logoutAPI(accessToken: string) {
                 "Authorization": "Bearer " + accessToken
             }
         });
-        const responseData = response.data;
-        if (responseData.status === 200) {
-            console.log("로그아웃 성공")
-            }
         return response
     } catch(error) {
         console.log(error)
@@ -60,10 +56,8 @@ async function signupUserAPI(data: RegisterUser) {
         const response = await http.post(`${url}/join`, data)
         const responseData = response.data
         if (responseData.status === 201) {
-            console.log("잘됨");
             return 1
         } else if (responseData.status === 409) {
-            console.log("이미 가입된 이메일");
             return 33
         }
     } catch (error) {
@@ -71,10 +65,10 @@ async function signupUserAPI(data: RegisterUser) {
             const axiosError = error as AxiosError;
             console.error(error);
             if (axiosError.response && axiosError.response.status === 409) {
-              console.log("이미 가입된 이메일");
+            //   console.log("이미 가입된 이메일");
               return 33;
             }
-            console.log("에러에러에러에러에러");
+            // console.log("에러에러에러에러에러");
         }
     }
 }
@@ -84,11 +78,10 @@ async function checkIdAPI(data: {id: string}) {
     try {
         const response = await http.get(`${url}/join/check-login-id/${data.id}`)
         const responseData = response.data;
-        console.log(responseData)
         if (responseData.status === 200 && responseData.data.duplicate === false) {
             return 1
         } else {
-            console.log("아이디가 중복되었거나 요청에 문제가 있습니다.");
+            // console.log("아이디가 중복되었거나 요청에 문제가 있습니다.");
         }
     } catch (error) {
         console.error(error);
@@ -101,10 +94,7 @@ async function sendEmailAPI(data: {email: string}) {
         const response = await http.post(`${url}/join/check-email`, data);
         const responseData = response.data;
         if (responseData.status === 201) {
-            console.log("이메일 인증이 성공적으로 완료됐습니다");
             return 1
-        } else {
-            console.log("아이디가 중복되었거나 요청에 문제가 있습니다.");
         }
         console.log(response);
       } catch (error) {
@@ -117,7 +107,6 @@ async function checkEmailAPI(data: {email: string, code: string}) {
         const response = await http.get(`${url}/join/check-email-verifications/${data.email}/${data.code}`)
         const responseData = response.data;
         if (responseData.status === 200 && responseData.data.verify === true) {
-            console.log("이메일 인증이 성공적으로 완료됐습니다");
             return 1
         } else {
             console.log(responseData)
@@ -129,21 +118,20 @@ async function checkEmailAPI(data: {email: string, code: string}) {
 
 
 async function findIdAPI(data: {email: string}) {
-    console.log("아 아이디 찾을거라고~!")
     try {
         const response = await http.get(`${url}/find-login-id/${data.email}`)
         const responseData = response.data;
         if (responseData.status === 200) {
-            console.log("이메일 전송이 완료되었습니다");
+            // console.log("이메일 전송이 완료되었습니다");
         } else if (responseData.status === 401 && responseData.divisionCode === "B005") {
-            console.log("가입된 이메일이 아닙니다 회원가입 ㄱ");
+            // console.log("가입된 이메일이 아닙니다 회원가입 ㄱ");
         } else {
-            console.log(responseData)
-            console.log("걍 문제있음")
+            // console.log(responseData)
+            // console.log("걍 문제있음")
         }
     } catch (error) {
         console.error(error);
-        console.log("오류임")
+        // console.log("오류임")
     }
 }
 
@@ -151,23 +139,20 @@ async function findPwAPI(data: {loginId: string, email: string}) {
     try {
         const response = await http.post(`${url}/find-password`, data)
         if (response.status === 201) {
-            console.log("비밀번호 찾기 성공");
             return 1; // 성공을 나타내는 값 (원하는 값으로 변경 가능)
         } else if (response.status === 400) {
-            console.log("올바른 아이디 혹은 이메일이 아님요");
+            // console.log("올바른 아이디 혹은 이메일이 아님요");
             return 0;
         } else if (response.status === 401) {
-            console.log("아이디와 이메일의 가입정보가 일치하지 않습니다")
+            // console.log("아이디와 이메일의 가입정보가 일치하지 않습니다")
         }
     } catch (error) {
-        console.error("비밀번호 찾기 실패", error);
+        // console.error("비밀번호 찾기 실패", error);
         return 0;
     }
 }
 
 async function getMyInfoAPI(accessToken: string) {
-    console.log("회원정보수정용 조회받깅")
-    console.log(accessToken)
     try {
         const response = await http.get(`${url}`, {
             headers: {
@@ -176,9 +161,6 @@ async function getMyInfoAPI(accessToken: string) {
             }
         });
         const responseData = response.data;
-        if (responseData.status === 200) {
-            console.log("정보조회성공")
-        }
         return responseData
     } catch(error) {
         console.log(error)
@@ -187,8 +169,6 @@ async function getMyInfoAPI(accessToken: string) {
 }
 
 async function postMyInfoAPI(data: userInfo, accessToken: string, refreshToken: string) {
-    console.log("회원정보수정용 수정하깅")
-    console.log(accessToken)
     try {
         const response = await http.post(`${url}`, data, {
             headers: {
@@ -199,7 +179,7 @@ async function postMyInfoAPI(data: userInfo, accessToken: string, refreshToken: 
         });
         const responseData = response.data;
         if (responseData.status === 200) {
-            console.log("정보수정성공")
+            // console.log("정보수정성공")
         }
         return responseData
     } catch(error) {
@@ -209,8 +189,6 @@ async function postMyInfoAPI(data: userInfo, accessToken: string, refreshToken: 
 }
 
 async function deleteMyInfoAPI(accessToken: string) {
-    console.log("회원탈퇴")
-    console.log(accessToken)
     try {
         const response = await http.delete(`${url}`, {
             headers: {
@@ -219,9 +197,6 @@ async function deleteMyInfoAPI(accessToken: string) {
             }
         });
         const responseData = response.data;
-        if (responseData.status === 200) {
-            console.log("회원탈퇴성공")
-        }
         return responseData
     } catch(error) {
         console.log(error)
@@ -232,7 +207,6 @@ async function deleteMyInfoAPI(accessToken: string) {
 // 판매자 API
 
 async function registerSellerAPI(data: RegisterSeller, accessToken: string) {
-    console.log("판매자신청좀하겠습니다.~!!!!!!!", JSON.stringify(data))
     try {
         const response = await http.post(`${url}/sellers`, data, {
             headers: {
@@ -242,7 +216,6 @@ async function registerSellerAPI(data: RegisterSeller, accessToken: string) {
         })
         const responseData = response.data
         if (responseData.status === 201) {
-            console.log("성공~!");
             return responseData
         }
     } catch (error) {
@@ -254,12 +227,12 @@ async function registerSellerAPI(data: RegisterSeller, accessToken: string) {
                 if (error.response.data.divisionCode === 'B008') {
                     throw new Error("로그인 여부를 다시 확인해주세요");
                 } else {
-                    console.log("미가입");
+                    // console.log("미가입");
                     throw new Error("JWT 문제");
                 }
               }
             }
-            console.log("에러에러에러에러에러");
+            // console.log("에러에러에러에러에러");
         }
     }
 }
@@ -270,11 +243,10 @@ async function getSellerDetailAPI(sellerId: number) {
         const response = await http.get(`${url}/sellers/${sellerId}`);
         const responseData = response.data;
         if (responseData.status === 200) {
-            console.log("판매자 상세정보 조회 성공");
             return responseData;
         }
     } catch (error) {
-        console.log("판매자 상세정보 조회 실패");
+        console.log("");
         throw error;
     }
 }
@@ -293,7 +265,7 @@ async function followSellerAPI(sellerId: number, alarmSetting: boolean, accessTo
             return 1;
         }
     } catch (error) {
-        console.log("팔로우 등록 실패");
+        console.log("");
         throw error;
     }
 }
@@ -333,7 +305,7 @@ async function unfollowSellerAPI(sellerId: number, accessToken: string) {
             return 1;
         }
     } catch (error) {
-        console.log("팔로우 취소 실패");
+        console.log("");
         throw error;
     }
 }
@@ -349,11 +321,10 @@ async function getFollowingListAPI(accessToken: string) {
         });
         const responseData = response.data;
         if (responseData.status === 200) {
-            console.log("팔로잉 목록 조회 성공");
             return responseData;
         }
     } catch (error) {
-        console.log("팔로잉 목록 조회 실패");
+        console.log("");
         throw error;
     }
 }
@@ -372,41 +343,42 @@ async function getFollowerListAPI(accessToken: string) {
             return responseData;
         }
     } catch (error) {
-        console.log("팔로워 목록 조회 실패");
+        console.log("");
         throw error;
     }
 }
 
 // 관리자 API
 // 모든 회원 정보 조회
-async function getAllUsersAPI(page: number, size: number) {
+async function getAllUsersAPI(page: number, size: number, accessToken: string) {
     try {
         const response = await http.get(`${url}/admin`, {
             params: {
                 page,
                 size
+            },
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": "Bearer " + accessToken
             }
         });
         const responseData = response.data;
         if (responseData.status === 200) {
-            console.log("전체 회원 정보 조회 성공");
             return responseData;
         }
     } catch (error) {
-        console.log("전체 회원 정보 조회 실패");
+        console.log("");
         throw error;
     }
 }
+
 
 // 관리자가 회원을 강제로 탈퇴시키는 함수
 async function deleteUserByAdminAPI(id: number) {
     try {
         const response = await http.delete(`${url}/admin/${id}`);
         const responseData = response.data;
-        if (responseData.status === 200) {
-            console.log("회원 탈퇴 성공");
-            return responseData;
-        }
+        return responseData;
     } catch (error) {
         console.log("회원 탈퇴 실패");
         throw error;
@@ -414,19 +386,20 @@ async function deleteUserByAdminAPI(id: number) {
 }
 
 // 관리자의 판매자 전환 신청 목록 조회 함수
-async function getSellerApplicationsAPI(page: number, size: number) {
+async function getSellerApplicationsAPI(page: number, size: number, accessToken: string) {
     try {
         const response = await http.get(`${url}/sellers/admin`, {
             params: {
                 page,
                 size
+            },
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": "Bearer " + accessToken
             }
         });
         const responseData = response.data;
-        if (responseData.status === 200) {
-            console.log("판매자 전환 신청 목록 조회 성공");
-            return responseData;
-        }
+        return responseData;
     } catch (error) {
         console.log("판매자 전환 신청 목록 조회 실패");
         throw error;
@@ -438,12 +411,9 @@ async function getSellerApplicationDetailAPI(sellerInfoId: number) {
     try {
         const response = await http.get(`${url}/sellers/admin-sellers/${sellerInfoId}`);
         const responseData = response.data;
-        if (responseData.status === 200) {
-            console.log("판매자 전환 신청 상세 조회 성공");
-            return responseData;
-        }
+        return responseData;
     } catch (error) {
-        console.log("판매자 전환 신청 상세 조회 실패");
+        console.log("");
         throw error;
     }
 }
@@ -453,10 +423,7 @@ async function approveSellerApplicationAPI(sellerInfoId: number) {
     try {
         const response = await http.put(`${url}/sellers/admin/approve/${sellerInfoId}`);
         const responseData = response.data;
-        if (responseData.status === 200) {
-            console.log("판매자 전환 승인 성공");
-            return responseData;
-        }
+        return responseData;
     } catch (error) {
         console.log("판매자 전환 승인 실패");
         throw error;
@@ -468,10 +435,7 @@ async function cancelSellerApplicationAPI(sellerInfoId: number) {
     try {
         const response = await http.put(`${url}/sellers/admin/cancle/${sellerInfoId}`);
         const responseData = response.data;
-        if (responseData.status === 200) {
-            console.log("판매자 전환 철회 성공");
-            return responseData;
-        }
+        return responseData;
     } catch (error) {
         console.log("판매자 전환 철회 실패");
         throw error;

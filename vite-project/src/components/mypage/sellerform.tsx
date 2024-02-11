@@ -39,7 +39,7 @@ export default function Sellerform() {
     },
     {
         title : '판매자 설명',
-        enTitle : 'Seller\'s Legal Name',
+        enTitle : 'Seller\'s Introduction',
         // rule : 한글 혹은 영문만 가능,
         key : businessContent,
         change : setBusinessContent
@@ -89,14 +89,6 @@ export default function Sellerform() {
                     inputValue = values.slice(0, 3) + '-' + values.slice(3, 5) + '-' + values.slice(5, 10);
                 }
                 break;
-            case '판매자 실명':
-                // 한글 혹은 영문
-                regex = /[^가-힣a-zA-Z]/g;
-                if (regex.test(inputValue)) {
-                    message = "한글 혹은 영어만 입력할 수 있습니다";
-                }
-                
-                break;
             case '업체 연락처':
                 regex = /[^0-9-]/gi;
                 if (regex.test(inputValue)) {
@@ -143,7 +135,6 @@ export default function Sellerform() {
             await registerSellerAPI(sellerData, accessToken)
             setIsSubmitted(true)
             dispatch(setAuthSeller());
-        console.log('온서브밋')
         }
     }
 

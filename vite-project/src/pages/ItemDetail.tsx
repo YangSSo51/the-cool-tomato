@@ -35,6 +35,10 @@ export default function ItemDetail() {
         });
     }, []);
 
+    useEffect(() => {
+        console.log(fetchData)
+    },[fetchData])
+
     return (
         <>
             <Flex direction={"column"} alignItems={"center"} justify={"center"}>

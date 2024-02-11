@@ -46,7 +46,7 @@ function Followers() {
 export default Followers
 
 function FollowersItem({ followerItem, i }: { followerItem: followerItem, i: number }) {
-    console.log(followerItem)
+    // console.log(followerItem)
 
     return (
         <Flex p="2" m="2">

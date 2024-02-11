@@ -7,7 +7,8 @@ import PlanItems from "./SellerPlanItems";
 
 function PlanList() {
     const navigate = useNavigate();
-    const [ livePlans, setLivePlans ] = useState([]);
+    // const [ livePlans, setLivePlans ] = useState([]);
+    const [ livePlans ] = useState([]);
 
     useEffect(() => {
         // const response = PlanItems();
@@ -15,7 +16,8 @@ function PlanList() {
     }, []);
 
     const liveplanData = livePlans.map((item, index) => (
-        <PlanItems key={index} plans={item} />
+        // <PlanItems key={index} plans={item} />
+        <PlanItems key={index} />
     ));
 
     return (

@@ -7,36 +7,30 @@ import { useSelector } from "react-redux";
 import { RootState } from "../redux/stores/store";
 import "../css/SellerPage.css"
 
-import Recent from "../components/mypage/buyer/BuyerRecent";
-import Following from "../components/mypage/buyer/BuyerFollowing";
-import Reviews from "../components/mypage/buyer/BuyerReviews";
-import Reviewed from "../components/mypage/buyer/BuyerReviewed";
-import Question from "../components/mypage/buyer/BuyerQuestion";
-
+import Notice from "../components/mypage/admin/Notice";
+import AcceptSeller from "../components/mypage/admin/AcceptSeller";
+import ManagingAll from "../components/mypage/admin/ManagingAll";
 
 export default function AdminPage() {
     const user = useSelector((state: RootState) => state.user);
-    console.log(user)
     const navigate = useNavigate();
     const [ boxHeight, setBoxHeight ] = useState("85vh");
     const [ tab, setTab ] = useState(0);
     const [ categoryTabs, setCategoryTabs ] = useState([
-        { id: 0, isSelected: true , name: '공지사항 관리', component: <Recent /> },
-        { id: 1, isSelected: false , name: 'FAQ 작성', component: <Following /> },
-        { id: 2, isSelected: false , name: '판매자 신청 확인', component: <Reviews /> },
-        { id: 3, isSelected: false , name: '판매자 전체 조회', component: <Reviewed /> },
-        { id: 4, isSelected: false , name: '회원 전체 조회', component: <Question /> },
+        { id: 0, isSelected: true , name: '공지사항 관리', component: <Notice /> },
+        { id: 1, isSelected: false , name: '회원전체조회', component: <ManagingAll /> },
+        { id: 2, isSelected: false , name: '판매자 신청 조회', component: <AcceptSeller /> },
     ]);
 
-    const changeSelect = (e) => {
-        setTab(e.target.value)
+    const changeSelect = (e: React.MouseEvent<HTMLLIElement, MouseEvent>) => {
+        const selectedIndex = parseInt(e.currentTarget.getAttribute("data-index") || "");
+        setTab(selectedIndex);
         setCategoryTabs(categoryTabs.map((item, index) => {
             return {
-              ...item,
-              isSelected: e.target.value == index,
+                ...item,
+                isSelected: index === selectedIndex,
             };
-          })
-        );
+        }));
     }
 
     useEffect(() => {
@@ -73,10 +67,11 @@ export default function AdminPage() {
                                         key={category.id}
                                         value={category.id}
                                         padding=".5rem 1rem"
-                                        className={category.isSelected ? "active" : null}
+                                        className={category.isSelected ? "active" : ""}
                                         onClick={(e) => changeSelect(e)}
                                         _hover={{ color: "themeRed.500", cursor:"pointer" }}
                                         _active={{ color: "themeRed.500", bg: "themeRed.100" }}
+                                        data-index={category.id} // 데이터 속성 추가
                                         >{category.name}
                                         </ListItem>
                                     ))}
@@ -90,7 +85,7 @@ export default function AdminPage() {
                         <Flex direction="column" justify="center" align="center" h="full">
                             <Breadcrumb mb="10" spacing='8px' separator={<ChevronRightIcon color='gray.500' />}>
                                 <BreadcrumbItem>
-                                    <BreadcrumbLink>마이페이지</BreadcrumbLink>
+                                    <BreadcrumbLink>관리자</BreadcrumbLink>
                                 </BreadcrumbItem>
 
                                 <BreadcrumbItem isCurrentPage>

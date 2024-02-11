@@ -1,4 +1,3 @@
-import { AddItemInterface } from "../types/DataTypes";
 import { itemAxios } from "./http";
 import { AxiosHeaders } from "axios";
 
@@ -6,66 +5,79 @@ const http = itemAxios();
 const headers = new AxiosHeaders();
 headers.set("Content-Type", "application/json;charset=utf-8");
 
-const URL = '/products';
+const URL = "/products";
 
 async function ItemListDetailFetch(data: { id: number }) {
     const response = await http.get(`${URL}/${data.id}`);
     return response;
 }
 
-async function ItemAddFunction(data: AddItemInterface) {
+async function ItemAddFunction(data : FormData, at: string) {
     try {
-        const response = await http.post(`${URL}`, data);
+        headers.set("Authorization", `Bearer ${at}`);
+        headers.set("Content-Type", "multipart/form-data");
+        const response = await http.post(`${URL}`, data, { headers: headers });
+        
         return response;
     } catch (error) {
         console.error(error);
-        
     }
 }
 
-async function ItemListFetch(data: { page: number; size: number }) {
+// ITEM조회 params가 바뀌어서 수정했습니다 충돌나면 요걸로 해주세욤
+async function ItemListFetch(data: {
+    page?: number;
+    size?: number;
+    "category-id"?: string;
+    sellerId?: number;
+}) {
     const response = await http.get(`${URL}/list`, {
-        params: { page: data.page, size: data.size },
+        params: data,
     });
     return response.data.data;
 }
 
-async function ItemDetailDelete(id: number) {
-    await http.delete(`${URL}/${id}`);
+async function ItemDetailDelete(id: number, at: string) {
+    headers.set("Authorization", `Bearer ${at}`);
+    await http.delete(`${URL}/${id}`, { headers: headers });
 }
 
 async function ItemDetailFetch(id: number) {
     const response = await http.get(`${URL}/${id}`);
+    console.log(response.data.data)
     return response.data.data;
 }
 
-async function sellersMyproductsAPI() {
+async function sellersMyproductsAPI(page: number, size: number, at: string) {
+    headers.set("Authorization", `Bearer ${at}`);
     try {
-        const response = await http.get(`${URL}/my/list/`, {
+        const response = await http.get(`${URL}/my/list`, {
             params: {
-                page: 1,
-                size: 10,
-            }
-        })
-        return response.data
-        // const responseData = response.data;
-        // console.log(responseData)
-        // if (responseData.status === 200) {
-        //     return responseData;
-        // }
+                page: page,
+                size: size,
+            }, headers:headers
+        }, );
+        return response.data;
     } catch (error) {
         console.error(error);
         throw error;
     }
 }
 
-async function SellerBroadcastFetch(data : {page: number; size: number}) {
-    const response = await http.get('products/my/list', {
-        params: {page: data.page, size: data.size}
-})
-    return response.data.data.list
+async function SellerBroadcastFetch(data: { page: number; size: number }) {
+    const response = await http.get("products/my/list", {
+        params: { page: data.page, size: data.size, },
+    });
+    return response.data.data.list;
 }
 
+async function ItemListSellerGet(
+    params: { page: number; size: number },
+    accessToken: string
+) {
+    headers.set("Authorization", `Bearer ${accessToken}`);
+    return await http.get("/products/my/list", { headers, params });
+}
 
 export {
     ItemListDetailFetch,
@@ -74,5 +86,6 @@ export {
     ItemDetailDelete,
     ItemDetailFetch,
     sellersMyproductsAPI,
-    SellerBroadcastFetch
+    SellerBroadcastFetch,
+    ItemListSellerGet,
 };

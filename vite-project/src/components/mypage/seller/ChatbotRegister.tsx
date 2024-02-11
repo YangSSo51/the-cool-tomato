@@ -19,8 +19,8 @@ import {
     MenuItemOption
 } from "@chakra-ui/react";
 import { useState, ChangeEvent } from "react";
-import { useSelector } from "react-redux";
-import { RootState } from "../../../redux/stores/store";
+// import { useSelector } from "react-redux";
+// import { RootState } from "../../../redux/stores/store";
 
 // 임시로 지정
 interface ChatbotData {
@@ -57,9 +57,9 @@ function ChatbotRegistrationModal({
     };
 
     const registerChatbot = () => {
-        const data = {
-            // 데이터
-        };
+        // const data = {
+        //     // 데이터
+        // };
         // // post 함수
         //     .then(() => {
         //         // 함수
@@ -90,7 +90,7 @@ function ChatbotRegistrationModal({
                             </FormLabel>
                             <Menu closeOnSelect={false}>
                                 <MenuButton as={Button} width="100%">
-                                    {roomTitle}
+                                    {roomNumber}: {roomTitle}
                                 </MenuButton>
                                 <MenuList w="100%">
                                     <MenuOptionGroup defaultValue="1" title='라이브이름' type='radio'>

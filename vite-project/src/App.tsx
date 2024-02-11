@@ -23,6 +23,7 @@ import NoticePage from "./pages/NoticePage";
 import ProfilePage from "./pages/ProfilePage";
 import AdminPage from "./pages/AdminPage";
 import TestPage from "./pages/TestPage";
+import ItemEditPage from "./pages/ItemEditPage";
 
 function App() {
     return (
@@ -31,7 +32,7 @@ function App() {
                 <Fonts />
 
                 <Routes>
-                    <Route path="/" element={<Navigate to="/v1/main" />} />
+                    <Route path="/" element={<Navigate to={"/v1/main"} />} />
                     <Route path="/v1" element={<LayOut />}>
                         <Route path="main" element={<MainPage />} />
                         <Route path="search" element={<Search />} />
@@ -73,6 +74,10 @@ function App() {
                             element={<ProfilePage />}
                         />
                         <Route path="test" element={<TestPage />} />
+                        <Route
+                            path="items/edit/:itemId"
+                            element={<ItemEditPage />}
+                        ></Route>
                     </Route>
                     <Route
                         path="v1/broadcast/:roomId"

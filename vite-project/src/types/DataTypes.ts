@@ -1,6 +1,6 @@
 export type userInfo = {
     profileImgFile: File | null;
-    profileImg: string  | null;
+    profileImg: string | null;
     password: string | null;
     newPassword: string | null;
     nickname: string;
@@ -20,6 +20,8 @@ export type goodsField = {
 };
 
 export type UserState = {
+    userId: number;
+    nickname: string;
     profileImg: string;
     auth: "BUYER" | "SELLER" | "ADMIN" | "FAIL" | "INIT";
     accessToken: string;
@@ -68,10 +70,20 @@ export interface ItemDetailInterface {
     price: number;
     deliveryCharge: number;
     quantity: number;
-    registerDate: string
+    registerDate: string;
 }
 
 export interface AddItemInterface {
+    categoryId: number;
+    productName: string;
+    productContent: string;
+    paymentLink: string;
+    price: number;
+    deliveryCharge: number;
+    quantity: number;
+}
+
+export interface ItemInfo {
     categoryId: number;
     productName: string;
     productContent: string;
@@ -90,7 +102,7 @@ export type broadcastInfo = {
     ttsSetting: boolean;
     chatbotSetting: boolean;
     broadcastStartDate: string;
-}
+};
 
 export type followerItem = {
     id: number;
@@ -98,10 +110,15 @@ export type followerItem = {
     nickname: string;
     profileImg: string;
     userId: number;
-}
+};
+
+export type UploadImage = {
+    file: File;
+    type: string;
+};
 
 export type SellerInfo = {
-    auth : string;
+    auth: string;
     bitrhday: string;
     followerCount: number;
     joinDate: string;
@@ -111,4 +128,48 @@ export type SellerInfo = {
     sellerInfoId: number;
     sex: string;
     userId: number;
+};
+
+export type MyQna = {
+    answer: number;
+    answerContent: string;
+    answerRegisterDate: string;
+    productContent: string;
+    productId: number;
+    productName: string;
+    productQuestionBoardId: number;
+    questionContent: string;
+    questionRegisterDate: string;
+    writerId: number;
+    writerNickname: string;
+};
+
+export type AdminUserInfo = {
+    id: number;
+    auth: string;
+    loginId: string;
+    email: string;
+    nickname: string;
+    sex: string;
+    birthday: string;
+    profileImg: string;
+    joinDate: string;
+};
+
+export interface liveProductPrice {
+    productId: number;
+    originalPrice: number;
+    price: number;
+    discount: number;
+}
+
+export interface liveProduct {
+    productId: number;
+    liveId: number;
+    liveFlatPrice: number;
+    liveRatePrice: number;
+    livePriceStartDate: string;
+    livePriceEndDate: string;
+    mainProductSetting: boolean;
+    seq: number;
 }

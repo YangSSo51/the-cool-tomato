@@ -1,12 +1,13 @@
 import { useState, useRef } from "react";
-import { Input, Button, Flex, Text, Box } from "@chakra-ui/react";
+import { Input, Button, Flex, Text } from "@chakra-ui/react";
 import { SearchIcon } from "@chakra-ui/icons";
-import SearchContents from "../components/search/SearchContents";
+// import SearchContents from "../components/search/SearchContents";
 import Recommends from "../components/search/Recommends";
 
 // 검색 전/검색결과가 없을 경우 추천상품 띄우기
 export default function Search() {
-    const [loading, setLoading] = useState(false);
+    const [loading] = useState(false);
+    // const [loading, setLoading] = useState(false);
     const [searchKeyword, setSearchKeyword] = useState('');
 
     const SearchBar = () => {
@@ -73,7 +74,7 @@ export default function Search() {
             ) : searchKeyword.length > 0 ? (
             <Text mt={10} mb={4} fontWeight="semibold" textAlign="center" color="gray.700">
                 검색결과
-                <SearchContents results={searchKeyword} />    
+                {/* <SearchContents results={searchKeyword} />     */}
             </Text>
             ) : (
             <Text mt={10} mb={4} fontWeight="semibold" textAlign="center" color="gray.700">
