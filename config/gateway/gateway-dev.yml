@@ -22,4 +22,8 @@ spring:
               uri: lb://AUTH
               predicates:
                   - Path=/v1/auth/**
+            - id: broadcast
+              uri: lb://BROADCAST
+              predicates:
+                  - Path=/v1/live/**
        
