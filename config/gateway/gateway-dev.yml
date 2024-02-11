@@ -10,11 +10,11 @@ eureka:
 
 spring:
   cloud:
-    mvc:
       gateway:
-        routes:
-          - id: auth
-            uri: lb://AUTH
-            predicates:
-                - Path=/v1/auth/**
+        mvc:
+          routes:
+            - id: auth
+              uri: lb://AUTH
+              predicates:
+                  - Path=/v1/auth/**
        
