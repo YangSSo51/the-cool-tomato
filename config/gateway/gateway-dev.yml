@@ -1,7 +1,10 @@
 server:
-  port: 8001
+  port: 8000
 
 eureka:
+  instance:
+    lease-renewal-interval-in-seconds: 3
+    lease-expiration-duration-in-seconds: 10
   client:
     registry-fetch-interval-seconds: 5
     disable-delta: true
