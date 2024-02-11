@@ -3,7 +3,7 @@ server:
 
 spring:
   application:
-    name: auth
+    name: broadcast
   datasource:
     url: jdbc:mysql://kpc.chf1yiylcr3s.ap-northeast-2.rds.amazonaws.com:3306/wp?serverTimezone=UTC
     username: kpc
