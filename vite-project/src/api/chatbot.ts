@@ -16,25 +16,40 @@ async function RegisterChatbotAPI(data: { roomId: number; question: string; answ
 }
 
 // 챗봇 질의응답 수정
-async function EditChatbotAPI(data: { chatbotId: number; roomId: number; question: string; answer: string; }) {
-    const response = await http.put(`${url}`, data);
+async function EditChatbotAPI(data: { chatbotId: number; roomId: number; question: string; answer: string; }, accessToken: string) {
+    const response = await http.put(`${url}`, data, {
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer " + accessToken
+        }
+    });
     const responseData = response.data
     console.log(responseData)
 }
 
-// 챗봇 질의응답 수정
-async function DeleteChatbotAPI(chatbotId: number) {
-    const response = await http.put(`${url}/${chatbotId}`);
-    const responseData = response.data
-    console.log(responseData)
+// 챗봇 질의응답 삭제
+async function DeleteChatbotAPI(chatbotId: number, accessToken: string) {
+    await http.delete(`${url}/${chatbotId}`, {
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer " + accessToken
+        }
+    });
 }
 
 // 내가 등록한 챗봇 질의응답 확인
-async function GetChatbotListAPI(params?: {
+async function GetChatbotListAPI(params: {
     page?: number;
     size?: number;
-}) {
-    return await http.get(`${url}/list`, { params });
+}, accessToken: string) {
+    const response =  await http.get(`${url}/list`, { 
+        params: params,
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer " + accessToken
+        }
+    });
+    return response.data.list
 }
 
 export {

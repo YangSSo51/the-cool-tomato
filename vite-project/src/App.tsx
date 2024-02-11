@@ -23,6 +23,7 @@ import NoticePage from "./pages/NoticePage";
 import ProfilePage from "./pages/ProfilePage";
 import AdminPage from "./pages/AdminPage";
 import ItemEditPage from "./pages/ItemEditPage";
+import LivePlanEditForm from "./components/mypage/seller/SellerPlanEdit";
 
 function App() {
     return (
@@ -61,6 +62,7 @@ function App() {
                             element={<FindAccountPage type="password" />}
                         />
                         <Route path="live/form" element={<LiveAddForm />} />
+                        <Route path="live/edit/:broadcastId" element={<LivePlanEditForm />} />
                         <Route
                             path="findaccount"
                             element={<FindAccountPage type="result" />}

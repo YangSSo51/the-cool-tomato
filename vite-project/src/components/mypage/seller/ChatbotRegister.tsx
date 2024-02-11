@@ -23,21 +23,24 @@ import { useSelector } from "react-redux";
 import { RootState } from "../../../redux/stores/store";
 import { RegisterChatbotAPI } from "../../../api/chatbot";
 
-// 임시로 지정
-interface ChatbotData {
-    roomId: number;
-    livetitle: string;
+interface broadcastInfo {
+    liveBroadcastId: number;
+    broadcastTitle: string;
+    nickName: string;
+    viewCount: number;
+    sellerId: number;
+    broadcastStatus: boolean;
 }
 
 function ChatbotRegistrationModal({
     isOpen,
     handleModalOpen,
-    dummydata,
+    livePlans,
     // 함수,
 }: {
     isOpen: boolean;
     handleModalOpen: () => void;
-    dummydata: ChatbotData[]
+    livePlans: broadcastInfo[]
     // 함수: (인자: 타입) => void;
 }) {
     const [roomNumber, setRoomNumber] = useState(0)
@@ -95,13 +98,13 @@ function ChatbotRegistrationModal({
                                 </MenuButton>
                                 <MenuList w="100%">
                                     <MenuOptionGroup defaultValue="1" title='라이브이름' type='radio'>
-                                        {dummydata.map((item) => (
+                                        {livePlans.map((item) => (
                                             <MenuItemOption 
-                                                key={item.roomId} 
-                                                value={item.roomId.toString()}
-                                                onClick={() => {setRoomNumber(item.roomId); setRoomTitle(item.livetitle);}}
+                                                key={item.liveBroadcastId} 
+                                                value={item.liveBroadcastId.toString()}
+                                                onClick={() => {setRoomNumber(item.liveBroadcastId); setRoomTitle(item.broadcastTitle);}}
                                                 >
-                                                {item.livetitle}
+                                                {item.broadcastTitle}
                                             </MenuItemOption>
                                         ))}
                                     </MenuOptionGroup>
