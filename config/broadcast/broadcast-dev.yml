@@ -37,7 +37,7 @@ redis:
       port: 6379
   password: asdf134620!
 
-  eureka:
+eureka:
   instance:
     disable-delta: true
     instance-id: ${spring.cloud.client.hostname}:${spring.application.instance_id:${random.value}}
