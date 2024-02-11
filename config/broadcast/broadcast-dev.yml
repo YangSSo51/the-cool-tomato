@@ -36,3 +36,15 @@ redis:
     - host: 172.30.1.53
       port: 6379
   password: asdf134620!
+
+  eureka:
+  instance:
+    disable-delta: true
+    instance-id: ${spring.cloud.client.hostname}:${spring.application.instance_id:${random.value}}
+    lease-renewal-interval-in-seconds: 3
+    lease-expiration-duration-in-seconds: 10
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://MASTER:8761/eureka/
