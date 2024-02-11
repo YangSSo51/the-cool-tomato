@@ -47,4 +47,4 @@ eureka:
     register-with-eureka: true
     fetch-registry: true
     service-url:
-      defaultZone: http://MASTER/eureka/
+      defaultZone: http://MASTER:8761/eureka/
