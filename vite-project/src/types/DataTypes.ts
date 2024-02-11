@@ -173,3 +173,13 @@ export interface liveProduct {
     mainProductSetting: boolean;
     seq: number;
 }
+
+export interface chatMessageSend extends chatMessageRecv {
+    roomId: number;
+}
+
+export interface chatMessageRecv {
+    senderId: number;
+    senderNickname: string;
+    message: string;
+}

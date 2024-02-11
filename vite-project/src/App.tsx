@@ -22,7 +22,6 @@ import ItemAdd from "./pages/ItemAdd";
 import NoticePage from "./pages/NoticePage";
 import ProfilePage from "./pages/ProfilePage";
 import AdminPage from "./pages/AdminPage";
-import TestPage from "./pages/TestPage";
 import ItemEditPage from "./pages/ItemEditPage";
 
 function App() {
@@ -73,7 +72,6 @@ function App() {
                             path="seller/profile/:sellerId"
                             element={<ProfilePage />}
                         />
-                        <Route path="test" element={<TestPage />} />
                         <Route
                             path="items/edit/:itemId"
                             element={<ItemEditPage />}

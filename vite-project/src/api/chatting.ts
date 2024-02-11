@@ -1,1 +1,11 @@
-const base_url = "http://i10a501.p.ssafy.io:8085/v1";
+import Stomp from "stompjs";
+import { chatSocket } from "./http";
+
+function getStompClient() {
+    const socket = chatSocket();
+    console.log("getStompClient socket");
+    console.log(socket);
+    return Stomp.over(socket);
+}
+
+export { getStompClient };

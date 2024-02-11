@@ -1,4 +1,5 @@
 import axios from "axios";
+import SockJS from "sockjs-client";
 
 function mainAxios() {
     return axios.create({
@@ -37,4 +38,9 @@ function itemAxios() {
     });
 }
 
-export { mainAxios, openViduDirectAxios, liveAxios, itemAxios };
+function chatSocket() {
+    const base_url = "http://i10a501.p.ssafy.io:8085/v1";
+    return new SockJS(`${base_url}/chat/ws-stomp`);
+}
+
+export { mainAxios, openViduDirectAxios, liveAxios, itemAxios, chatSocket };
