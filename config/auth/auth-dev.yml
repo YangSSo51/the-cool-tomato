@@ -27,7 +27,7 @@ logging.level:
 
 eureka:
   instance:
-    # 표기되는 규칙 변경
+    disable-delta: true
     instance-id: ${spring.cloud.client.hostname}:${spring.application.instance_id:${random.value}}
     lease-renewal-interval-in-seconds: 3
     lease-expiration-duration-in-seconds: 10
