@@ -11,7 +11,8 @@ import {
     Select,
     FormHelperText,
     Icon,
-    Img,
+    Image,
+    AspectRatio,
 } from "@chakra-ui/react";
 import React, { useEffect, useRef, useState } from "react";
 import ReactDOM from "react-dom/client";
@@ -202,7 +203,7 @@ export default function ItemAdd() {
                                 name="productName"
                                 onChange={handleString}
                                 placeholder=" "
-                                maxLength={10}
+                                maxLength={20}
                             />
 
                             <FormHelperText>
@@ -251,13 +252,20 @@ export default function ItemAdd() {
 
                         <Box className="Container">
                             {fileName ? (
-                                <Box border={"1px solid black"} w={"100%"} >
-                                    <Center>
+                                <Box border={"1px solid black"} w={"500px"} h={"300px"} borderRadius={"20px"} >
+                                    <Center maxH={"100%"} minH={"100%"}>
                                         {previewURL && (
-                                            <Img
-                                                src={previewURL}
-                                                alt="Preview"
-                                            />
+                                            <AspectRatio w='256px' ratio={1 / 1}>
+                                                <Image
+                                                    src={previewURL}
+                                                    alt="Preview"
+                                                    aspectRatio="1/1"
+                                                    objectFit="cover"
+                                                    overflow={"hidden"}
+                                                    position={"relative"}
+                                                    borderRadius={"20px"}
+                                                />
+                                            </AspectRatio>
                                         )}
                                         <Flex alignItems="center">
                                             <Input
@@ -288,22 +296,26 @@ export default function ItemAdd() {
                                 </Box>
                             ) : (
                                 <>
-                                    <Input
-                                        className="Input"
-                                        type="file"
-                                        accept="image/jpg, image/jpeg, image/png"
-                                        id="file"
-                                        onChange={fileInputHandler}
-                                        disabled={fileName ? true : false}
-                                        style={{ display: "none" }}
-                                    />
+                                    <Box border={"1px solid black"} w={"500px"} h={"300px"} borderRadius={"20px"} >
+                                        <Center maxH={"100%"} minH={"100%"}>
+                                            <Input
+                                                className="Input"
+                                                type="file"
+                                                accept="image/jpg, image/jpeg, image/png"
+                                                id="file"
+                                                onChange={fileInputHandler}
+                                                disabled={fileName ? true : false}
+                                                style={{ display: "none" }}
+                                            />
 
-                                    <label
-                                        htmlFor="file"
-                                        className="AttachmentButton"
-                                    >
-                                        🔗 사진 업로드하기
-                                    </label>
+                                            <label
+                                                htmlFor="file"
+                                                className="AttachmentButton"
+                                            >
+                                                🔗 사진 업로드하기
+                                            </label>
+                                        </Center>
+                                    </Box>
                                 </>
                             )}
                         </Box>
