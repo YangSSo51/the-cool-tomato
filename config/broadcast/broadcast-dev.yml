@@ -21,19 +21,19 @@ logging.level:
   org.hibernate.type: trace
 
 auth:
-  url: http://172.30.1.50:8000
+  url: http://MASTER:8000
 
 mediate:
   url: http://3.39.6.29:8081
 
 redis:
   master:
-    host: 172.30.1.51
+    host: SN01
     port: 6379
   nodes:
-    - host: 172.30.1.52
+    - host: SN02
       port: 6379
-    - host: 172.30.1.53
+    - host: SN03
       port: 6379
   password: asdf134620!
 
@@ -47,4 +47,4 @@ eureka:
     register-with-eureka: true
     fetch-registry: true
     service-url:
-      defaultZone: http://172.30.1.50:8761/eureka/
+      defaultZone: http://MASTER/eureka/
