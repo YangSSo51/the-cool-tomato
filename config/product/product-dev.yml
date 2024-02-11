@@ -2,6 +2,8 @@ server:
   port: 8082
 
 spring:
+  application:
+    name: product
   datasource:
     url: jdbc:mysql://kpc.chf1yiylcr3s.ap-northeast-2.rds.amazonaws.com:3306/wp?serverTimezone=UTC
     username: kpc
@@ -35,3 +37,15 @@ cloud:
       auto: false
     stack:
       auto: false
+      
+eureka:
+  instance:
+    disable-delta: true
+    instance-id: ${spring.cloud.client.hostname}:${spring.application.instance_id:${random.value}}
+    lease-renewal-interval-in-seconds: 3
+    lease-expiration-duration-in-seconds: 10
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://MASTER:8761/eureka/
