@@ -19,7 +19,7 @@ function Items() {
     useEffect(() => {
         sellersMyproductsAPI(page, 2, accessToken)
             .then((response) => {
-                console.log(response)
+                // console.log(response)
                 setSellerItem(response.data.list);
                 
             })

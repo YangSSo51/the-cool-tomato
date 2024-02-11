@@ -63,12 +63,16 @@ async function buyerGetQnaAPI(page: number, size: number, accessToken: string) {
 }
 
 // 판매자가 받은 상품 문의 리스트를 조회함
-async function sellerGetQnaAPI(page: number, size: number) {
+async function sellerGetQnaAPI(page: number, size: number, accessToken: string) {
     try {
         const response = await http.get(`${url}/seller/my/list`, {
             params: {
                 page,
                 size
+            },
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": "Bearer " + accessToken
             }
         });
         const responseData = response.data;
