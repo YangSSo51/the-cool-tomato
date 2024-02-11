@@ -26,3 +26,13 @@ auth:
 mediate:
   url: http://3.39.6.29:8081
 
+redis:
+  master:
+    host: MASTER
+    port: 6379
+  nodes:
+    - host: SN01
+      port: 6379
+    - host: SN02
+      port: 6379
+  password: asdf134620!
