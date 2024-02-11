@@ -11,15 +11,14 @@ eureka:
 spring:
   cloud:
     gateway:
-      mvc:
-        routes:
-          - id: auth
-            uri: lb://AUTH
-            predicates:
-                - Path=/v1/auth/**
-            filters:
-                #            - AddRequestHeader=first-request, first-request-header-yml
-                #            - AddResponseHeader=first-response, first-response-header-yml
-                - CustomFilter
+      routes:
+        - id: auth
+          uri: lb://AUTH
+          predicates:
+              - Path=/v1/auth/**
+          filters:
+              #            - AddRequestHeader=first-request, first-request-header-yml
+              #            - AddResponseHeader=first-response, first-response-header-yml
+              - CustomFilter
             
        
