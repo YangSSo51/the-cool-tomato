@@ -14,7 +14,7 @@ spring:
   cloud:
     gateway:
       routes:
-        - id: first-service
+        - id: auth
           uri: lb://AUTH
           predicates:
             - Path=/v1/auth/**
