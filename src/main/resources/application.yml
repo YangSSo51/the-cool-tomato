@@ -1,3 +1,7 @@
 spring:
-  profiles: # profiles 설정
-    active: dev # 다른 설정이 없을 때 default 환경 값
+  application:
+    name: auth
+  profiles:
+    active: dev
+  config:
+    import: optional:configserver:http://MASTER:8888
