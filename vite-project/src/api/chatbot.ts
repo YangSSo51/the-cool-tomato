@@ -10,9 +10,7 @@ const url = "chatbots";
 // 챗봇 질의응답 등록
 async function RegisterChatbotAPI(data: { roomId: number; question: string; answer: string; }, accessToken: string) {
     headers.set("Authorization", `Bearer ${accessToken}`);
-    const response = await http.post(`${url}`, data, {headers});
-    const responseData = response.data
-    console.log(responseData)
+    await http.post(`${url}`, data, {headers});
 }
 
 // 챗봇 질의응답 수정
@@ -49,7 +47,7 @@ async function GetChatbotListAPI(params: {
             "Authorization": "Bearer " + accessToken
         }
     });
-    return response.data.list
+    return response.data.data
 }
 
 export {

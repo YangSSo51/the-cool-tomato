@@ -46,16 +46,9 @@ function ChatbotList({ livePlans }: { livePlans: broadcastInfo[]}) {
     useEffect(() => {
         const fetchData = async () => {
             const response = await GetChatbotListAPI({page:0, size:100}, user.accessToken);
-            setChatbotList(response)
+            setChatbotList(response.list)
         };
         fetchData();
-        setChatbotList([{
-            "chatbotId" : 23,
-            "roomId": 15,
-            "question": "질문",
-            "answer": "응답",
-            "registerDate": "2024-02-11T18:20:12"
-          }])
     }, [user.accessToken])
 
     // const editChatbot = async (chatbotId: number) => {
@@ -78,50 +71,55 @@ function ChatbotList({ livePlans }: { livePlans: broadcastInfo[]}) {
 
     return (
         <>
-        <Accordion allowMultiple>
-            {livePlans.map((item, index) => (
-                <AccordionItem key={index}>
-                    {/* 아코디언 초기 상태 */}
-                    <AccordionButton justifyContent="space-between">
-                        <Box
-                            color='gray.500'
-                            fontWeight='semibold'
-                            letterSpacing='wide'
-                            fontSize='xl'
-                            textTransform='uppercase'
-                            ml='2'
-                        >
-                            예약방송제목: {item.broadcastTitle}
-                        </Box>
-                        <AccordionIcon />
-                    </AccordionButton>
+<Accordion allowMultiple>
+    {livePlans.map((item, index) => {
+        // 각 방송마다 해당하는 roomId에 대한 chatbotList를 필터링합니다.
+        const filteredChatbotList = chatbotList.filter(chatbot => chatbot.roomId === item.liveBroadcastId);
 
-                    {/* 아코디언 펼쳐졌을 때 내용 */}
-                    <AccordionPanel>
-                        <TableContainer style={{ overflowX: "hidden" }}>
-                            <Table variant='simple' style={{ tableLayout: "fixed", width: "100%" }}>
-                                <Thead>
-                                    <Tr>
-                                        <Th width="10%">키워드</Th>
-                                        <Th width="70%">자동답변</Th>
-                                        <Th width="20%">관리</Th>
-                                    </Tr>
-                                </Thead>
+        return (
+            <AccordionItem key={index}>
+                {/* 아코디언 초기 상태 */}
+                <AccordionButton justifyContent="space-between">
+                    <Box
+                        color='gray.500'
+                        fontWeight='semibold'
+                        letterSpacing='wide'
+                        fontSize='xl'
+                        textTransform='uppercase'
+                        ml='2'
+                    >
+                        예약방송제목: {item.broadcastTitle}
+                    </Box>
+                    <AccordionIcon />
+                </AccordionButton>
 
-                                <Tbody>
-                                <ChatbotItem
-                                        chatbotList={chatbotList}
-                                        // editChatbot={editChatbot}
-                                        deleteChatbot={deleteChatbot}
-                                    />
-                                </Tbody>
-                            </Table>
-                        </TableContainer>
-                    </AccordionPanel>
+                {/* 아코디언 펼쳐졌을 때 내용 */}
+                <AccordionPanel>
+                    <TableContainer style={{ overflowX: "hidden" }}>
+                        <Table variant='simple' style={{ tableLayout: "fixed", width: "100%" }}>
+                            <Thead>
+                                <Tr>
+                                    <Th width="10%">키워드</Th>
+                                    <Th width="70%">자동답변</Th>
+                                    <Th width="20%">관리</Th>
+                                </Tr>
+                            </Thead>
 
-                </AccordionItem>
-            ))}
-        </Accordion>
+                            <Tbody>
+                            <ChatbotItem
+                                    chatbotList={filteredChatbotList}
+                                    // editChatbot={editChatbot}
+                                    deleteChatbot={deleteChatbot}
+                                />
+                            </Tbody>
+                        </Table>
+                    </TableContainer>
+                </AccordionPanel>
+
+            </AccordionItem>
+        )
+    })}
+</Accordion>
             
         </>
     );
