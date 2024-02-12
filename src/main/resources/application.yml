@@ -1,7 +1,0 @@
-spring:
-  application:
-    name: chatbot
-  profiles:
-    active: dev
-  config:
-    import: optional:configserver:http://MASTER:8888
