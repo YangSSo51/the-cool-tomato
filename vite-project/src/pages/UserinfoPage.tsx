@@ -1,83 +1,158 @@
 import { Box, Flex, Center } from "@chakra-ui/layout";
 import { Avatar, Button, Text, FormControl, FormLabel, InputGroup, Input } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
-// import { useSelector } from "react-redux";
-// import { RootState } from "../redux/stores/store";
-// import { getMyInfoAPI, postMyInfoAPI, deleteMyInfoAPI } from "../api/user";
+import { UploadImage, UserProfileEdit } from "../types/DataTypes";
+import { useEffect, useState } from "react";
+import { fetchProfile, setProfile } from "../api/user";
+import { useSelector } from "react-redux";
+import { RootState, store } from "../redux/stores/store";
+import localStorage from "redux-persist/es/storage";
+import { updateProfileThunk } from "../redux/thunk/user/userThunk";
 
 export default function UserinfoPage() {
     const navigate = useNavigate()
-//     const user = useSelector((state: RootState) => state.user);
-//     const accessToken = user.accessToken;
-//     const refreshToken = user.refreshToken;
-//     const [loginId, setLoginId] = useState("")
-//     const [profileImgFile, setProfileImgFile] = useState<File | null>(null);
-//     const [profileImg, setProfileImg] = useState(user.profileImg);
-//     const [password, setPassword] = useState("")
-//     const [newPassword, setNewPassword] = useState("")
-//     const [nickname, setNickname] = useState("")
-//     const [sex, setSex] = useState("")
-//     const [birthday, setBirthday] = useState("")
-//     const [check, setCheck] = useState(false)
-//     const [show, setShow] = useState(false);
-//     const handleClick = () => setShow(!show)
-//     const [isPasswordValid, setIsPasswordValid] = useState(false)
+    const [editProfile, setEditProfile] = useState<UserProfileEdit | undefined>()
+    const at = useSelector((state: RootState) => {
+        return state.user.accessToken
+    })
+    const rt = useSelector((state: RootState) => {
+        return state.user.refreshToken
+    })
 
-//     function handlePassword(e: React.ChangeEvent<HTMLInputElement>) {
-//         const inputValue = e.target.value;
-//         const regex = /^(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[!@#$%^&*]).{8,}$/;
-//         // 체크아이콘 표시를 위해
-//         setCheck(regex.test(inputValue));
-//         setPassword(inputValue);
-//     }
+    useEffect(() => {
+        fetchProfile(at, rt).then((res) => {
+            setEditProfile({
+                "profileImg": `${res.data.data.profileImg}`,
+                "password": '',
+                "newPassword": '',
+                "nickname": `${res.data.data.nickname}`,
+                "sex": `${res.data.data.sex}`,
+                "birthday": `${res.data.data.birthday}`,
+            })
+            setPreviewUrl(res.data.data.profileImg)
+        })
+    }, [])
 
-//     function handleFileChange(event: React.ChangeEvent<HTMLInputElement>) {
-//         const file = event.target.files?.[0]; // 선택한 파일 가져오기
-//         if (file) {
-//             setProfileImgFile(file); // 파일 상태 업데이트
-//             console.log(profileImgFile)
-//         }
-//     }
+    const [fileName, setFileName] = useState<UploadImage | undefined>();
+    const [previewURL, setPreviewUrl] = useState<string | null>(null);
+    const formData = new FormData()
 
-//     function onclickDeletePic() {
-//         setProfileImg("")
-//     }
+    const handleProfilePicture = (target: string) => {
+        setEditProfile({
+            profileImg: target,
+            password: editProfile?.password ?? '',
+            newPassword: editProfile?.newPassword ?? '',
+            nickname: editProfile?.nickname ?? '',
+            sex: editProfile?.sex ?? '',
+            birthday: editProfile?.birthday ?? '',
+        })
+    }
 
-//     useEffect(() => {
-//         const fetchUserInfo = async () => {
-//             const response = await getMyInfoAPI(accessToken);
-//             setLoginId(response.data.loginId)
-//             setNickname(response.data.nickname)
-//             setSex(response.data.sex)
-//             setBirthday(response.data.birthday)
-//         }
-//         fetchUserInfo();
-//     }, [accessToken]);
- 
+    const handlePassword = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const password = e.target.value;
+        setEditProfile({
+            profileImg: editProfile?.profileImg ?? null,
+            password: password,
+            newPassword: editProfile?.newPassword ?? '',
+            nickname: editProfile?.nickname ?? '',
+            sex: editProfile?.sex ?? '',
+            birthday: editProfile?.birthday ?? '',
+        })
+    }
 
-//     // async function onSubmit(event: React.SyntheticEvent): Promise<void> {
-//         // event.preventDefault();
-//         // if (isPasswordValid === false) {
-//         //     alert("유효한 비밀번호가 아닙니다")
-//         // } else {
-//         //     const userData = {
-//         //         profileImgFile: profileImgFile,
-//         //         profileImg: profileImg, 
-//         //         password: password,
-//         //         newPassword: newPassword,
-//         //         nickname: nickname,
-//         //         sex: sex,
-//         //         birthday: birthday
-//         //     };
-//         //     const response = await postMyInfoAPI(userData, accessToken, refreshToken);
-//         //     if (response === 1) {
-//         //         navigate('/v1/sign')
-//         //     } else if (response === 33) {
-//         //         alert("이미 회원가입된 이메일입니다. 로그인해주세요")
-//         //     }
-//         // }
-//     }
-   
+    const handleNewPassword = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const password = e.target.value;
+        setEditProfile({
+            profileImg: editProfile?.profileImg ?? null,
+            password: editProfile?.password ?? '',
+            newPassword: password,
+            nickname: editProfile?.nickname ?? '',
+            sex: editProfile?.sex ?? '',
+            birthday: editProfile?.birthday ?? '',
+        })
+    }
+
+    const handleNickname = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const nickname = e.target.value;
+        setEditProfile({
+            profileImg: editProfile?.profileImg ?? null,
+            password: editProfile?.password ?? '',
+            newPassword: editProfile?.newPassword ?? '',
+            nickname: nickname,
+            sex: editProfile?.sex ?? '',
+            birthday: editProfile?.birthday ?? '',
+        })
+    }
+
+    useEffect(() => {
+        if (fileName?.file) {
+            const fileURL = URL.createObjectURL(fileName.file);
+            setPreviewUrl(fileURL)
+
+            return () => {
+                URL.revokeObjectURL(fileURL)
+            }
+        } else {
+            setPreviewUrl(null)
+        }
+    }, [fileName])
+
+    const profileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const files = e.target.files;
+
+        if (files && files[0]) {
+            setFileName({
+                file: files[0],
+                type: files[0].name
+            })
+            handleProfilePicture(files[0].name)
+        }
+    }
+
+    const clearProfile = () => {
+        setEditProfile({
+            profileImg: null,
+            password: editProfile?.password ?? '',
+            newPassword: editProfile?.newPassword ?? '',
+            nickname: editProfile?.nickname ?? '',
+            sex: editProfile?.sex ?? '',
+            birthday: editProfile?.birthday ?? '',
+        })
+        setPreviewUrl(null)
+    }
+
+    // const updateTokens = (at : string, rt : string) => {
+    //     localStorage.setItem('accessToken', at)
+    //     localStorage.setItem('refreshToken', rt)
+
+    //     store.dispatch({
+    //         type: 'UPDATE_TOKENS',
+    //         payload: {at, rt},
+    //     })
+    // }
+
+    const profileSubmit = async () => {
+        if (fileName !== undefined) {
+            formData.append('modifyUserRequest', JSON.stringify(editProfile))
+            formData.append("profileImgFile", fileName.file);
+            
+            try {
+                const response = await setProfile(formData, at, rt)
+
+                console.log(response.data)
+
+                // dispatch(updateProfileThunk({response.accessToken, response.refreshToken}))
+
+                navigate('/v1/main')
+            } catch (err) {
+                if (err instanceof Error) {
+                    if (err.response.data.divisionCode === "G011") {
+                        alert("비밀번호가 일치하지 않습니다.")
+                    }
+                }
+            }
+        }
+    }
 
     return (
         <Box minH="100vh" mb="10" paddingBlock="6rem">
