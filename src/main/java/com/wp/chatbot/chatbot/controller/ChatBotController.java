@@ -32,6 +32,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 @RequestMapping("/v1/chatbots")
 @Tag(name="챗봇 API",description = "챗봇 관리용 API")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class ChatBotController {
 
     private final ChatbotService chatbotService;
