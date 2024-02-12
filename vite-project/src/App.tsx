@@ -74,7 +74,7 @@ function App() {
                             element={<ProfilePage />}
                         />
                         <Route
-                            path="items/edit/:itemId"
+                            path="items/edit/:productParams"
                             element={<ItemEditPage />}
                         ></Route>
                         

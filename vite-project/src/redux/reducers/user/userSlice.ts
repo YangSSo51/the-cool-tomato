@@ -27,6 +27,9 @@ const userSlice = createSlice({
         setAuthSeller: (state) => {
             state.auth = "SELLER";
         },
+        setProfileImg : (state, action) => {
+            state.profileImg = action.payload
+        }
     },
     extraReducers: (builder) => {
         builder
