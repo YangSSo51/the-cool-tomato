@@ -123,7 +123,7 @@ export type followerItem = {
     userId: number;
 };
 
-export type UploadImage =  {
+export type UploadImage = {
     file: File
     type: string
 }
@@ -183,4 +183,13 @@ export interface liveProduct {
     livePriceEndDate: string;
     mainProductSetting: boolean;
     seq: number;
+}
+
+export interface UserProfileEdit {
+    profileImg: string | null | undefined;
+    password: string;
+    newPassword: string;
+    nickname: string;
+    sex: string;
+    birthday: string
 }
