@@ -20,6 +20,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 @RequestMapping(value = "/v1/auth")
 @Tag(name = "Auth", description = "인증/인가  API Doc")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class AuthController {
 
     @Autowired
