@@ -123,7 +123,7 @@ export type followerItem = {
     userId: number;
 };
 
-export type UploadImage =  {
+export type UploadImage = {
     file: File
     type: string
 }
@@ -192,4 +192,13 @@ export interface AcceptSeller {
     profileImg: string;
     sellerInfoId: number;
     userId: number;
+}
+    
+export interface UserProfileEdit {
+    profileImg: string | null | undefined;
+    password: string;
+    newPassword: string;
+    nickname: string;
+    sex: string;
+    birthday: string
 }

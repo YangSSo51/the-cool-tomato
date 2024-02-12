@@ -46,6 +46,17 @@ function chatbotAxios() {
     });
 }
 
+function authAxios() {
+    return axios.create({
+        baseURL: "http://i10a501.p.ssafy.io:8080/v1/",
+        // 테스트용 API
+        // baseURL: "http://211.63.208.201:8080/v1/",
+        headers: {
+            "Content-Type": "application/json",
+        },
+    });
+}
+
 function chatAxios() {
     return axios.create({
         baseURL: "http://i10a501.p.ssafy.io:8085/v1/",
@@ -55,4 +66,4 @@ function chatAxios() {
     });
 }
 
-export { mainAxios, openViduDirectAxios, liveAxios, itemAxios, chatbotAxios, chatAxios };
+export { mainAxios, openViduDirectAxios, liveAxios, itemAxios, chatbotAxios, authAxios, chatAxios };

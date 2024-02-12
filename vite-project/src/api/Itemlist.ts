@@ -82,6 +82,20 @@ async function ItemOneFetch(id: number) {
     return response.data.data
 }
 
+// 구매자 최근본상품 조회
+async function GetRecentAPI(params: {idList: [number]}, accessToken: string) {
+    const response = await http.get(`${URL}/stop`, {
+        params: params,
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer " + accessToken
+        }
+    });
+    return response.data
+}
+
+
+
 export {
     ItemListDetailFetch,
     ItemAddFunction,
@@ -93,4 +107,5 @@ export {
     ItemListSellerGet,
     ItemOneFetch,
     ItemPutFunction,
+    GetRecentAPI
 };

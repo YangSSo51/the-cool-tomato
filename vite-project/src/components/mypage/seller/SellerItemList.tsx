@@ -1,5 +1,5 @@
 import { Box, Flex, Text } from "@chakra-ui/layout";
-import { Button } from "@chakra-ui/react";
+import { Button, Center } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 import React, { useEffect, useState } from "react";
 
@@ -8,27 +8,22 @@ import { sellersMyproductsAPI } from "../../../api/Itemlist";
 import { ItemDetailInterface } from "../../../types/DataTypes";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../redux/stores/store";
+import { ChevronDownIcon } from "@chakra-ui/icons";
 
 function Items() {
-    const accessToken = useSelector((state: RootState) => {return state.user.accessToken})
+    const accessToken = useSelector((state: RootState) => { return state.user.accessToken })
     const navigate = useNavigate();
     const [sellerItem, setSellerItem] = useState<Array<ItemDetailInterface>>([])
     const [page, setPage] = useState(0)
-    const [currentPage, setCurrentpage] = useState<string[]>([])
 
     useEffect(() => {
-        sellersMyproductsAPI(page, 16, accessToken)
+        sellersMyproductsAPI(page, 4, accessToken)
             .then((response) => {
-                // console.log(response)
-                setSellerItem(response.data.list);
-                
+                setSellerItem(prevItems => [...prevItems, ...response.data.list])
             })
-            .catch((error) => {
-                console.error(error);
-            });
     }, [page]);
 
-    const handleItemDelete = (productId : number) => {
+    const handleItemDelete = (productId: number) => {
         const updatedItems = sellerItem.filter(item => item.productId !== productId);
         setSellerItem(updatedItems)
     }
@@ -38,7 +33,7 @@ function Items() {
     }
 
     const pageUpdate = () => {
-        setPage(page+1)
+        setPage(page + 1)
     }
 
     return (
@@ -46,8 +41,11 @@ function Items() {
             <Button onClick={onclick} colorScheme='yellow'>상품등록</Button>
             
             { sellerItem.length ? (
+                // sellerItem.map((item) => {
+                //     return <ItemsofItems sellerItem = {item} onDelete={handleItemDelete} key={item.productId} />
+                // })
                 sellerItem.map((item) => {
-                    return <ItemsofItems sellerItem = {item} onDelete={handleItemDelete} key={item.productId} />
+                    return <ItemsofItems sellerItem={item} onDelete={handleItemDelete} key={item.productId} />
                 })
                 
             ) : (
@@ -57,7 +55,11 @@ function Items() {
                 </Flex>)
             }
 
-            <Button onClick={pageUpdate}> 버어튼 크을릭 </Button>
+            
+            <Center>
+                <ChevronDownIcon boxSize={"3rem"} onClick={pageUpdate} />
+            </Center>
+
 
         </Box>
     )

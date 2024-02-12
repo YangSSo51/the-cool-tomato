@@ -31,7 +31,7 @@ export default function ItemComponent() {
                     >
                         <Goods
                             id={data?.productId}
-                            // profile = {data.profile}
+                            // profile = {data?.profile}
                             img={data?.imgSrc}
                             title={data?.productName}
                             price={data?.price}
