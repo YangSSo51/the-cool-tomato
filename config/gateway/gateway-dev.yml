@@ -45,4 +45,4 @@ spring:
             - id: chatbot
               uri: lb://CHATBOT
               predicates:
-                  - Path=/v1/chatbot/** 
+                  - Path=/v1/chatbots/** 
