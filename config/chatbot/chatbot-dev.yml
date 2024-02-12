@@ -16,7 +16,7 @@ spring:
         format_sql: true
         show_sql: true
   elastic:
-    url: 3.39.6.29:9200
+    url: 172.30.1.50:9200
   thymeleaf:
     prefix: classpath:/templates/
     check-template-location: true
