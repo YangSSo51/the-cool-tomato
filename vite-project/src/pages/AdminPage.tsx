@@ -44,7 +44,7 @@ export default function AdminPage() {
                 관리자 페이지
             </Center>
 
-            <Flex m="auto" border="2px" borderColor="purple" rounded="lg" w="85vw" overflow="scroll" minH={boxHeight}>
+            <Flex m="auto" border="2px" borderColor="purple" rounded="lg" w="85vw" overflow="hidden" minH={boxHeight}>
                 <Flex m="auto" direction={{ base: "column", lg: "row"}} rounded="lg" w="80vw" maxH={{ base:"auto", lg: "80vh"}} px="2">
                     <Box w={{ base: "100%", lg: "25%" }} pr="4">
                         <Box w="full" bg="white" rounded="lg" overflow="hidden">

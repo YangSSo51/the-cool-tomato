@@ -1,5 +1,6 @@
 import { Box } from "@chakra-ui/layout";
 import {
+    Badge,
     Button,
     Accordion,
     AccordionButton,
@@ -16,25 +17,22 @@ import { AcceptSeller } from "../../../types/DataTypes";
 function AcceptSeller() {
     const user = useSelector((state: RootState) => state.user);
     // const [totalsize, setTotalsize] = useState(0)
-    const [allUserData, setAllUserData] = useState([])
+    const [allUserData, setAllUserData] = useState<AcceptSeller[]>([]);
 
     useEffect(() => {
         getSellerApplicationsAPI(0, 18, user.accessToken)
         .then((response) => {
-            // setTotalsize(response.data.totalSize)
-            // console.log(totalsize)
-            setAllUserData(response.data.sellers)
-            
-            // getSellerApplicationsAPI(0, totalsize, user.accessToken)
-            // .then((response) => {
-            //     setAllUserData(response.data)
-            //     console.log(allUserData)
-            // })
+            const sellers = [...response.data.sellers];  // 복사본을 만듭니다.
+    
+            // approvalStatus가 false인 요청을 상위에 위치시킵니다.
+            sellers.sort((a, b) => a.approvalStatus - b.approvalStatus);
+    
+            setAllUserData(sellers);
         })
         .catch((error) => {
             console.log(error)
         })
-
+    
     }, [])
 
     return (
@@ -49,8 +47,7 @@ export default AcceptSeller;
 
 function UserList({ allUserData }: { allUserData: AcceptSeller[]}) {
     const user = useSelector((state: RootState) => state.user);
-    console.log(allUserData)
-    console.log("테스트 ㅣ ",user)
+
     return (
         <>
         <Accordion allowMultiple>
@@ -66,17 +63,23 @@ function UserList({ allUserData }: { allUserData: AcceptSeller[]}) {
                             textTransform='uppercase'
                             ml='2'
                         >
-                            {item.userId} : {item.loginId} / 
+                            {item.approvalStatus ? (
+                                    <Badge colorScheme='green'>승인완료</Badge>
+                                ) : (
+                                    <Badge colorScheme='red'>새요청</Badge>)}
+                            {item.userId} : {item.loginId} / {item.nickname}
                         </Box>
                         <AccordionIcon />
                     </AccordionButton>
 
                     <AccordionPanel>
                         {item.sellerInfoId}
-                        <Button onClick={()=>{approveSellerApplicationAPI(item.sellerInfoId, user.accessToken)}} />
+                        <Button onClick={()=>{approveSellerApplicationAPI(item.sellerInfoId, user.accessToken)}}>
+                            승인
+                        </Button>
                     </AccordionPanel>
 
-                </AccordionItem>
+                    </AccordionItem>
             ))}
         </Accordion>
             

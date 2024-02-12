@@ -51,20 +51,22 @@ export default function BuyerPage() {
                 마이페이지
             </Center>
 
-            <Flex m="auto" border="2px" borderColor="themeGreen.500" rounded="lg" w="85vw" overflow="scroll" minH={boxHeight}>
+            <Flex m="auto" border="2px" borderColor="themeGreen.500" rounded="lg" w="85vw" overflow="hidden" minH={boxHeight}>
                 <Flex m="auto" direction={{ base: "column", lg: "row"}} rounded="lg" w="80vw" maxH={{ base:"auto", lg: "80vh"}} px="2">
                     <Box w={{ base: "100%", lg: "25%" }} pr="4">
                         <Box w="full" bg="white" rounded="lg" overflow="hidden">
                             <Flex direction="column" align="center" py="6">
 
-                                <Button
-                                    mb="4"
-                                    onClick={() => {
-                                    navigate("/v1/seller/");
-                                    }}
-                                >판매자 정보 보기
-                                </Button>
-
+                                {user.auth === 'SELLER' && (
+                                    <Button
+                                        mb="4"
+                                        onClick={() => {
+                                            navigate("/v1/seller/");
+                                        }}
+                                    >
+                                    판매자 정보 보기
+                                    </Button>
+                                )}
                                 <Avatar mt="4" size="xl" src={user.profileImg} />
 
                                 <Button
