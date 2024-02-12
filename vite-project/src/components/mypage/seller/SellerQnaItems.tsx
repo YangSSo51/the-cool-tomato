@@ -1,7 +1,9 @@
 import { Box, Flex } from "@chakra-ui/layout";
 import { Image, Badge, Button, Accordion, Input, InputGroup, InputRightElement, AccordionItem, AccordionButton, AccordionPanel, AccordionIcon } from "@chakra-ui/react";
-import { sellerPutQnaAPI } from "../../../api/itemQnA";
 import { useState } from "react";
+import { useSelector } from "react-redux";
+import { RootState } from "../../../redux/stores/store";
+import { sellerPutQnaAPI } from "../../../api/itemQnA";
 
 interface sellerQnaType {
     productQuestionBoardId: number;
@@ -25,6 +27,7 @@ interface QnaItemsProps {
 
 function QnaItems({ sellerQnaList, onAnswer }: QnaItemsProps) {
     const [inputValues, setInputValues] = useState<{ [key: number]: string }>({});
+    const accessToken = useSelector((state: RootState) => {return state.user.accessToken})
 
     const handleInputChange = (id: number) => (event: React.ChangeEvent<HTMLInputElement>) => {
         setInputValues({ ...inputValues, [id]: event.target.value });
@@ -32,7 +35,7 @@ function QnaItems({ sellerQnaList, onAnswer }: QnaItemsProps) {
 
     const handleSendresponse = (id: number) => () => {
         if(inputValues[id]) {
-            sellerPutQnaAPI({ productQuestionBoardId: id, answerContent: inputValues[id] }).then(() => {
+            sellerPutQnaAPI({ productQuestionBoardId: id, answerContent: inputValues[id] }, accessToken).then(() => {
                 onAnswer(id, inputValues[id]);
             }).catch(error => {
                 console.error(error);
@@ -50,7 +53,10 @@ function QnaItems({ sellerQnaList, onAnswer }: QnaItemsProps) {
                         <AccordionButton>
                             <Image mr="2" boxSize="100px" src={qnaInfo.imgSrc} alt="Product Image" />
                             <Flex alignItems='baseline'>
-                                <Badge colorScheme='red'>{qnaInfo.answer ? "답변완료" : "새문의"}</Badge>
+                                {qnaInfo.answer ? (
+                                    <Badge colorScheme='yellow'>답변완료</Badge>
+                                ) : (
+                                    <Badge colorScheme='red'>새문의</Badge>)}
                                 <Box
                                     color='gray.500'
                                     fontWeight='semibold'

@@ -104,15 +104,19 @@ async function sellerPutQnaAPI(
     data: {
         productQuestionBoardId: number;
         answerContent: string;
-    }) {
+    }, accessToken: string) {
     try {
-        const response = await http.put(`${url}`, data);
-        const responseData = response.data;
-        return responseData
+        await http.put(`${url}`, data, {
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": "Bearer " + accessToken
+            }
+        });
     } catch (error) {
         console.error(error);
     }
 }
+
 
 export {
     getQnAList,

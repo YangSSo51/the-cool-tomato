@@ -46,7 +46,7 @@ function Qna() {
     }, [])
 
     const handleAnswer = (id: number, answerContent: string) => {
-        sellerPutQnaAPI({ productQuestionBoardId: id, answerContent }).then(() => {
+        sellerPutQnaAPI({ productQuestionBoardId: id, answerContent }, user.accessToken).then(() => {
             setSellerQnaList(prevList => prevList.map(item => 
                 item.productQuestionBoardId === id 
                     ? {...item, answer: 1, answerContent} 
