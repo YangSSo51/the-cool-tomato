@@ -9,9 +9,10 @@ export default function LoginComponent() {
     const dispatch: AppDispatch = useDispatch();
     const user = useSelector((state: RootState) => state.user);
     const accessToken = user.accessToken;
+    const refreshToken = user.refreshToken;
     
     const handlelogout = () => {
-        dispatch(logoutUserThunk(accessToken))
+        dispatch(logoutUserThunk({ accessToken: accessToken, refreshToken: refreshToken }));
         navigate("/v1/main");
     }
 

@@ -14,8 +14,8 @@ const loginUserThunk = createAsyncThunk(
 
 const logoutUserThunk = createAsyncThunk(
     "user/logout",
-    async (accessToken: string, thunkAPI) => {
-        const response: AxiosResponse = await logoutAPI(accessToken);
+    async ({ accessToken, refreshToken }: { accessToken: string, refreshToken: string }, thunkAPI) => {
+        const response: AxiosResponse = await logoutAPI(accessToken, refreshToken);
         return response.data;
     }
 );
