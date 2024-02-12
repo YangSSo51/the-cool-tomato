@@ -9,11 +9,14 @@ import com.wp.product.product.dto.request.ProductSearchRequest;
 import com.wp.product.product.dto.response.ProductFindResponse;
 import com.wp.product.product.entity.Product;
 import com.wp.product.product.entity.QProduct;
+import com.wp.product.user.entity.QUser;
 import jakarta.transaction.Transactional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
 import java.util.List;
+import java.util.Optional;
+
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.support.PageableExecutionUtils;
 import org.springframework.stereotype.Repository;
@@ -29,12 +32,48 @@ public class ProductSearchImpl extends QuerydslRepositorySupport implements Prod
     }
 
     @Override
+    public Optional<ProductFindResponse> searchByProductId(Long productId) {
+        QProduct product = QProduct.product;
+        QUser user = QUser.user;
+
+        BooleanBuilder builder = new BooleanBuilder();
+
+        builder.and(product.productId.eq(productId));
+
+        ProductFindResponse response =  queryFactory.select(Projections.bean(ProductFindResponse.class,
+                        product.productId,
+                        product.sellerId,
+                        user.nickname.as("sellerNickname"),
+                        user.profileImg.as("sellerProfile"),
+                        product.category.categoryId,
+                        product.category.categoryContent.as("categoryName"),
+                        product.productName,
+                        product.productContent,
+                        product.paymentLink,
+                        product.imgSrc,
+                        product.price,
+                        product.deliveryCharge,
+                        product.quantity,
+                        product.registerDate
+                ))
+                .from(product)
+                .leftJoin(user)
+                .on(product.sellerId.eq(user.userId))
+                .where(builder)
+                .orderBy(product.registerDate.desc())
+                .fetchOne();
+
+        return Optional.ofNullable(response);
+    }
+
+    @Override
     @Transactional
     public Page<ProductFindResponse> search(ProductSearchRequest request) {
         Pageable pageable = PageRequest.of(request.getPage(),request.getSize());    //페이징
 
         QProduct product = QProduct.product;
         QCategory category = QCategory.category;
+        QUser user = QUser.user;
 
         BooleanBuilder builder = new BooleanBuilder();
 
@@ -49,6 +88,8 @@ public class ProductSearchImpl extends QuerydslRepositorySupport implements Prod
         List<ProductFindResponse> list =  queryFactory.select(Projections.bean(ProductFindResponse.class,
                     product.productId,
                     product.sellerId,
+                    user.nickname.as("sellerNickname"),
+                    user.profileImg.as("sellerProfile"),
                     product.category.categoryId,
                     product.category.categoryContent.as("categoryName"),
                     product.productName,
@@ -61,9 +102,8 @@ public class ProductSearchImpl extends QuerydslRepositorySupport implements Prod
                     product.registerDate
                 ))
                 .from(product)
-                .leftJoin(category)
-                .on(product.category.categoryId.eq(category.categoryId))
-                .fetchJoin()
+                .leftJoin(user)
+                .on(product.sellerId.eq(user.userId))
                 .where(builder)
                 .orderBy(product.registerDate.desc())
                 .offset(request.getPage()*request.getSize())
@@ -82,7 +122,7 @@ public class ProductSearchImpl extends QuerydslRepositorySupport implements Prod
         Pageable pageable = PageRequest.of(request.getPage(),request.getSize());    //페이징
 
         QProduct product = QProduct.product;
-        QCategory category = QCategory.category;
+        QUser user = QUser.user;
 
         BooleanBuilder builder = new BooleanBuilder();
 
@@ -91,6 +131,8 @@ public class ProductSearchImpl extends QuerydslRepositorySupport implements Prod
         List<ProductFindResponse> list =  queryFactory.select(Projections.bean(ProductFindResponse.class,
                         product.productId,
                         product.sellerId,
+                        user.nickname.as("sellerNickname"),
+                        user.profileImg.as("sellerProfile"),
                         product.category.categoryId,
                         product.category.categoryContent.as("categoryName"),
                         product.productName,
@@ -103,9 +145,8 @@ public class ProductSearchImpl extends QuerydslRepositorySupport implements Prod
                         product.registerDate
                 ))
                 .from(product)
-                .leftJoin(category)
-                .on(product.category.categoryId.eq(category.categoryId))
-                .fetchJoin()
+                .leftJoin(user)
+                .on(product.sellerId.eq(user.userId))
                 .where(builder)
                 .orderBy(product.registerDate.desc())
                 .offset(request.getPage()*request.getSize())
@@ -125,7 +166,7 @@ public class ProductSearchImpl extends QuerydslRepositorySupport implements Prod
         //아이디 리스트로 마이페이지에서 검색
         Pageable pageable = PageRequest.of(0,10);    //페이징
         QProduct product = QProduct.product;
-        QCategory category = QCategory.category;
+        QUser user = QUser.user;
 
         BooleanBuilder builder = new BooleanBuilder();
         builder.and(product.productId.in(idList));
@@ -133,6 +174,8 @@ public class ProductSearchImpl extends QuerydslRepositorySupport implements Prod
         List<ProductFindResponse> list =  queryFactory.select(Projections.bean(ProductFindResponse.class,
                         product.productId,
                         product.sellerId,
+                        user.nickname.as("sellerNickname"),
+                        user.profileImg.as("sellerProfile"),
                         product.category.categoryId,
                         product.category.categoryContent.as("categoryName"),
                         product.productName,
@@ -145,9 +188,8 @@ public class ProductSearchImpl extends QuerydslRepositorySupport implements Prod
                         product.registerDate
                 ))
                 .from(product)
-                .leftJoin(category)
-                .on(product.category.categoryId.eq(category.categoryId))
-                .fetchJoin()
+                .leftJoin(user)
+                .on(product.sellerId.eq(user.userId))
                 .where(builder)
                 .orderBy(product.productId.desc())
                 .fetch();
