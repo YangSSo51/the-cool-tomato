@@ -29,4 +29,8 @@ spring:
             - id: product
               uri: lb://PRODUCT
               predicates:
-                - Path=/v1/products/**, /v1/categories/**
+                - Path=/v1/products/**
+            - id: product2
+              uri: lb://PRODUCT
+              predicates:
+                - Path=/v1/categories/**
