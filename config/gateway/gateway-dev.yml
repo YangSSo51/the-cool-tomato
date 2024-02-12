@@ -26,3 +26,7 @@ spring:
               uri: lb://BROADCAST
               predicates:
                   - Path=/v1/live/**
+            - id: product
+              uri: lb://PRODUCT
+              predicates:
+                  - Path=/v1/product/**, /v1/live-product/**, /v1/product-questions/**, /v1/categories/**
