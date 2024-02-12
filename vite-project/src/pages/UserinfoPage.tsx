@@ -292,6 +292,3 @@ export default function UserinfoPage() {
         </Box>
     );
 }
-function dispatch(arg0: unknown) {
-    throw new Error("Function not implemented.");
-}
