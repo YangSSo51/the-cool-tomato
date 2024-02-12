@@ -1,91 +1,142 @@
-import { Box, Flex,  Center } from "@chakra-ui/layout";
-import { Avatar, Button, Text, Select, FormControl, FormLabel, InputGroup, Input, InputRightElement, Menu, MenuButton, MenuList, MenuItem, FormHelperText} from "@chakra-ui/react";
-import { ViewIcon, ViewOffIcon, CheckIcon } from "@chakra-ui/icons";
-import { useEffect, useState } from "react";
+import { Box, Flex, Center } from "@chakra-ui/layout";
+import { Avatar, Button, Text, FormControl, FormLabel, InputGroup, Input } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
-// import { useSelector } from "react-redux";
-// import { RootState } from "../redux/stores/store";
-// import { getMyInfoAPI, postMyInfoAPI, deleteMyInfoAPI } from "../api/user";
+import { UploadImage, UserProfileEdit } from "../types/DataTypes";
+import { useEffect, useState } from "react";
+import { fetchProfile, setProfile } from "../api/user";
+import { useSelector } from "react-redux";
+import { RootState } from "../redux/stores/store";
 
 export default function UserinfoPage() {
     const navigate = useNavigate()
+    const [editProfile, setEditProfile] = useState<UserProfileEdit | undefined>()
     const user = useSelector((state: RootState) => state.user);
-    const accessToken = user.accessToken;
-    const refreshToken = user.refreshToken;
-    const [loginId, setLoginId] = useState("")
-    const [profileImgFile, setProfileImgFile] = useState(null)
-    const [profileImgsrc, setProfileImgsrc] = useState(user.profileImg)
-    const [password, setPassword] = useState("")
-    const [newPassword, setNewPassword] = useState("")
-    const [nickname, setNickname] = useState("")
-    const [sex, setSex] = useState("")
-    const [birthday, setBirthday] = useState("")
-    const [check, setCheck] = useState(false)
-    const [check2, setCheck2] = useState(false)
-    const [show, setShow] = useState(false);
-    const handleClick = () => setShow(!show)
-    const [isPasswordValid, setIsPasswordValid] = useState(false)
-    const [validMessage, setValidMessage] = useState("")
-
-//     function handlePassword(e: React.ChangeEvent<HTMLInputElement>) {
-//         const inputValue = e.target.value;
-//         const regex = /^(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[!@#$%^&*]).{8,}$/;
-//         // 체크아이콘 표시를 위해
-//         setCheck(regex.test(inputValue));
-//         setPassword(inputValue);
-//     }
-
-    function handlePassword2(e: React.ChangeEvent<HTMLInputElement>) {
-        const inputValue = e.target.value;
-        const regex = /^(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[!@#$%^&*]).{8,}$/;
-        // 체크아이콘 표시를 위해
-        setCheck2(regex.test(inputValue));
-        setNewPassword(inputValue);
-        
-        // 유효성 검사를 통과하지 않을 경우 validMessage 설정
-        if (!regex.test(inputValue)) {
-            setValidMessage("최소 8자 이상, 최소한 하나의 대문자, 하나의 소문자, 하나의 숫자, 하나의 특수문자를 포함, 공백 허용하지 않습니다");
-        } else {
-            setValidMessage(""); // 유효성 검사를 통과하면 validMessage를 빈 문자열로 설정
-        }
-    }
-    
+    const at = useSelector((state: RootState) => {
+        return state.user.accessToken
+    })
+    const rt = useSelector((state: RootState) => {
+        return state.user.refreshToken
+    })
 
     useEffect(() => {
-        const fetchUserInfo = async () => {
-            const response = await getMyInfoAPI(accessToken);
-            setLoginId(response.data.loginId)
-            setNickname(response.data.nickname)
-            setSex(response.data.sex)
-            setBirthday(response.data.birthday)
-        }
-        fetchUserInfo();
-    }, [accessToken]);
- 
+        fetchProfile(at, rt).then((res) => {
+            setEditProfile({
+                "profileImg": `${res.data.data.profileImg}`,
+                "password": '',
+                "newPassword": '',
+                "nickname": `${res.data.data.nickname}`,
+                "sex": `${res.data.data.sex}`,
+                "birthday": `${res.data.data.birthday}`,
+            })
+            setPreviewUrl(res.data.data.profileImg)
+        })
+    }, [])
 
-    async function onSubmit(event: React.SyntheticEvent): Promise<void> {
-        event.preventDefault();
-        if (isPasswordValid === false) {
-            alert("유효한 비밀번호가 아닙니다")
+    const [fileName, setFileName] = useState<UploadImage | undefined>();
+    const [previewURL, setPreviewUrl] = useState<string | null>(null);
+    const formData = new FormData()
+
+    const handleProfilePicture = (target: string) => {
+        setEditProfile({
+            profileImg: target,
+            password: editProfile?.password ?? '',
+            newPassword: editProfile?.newPassword ?? '',
+            nickname: editProfile?.nickname ?? '',
+            sex: editProfile?.sex ?? '',
+            birthday: editProfile?.birthday ?? '',
+        })
+    }
+
+    const handlePassword = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const password = e.target.value;
+        setEditProfile({
+            profileImg: editProfile?.profileImg ?? null,
+            password: password,
+            newPassword: editProfile?.newPassword ?? '',
+            nickname: editProfile?.nickname ?? '',
+            sex: editProfile?.sex ?? '',
+            birthday: editProfile?.birthday ?? '',
+        })
+    }
+
+    const handleNewPassword = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const password = e.target.value;
+        setEditProfile({
+            profileImg: editProfile?.profileImg ?? null,
+            password: editProfile?.password ?? '',
+            newPassword: password,
+            nickname: editProfile?.nickname ?? '',
+            sex: editProfile?.sex ?? '',
+            birthday: editProfile?.birthday ?? '',
+        })
+    }
+
+    const handleNickname = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const nickname = e.target.value;
+        setEditProfile({
+            profileImg: editProfile?.profileImg ?? null,
+            password: editProfile?.password ?? '',
+            newPassword: editProfile?.newPassword ?? '',
+            nickname: nickname,
+            sex: editProfile?.sex ?? '',
+            birthday: editProfile?.birthday ?? '',
+        })
+    }
+
+    useEffect(() => {
+        if (fileName?.file) {
+            const fileURL = URL.createObjectURL(fileName.file);
+            setPreviewUrl(fileURL)
+
+            return () => {
+                URL.revokeObjectURL(fileURL)
+            }
         } else {
-            const userData = {
-                profileImgFile: profileImgFile,
-                profileImg: profileImgsrc, 
-                password: password,
-                newPassword: newPassword,
-                nickname: nickname,
-                sex: sex,
-                birthday: birthday
-            };
-            const response = await postMyInfoAPI(userData, accessToken, refreshToken);
-            if (response === 1) {
-                navigate('/v1/sign')
-            } else if (response === 33) {
-                alert("이미 회원가입된 이메일입니다. 로그인해주세요")
+            setPreviewUrl(null)
+        }
+    }, [fileName])
+
+    const profileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const files = e.target.files;
+
+        if (files && files[0]) {
+            setFileName({
+                file: files[0],
+                type: files[0].name
+            })
+            handleProfilePicture(files[0].name)
+        }
+    }
+
+    const clearProfile = () => {
+        setEditProfile({
+            profileImg: null,
+            password: editProfile?.password ?? '',
+            newPassword: editProfile?.newPassword ?? '',
+            nickname: editProfile?.nickname ?? '',
+            sex: editProfile?.sex ?? '',
+            birthday: editProfile?.birthday ?? '',
+        })
+        setPreviewUrl(null)
+    }
+
+    const profileSubmit = async () => {
+        if (fileName !== undefined) {
+            formData.append('modifyUserRequest', JSON.stringify(editProfile))
+            formData.append("profileImgFile", fileName.file);
+
+            try {
+                await setProfile(formData, at, rt)
+                console.log("성공")
+            } catch (err) {
+                console.log(err)
             }
         }
     }
-   
+
+    useEffect(() => {
+        console.log("previewurl isisis" + previewURL)
+    }, [previewURL])
 
     return (
         <Box minH="100vh" mb="10" paddingBlock="6rem">
@@ -93,199 +144,131 @@ export default function UserinfoPage() {
                 회원정보수정
             </Center>
 
-            <Flex m="auto"  border="2px" borderColor="themeFontGreen.500" overflow="scroll" rounded="lg" w="85vw" minH="85vh" >
-
-                <Flex m="auto" direction={{ base: "column", lg: "row"}} rounded="lg" w="80vw" maxH={{ base:"auto", lg: "80vh"}} px="2">
+            <Flex m="auto" border="2px" borderColor="themeFontGreen.500" overflow="scroll" rounded="lg" w="85vw" minH="85vh">
+                <Flex m="auto" direction={{ base: "column", lg: "row" }} rounded="lg" w="80vw" maxH={{ base: "auto", lg: "80vh" }} px="2">
                     <Box w={{ base: "100%", lg: "25%" }} pr="4" >
                         <Box w="full" bg="white" rounded="lg" overflow="hidden">
                             <Flex direction="column" align="center" py="6">
 
                                 <Button
-                                    mb="4"
+                                    borderRadius="3xl"
                                     onClick={() => {
                                         navigate("/v1/buyer/");
                                     }}
+                                    mb={"1rem"}
                                 >
-                                마이페이지로 돌아가기
+                                    마이페이지로 돌아가기
                                 </Button>
-
-                                <Avatar mt="4" mb="4" size="xl" 
-                                    // src={profileImg} 
-                                    />
-                                
-                                <Menu>
-                                    <MenuButton
-                                        px={4}
-                                        py={2}
-                                        transition='all 0.2s'
-                                        borderRadius='md'
-                                        borderWidth='1px'
-                                        _hover={{ bg: 'gray.400' }}
-                                        _expanded={{ bg: 'blue.400' }}
-                                        _focus={{ boxShadow: 'outline' }}
-                                    >
-                                        프로필 사진 수정
-                                    </MenuButton>
-                                    <MenuList>
-
-                                        <MenuItem>
-                                            <input type="file" id="avatar" name="avatar" accept="image/png, image/jpeg, image/jpg" 
-                                                // onChange={handleFileChange}
-                                            />
-                                        </MenuItem>
-                                        <MenuItem 
-                                            // onClick={onclickDeletePic}
-                                        >현재 사진 삭제</MenuItem>
-                                    </MenuList>
-                                </Menu>
-
+                                <Avatar mt={"1rem"} mb={"1rem"} size="xl" src={previewURL ? `${previewURL}` : '/img/default_profile.jpeg'} />
                                 <Button
-                                    mt="4"
-                                    colorScheme="red"
-                                    // onClick={() => {deleteMyInfoAPI(user.accessToken)}}
-                                >회원 탈퇴
+                                    mt={"1rem"}
+                                    px={4}
+                                    py={2}
+                                    w={"10rem"}
+                                    transition='all 0.2s'
+                                    borderRadius='md'
+                                    borderWidth='3px'
+                                    _hover={{ bg: 'themeGreen.500', textColor: "white" }}
+                                    mb={"1.5rem"}
+                                >
+                                    <input type="file" style={{ "display": "none" }} id="profileImg" accept="image/png, image/jpeg, image/jpg" onChange={profileChange} />
+                                    <label htmlFor="profileImg">프로필 이미지 추가</label>
+
+                                </Button>
+                                <Button
+                                    px={4}
+                                    py={2}
+                                    w={"10rem"}
+                                    transition='all 0.2s'
+                                    borderRadius='md'
+                                    borderWidth='3px'
+                                    _hover={{ bg: 'red', textColor: "white" }}
+                                    onClick={clearProfile}
+                                >
+
+                                    프로필 사진 삭제
                                 </Button>
                             </Flex>
                         </Box>
                     </Box>
 
-                    <Box w="75%" bg="white" rounded="lg">
-                        <Flex direction="column" justify="center" align="center" h="full">
-                            
-                            <Button
-                                mt="4"
-                                colorScheme="red"
-                                // onClick={handleDeleteAccount}
-                            >판매자 정보 보기
-                            </Button>
-                        
-                        <form    
-                            // onSubmit={onSubmit}
-                            style={{ width: "100%" }}
-                        >
-                            <FormControl my={2}>
-                                <FormLabel>
-                                    <Text as={"b"}>아이디</Text>
-                                </FormLabel>
-                                <Input
-                                    focusBorderColor="themeGreen.500"
-                                    // placeholder={loginId}
-                                    size="md"
-                                    disabled
-                                />
-                            </FormControl>
-                            
-                            <FormControl my={2}>
-                                <FormLabel>
-                                    <Text as={"b"}>현재 비밀번호</Text>
-                                </FormLabel>
-                                
-                                <InputGroup size="md" mb={2}>
-                                    <Input
-                                        focusBorderColor="themeGreen.500"
-                                        placeholder="password"
-                                        size="md"
-                                        autoComplete="current-password"
-                                        // value={password}
-                                        // onChange={handlePassword}
-                                        // type={show ? 'text' : 'password'}
-                                        id="password"
-                                    />
-                                    <InputRightElement>
-                                        {/* {check ? (
-                                            <CheckIcon color="green.500" mr={"1"} />
-                                            ) : (
-                                                ''
-                                        )}
-                                        <Button h='1.75rem' size='sm' variant="ghost" onClick={handleClick}>
-                                        {show ? (
-                                            <ViewIcon color="grey" />
-                                        ) : (
-                                            <ViewOffIcon color="grey" />
-                                        )}     */}
-                                        {/* </Button> */}
-                                    </InputRightElement>
-                                </InputGroup>
-                            </FormControl>
-                                
-                            <FormControl my={2}>
-
-                                <FormLabel>
-                                    <Text as={"b"}>새 비밀번호</Text>
-                                </FormLabel>
-                                <InputGroup size="md">
-                                    <Input
-                                        focusBorderColor="themeGreen.500"
-                                        placeholder="new password"
-                                        size="md"
-                                        value={newPassword}
-                                        onChange={handlePassword2}
-                                        id="newPassword"
-                                        />
-                                    <InputRightElement>
-                                        {check2 ? (
-                                            <CheckIcon color="green.500" mr={"1"} />
-                                            ) : (
-                                                ''
-                                                )}
-                                    </InputRightElement>
-                                </InputGroup>
-
-                                <FormHelperText>{validMessage}</FormHelperText>
-                            </FormControl>
-
-                            <FormControl my={2}>
-                                <FormLabel>
-                                    <Text as={"b"}>닉네임</Text>
-                                </FormLabel>
-                                <Input
-                                    focusBorderColor="themeGreen.500"
-                                    placeholder="nickname"
-                                    size="md"
-                                    autoComplete="nickname"
-                                    // value={nickname}
-                                    // onChange={(e) => {setNickname(e.target.value);}}
-                                />
-                            </FormControl>
-
-                            <FormControl my={2}>
-                                <FormLabel>
-                                    <Text as={"b"}>성별</Text>
-                                </FormLabel>
-                                <Select
-                                    placeholder=""
-                                    // value={sex}
-                                    // onChange={(e) => setSex(e.target.value)}
-                                >
-                                    <option value="M">남자</option>
-                                    <option value="F">여자</option>
-                                </Select>
-                                
-                            </FormControl>
-                            <FormControl my={2}>
-                                <FormLabel>
-                                    <Text as={"b"}>생년월일</Text>
-                                </FormLabel>
-                                <Input
-                                    focusBorderColor="themeGreen.500"
-                                    placeholder="birthday"
-                                    size="md"
-                                    type="date"
-                                    autoComplete="bday"
-                                    // value={birthday}
-                                    // onChange={(e) => setBirthday(e.target.value)}
-                                ></Input>
-                            </FormControl>
-                            <Button
-                                my={4}
-                                w="95%"
-                                colorScheme="themeGreen"
-                                type="submit"
-                                borderRadius="3xl"
+                    <Box w="75%" bg="white" rounded="lg" className="custom-scrollbar">
+                        <Flex justify="center" align="center" h="full">
+                            <form onSubmit={event => {
+                                event.preventDefault();
+                                profileSubmit();
+                            }}
+                                style={{ width: "100%" }}
                             >
-                                정보수정하기
-                            </Button>
-                        </form>
+                                <FormControl my={2} mb={"3rem"}>
+                                    <FormLabel>
+                                        <Text as={"b"}>현재 비밀번호</Text>
+                                    </FormLabel>
+
+                                    <InputGroup size="md" mb={2}>
+                                        <Input
+                                            focusBorderColor="themeGreen.500"
+                                            placeholder="password"
+                                            size="md"
+                                            autoComplete="current-password"
+                                            onChange={handlePassword}
+                                            id="password"
+                                        />
+                                    </InputGroup>
+                                </FormControl>
+
+                                <FormControl my={2} mb={"3rem"}>
+
+                                    <FormLabel>
+                                        <Text as={"b"}>새 비밀번호</Text>
+                                    </FormLabel>
+                                    <InputGroup size="md">
+                                        <Input
+                                            focusBorderColor="themeGreen.500"
+                                            placeholder="new password"
+                                            size="md"
+
+                                            id="newPassword"
+                                            onChange={handleNewPassword}
+                                        />
+
+                                    </InputGroup>
+                                </FormControl>
+
+                                <FormControl my={2} mb={"3rem"}>
+                                    <FormLabel>
+                                        <Text as={"b"}>닉네임</Text>
+                                    </FormLabel>
+                                    <Input
+                                        focusBorderColor="themeGreen.500"
+                                        placeholder="nickname"
+                                        size="md"
+                                        autoComplete="nickname"
+                                        onChange={handleNickname}
+                                    />
+                                </FormControl>
+                                <Flex justifyContent={"space-between"}>
+                                    <Button
+                                        my={4}
+                                        w="25%"
+                                        colorScheme="themeGreen"
+                                        type="submit"
+                                        borderRadius="3xl"
+
+                                    >
+                                        정보수정하기
+                                    </Button>
+                                    <Button
+                                        my={4}
+                                        w="25%"
+                                        type="submit"
+                                        colorScheme="red"
+                                        borderRadius="3xl"
+
+                                    >회원 탈퇴
+                                    </Button>
+                                </Flex>
+                            </form>
                         </Flex>
                     </Box>
                 </Flex>

@@ -83,6 +83,17 @@ export interface AddItemInterface {
     quantity: number;
 }
 
+export interface PutItemInterface {
+    categoryId: number;
+    productName: string;
+    productContent: string;
+    paymentLink: string;
+    price: number;
+    deliveryCharge: number;
+    quantity: number;
+    productId: number | undefined;
+}
+
 export interface ItemInfo {
     categoryId: number;
     productName: string;
@@ -112,10 +123,10 @@ export type followerItem = {
     userId: number;
 };
 
-export type UploadImage = {
-    file: File;
-    type: string;
-};
+export type UploadImage =  {
+    file: File
+    type: string
+}
 
 export type SellerInfo = {
     auth: string;
