@@ -5,6 +5,7 @@ const http = chatAxios();
 const headers = new AxiosHeaders();
 headers.set("Content-Type", "application/json;charset=utf-8");
 
+// const url = "block";
 const url = "chat/block";
 
 // 차단유저 등록
@@ -35,7 +36,7 @@ async function getBlockUserAPI(accessToken: string) {
             "Authorization": "Bearer " + accessToken
         }
     });
-    return response.data.list
+    return response.data
 }
 
 export {getBlockUserAPI, deleteBlockUserAPI, postBlockUserAPI}
