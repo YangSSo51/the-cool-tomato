@@ -14,12 +14,24 @@ interface chatbotInfo {
 
 function ChatbotItem({chatbotList, deleteChatbot} : {chatbotList: chatbotInfo[], deleteChatbot: (chatbotId: number) => void;}) {
 
+    if (!chatbotList || chatbotList.length === 0) {
+        return (
+                <Tr>
+                    <Td width="10%" />
+                    <Td width="70%">
+                        등록된 자동응답이 없습니다!
+                    </Td>
+                    <Td width="20%" />
+                </Tr>
+        );
+    }
+
     return (
         <>
             {chatbotList.map((item, index) => (
                 <Tr key={index}>
-                    <Td width="10%">{item.question}</Td>
-                    <Td width="70%">{item.answer}</Td>
+                    <Td style={{ whiteSpace: "pre-wrap" }}>{item.question}</Td>
+                    <Td style={{ whiteSpace: "pre-wrap" }}>{item.answer}</Td>
                     <Td width="20%">
                         {/* <Button
                             onClick={onClickEdit}
