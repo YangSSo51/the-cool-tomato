@@ -30,7 +30,15 @@ spring:
               uri: lb://PRODUCT
               predicates:
                 - Path=/v1/products/**
-            - id: product2
+            - id: categories
               uri: lb://PRODUCT
               predicates:
                 - Path=/v1/categories/**
+            - id: live-product
+              uri: lb://PRODUCT
+              predicates:
+                - Path=/v1/live-product/**
+            - id: product-questions
+              uri: lb://PRODUCT
+              predicates:
+                - Path=/v1/product-questions/**
