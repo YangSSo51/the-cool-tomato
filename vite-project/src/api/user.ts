@@ -38,40 +38,24 @@ async function loginUser(data: { loginId: string; password: string }) {
 
 async function logoutAPI(accessToken: string, refreshToken: string) {
     try {
-        console.log(accessToken)
-        console.log(refreshToken)
         const response = await http.delete(`${url}/logout`, {
             headers: {
                 "Content-Type": "application/json",
                 "Authorization": "Bearer " + accessToken
             }
         });
+        localStorage.clear();
         return response;
     } catch (error) {
-        // if (isAxiosError(error) && error.response && error.response.data.divisionCode === "G013") {
-        //     const response = await ReissueTokenAPI({accessToken, refreshToken});
-        //     const newAT = response.data.accessToken;
-        //     const newRT = response.data.refreshToken;
-        //     return logoutAPI(newAT, newRT);
         if (error instanceof AxiosError) {
             if (error.response) {
                 if (error.response.status === 401) {
                     if (error.response.data.divisionCode === "G013") {
                         const response = await ReissueTokenAPI({accessToken, refreshToken});
-console.log(response)
-                        // const newAT = response.data.accessToken;
-                            // const newRT = response.data.refreshToken;
-                            // return logoutAPI(newAT, newRT);
+                            console.log(response)
                     }
                 }
             }
-        // }
-        // console.log(error);
-        // if (error.data.divisionCode==="G013") {
-        //     const response = await ReissueTokenAPI({accessToken, refreshToken});
-        //     const newAT = response.data.accessToken;
-        //     const newRT = response.data.refreshToken;
-        //     return logoutAPI(newAT, newRT);
         }
         throw error;
     }
