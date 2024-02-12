@@ -44,15 +44,16 @@ async function logoutAPI(accessToken: string, refreshToken: string) {
                 "Authorization": "Bearer " + accessToken
             }
         });
-        localStorage.clear();
         return response;
     } catch (error) {
         if (error instanceof AxiosError) {
             if (error.response) {
                 if (error.response.status === 401) {
                     if (error.response.data.divisionCode === "G013") {
+                        localStorage.clear();
+                        window.location.reload();
                         const response = await ReissueTokenAPI({accessToken, refreshToken});
-                            console.log(response)
+                        console.log(response)
                     }
                 }
             }
