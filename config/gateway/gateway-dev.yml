@@ -29,4 +29,4 @@ spring:
             - id: product
               uri: lb://PRODUCT
               predicates:
-                  - Path=/v1/product/**, /v1/live-product/**, /v1/product-questions/**, /v1/categories/**
+                - Path=/v1/product/**
