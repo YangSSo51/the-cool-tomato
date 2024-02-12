@@ -42,3 +42,7 @@ spring:
               uri: lb://PRODUCT
               predicates:
                 - Path=/v1/product-questions/**
+            - id: chatbot
+              uri: lb://CHATBOT
+              predicates:
+                  - Path=/v1/chatbot/** 
