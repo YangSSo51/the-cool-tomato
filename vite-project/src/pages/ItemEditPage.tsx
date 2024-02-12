@@ -24,7 +24,7 @@ import "froala-editor/js/plugins.pkgd.min.js";
 import { ItemOneFetch, ItemPutFunction } from "../api/Itemlist";
 import { useNavigate, useParams } from "react-router-dom";
 import { formatNumberWithComma } from "../components/common/Comma";
-import { AddItemInterface, UploadImage } from "../types/DataTypes";
+import { PutItemInterface, UploadImage } from "../types/DataTypes";
 import { CloseIcon } from "@chakra-ui/icons";
 import { FaRegEdit } from "react-icons/fa";
 import { useSelector } from "react-redux";
@@ -36,12 +36,13 @@ export default function ItemEditPage() {
         return state.user.accessToken;
     });
     const editorRef = useRef(null);
-    const productId = useParams()
+    const { productParams }  = useParams()
     const [fileName, setFileName] = useState<UploadImage | undefined>();
     const [previewURL, setPreviewUrl] = useState<string | null>("");
 
+    console.log(productParams)
 
-    const [values, setValues] = useState<AddItemInterface>({
+    const [values, setValues] = useState<PutItemInterface>({
         categoryId: 0,
         productName: '',
         productContent: '',
@@ -49,11 +50,12 @@ export default function ItemEditPage() {
         price: 0,
         deliveryCharge: 1000,
         quantity: 100,
+        productId : Number(productParams)
     }
     );
 
     useEffect(() => {
-        ItemOneFetch(Number(productId.itemId)).then((res) => {
+        ItemOneFetch(Number(productParams)).then((res) => {
             setValues({
                 categoryId: parseInt(res.categoryId),
                 productName: `${res.productName}`,
@@ -62,16 +64,13 @@ export default function ItemEditPage() {
                 price: parseInt(res.price),
                 deliveryCharge: 1000,
                 quantity: 100,
+                productId: Number(productParams)
             })
         })
             .catch((err) => {
                 console.log(err)
             })
-    }, [productId.itemId, editorRef.current])
-
-    useEffect(() => {
-        console.log(previewURL)
-    }, [previewURL])
+    }, [productParams])
 
     const
         config = {
@@ -173,6 +172,7 @@ export default function ItemEditPage() {
 
     const formData = new FormData();
     const onSubmit = async () => {
+        console.log(values)
         if (fileName !== undefined) {
             if (
                 values.price >= 100 &&
@@ -210,7 +210,7 @@ export default function ItemEditPage() {
             <Container maxW={"container.xl"} p={"3rem"}>
                 <Center>
                     <Text as={"b"} fontSize={"5xl"}>
-                        상품 등록
+                        상품 수정
                     </Text>
                 </Center>
                 <Center p={"1rem"} display={"block"}>

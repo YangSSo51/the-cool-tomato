@@ -21,10 +21,10 @@ async function loginUser(data: { loginId: string; password: string }) {
         if (error instanceof AxiosError) {
             console.error(error);
             if (error.response) {
-            //   console.log(error.response.data.reason); // 'reason' 출력
-              if (error.response.status === 401) {
-                  if (error.response.data.divisionCode === 'B003') {
-                      throw new Error("비밀번호가 일치하지 않습니다.");
+                //   console.log(error.response.data.reason); // 'reason' 출력
+                if (error.response.status === 401) {
+                    if (error.response.data.divisionCode === 'B003') {
+                        throw new Error("비밀번호가 일치하지 않습니다.");
                     } else {
                         throw new Error("가입된 아이디가 아닙니다.");
                     }
@@ -44,7 +44,7 @@ async function logoutAPI(accessToken: string) {
             }
         });
         return response
-    } catch(error) {
+    } catch (error) {
         console.log(error)
         throw error;
     }
@@ -65,15 +65,15 @@ async function signupUserAPI(data: RegisterUser) {
             const axiosError = error as AxiosError;
             console.error(error);
             if (axiosError.response && axiosError.response.status === 409) {
-            //   console.log("이미 가입된 이메일");
-              return 33;
+                //   console.log("이미 가입된 이메일");
+                return 33;
             }
             // console.log("에러에러에러에러에러");
         }
     }
 }
 
-async function checkIdAPI(data: {id: string}) {
+async function checkIdAPI(data: { id: string }) {
 
     try {
         const response = await http.get(`${url}/join/check-login-id/${data.id}`)
@@ -88,7 +88,7 @@ async function checkIdAPI(data: {id: string}) {
     }
 }
 
-async function sendEmailAPI(data: {email: string}) {
+async function sendEmailAPI(data: { email: string }) {
 
     try {
         const response = await http.post(`${url}/join/check-email`, data);
@@ -97,12 +97,12 @@ async function sendEmailAPI(data: {email: string}) {
             return 1
         }
         console.log(response);
-      } catch (error) {
+    } catch (error) {
         console.error(error);
-      }
+    }
 }
 
-async function checkEmailAPI(data: {email: string, code: string}) {
+async function checkEmailAPI(data: { email: string, code: string }) {
     try {
         const response = await http.get(`${url}/join/check-email-verifications/${data.email}/${data.code}`)
         const responseData = response.data;
@@ -117,7 +117,7 @@ async function checkEmailAPI(data: {email: string, code: string}) {
 }
 
 
-async function findIdAPI(data: {email: string}) {
+async function findIdAPI(data: { email: string }) {
     try {
         const response = await http.get(`${url}/find-login-id/${data.email}`)
         const responseData = response.data;
@@ -135,7 +135,7 @@ async function findIdAPI(data: {email: string}) {
     }
 }
 
-async function findPwAPI(data: {loginId: string, email: string}) {
+async function findPwAPI(data: { loginId: string, email: string }) {
     try {
         const response = await http.post(`${url}/find-password`, data)
         if (response.status === 201) {
@@ -162,7 +162,7 @@ async function getMyInfoAPI(accessToken: string) {
         });
         const responseData = response.data;
         return responseData
-    } catch(error) {
+    } catch (error) {
         console.log(error)
         throw error;
     }
@@ -182,7 +182,7 @@ async function postMyInfoAPI(data: userInfo, accessToken: string, refreshToken: 
             // console.log("정보수정성공")
         }
         return responseData
-    } catch(error) {
+    } catch (error) {
         console.log(error)
         throw error;
     }
@@ -198,7 +198,7 @@ async function deleteMyInfoAPI(accessToken: string) {
         });
         const responseData = response.data;
         return responseData
-    } catch(error) {
+    } catch (error) {
         console.log(error)
         throw error;
     }
@@ -223,14 +223,14 @@ async function registerSellerAPI(data: RegisterSeller, accessToken: string) {
             console.error(error);
             if (error.response) {
                 console.log(error.response.data.reason); // 'reason' 출력
-              if (error.response.status === 401) {
-                if (error.response.data.divisionCode === 'B008') {
-                    throw new Error("로그인 여부를 다시 확인해주세요");
-                } else {
-                    // console.log("미가입");
-                    throw new Error("JWT 문제");
+                if (error.response.status === 401) {
+                    if (error.response.data.divisionCode === 'B008') {
+                        throw new Error("로그인 여부를 다시 확인해주세요");
+                    } else {
+                        // console.log("미가입");
+                        throw new Error("JWT 문제");
+                    }
                 }
-              }
             }
             // console.log("에러에러에러에러에러");
         }
@@ -348,6 +348,23 @@ async function getFollowerListAPI(accessToken: string) {
     }
 }
 
+// 유저 정보 get 함수
+async function fetchProfile(accessToken: string, refreshToken: string) {
+    headers.set("Authorization", `Bearer ${accessToken}`);
+    headers.set("Refresh-Token", refreshToken)
+    headers.set("Content-Type", "application/json");
+
+    return await http.get(url, {headers: headers})
+}
+
+// 유저 정보 수정 함수
+async function setProfile(data: FormData, accessToken: string, refreshToken: string) {
+    headers.set("Authorization", `Bearer ${accessToken}`);
+    headers.set("Refresh-Token", refreshToken)
+    headers.set("Content-Type", "multipart/form-data");    
+    return await http.post(url, data, { headers: headers })
+}
+
 // 관리자 API
 // 모든 회원 정보 조회
 async function getAllUsersAPI(page: number, size: number, accessToken: string) {
@@ -442,18 +459,18 @@ async function cancelSellerApplicationAPI(sellerInfoId: number) {
     }
 }
 
-export { 
-    loginUser, 
-    signupUserAPI, 
-    checkIdAPI, 
-    sendEmailAPI, 
-    checkEmailAPI, 
-    registerSellerAPI, 
-    findIdAPI, 
-    findPwAPI, 
-    logoutAPI, 
-    getMyInfoAPI, 
-    postMyInfoAPI, 
+export {
+    loginUser,
+    signupUserAPI,
+    checkIdAPI,
+    sendEmailAPI,
+    checkEmailAPI,
+    registerSellerAPI,
+    findIdAPI,
+    findPwAPI,
+    logoutAPI,
+    getMyInfoAPI,
+    postMyInfoAPI,
     deleteMyInfoAPI,
     getAllUsersAPI,
     deleteUserByAdminAPI,
@@ -466,6 +483,8 @@ export {
     checkFollowAPI,
     unfollowSellerAPI,
     getFollowingListAPI,
-    getFollowerListAPI
- };
+    getFollowerListAPI,
+    setProfile,
+    fetchProfile,
+};
 

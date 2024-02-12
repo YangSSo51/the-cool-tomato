@@ -116,6 +116,7 @@ export default function ItemAdd() {
         }));
     };
 
+    // 사진 업로드
     const [fileName, setFileName] = useState<UploadImage | undefined>();
     const [previewURL, setPreviewUrl] = useState<string | null>("");
 
@@ -134,7 +135,6 @@ export default function ItemAdd() {
 
     const fileInputHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
         const files = e.target.files;
-        console.log(files);
         if (files && files[0]) {
             setFileName({
                 file: files[0],
@@ -143,7 +143,7 @@ export default function ItemAdd() {
         }
     };
 
-    const ClearFile = () => {
+    const clearFile = () => {
         setFileName(undefined);
     };
 
@@ -289,7 +289,7 @@ export default function ItemAdd() {
                                             <CloseIcon
                                                 ml={"2rem"}
                                                 boxSize={"1rem"}
-                                                onClick={ClearFile}
+                                                onClick={clearFile}
                                             />
                                         </Flex>
                                     </Center>

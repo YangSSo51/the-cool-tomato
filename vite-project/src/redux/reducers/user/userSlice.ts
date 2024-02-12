@@ -2,6 +2,8 @@ import { createSlice } from "@reduxjs/toolkit";
 import { UserState } from "../../../types/DataTypes";
 // import { loginUserAction } from "../../actions/user/userAction";
 import { loginUserThunk, logoutUserThunk, testUserThunk } from "../../thunk/user/userThunk";
+import { fetchProfile } from "../../../api/user";
+
 
 const initialState: UserState = {
     profileImg: "",
@@ -20,6 +22,9 @@ const userSlice = createSlice({
         },
         setAuthSeller: (state) => {
             state.auth = "SELLER"
+        },
+        setProfileImg : (state, action) => {
+            state.profileImg = action.payload
         }
     },
     extraReducers: (builder) => {
