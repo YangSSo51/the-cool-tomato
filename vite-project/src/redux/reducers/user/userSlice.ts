@@ -1,9 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { UserState } from "../../../types/DataTypes";
 // import { loginUserAction } from "../../actions/user/userAction";
-import { loginUserThunk, logoutUserThunk, testUserThunk } from "../../thunk/user/userThunk";
-import { fetchProfile } from "../../../api/user";
-
+import { loginUserThunk, logoutUserThunk, testUserThunk, updateProfileThunk } from "../../thunk/user/userThunk";
 
 const initialState: UserState = {
     profileImg: "",
@@ -23,9 +21,7 @@ const userSlice = createSlice({
         setAuthSeller: (state) => {
             state.auth = "SELLER"
         },
-        setProfileImg : (state, action) => {
-            state.profileImg = action.payload
-        }
+      
     },
     extraReducers: (builder) => {
         builder
@@ -64,7 +60,14 @@ const userSlice = createSlice({
                 // );
                 state.accessToken = "";
                 state.auth = 'INIT';
-            });
+            })
+            .addCase(updateProfileThunk.fulfilled, (state, action) => {
+                state.profileImg = action.payload.profileImg;
+                state.auth = action.payload.auth;
+                state.accessToken = action.payload.accessToken;
+                state.refreshToken = action.payload.refreshToken;
+            })
+            
     },
 });
 

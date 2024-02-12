@@ -55,7 +55,7 @@ export default function ItemDetail() {
                                 </AspectRatio>
                             </Box>
 
-                            <Flex display={"block"} pl={"2.5rem"} ml={"3rem"}>
+                            <Flex display={"block"} pl={"2.5rem"} ml={"5rem"}>
                                 <Box mb={"1rem"}>
                                     <Text fontSize={"2xl"} as={"b"}>
                                         {fetchData?.productName}
@@ -136,7 +136,7 @@ export default function ItemDetail() {
                             <Text as={"b"}>상품 문의</Text>
                         </Tab>
                     </TabList>
-                    <TabPanels>
+                    <TabPanels mt={"5rem"} mb={"5rem"}>
                         <TabPanel>
                             <Flex
                                 direction={"column"}

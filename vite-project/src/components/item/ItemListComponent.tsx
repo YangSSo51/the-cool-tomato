@@ -7,7 +7,6 @@ interface GoodsProps {
     img: string | undefined;
     title: string | undefined;
     price: number | undefined;
-    // profile: string | undefined;
 }
 
 const Goods = ({ id, img, title, price }: GoodsProps) => {
@@ -32,7 +31,7 @@ const Goods = ({ id, img, title, price }: GoodsProps) => {
                             <Avatar
                                 size="md"
                                 name="Ryan Florence"
-                                src="https://bit.ly/ryan-florence"
+                                // src={profile}
                                 mr={"1rem"}
                             />
                         </Center>

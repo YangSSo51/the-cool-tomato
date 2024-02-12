@@ -5,12 +5,13 @@ import { UploadImage, UserProfileEdit } from "../types/DataTypes";
 import { useEffect, useState } from "react";
 import { fetchProfile, setProfile } from "../api/user";
 import { useSelector } from "react-redux";
-import { RootState } from "../redux/stores/store";
+import { RootState, store } from "../redux/stores/store";
+import localStorage from "redux-persist/es/storage";
+import { updateProfileThunk } from "../redux/thunk/user/userThunk";
 
 export default function UserinfoPage() {
     const navigate = useNavigate()
     const [editProfile, setEditProfile] = useState<UserProfileEdit | undefined>()
-    const user = useSelector((state: RootState) => state.user);
     const at = useSelector((state: RootState) => {
         return state.user.accessToken
     })
@@ -120,23 +121,38 @@ export default function UserinfoPage() {
         setPreviewUrl(null)
     }
 
+    // const updateTokens = (at : string, rt : string) => {
+    //     localStorage.setItem('accessToken', at)
+    //     localStorage.setItem('refreshToken', rt)
+
+    //     store.dispatch({
+    //         type: 'UPDATE_TOKENS',
+    //         payload: {at, rt},
+    //     })
+    // }
+
     const profileSubmit = async () => {
         if (fileName !== undefined) {
             formData.append('modifyUserRequest', JSON.stringify(editProfile))
             formData.append("profileImgFile", fileName.file);
-
+            
             try {
-                await setProfile(formData, at, rt)
-                console.log("성공")
+                const response = await setProfile(formData, at, rt)
+
+                console.log(response.data)
+
+                // dispatch(updateProfileThunk({response.accessToken, response.refreshToken}))
+
+                navigate('/v1/main')
             } catch (err) {
-                console.log(err)
+                if (err instanceof Error) {
+                    if (err.response.data.divisionCode === "G011") {
+                        alert("비밀번호가 일치하지 않습니다.")
+                    }
+                }
             }
         }
     }
-
-    useEffect(() => {
-        console.log("previewurl isisis" + previewURL)
-    }, [previewURL])
 
     return (
         <Box minH="100vh" mb="10" paddingBlock="6rem">
@@ -276,3 +292,7 @@ export default function UserinfoPage() {
         </Box>
     );
 }
+function dispatch(arg0: unknown) {
+    throw new Error("Function not implemented.");
+}
+
