@@ -1,5 +1,7 @@
 import { Box, Flex } from "@chakra-ui/layout";
 import { Image, Badge, Button, Accordion, Input, InputGroup, InputRightElement, AccordionItem, AccordionButton, AccordionPanel, AccordionIcon } from "@chakra-ui/react";
+import { sellerPutQnaAPI } from "../../../api/itemQnA";
+import { useState } from "react";
 
 interface sellerQnaType {
     productQuestionBoardId: number;
@@ -16,9 +18,28 @@ interface sellerQnaType {
     answer: number;
 }
 
-function QnaItems({ sellerQnaList }: { sellerQnaList: sellerQnaType[] }) {
-    const handleSendresponse = () => {
-        // Send response logic
+interface QnaItemsProps {
+    sellerQnaList: sellerQnaType[];
+    onAnswer: (id: number, answerContent: string) => void;
+}
+
+function QnaItems({ sellerQnaList, onAnswer }: QnaItemsProps) {
+    const [inputValues, setInputValues] = useState<{ [key: number]: string }>({});
+
+    const handleInputChange = (id: number) => (event: React.ChangeEvent<HTMLInputElement>) => {
+        setInputValues({ ...inputValues, [id]: event.target.value });
+    }
+
+    const handleSendresponse = (id: number) => () => {
+        if(inputValues[id]) {
+            sellerPutQnaAPI({ productQuestionBoardId: id, answerContent: inputValues[id] }).then(() => {
+                onAnswer(id, inputValues[id]);
+            }).catch(error => {
+                console.error(error);
+            });
+        } else {
+            alert("답변을 입력해주세요")
+        }
     }
 
     return (
@@ -52,14 +73,19 @@ function QnaItems({ sellerQnaList }: { sellerQnaList: sellerQnaType[] }) {
                             </Box>
                         ) : (
                             <InputGroup>
-                                <Input type="text" placeholder="문의답변" />
+                                <Input 
+                                type="text" 
+                                placeholder="문의답변" 
+                                value={inputValues[qnaInfo.productQuestionBoardId] || ''}
+                                onChange={handleInputChange(qnaInfo.productQuestionBoardId)}
+                            />
                                 <InputRightElement pr="2" w="5rem">
                                     <Button
                                         h="1.75rem"
                                         size="m"
                                         colorScheme="themeGreen"
                                         variant="ghost"
-                                        onClick={handleSendresponse}
+                                        onClick={handleSendresponse(qnaInfo.productQuestionBoardId)}
                                         borderRadius="md"
                                         _hover={{
                                             bg: "themeGreen.500",

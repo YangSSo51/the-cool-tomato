@@ -1,4 +1,4 @@
-import { Box } from "@chakra-ui/layout";
+import { Box, Flex, Text } from "@chakra-ui/layout";
 import { Button } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 import React, { useEffect, useState } from "react";
@@ -17,7 +17,7 @@ function Items() {
     const [currentPage, setCurrentpage] = useState<string[]>([])
 
     useEffect(() => {
-        sellersMyproductsAPI(page, 2, accessToken)
+        sellersMyproductsAPI(page, 16, accessToken)
             .then((response) => {
                 // console.log(response)
                 setSellerItem(response.data.list);
@@ -44,10 +44,19 @@ function Items() {
     return (
         <Box flexDirection="column" w="90%" h="full">
             <Button onClick={onclick} colorScheme='yellow'>상품등록</Button>
-            {sellerItem.map((item) => {
-                return <ItemsofItems sellerItem = {item} onDelete={handleItemDelete} key={item.productId} />
-            })
+            
+            { sellerItem.length ? (
+                sellerItem.map((item) => {
+                    return <ItemsofItems sellerItem = {item} onDelete={handleItemDelete} key={item.productId} />
+                })
+                
+            ) : (
+                <Flex mt="20" flexDir="column">
+                    <Text fontSize='5xl' color="gray.500" mb="5">등록한 상품이 없습니다!</Text>
+                    <Button colorScheme="themeGreen" onClick={() => navigate("/v1/itemAdd")}>상품 등록하러 가기</Button>
+                </Flex>)
             }
+
             <Button onClick={pageUpdate}> 버어튼 크을릭 </Button>
 
         </Box>

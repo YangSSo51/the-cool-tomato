@@ -1,5 +1,6 @@
 import { Box, Text, Flex } from "@chakra-ui/layout";
 import { Avatar, Badge, Button } from "@chakra-ui/react";
+// import { getBlockUserAPI } from "../../../api/chatblock";
 
 function BanUser() {
 
@@ -24,7 +25,6 @@ function BanUser() {
                         New
                     </Badge>
                     </Text>
-                    <Text fontSize='sm'>UI Engineer</Text>
                 </Box>
             </Flex>
 
