@@ -1,5 +1,6 @@
 import { mainAxios } from "./http";
 import { AxiosHeaders, AxiosError } from "axios";
+import { ReissueTokenAPI } from "./auth";
 import { RegisterUser, RegisterSeller, userInfo } from "../types/DataTypes";
 
 const http = mainAxios();
@@ -35,7 +36,7 @@ async function loginUser(data: { loginId: string; password: string }) {
     }
 }
 
-async function logoutAPI(accessToken: string) {
+async function logoutAPI(accessToken: string, refreshToken: string) {
     try {
         const response = await http.delete(`${url}/logout`, {
             headers: {
@@ -43,12 +44,23 @@ async function logoutAPI(accessToken: string) {
                 "Authorization": "Bearer " + accessToken
             }
         });
-        return response
+        localStorage.clear();
+        return response;
     } catch (error) {
-        console.log(error)
+        if (error instanceof AxiosError) {
+            if (error.response) {
+                if (error.response.status === 401) {
+                    if (error.response.data.divisionCode === "G013") {
+                        const response = await ReissueTokenAPI({accessToken, refreshToken});
+                            console.log(response)
+                    }
+                }
+            }
+        }
         throw error;
     }
 }
+
 
 async function signupUserAPI(data: RegisterUser) {
 
