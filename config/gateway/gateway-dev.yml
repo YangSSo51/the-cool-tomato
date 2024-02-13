@@ -58,4 +58,4 @@ spring:
           - id: user
             uri: lb://USER
             predicates:
-              - Path=/v1/user/**
+              - Path=/v1/users/**
