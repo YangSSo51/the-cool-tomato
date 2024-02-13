@@ -8,6 +8,7 @@ import { Icon } from "@chakra-ui/react";
 import BuyerLiveNav from "../components/common/BuyerLiveNav";
 
 import OpenViduComponent from "../components/openvidu/OpenViduComponent";
+import React from "react";
 
 function UnfilledHeart() {
     return <Icon as={CiHeart} boxSize={"3rem"} ml={"3px"} mb={"3px"} />;

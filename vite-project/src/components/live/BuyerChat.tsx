@@ -10,20 +10,17 @@ import {
     Text,
     UnorderedList,
 } from "@chakra-ui/react";
-import { getStompClient } from "../../api/chatting";
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/stores/store";
 import { useParams } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { chatMessageRecv, chatMessageSend } from "../../types/DataTypes";
-import SockJS from "sockjs-client";
-import { Client } from "@stomp/stompjs";
+import React from "react";
+import { getStompClient } from "../../api/chatting";
 
 export default function BuyerChat() {
     const [message, setMessage] = useState<string>("");
     const [recv, setRecv] = useState<Array<chatMessageRecv>>([]);
-    const [reconnect, setReconnect] = useState<number>(0);
-    const [client, setClient] = useState<Client>(new Client());
 
     const accessToken = useSelector(
         (state: RootState) => state.user.accessToken
@@ -32,7 +29,29 @@ export default function BuyerChat() {
     const userId = useSelector((state: RootState) => state.user.userId);
     const roomId = useParams().roomId!;
     const id = parseInt(roomId);
-    const { stomp } = getStompClient(accessToken);
+    const stomp = useRef(getStompClient(accessToken));
+
+    useEffect(() => {
+        console.log("BuyerChat useEffect 1");
+
+        stomp.current.onConnect = () => {
+            console.log("stomp connected");
+            stomp.current.subscribe(
+                `/sub/room/` + id,
+                (msg) => {
+                    const recvMsg: chatMessageRecv = JSON.parse(msg.body);
+                    setRecv((prev) => [...prev, recvMsg]);
+                },
+                { Authorization: "Bearer " + accessToken }
+            );
+        };
+
+        stomp.current.activate();
+        const stompClient = stomp.current;
+        return () => {
+            stompClient.deactivate();
+        };
+    }, []);
 
     function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
         setMessage(e.target.value);
@@ -45,8 +64,25 @@ export default function BuyerChat() {
     }
     function handleSubmit(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
         e.preventDefault();
+        if (!stomp.current.connected) stomp.current.activate();
         sendMessage();
         setMessage("");
+    }
+
+    function sendMessage() {
+        const messageSend: chatMessageSend = {
+            senderId: userId,
+            senderNickname: nickname,
+            message: message,
+            roomId: id,
+        };
+        console.log("BuyerChat sendMessage messageSend");
+        console.log(messageSend);
+        stomp.current.publish({
+            destination: "/pub/message",
+            headers: { Authorization: "Bearer " + accessToken },
+            body: JSON.stringify(messageSend),
+        });
     }
 
     return (

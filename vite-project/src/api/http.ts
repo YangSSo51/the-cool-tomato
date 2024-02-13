@@ -1,6 +1,9 @@
 import axios from "axios";
 import SockJS from "sockjs-client";
 
+const chatWebSocketUrl =
+    "ws://i10a501.p.ssafy.io:8085/v1/chat/ws-stomp/websocket";
+
 function mainAxios() {
     return axios.create({
         baseURL: "http://3.39.6.29:8084/v1/",
@@ -49,11 +52,24 @@ function chatSocket() {
         console.log("chatting socket open");
         console.log(ev);
     };
-    sock.onmessage = (e) => {
-        console.log("chatting socket message");
-        console.log(e);
-    };
     return sock;
 }
 
-export { mainAxios, openViduDirectAxios, liveAxios, itemAxios, chatSocket };
+function chatBlockAxios() {
+    return axios.create({
+        baseURL: "http://i10a501.p.ssafy.io:8085/v1",
+        headers: {
+            "Content-Type": "application/json;charset=utf-8",
+        },
+    });
+}
+
+export {
+    mainAxios,
+    openViduDirectAxios,
+    liveAxios,
+    itemAxios,
+    chatSocket,
+    chatWebSocketUrl,
+    chatBlockAxios,
+};
