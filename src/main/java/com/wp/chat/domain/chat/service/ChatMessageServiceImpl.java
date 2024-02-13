@@ -3,16 +3,11 @@ package com.wp.chat.domain.chat.service;
 import com.wp.chat.domain.block.service.BlockManageService;
 import com.wp.chat.domain.chat.dto.request.ChatMessageRequest;
 import com.wp.chat.domain.chat.entity.ChatMessage;
-import com.wp.chat.global.common.code.ErrorCode;
-import com.wp.chat.global.exception.BusinessExceptionHandler;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.admin.NewTopic;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
