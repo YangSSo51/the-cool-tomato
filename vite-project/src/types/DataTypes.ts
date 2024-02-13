@@ -248,3 +248,9 @@ export interface chatMessageRecv {
     senderNickname: string;
     message: string;
 }
+
+export interface chatbotMessage {
+    roomId: number;
+    message: string;
+    writer: number;
+}
