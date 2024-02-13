@@ -1,6 +1,5 @@
 package com.wp.chat.domain.block.controller;
 
-import com.wp.chat.domain.block.dto.request.BlockedIdRequest;
 import com.wp.chat.domain.block.dto.response.GetBlockManageListResponse;
 import com.wp.chat.domain.block.service.BlockManageService;
 import com.wp.chat.global.common.code.SuccessCode;
@@ -8,7 +7,7 @@ import com.wp.chat.global.common.response.SuccessResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -35,9 +34,10 @@ public class BlockManageController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @PostMapping("/add")
-    public ResponseEntity<SuccessResponse<?>> addBlocked(@Valid @RequestBody BlockedIdRequest blockedIdRequest) {
-        blockManageService.addBlocked(blockedIdRequest);
+    @PostMapping("/{blocked-id}")
+    @Operation(summary = "차단 등록", description = "판매자는 구매자 ID로 구매자를 차단 합니다.")
+    public ResponseEntity<SuccessResponse<?>> addBlocked(HttpServletRequest httpServletRequest, @NotNull(message = "차단할 회원 ID를 입력해 주세요.") @PathVariable(name = "blocked-id") Long blockedId) {
+        blockManageService.addBlocked(httpServletRequest, blockedId);
         SuccessResponse<?> response = SuccessResponse.builder()
                 .status(SuccessCode.INSERT_SUCCESS.getStatus())
                 .message(SuccessCode.INSERT_SUCCESS.getMessage())
@@ -45,9 +45,10 @@ public class BlockManageController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @DeleteMapping("/remove")
-    public ResponseEntity<SuccessResponse<?>> removeBlocked(@Valid @RequestBody BlockedIdRequest blockedIdRequest) {
-        blockManageService.removeBlocked(blockedIdRequest);
+    @DeleteMapping("/{blocked-id}")
+    @Operation(summary = "차단 삭제", description = "판매자는 구매자 ID로 구매자 차단을 취소합니다.")
+    public ResponseEntity<SuccessResponse<?>> removeBlocked(HttpServletRequest httpServletRequest, @NotNull(message = "차단할 회원 ID를 입력해 주세요.") @PathVariable(name = "blocked-id") Long blockedId) {
+        blockManageService.removeBlocked(httpServletRequest, blockedId);
         SuccessResponse<?> response = SuccessResponse.builder()
                 .status(SuccessCode.DELETE_SUCCESS.getStatus())
                 .message(SuccessCode.DELETE_SUCCESS.getMessage())

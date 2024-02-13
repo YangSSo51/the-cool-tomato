@@ -1,6 +1,5 @@
 package com.wp.chat.domain.block.service;
 
-import com.wp.chat.domain.block.dto.request.BlockedIdRequest;
 import com.wp.chat.domain.block.dto.response.GetBlockManageListResponse;
 import com.wp.chat.domain.block.entity.BlockManage;
 import com.wp.chat.domain.block.repository.BlockManageRepository;
@@ -43,7 +42,7 @@ public class BlockManageServiceImpl implements  BlockManageService {
         // 회원 정보 추출
         Map<String, String> infos = authClient.extraction(ExtractionRequest.builder().accessToken(accessToken).infos(List.of("userId", "auth")).build()).getInfos();
         try {
-            if(!infos.get("auth").equals(Auth.SELLER)) {
+            if(!infos.get("auth").equals("SELLER")) {
                 throw new BusinessExceptionHandler(ErrorCode.NOT_SELLER);
             }
         } catch (Exception e) {
@@ -64,9 +63,14 @@ public class BlockManageServiceImpl implements  BlockManageService {
     // 차단 등록
     @Override
     @Transactional
-    public void addBlocked(BlockedIdRequest blockedIdRequest) {
+    public void addBlocked(HttpServletRequest httpServletRequest, Long blockedId) {
+        String accessToken = jwtService.resolveAccessToken(httpServletRequest);
+        // 인증
+        authClient.validateToken(AccessTokenRequest.builder().accessToken(accessToken).build());
+        // 회원 정보 추출
+        Map<String, String> infos = authClient.extraction(ExtractionRequest.builder().accessToken(accessToken).infos(List.of("userId")).build()).getInfos();
         // 판매자
-        User seller = userRepository.findById(blockedIdRequest.getSellerId()).orElseThrow(() -> new BusinessExceptionHandler(ErrorCode.NOT_FOUND_SELLER_ID));
+        User seller = userRepository.findById(Long.valueOf(infos.get("userId"))).orElseThrow(() -> new BusinessExceptionHandler(ErrorCode.NOT_FOUND_SELLER_ID));
         try {
             if(!seller.getAuth().equals(Auth.SELLER)) {
                 throw new BusinessExceptionHandler(ErrorCode.NOT_SELLER);
@@ -74,23 +78,40 @@ public class BlockManageServiceImpl implements  BlockManageService {
         } catch (Exception e) {
             throw new BusinessExceptionHandler(ErrorCode.NOT_SELLER);
         }
-        User blocked = userRepository.findById(blockedIdRequest.getBlockedId()).orElseThrow(() -> new BusinessExceptionHandler(ErrorCode.NOT_FOUND_USER_ID));
+        User blocked = userRepository.findById(blockedId).orElseThrow(() -> new BusinessExceptionHandler(ErrorCode.NOT_FOUND_USER_ID));
+        add(seller, blocked);
+    }
+
+    @Override
+    @Transactional
+    @CacheEvict(cacheNames = BLOCK_LIST, key = "#seller.id", cacheManager = "cacheManager")
+    public void add(User seller, User blocked) {
         blockManageRepository.save(BlockManage.builder().seller(seller).blocked(blocked).build());
     }
 
     // 차단 삭제
     @Override
     @Transactional
-    @CacheEvict(cacheNames = BLOCK_LIST, key = "#blockedIdRequest.sellerId", cacheManager = "cacheManager")
-    public void removeBlocked(BlockedIdRequest blockedIdRequest) {
-        User seller = userRepository.findById(blockedIdRequest.getSellerId()).orElseThrow(() -> new BusinessExceptionHandler(ErrorCode.NOT_FOUND_SELLER_ID));
+    public void removeBlocked(HttpServletRequest httpServletRequest, Long blockedId) {
+        String accessToken = jwtService.resolveAccessToken(httpServletRequest);
+        // 인증
+        authClient.validateToken(AccessTokenRequest.builder().accessToken(accessToken).build());
+        // 회원 정보 추출
+        Map<String, String> infos = authClient.extraction(ExtractionRequest.builder().accessToken(accessToken).infos(List.of("userId", "auth")).build()).getInfos();
         try {
-            if(!seller.getAuth().equals(Auth.SELLER)) {
+            if(!infos.get("auth").equals("SELLER")) {
                 throw new BusinessExceptionHandler(ErrorCode.NOT_SELLER);
             }
         } catch (Exception e) {
             throw new BusinessExceptionHandler(ErrorCode.NOT_SELLER);
         }
-        blockManageRepository.deleteByBlockedIdAndSellerId(blockedIdRequest.getBlockedId(), blockedIdRequest.getSellerId());
+        remove(blockedId, Long.valueOf(infos.get("userId")));
+    }
+
+    @Override
+    @Transactional
+    @CacheEvict(cacheNames = BLOCK_LIST, key = "sellerId", cacheManager = "cacheManager")
+    public void remove(Long blockedId, Long sellerId) {
+        blockManageRepository.deleteByBlockedIdAndSellerId(blockedId, sellerId);
     }
 }
