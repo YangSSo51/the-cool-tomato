@@ -8,50 +8,27 @@ import {
     TabPanels,
     TabPanel,
     Divider,
+    Button,
 } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import LiveCalendar from "../components/broadcast/LiveCalendar";
-import { fetchLiveCalendar } from "../api/live";
-import { LiveCalendarInterface } from "../types/DataTypes";
 import { useEffect, useState } from "react";
 
 export default function Calendar() {
     const today = dayjs();
-    const [firstCalendar, setFirstCalendar] =
-        useState<Array<LiveCalendarInterface>>();
-    const [secondCalendar, setSecondCalendar] =
-        useState<Array<LiveCalendarInterface>>();
-    const [thirdCalendar, setThirdCalendar] =
-        useState<Array<LiveCalendarInterface>>();
-    const [fourthCalendar, setFourthCalendar] =
-        useState<Array<LiveCalendarInterface>>();
-
-    const dates = [0, 1, 2, 3].map((offset) =>
-        today.add(offset, "day").format("YY-MM-DD")
-    );
-
+    const [activeTabIndex, setActiveTabIndex] = useState(0);
+    
     useEffect(() => {
-        try {
-            dates.forEach((date, index) => {
-                fetchLiveCalendar(date, 0, 3).then((res) => {
-                    const setData = [
-                        setFirstCalendar,
-                        setSecondCalendar,
-                        setThirdCalendar,
-                        setFourthCalendar,
-                    ][index];
-                    setData(res.data.data.broadcastInfoList);
-                });
-            });
-        } catch (err) {
-            console.log(err);
-        }
-    }, []);
+
+    }, [activeTabIndex])
 
     return (
         <Container maxW={"7xl"} minH={"100vh"} p={"2rem"}>
             <Divider />
-            <Tabs variant="unstyled">
+            <Tabs
+                variant="unstyled"
+                onChange={(index) => setActiveTabIndex(index)}
+            >
                 <TabList mt={"1.5rem"} mb={"1.5rem"}>
                     <Tab
                         _selected={{ color: "white", bg: "themeRed.500" }}
@@ -104,19 +81,28 @@ export default function Calendar() {
                         </Flex>
                     </Tab>
                 </TabList>
+
                 <Divider />
+                <Flex
+                    alignItems={"center"}
+                    px={"6"}
+                    py={"6"}
+                    justify={"space-between"}
+                >
+                    <Flex alignItems={"center"} gap={"4"}>
+                        <Flex direction={"row"} gap={"1"}>
+                            <Button backgroundColor={"themeRed.500"}>
+                                <Text color={"white"}>현재 라이브 중</Text>
+                            </Button>
+                        </Flex>
+                    </Flex>
+                    <Flex alignItems={"center"} gap={"4"}>
+                        카테고리 항목
+                    </Flex>
+                </Flex>
                 <TabPanels>
                     <TabPanel>
-                        <LiveCalendar data={firstCalendar} />
-                    </TabPanel>
-                    <TabPanel>
-                        <LiveCalendar data={secondCalendar} />
-                    </TabPanel>
-                    <TabPanel>
-                        <LiveCalendar data={thirdCalendar} />
-                    </TabPanel>
-                    <TabPanel>
-                        <LiveCalendar data={fourthCalendar} />
+                        <LiveCalendar date={activeTabIndex} />
                     </TabPanel>
                 </TabPanels>
             </Tabs>

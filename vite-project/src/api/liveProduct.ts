@@ -13,19 +13,22 @@ async function postLiveProduct(data: Array<liveProduct>, accessToken: string) {
     return await http.post(url, data, { headers });
 }
 
-async function getLiveProduct(params: {
-    page?:number; 
-    size?:number; 
-    "live-id":number;
-}, accessToken: string) {
-    const response =  await http.get(`${url}/list`, { 
+async function getLiveProduct(
+    params: {
+        page?: number;
+        size?: number;
+        "live-id": number;
+    },
+    accessToken: string
+) {
+    const response = await http.get(`${url}/list`, {
         params: params,
         headers: {
             "Content-Type": "application/json",
-            "Authorization": "Bearer " + accessToken
-        }
+            Authorization: "Bearer " + accessToken,
+        },
     });
-    return response.data.data
+    return response.data.data;
 }
 
 async function delLiveProduct(liveId: string, accessToken: string) {
@@ -33,4 +36,10 @@ async function delLiveProduct(liveId: string, accessToken: string) {
     return await http.delete(`${url}/${liveId}`, { headers });
 }
 
-export { postLiveProduct, getLiveProduct, delLiveProduct };
+async function fetchCalendarItem(page: number, size: number, liveid: number) {
+    return await http.get(`${url}/list`, {
+        params: { page: page, size: size, "live-id": liveid },
+    });
+}
+
+export { postLiveProduct, fetchCalendarItem, getLiveProduct, delLiveProduct };
