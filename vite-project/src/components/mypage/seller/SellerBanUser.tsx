@@ -8,7 +8,6 @@ import { followerItem } from "../../../types/DataTypes";
 
 function BanUser() {
     const accessToken = useSelector((state: RootState) => { return state.user.accessToken })
-    const sellerId = useSelector((state: RootState) => { return state.user.userId })
     const [ blockList, setBlockList ] = useState<Array<followerItem>>([])
 
     useEffect(() => {
@@ -19,8 +18,9 @@ function BanUser() {
         })
     }, [])
 
-    const onClickUnBlock = (userId: number, blockedId: number) => {
-        deleteBlockUserAPI({sellerId: userId, blockedId}, accessToken).then(() => {
+    const onClickUnBlock = (blockedId: number) => {
+        deleteBlockUserAPI(blockedId, accessToken).then(() => {
+            setBlockList(prevList => prevList.filter(user => user.userId !== blockedId));
         });
     };
 
@@ -39,7 +39,7 @@ function BanUser() {
                     </Flex>
             
                     <Button 
-                        onClick={() => onClickUnBlock(sellerId, item.userId)} 
+                        onClick={() => onClickUnBlock(item.userId)} 
                         color="white" 
                         backgroundColor="themeGreen.500" 
                         _hover={{ backgroundColor: "white", color: "red" }}>

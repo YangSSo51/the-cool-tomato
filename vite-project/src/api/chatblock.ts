@@ -8,8 +8,8 @@ headers.set("Content-Type", "application/json;charset=utf-8");
 const url = "chat/block";
 
 // 차단유저 등록
-async function postBlockUserAPI(data: {sellerId: number, blockedId: number}, accessToken: string) {
-    await http.post(`${url}/add`, data, {
+async function postBlockUserAPI(blockedId: number, accessToken: string) {
+    await http.post(`${url}/${blockedId}`, {
         headers: {
             "Content-Type": "application/json",
             "Authorization": "Bearer " + accessToken
@@ -18,9 +18,8 @@ async function postBlockUserAPI(data: {sellerId: number, blockedId: number}, acc
 }
 
 // 차단유저 삭제
-async function deleteBlockUserAPI(data: {sellerId: number, blockedId: number}, accessToken: string) {
-    await http.delete(`${url}/remove`, {
-        data: data,
+async function deleteBlockUserAPI(blockedId: number, accessToken: string) {
+    await http.delete(`${url}/${blockedId}`, {
         headers: {
             "Content-Type": "application/json",
             "Authorization": "Bearer " + accessToken
