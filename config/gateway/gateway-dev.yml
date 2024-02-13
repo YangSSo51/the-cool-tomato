@@ -21,6 +21,8 @@ spring:
   cloud:
     gateway:
       globalcors:
+        default-filters:
+          - DedupeResponseHeader=Access-Control-Allow-Origin Access-Control-Allow-Credentials
         cors-configurations:
           '[/**]':
             allowedOrigins: 'https://i10a501.p.ssafy.io/'
