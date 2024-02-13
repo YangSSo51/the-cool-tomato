@@ -125,7 +125,7 @@ public class BroadcastServiceImpl implements BroadcastService{
             Set<Object> keys = redisTemplate.opsForHash().keys(topicId);
             Map<String, String> connNum = new HashMap<>();
             for (Object key : keys) {
-                String num = redisTemplate.opsForHash().get(topicId, key.toString()).toString();
+                String num = redisTemplate.opsForHash().get(topicId+"_connNum", key.toString()).toString();
                 connNum.put(key.toString(), num);
             }
 
