@@ -22,11 +22,11 @@ export default function ItemComponent() {
             <Box p={"1rem"} mb={"1rem"}>
                 <Text textAlign={"right"}>카테고리 항목</Text>
             </Box>
-            <Flex wrap="wrap" gap={"2rem"} w={"100%"} justifyContent={"space-between"}>
+            <Flex wrap="wrap" gap={"3rem"} w={"100%"} justifyContent={"space-between"}>
                 {dummylist?.map((data : ItemWholeFetchInterface | undefined) => (
                     <Flex
                         key={data?.productId}
-                        w="calc(25% - 2rem)"
+                        w="calc(25% - 3rem)"
                         mb={"3rem"}
                         justifyContent={"center"}
                     >

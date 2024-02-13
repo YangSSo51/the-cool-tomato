@@ -7,7 +7,7 @@ interface GoodsProps {
     img: string | undefined;
     title: string | undefined;
     price: number | undefined;
-    profile: string | null;
+    profile: string | null | undefined;
 }
 
 const Goods = ({ id, img, title, price, profile }: GoodsProps) => {
@@ -16,7 +16,7 @@ const Goods = ({ id, img, title, price, profile }: GoodsProps) => {
             <Box>
                 <Box>
                     <Box maxW={"25rem"}>
-                        <AspectRatio w='256px' ratio={1 / 1}>
+                        <AspectRatio w='350px' ratio={1 / 1}>
                             <Image
                                 src={img}
                                 aspectRatio="1/1"

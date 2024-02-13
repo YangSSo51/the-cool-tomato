@@ -197,7 +197,7 @@ export interface AcceptSeller {
     sellerInfoId: number;
     userId: number;
 }
-    
+
 export interface UserProfileEdit {
     profileImg: string | null | undefined;
     password: string;
@@ -212,6 +212,27 @@ export interface LiveCalendarInterface {
     broadcastTitle: string;
     nickName: string;
     viewCount: number | null;
-    sellerId: number;
     broadcastStatus: boolean;
+    startDate: string;
+    liveProductId: number;
+    productId: number;
+    imgSrc: string;
+    sellerId: number;
+    sellerName: string;
+    sellerImg: string;
+    categoryId: number;
+    categoryName: string;
+    productName: string;
+    productContent: string;
+    paymentLink: null;
+    price: number;
+    deliveryCharge: number;
+    quantity: number;
+    liveFlatPrice: number;
+    liveRatePrice: number;
+    livePriceStartDate: string;
+    livePriceEndDate: string;
+    mainProductSetting: true;
+    registerDate: string;
+    seq: number;
 }
