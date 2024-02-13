@@ -11,22 +11,8 @@ function BanUser() {
     const [ blockList, setBlockList ] = useState<Array<followerItem>>([])
 
     useEffect(() => {
-        // const response = getBlockUserAPI(accessToken);
-        // setBlockList(response)
-        setBlockList([{
-            "id": 1,
-            "userId": 1,
-            "loginId": "ssafy",
-            "nickname": "김싸피",
-            "profileImg": "${PROFILE_IMG_URL}"
-    },
-    {
-            "id": 2,
-            "userId": 2,
-            "loginId": "ssafy2",
-            "nickname": "김싸피2",
-            "profileImg": "${PROFILE_IMG_URL}"
-    }])
+        const response = getBlockUserAPI(accessToken);
+        setBlockList(response)
     }, [])
 
     const onClickUnBlock = (userId: number) => {
