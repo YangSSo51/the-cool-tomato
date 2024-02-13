@@ -16,12 +16,11 @@ eureka:
     fetch-registry: true
     service-url:
       defaultZone: http://MASTER:8761/eureka
+      
 spring:
   cloud:
     gateway:
       globalcors:
-        default-filters:
-          - DedupeResponseHeader=Access-Control-Allow-Origin Access-Control-Allow-Credentials
         cors-configurations:
           '[/**]':
             allowedOrigins: 'https://i10a501.p.ssafy.io/'
