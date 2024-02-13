@@ -1,11 +1,11 @@
 import { Flex, Text, Box } from "@chakra-ui/react";
 import { Avatar, Badge, Image } from "@chakra-ui/react";
-import { SearchIcon } from "@chakra-ui/icons";
-import { Line } from 'react-chartjs-2';
+// import { SearchIcon } from "@chakra-ui/icons";
+// import { Line } from 'react-chartjs-2';
 import { useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
-import { RootState } from "../redux/stores/store";
+// import { useEffect, useState } from "react";
+// import { useSelector } from "react-redux";
+// import { RootState } from "../redux/stores/store";
 import logo from "/img/newlogo.png";
 
 export default function LiveResultPage() {
@@ -93,19 +93,19 @@ export default function LiveResultPage() {
     );
 }
     
-function LineChart(props) {
-    const labels = ["30분", "1시간", "1시간30분", "2시간", "2시간30분"];
-    const dataLine = {
-        labels: labels,
-        datasets: [{
-            label: '30분 간격 시청차 추이',
-            data: [65, 59, 80, 81, 56],
-            fill: false,
-            borderColor: 'rgb(75, 192, 192)',
-            tension: 0.1
-        }]
-    };
-    return (
-        <Line data={dataLine} />
-    );
-}
+// function LineChart(props) {
+//     const labels = ["30분", "1시간", "1시간30분", "2시간", "2시간30분"];
+//     const dataLine = {
+//         labels: labels,
+//         datasets: [{
+//             label: '30분 간격 시청차 추이',
+//             data: [65, 59, 80, 81, 56],
+//             fill: false,
+//             borderColor: 'rgb(75, 192, 192)',
+//             tension: 0.1
+//         }]
+//     };
+//     return (
+//         <Line data={dataLine} />
+//     );
+// }

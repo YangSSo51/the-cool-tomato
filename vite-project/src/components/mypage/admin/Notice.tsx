@@ -87,7 +87,6 @@ function Notice() {
                     <NoticeRegister
                         isOpen={modalOpen}
                         handleModalOpen={handleModalOpen}
-                        dummydata={dummydata}
                     />
                     <Button
                         leftIcon={<FaEdit />}
@@ -118,10 +117,10 @@ function NoticeRegister({
     const [chatbotContent, setChatbotContent] = useState("");
     // const accessToken = useSelector((state: RootState) => state.user.accessToken);
 
-    const handleInputKeyword = (e: ChangeEvent<HTMLInputElement>) =>
+    const handleInputKeyword = (e: React.ChangeEvent<HTMLInputElement>) =>
         setChatbotKeyword(e.target.value);
 
-    const handleInputChange = (e: ChangeEvent<HTMLTextAreaElement>) =>
+    const handleInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) =>
         setChatbotContent(e.target.value);
 
     const handleClose = () => {

@@ -1,6 +1,6 @@
 import { Box, Flex } from "@chakra-ui/layout";
 import { Badge, Button } from "@chakra-ui/react";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 
 interface broadcastInfo {
     liveBroadcastId: number;
@@ -12,7 +12,7 @@ interface broadcastInfo {
 }
 
 function LiveItems({lives} : {lives: broadcastInfo}) {
-    const navigate = useNavigate();
+    // const navigate = useNavigate();
     const handleOpenNewTab = (url: string) => {
         window.open(url, "_blank", "noopener, noreferrer");
       };
