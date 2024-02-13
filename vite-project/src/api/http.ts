@@ -1,4 +1,8 @@
 import axios from "axios";
+import SockJS from "sockjs-client";
+
+const chatWebSocketUrl =
+    "ws://i10a501.p.ssafy.io:8085/v1/chat/ws-stomp/websocket";
 
 function mainAxios() {
     return axios.create({
@@ -41,9 +45,22 @@ function chatbotAxios() {
     return axios.create({
         baseURL: "http://i10a501.p.ssafy.io:8086/v1/",
         headers: {
-            "Content-Type": "application/json;charset=utf-8",
+            "Content-Type": "application/json",
         },
     });
+}
+function chatSocket() {
+    const base_url = "http://i10a501.p.ssafy.io:8085/v1";
+    const sock = new SockJS(`${base_url}/chat/ws-stomp`);
+    sock.onclose = (ev: CloseEvent) => {
+        console.log("chatting socket close");
+        console.log(ev);
+    };
+    sock.onopen = (ev: Event) => {
+        console.log("chatting socket open");
+        console.log(ev);
+    };
+    return sock;
 }
 
 function authAxios() {
@@ -66,4 +83,14 @@ function chatAxios() {
     });
 }
 
-export { mainAxios, openViduDirectAxios, liveAxios, itemAxios, chatbotAxios, authAxios, chatAxios };
+export {
+    mainAxios,
+    openViduDirectAxios,
+    liveAxios,
+    itemAxios,
+    chatbotAxios,
+    authAxios,
+    chatAxios,
+    chatSocket,
+    chatWebSocketUrl,
+};

@@ -1,6 +1,90 @@
-import { Center, Divider, Flex, Input, Text } from "@chakra-ui/react";
+import {
+    Button,
+    Center,
+    Divider,
+    Flex,
+    Input,
+    InputGroup,
+    InputRightElement,
+    ListItem,
+    Text,
+    UnorderedList,
+} from "@chakra-ui/react";
+import { useSelector } from "react-redux";
+import { RootState } from "../../redux/stores/store";
+import { useParams } from "react-router-dom";
+import { useEffect, useRef, useState } from "react";
+import { chatMessageRecv, chatMessageSend } from "../../types/DataTypes";
+import React from "react";
+import { getStompClient } from "../../api/chatting";
 
 export default function BuyerChat() {
+    const [message, setMessage] = useState<string>("");
+    const [recv, setRecv] = useState<Array<chatMessageRecv>>([]);
+
+    const accessToken = useSelector(
+        (state: RootState) => state.user.accessToken
+    );
+    const nickname = useSelector((state: RootState) => state.user.nickname);
+    const userId = useSelector((state: RootState) => state.user.userId);
+    const roomId = useParams().roomId!;
+    const id = parseInt(roomId);
+    const stomp = useRef(getStompClient(accessToken));
+
+    useEffect(() => {
+        console.log("BuyerChat useEffect 1");
+
+        stomp.current.onConnect = () => {
+            console.log("stomp connected");
+            stomp.current.subscribe(
+                `/sub/room/` + id,
+                (msg) => {
+                    const recvMsg: chatMessageRecv = JSON.parse(msg.body);
+                    setRecv((prev) => [...prev, recvMsg]);
+                },
+                { Authorization: "Bearer " + accessToken }
+            );
+        };
+
+        stomp.current.activate();
+        const stompClient = stomp.current;
+        return () => {
+            stompClient.deactivate();
+        };
+    }, []);
+
+    function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
+        setMessage(e.target.value);
+    }
+    function handleKeyEnter(e: React.KeyboardEvent<HTMLInputElement>) {
+        if (e.key === "Enter") {
+            sendMessage();
+            setMessage("");
+        }
+    }
+    function handleSubmit(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
+        e.preventDefault();
+        if (!stomp.current.connected) stomp.current.activate();
+        sendMessage();
+        setMessage("");
+    }
+
+    function sendMessage() {
+        const messageSend: chatMessageSend = {
+            senderId: userId,
+            senderNickname: nickname,
+            message: message,
+            roomId: id,
+        };
+        console.log("BuyerChat sendMessage messageSend");
+        console.log(messageSend);
+        stomp.current.publish({
+            destination: "/pub/message",
+            headers: { Authorization: "Bearer " + accessToken },
+            body: JSON.stringify(messageSend),
+        });
+    }
+
     return (
         <>
             <Flex direction={"column"} h={"100%"} p={"1rem"}>
@@ -16,9 +100,32 @@ export default function BuyerChat() {
                     overflowY={"auto"}
                     pt={"1rem"}
                 >
-                    채팅 화면
+                    <UnorderedList>
+                        {recv.map((msg, index) => (
+                            <ListItem key={index}>
+                                {msg.senderNickname} : {msg.message}
+                            </ListItem>
+                        ))}
+                    </UnorderedList>
                 </Flex>
-                <Input variant='filled' placeholder='채팅을 입력해주세요' />
+                <InputGroup>
+                    <Input
+                        variant="filled"
+                        placeholder="채팅을 입력해주세요"
+                        value={message}
+                        onChange={handleChange}
+                        onKeyDown={handleKeyEnter}
+                    />
+                    <InputRightElement>
+                        <Button
+                            variant="ghost"
+                            color="themeGreen.500"
+                            onClick={handleSubmit}
+                        >
+                            전송
+                        </Button>
+                    </InputRightElement>
+                </InputGroup>
             </Flex>
         </>
     );

@@ -31,6 +31,7 @@ function App() {
         <>
             <ChakraProvider theme={Theme}>
                 <Fonts />
+
                 <Routes>
                     <Route path="/" element={<Navigate to={"/v1/main"} />} />
                     <Route path="/v1" element={<LayOut />}>

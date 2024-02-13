@@ -197,7 +197,7 @@ export interface AcceptSeller {
     sellerInfoId: number;
     userId: number;
 }
-    
+
 export interface UserProfileEdit {
     profileImg: string | null | undefined;
     password: string;
@@ -227,7 +227,7 @@ export interface LiveProductAll {
     categoryName: string;
     productName: string;
     productContent: string;
-    paymentLink: null,
+    paymentLink: null;
     price: number;
     deliveryCharge: number;
     quantity: number;
@@ -237,5 +237,14 @@ export interface LiveProductAll {
     livePriceEndDate: string;
     mainProductSetting: boolean;
     registerDate: string;
-    seq: null;  
+    seq: null;
+}
+export interface chatMessageSend extends chatMessageRecv {
+    roomId: number;
+}
+
+export interface chatMessageRecv {
+    senderId: number;
+    senderNickname: string;
+    message: string;
 }
