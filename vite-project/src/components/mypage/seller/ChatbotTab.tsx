@@ -22,6 +22,7 @@ interface broadcastInfo {
 function Chatbot() {
     const user = useSelector((state: RootState) => state.user);
     const [modalOpen, setModalOpen] = useState(false);
+    const [chatbotChanged, setChatbotChanged] = useState(false);
     const [ livePlans, setLivePlans ] = useState<Array<broadcastInfo>>([]);
 
     useEffect(() => {
@@ -33,9 +34,11 @@ function Chatbot() {
     }, [user.accessToken])
 
 
-    function handleModalOpen() {
-        setModalOpen(!modalOpen);
+    const handleModalOpen = () => {
+        setModalOpen(prevState => !prevState);
+        setChatbotChanged(true); // Set chatbotChanged to true when a chatbot is registered
     }
+    
 
     return (
         <Box flexDirection="column" w="90%" h="full">
@@ -58,7 +61,7 @@ function Chatbot() {
             </Flex>
 
             {/* 방송 별 챗봇 리스트 */}
-            <ChatbotList livePlans={livePlans} />
+            <ChatbotList livePlans={livePlans} chatbotChanged={chatbotChanged} setChatbotChanged={setChatbotChanged} />
         </Box>
     )
 }
