@@ -14,9 +14,9 @@ const url = "users";
 async function loginUser(data: { loginId: string; password: string }) {
     try {
         const response = await http.post(`${url}/login`, data);
-        const responseData = response.data
+        const responseData = response.data;
         if (responseData.status === 201) {
-            return responseData
+            return responseData;
         }
     } catch (error) {
         if (error instanceof AxiosError) {
@@ -24,7 +24,7 @@ async function loginUser(data: { loginId: string; password: string }) {
             if (error.response) {
                 //   console.log(error.response.data.reason); // 'reason' 출력
                 if (error.response.status === 401) {
-                    if (error.response.data.divisionCode === 'B003') {
+                    if (error.response.data.divisionCode === "B003") {
                         throw new Error("비밀번호가 일치하지 않습니다.");
                     } else {
                         throw new Error("가입된 아이디가 아닙니다.");
@@ -41,8 +41,8 @@ async function logoutAPI(accessToken: string, refreshToken: string) {
         const response = await http.delete(`${url}/logout`, {
             headers: {
                 "Content-Type": "application/json",
-                "Authorization": "Bearer " + accessToken
-            }
+                Authorization: "Bearer " + accessToken,
+            },
         });
         return response;
     } catch (error) {
@@ -52,8 +52,11 @@ async function logoutAPI(accessToken: string, refreshToken: string) {
                     if (error.response.data.divisionCode === "G013") {
                         localStorage.clear();
                         window.location.reload();
-                        const response = await ReissueTokenAPI({accessToken, refreshToken});
-                        console.log(response)
+                        const response = await ReissueTokenAPI({
+                            accessToken,
+                            refreshToken,
+                        });
+                        console.log(response);
                     }
                 }
             }
@@ -62,16 +65,14 @@ async function logoutAPI(accessToken: string, refreshToken: string) {
     }
 }
 
-
 async function signupUserAPI(data: RegisterUser) {
-
     try {
-        const response = await http.post(`${url}/join`, data)
-        const responseData = response.data
+        const response = await http.post(`${url}/join`, data);
+        const responseData = response.data;
         if (responseData.status === 201) {
-            return 1
+            return 1;
         } else if (responseData.status === 409) {
-            return 33
+            return 33;
         }
     } catch (error) {
         if (error instanceof Error) {
@@ -87,12 +88,16 @@ async function signupUserAPI(data: RegisterUser) {
 }
 
 async function checkIdAPI(data: { id: string }) {
-
     try {
-        const response = await http.get(`${url}/join/check-login-id/${data.id}`)
+        const response = await http.get(
+            `${url}/join/check-login-id/${data.id}`
+        );
         const responseData = response.data;
-        if (responseData.status === 200 && responseData.data.duplicate === false) {
-            return 1
+        if (
+            responseData.status === 200 &&
+            responseData.data.duplicate === false
+        ) {
+            return 1;
         } else {
             // console.log("아이디가 중복되었거나 요청에 문제가 있습니다.");
         }
@@ -102,12 +107,11 @@ async function checkIdAPI(data: { id: string }) {
 }
 
 async function sendEmailAPI(data: { email: string }) {
-
     try {
         const response = await http.post(`${url}/join/check-email`, data);
         const responseData = response.data;
         if (responseData.status === 201) {
-            return 1
+            return 1;
         }
         console.log(response);
     } catch (error) {
@@ -115,28 +119,32 @@ async function sendEmailAPI(data: { email: string }) {
     }
 }
 
-async function checkEmailAPI(data: { email: string, code: string }) {
+async function checkEmailAPI(data: { email: string; code: string }) {
     try {
-        const response = await http.get(`${url}/join/check-email-verifications/${data.email}/${data.code}`)
+        const response = await http.get(
+            `${url}/join/check-email-verifications/${data.email}/${data.code}`
+        );
         const responseData = response.data;
         if (responseData.status === 200 && responseData.data.verify === true) {
-            return 1
+            return 1;
         } else {
-            console.log(responseData)
+            console.log(responseData);
         }
     } catch (error) {
         console.error(error);
     }
 }
 
-
 async function findIdAPI(data: { email: string }) {
     try {
-        const response = await http.get(`${url}/find-login-id/${data.email}`)
+        const response = await http.get(`${url}/find-login-id/${data.email}`);
         const responseData = response.data;
         if (responseData.status === 200) {
             // console.log("이메일 전송이 완료되었습니다");
-        } else if (responseData.status === 401 && responseData.divisionCode === "B005") {
+        } else if (
+            responseData.status === 401 &&
+            responseData.divisionCode === "B005"
+        ) {
             // console.log("가입된 이메일이 아닙니다 회원가입 ㄱ");
         } else {
             // console.log(responseData)
@@ -148,9 +156,9 @@ async function findIdAPI(data: { email: string }) {
     }
 }
 
-async function findPwAPI(data: { loginId: string, email: string }) {
+async function findPwAPI(data: { loginId: string; email: string }) {
     try {
-        const response = await http.post(`${url}/find-password`, data)
+        const response = await http.post(`${url}/find-password`, data);
         if (response.status === 201) {
             return 1; // 성공을 나타내는 값 (원하는 값으로 변경 가능)
         } else if (response.status === 400) {
@@ -170,33 +178,37 @@ async function getMyInfoAPI(accessToken: string) {
         const response = await http.get(`${url}`, {
             headers: {
                 "Content-Type": "application/json",
-                "Authorization": "Bearer " + accessToken
-            }
+                Authorization: "Bearer " + accessToken,
+            },
         });
         const responseData = response.data;
-        return responseData
+        return responseData;
     } catch (error) {
-        console.log(error)
+        console.log(error);
         throw error;
     }
 }
 
-async function postMyInfoAPI(data: userInfo, accessToken: string, refreshToken: string) {
+async function postMyInfoAPI(
+    data: userInfo,
+    accessToken: string,
+    refreshToken: string
+) {
     try {
         const response = await http.post(`${url}`, data, {
             headers: {
                 "Content-Type": "mulitpart/form-data",
-                "Authorization": "Bearer " + accessToken,
-                "Refresh-Token": refreshToken
-            }
+                Authorization: "Bearer " + accessToken,
+                "Refresh-Token": refreshToken,
+            },
         });
         const responseData = response.data;
         if (responseData.status === 200) {
             // console.log("정보수정성공")
         }
-        return responseData
+        return responseData;
     } catch (error) {
-        console.log(error)
+        console.log(error);
         throw error;
     }
 }
@@ -206,13 +218,13 @@ async function deleteMyInfoAPI(accessToken: string) {
         const response = await http.delete(`${url}`, {
             headers: {
                 "Content-Type": "mulitpart/form-data",
-                "Authorization": "Bearer " + accessToken,
-            }
+                Authorization: "Bearer " + accessToken,
+            },
         });
         const responseData = response.data;
-        return responseData
+        return responseData;
     } catch (error) {
-        console.log(error)
+        console.log(error);
         throw error;
     }
 }
@@ -224,12 +236,12 @@ async function registerSellerAPI(data: RegisterSeller, accessToken: string) {
         const response = await http.post(`${url}/sellers`, data, {
             headers: {
                 "Content-Type": "application/json",
-                "Authorization": "Bearer " + accessToken
-            }
-        })
-        const responseData = response.data
+                Authorization: "Bearer " + accessToken,
+            },
+        });
+        const responseData = response.data;
         if (responseData.status === 201) {
-            return responseData
+            return responseData;
         }
     } catch (error) {
         if (error instanceof AxiosError) {
@@ -237,7 +249,7 @@ async function registerSellerAPI(data: RegisterSeller, accessToken: string) {
             if (error.response) {
                 console.log(error.response.data.reason); // 'reason' 출력
                 if (error.response.status === 401) {
-                    if (error.response.data.divisionCode === 'B008') {
+                    if (error.response.data.divisionCode === "B008") {
                         throw new Error("로그인 여부를 다시 확인해주세요");
                     } else {
                         // console.log("미가입");
@@ -265,14 +277,22 @@ async function getSellerDetailAPI(sellerId: number) {
 }
 
 // 팔로우 등록 함수
-async function followSellerAPI(sellerId: number, alarmSetting: boolean, accessToken: string) {
+async function followSellerAPI(
+    sellerId: number,
+    alarmSetting: boolean,
+    accessToken: string
+) {
     try {
-        const response = await http.post(`${url}/follow`, { sellerId, alarmSetting }, {
-            headers: {
-                "Content-Type": "application/json",
-                "Authorization": "Bearer " + accessToken
+        const response = await http.post(
+            `${url}/follow`,
+            { sellerId, alarmSetting },
+            {
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: "Bearer " + accessToken,
+                },
             }
-        });
+        );
         const responseData = response.data;
         if (responseData.status === 201) {
             return 1;
@@ -289,8 +309,8 @@ async function checkFollowAPI(sellerId: number, accessToken: string) {
         const response = await http.get(`${url}/follow/${sellerId}`, {
             headers: {
                 "Content-Type": "application/json",
-                "Authorization": "Bearer " + accessToken
-            }
+                Authorization: "Bearer " + accessToken,
+            },
         });
         const responseData = response.data;
         if (responseData.data.follow === true) {
@@ -310,8 +330,8 @@ async function unfollowSellerAPI(sellerId: number, accessToken: string) {
         const response = await http.delete(`${url}/follow/${sellerId}`, {
             headers: {
                 "Content-Type": "application/json",
-                "Authorization": "Bearer " + accessToken
-            }
+                Authorization: "Bearer " + accessToken,
+            },
         });
         const responseData = response.data;
         if (responseData.status === 200) {
@@ -329,8 +349,8 @@ async function getFollowingListAPI(accessToken: string) {
         const response = await http.get(`${url}/follow/following`, {
             headers: {
                 "Content-Type": "application/json",
-                "Authorization": "Bearer " + accessToken
-            }
+                Authorization: "Bearer " + accessToken,
+            },
         });
         const responseData = response.data;
         if (responseData.status === 200) {
@@ -348,8 +368,8 @@ async function getFollowerListAPI(accessToken: string) {
         const response = await http.get(`${url}/follow/follower`, {
             headers: {
                 "Content-Type": "application/json",
-                "Authorization": "Bearer " + accessToken
-            }
+                Authorization: "Bearer " + accessToken,
+            },
         });
         const responseData = response.data;
         if (responseData.status === 200) {
@@ -364,18 +384,22 @@ async function getFollowerListAPI(accessToken: string) {
 // 유저 정보 get 함수
 async function fetchProfile(accessToken: string, refreshToken: string) {
     headers.set("Authorization", `Bearer ${accessToken}`);
-    headers.set("Refresh-Token", refreshToken)
+    headers.set("Refresh-Token", refreshToken);
     headers.set("Content-Type", "application/json");
 
-    return await http.get(url, {headers: headers})
+    return await http.get(url, { headers: headers });
 }
 
 // 유저 정보 수정 함수
-async function setProfile(data: FormData, accessToken: string, refreshToken: string) {
+async function setProfile(
+    data: FormData,
+    accessToken: string,
+    refreshToken: string
+) {
     headers.set("Authorization", `Bearer ${accessToken}`);
-    headers.set("Refresh-Token", refreshToken)
-    headers.set("Content-Type", "multipart/form-data");    
-    return await http.post(url, data, { headers: headers })
+    headers.set("Refresh-Token", refreshToken);
+    headers.set("Content-Type", "multipart/form-data");
+    return await http.post(url, data, { headers: headers });
 }
 
 // 관리자 API
@@ -385,12 +409,12 @@ async function getAllUsersAPI(page: number, size: number, accessToken: string) {
         const response = await http.get(`${url}/admin`, {
             params: {
                 page,
-                size
+                size,
             },
             headers: {
                 "Content-Type": "application/json",
-                "Authorization": "Bearer " + accessToken
-            }
+                Authorization: "Bearer " + accessToken,
+            },
         });
         const responseData = response.data;
         if (responseData.status === 200) {
@@ -401,7 +425,6 @@ async function getAllUsersAPI(page: number, size: number, accessToken: string) {
         throw error;
     }
 }
-
 
 // 관리자가 회원을 강제로 탈퇴시키는 함수
 async function deleteUserByAdminAPI(id: number) {
@@ -416,17 +439,21 @@ async function deleteUserByAdminAPI(id: number) {
 }
 
 // 관리자의 판매자 전환 신청 목록 조회 함수
-async function getSellerApplicationsAPI(page: number, size: number, accessToken: string) {
+async function getSellerApplicationsAPI(
+    page: number,
+    size: number,
+    accessToken: string
+) {
     try {
         const response = await http.get(`${url}/sellers/admin`, {
             params: {
                 page,
-                size
+                size,
             },
             headers: {
                 "Content-Type": "application/json",
-                "Authorization": "Bearer " + accessToken
-            }
+                Authorization: "Bearer " + accessToken,
+            },
         });
         const responseData = response.data;
         return responseData;
@@ -439,7 +466,9 @@ async function getSellerApplicationsAPI(page: number, size: number, accessToken:
 // 관리자의 판매자 전환 신청 상세 조회 함수
 async function getSellerApplicationDetailAPI(sellerInfoId: number) {
     try {
-        const response = await http.get(`${url}/sellers/admin-sellers/${sellerInfoId}`);
+        const response = await http.get(
+            `${url}/sellers/admin-sellers/${sellerInfoId}`
+        );
         const responseData = response.data;
         return responseData;
     } catch (error) {
@@ -449,25 +478,21 @@ async function getSellerApplicationDetailAPI(sellerInfoId: number) {
 }
 
 // 관리자의 판매자 전환 승인 함수
- function approveSellerApplicationAPI(sellerInfoId: number, accessToken: string) {
-    try {
-        http.put(`${url}/sellers/admin/approve/${sellerInfoId}`, {
-            headers: {
-                "Content-Type": "application/json",
-                "Authorization": "Bearer " + accessToken
-            }
-        })
-    } catch (error) {
-        console.log(error)
-        console.log("판매자 전환 승인 실패");
-        throw error;
-    }
+async function approveSellerApplicationAPI(
+    sellerInfoId: number,
+    accessToken: string
+) {
+    headers.set("Authorization", `Bearer ${accessToken}`)
+  
+    return await http.put(`${url}/sellers/admin/approve/${sellerInfoId}`, {}, {headers : headers})
 }
 
 // 관리자의 판매자 전환 철회 함수
 async function cancelSellerApplicationAPI(sellerInfoId: number) {
     try {
-        const response = await http.put(`${url}/sellers/admin/cancle/${sellerInfoId}`);
+        const response = await http.put(
+            `${url}/sellers/admin/cancle/${sellerInfoId}`
+        );
         const responseData = response.data;
         return responseData;
     } catch (error) {
