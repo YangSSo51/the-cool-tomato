@@ -39,7 +39,8 @@ interface chatbotInfo {
     registerDate: string;
 }
 
-function ChatbotList({ livePlans }: { livePlans: broadcastInfo[]}) {
+function ChatbotList({ livePlans, chatbotChanged, setChatbotChanged }: 
+    { livePlans: broadcastInfo[], chatbotChanged: boolean, setChatbotChanged: (chatbotChanged: boolean) => void }) {
     const [chatbotList, setChatbotList] = useState<chatbotInfo[]>([]);
     const user = useSelector((state: RootState) => state.user);
 
@@ -47,9 +48,10 @@ function ChatbotList({ livePlans }: { livePlans: broadcastInfo[]}) {
         const fetchData = async () => {
             const response = await GetChatbotListAPI({page:0, size:100}, user.accessToken);
             setChatbotList(response.list)
+            setChatbotChanged(false);
         };
         fetchData();
-    }, [user.accessToken])
+    }, [user.accessToken, chatbotChanged])
 
     // const editChatbot = async (chatbotId: number) => {
     //     try {
@@ -64,6 +66,7 @@ function ChatbotList({ livePlans }: { livePlans: broadcastInfo[]}) {
         try {
             await DeleteChatbotAPI(chatbotId, user.accessToken);
             setChatbotList(prevChatbotList => prevChatbotList.filter(chatbot => chatbot.chatbotId !== chatbotId));
+            setChatbotChanged(true);
         } catch (error) {
             console.error("Error deleting chatbot:", error);
         }

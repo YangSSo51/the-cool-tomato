@@ -36,12 +36,10 @@ function ChatbotRegistrationModal({
     isOpen,
     handleModalOpen,
     livePlans,
-    // 함수,
 }: {
     isOpen: boolean;
     handleModalOpen: () => void;
-    livePlans: broadcastInfo[]
-    // 함수: (인자: 타입) => void;
+    livePlans: broadcastInfo[];
 }) {
     const [roomNumber, setRoomNumber] = useState(0)
     const [roomTitle, setRoomTitle] = useState("라이브를 선택해주세요")
@@ -67,7 +65,7 @@ function ChatbotRegistrationModal({
             answer: chatbotContent
         };
         RegisterChatbotAPI(data, accessToken).then(() => {
-                handleClose();
+            handleClose();
             })
             .catch((err) => {
                 console.log(err);
