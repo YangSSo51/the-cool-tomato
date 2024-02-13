@@ -25,6 +25,6 @@ public interface LiveBroadcastRepository extends JpaRepository<LiveBroadcast, Lo
     @EntityGraph(attributePaths = {"user"})
     public Page<LiveBroadcast> findByUserIdAndIsDeleted(Long id, Boolean isDeleted, Pageable pageable);
     @EntityGraph(attributePaths = {"user"})
-    @Query("SELECT lb FROM LiveBroadcast lb WHERE FUNCTION('DATE_FORMAT', lb.broadcastStartDate, '%y-%m-%d') = :startDate AND lb.isDeleted = false")
+    @Query("SELECT lb FROM LiveBroadcast lb WHERE FUNCTION('DATE_FORMAT', lb.broadcastStartDate, '%y-%m-%d') = :startDate AND lb.isDeleted = false ORDER BY lb.broadcastStartDate")
     public Page<LiveBroadcast> findLiveBroadcastsByStartDateAndNotDeleted(@Param("startDate") String startDate, Pageable pageable);
 }

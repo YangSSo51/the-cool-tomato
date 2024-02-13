@@ -61,7 +61,6 @@ public class BroadcastSearchServiceImpl implements BroadcastSearchService {
                         .build();
                 infos.add(info);
             }
-
             return GetCarouselResponseDto.builder().broadcastInfoList(infos).build();
         }catch (NoSuchElementException e1){
             throw new BusinessExceptionHandler(ErrorCode.BAD_REQUEST_ERROR); //DB에 데이터가 없을 때 - JPA
@@ -146,6 +145,7 @@ public class BroadcastSearchServiceImpl implements BroadcastSearchService {
                         .sellerId(queryResult.getUser().getId())
                         .nickName(queryResult.getUser().getNickname())
                         .broadcastStatus(queryResult.getBroadcastStatus())
+                        .startDate(queryResult.getBroadcastStartDate())
                         .build();
                 infos.add(info);
             }

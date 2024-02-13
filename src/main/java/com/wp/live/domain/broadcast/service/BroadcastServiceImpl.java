@@ -1,11 +1,15 @@
 package com.wp.live.domain.broadcast.service;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.wp.live.domain.broadcast.dto.common.BroadcastAnalyzeInfo;
 import com.wp.live.domain.broadcast.dto.common.BroadcastInfo;
 import com.wp.live.domain.broadcast.dto.controller.request.*;
 import com.wp.live.domain.broadcast.dto.controller.response.GetBroadcastInfoResponseDto;
 import com.wp.live.domain.broadcast.dto.controller.response.GetBroadcastListResponseDto;
+import com.wp.live.domain.broadcast.entity.BroadcastAnalyze;
 import com.wp.live.domain.broadcast.entity.LiveBroadcast;
 import com.wp.live.domain.broadcast.entity.User;
+import com.wp.live.domain.broadcast.repository.BroadcastAnalyzeRepository;
 import com.wp.live.domain.broadcast.repository.LiveBroadcastRepository;
 import com.wp.live.domain.broadcast.utils.MediateOpenviduConnection;
 import com.wp.live.global.common.code.ErrorCode;
@@ -16,6 +20,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.data.redis.core.ZSetOperations;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -29,6 +34,7 @@ public class BroadcastServiceImpl implements BroadcastService{
     private final MediateOpenviduConnection mediateOpenviduConnection;
     private final LiveBroadcastRepository liveBroadcastRepository;
     private final StringRedisTemplate redisTemplate;
+    private final BroadcastAnalyzeRepository broadcastAnalyzeRepository;
     private final String RANK="ranking";
     private final String VIEW="view";
     private final String HS="broadcast_info";
@@ -107,6 +113,29 @@ public class BroadcastServiceImpl implements BroadcastService{
             liveBroadcast.setIsDeleted(true);
             liveBroadcast.setBroadcastEndDate(LocalDateTime.now());
             liveBroadcastRepository.save(liveBroadcast);
+
+            List<ZSetOperations.TypedTuple<String>> hotKeywordList = Objects.requireNonNull(redisTemplate.opsForZSet().reverseRangeWithScores(liveBroadcast.getTopicId(), 0, 4)).stream().toList();
+            List<String> hotKeywords = new ArrayList<>();
+            for (ZSetOperations.TypedTuple<String> stringTypedTuple : hotKeywordList) {
+                String keyword = Objects.requireNonNull(stringTypedTuple.getValue());
+                hotKeywords.add(keyword);
+            }
+
+            String topicId = liveBroadcast.getTopicId();
+            Set<Object> keys = redisTemplate.opsForHash().keys(topicId);
+            Map<String, String> connNum = new HashMap<>();
+            for (Object key : keys) {
+                String num = redisTemplate.opsForHash().get(topicId, key.toString()).toString();
+                connNum.put(key.toString(), num);
+            }
+
+            BroadcastAnalyzeInfo analyzeInfo = BroadcastAnalyzeInfo.builder().hotKeywords(hotKeywords).connNum(connNum).build();
+            ObjectMapper objectMapper = new ObjectMapper();
+            String info = objectMapper.writeValueAsString(analyzeInfo);
+
+            BroadcastAnalyze analyze = BroadcastAnalyze.builder().liveBroadcastId(liveBroadcast.getUser().getId()).content(info).build();
+            broadcastAnalyzeRepository.save(analyze);
+
             redisTemplate.opsForZSet().incrementScore(RANK, String.valueOf(stop.getLiveBroadcastId()), -1000000000);
             redisTemplate.opsForHash().delete(VIEW, Long.toString(stop.getLiveBroadcastId()));
         } catch (Exception e){

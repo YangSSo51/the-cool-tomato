@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
 @Data
 @Builder
 @NoArgsConstructor
@@ -16,4 +18,5 @@ public class BroadcastInfo {
     private Long viewCount;
     private Long sellerId;
     private Boolean broadcastStatus;
+    private LocalDateTime startDate;
 }
