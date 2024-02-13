@@ -207,13 +207,17 @@ export interface UserProfileEdit {
     birthday: string;
 }
 
-export interface LiveCalendarInterface {
+export interface LiveFetchInterface {
     liveBroadcastId: number;
     broadcastTitle: string;
     nickName: string;
-    viewCount: number | null;
-    broadcastStatus: boolean;
+    viewCount: null;
+    sellerId: number;
+    broadcastStatus: false;
     startDate: string;
+}
+
+export interface LiveCalendarInterface {
     liveProductId: number;
     productId: number;
     imgSrc: string;
@@ -236,3 +240,18 @@ export interface LiveCalendarInterface {
     registerDate: string;
     seq: number;
 }
+
+export interface LiveCalendarShownInterface {
+    startDate: string;
+    nickName: string;
+    liveBroadcastId: number;
+    broadcastTitle: string;
+    imgSrc: string;
+    sellerImg: string;
+    categoryId: number;
+    productName: string;
+    price: number;
+    liveFlatPrice: number;
+    liveRatePrice: number;
+}
+
