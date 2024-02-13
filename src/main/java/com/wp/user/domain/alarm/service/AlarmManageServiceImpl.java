@@ -1,10 +1,5 @@
 package com.wp.user.domain.alarm.service;
 
-import com.google.auth.oauth2.GoogleCredentials;
-import com.google.firebase.messaging.FirebaseMessaging;
-import com.google.firebase.messaging.FirebaseMessagingException;
-import com.google.firebase.messaging.Message;
-import com.google.firebase.messaging.Notification;
 import com.wp.user.domain.alarm.dto.request.BroadcastAlarmRequest;
 import com.wp.user.domain.alarm.dto.response.GetAlarmManageListResponse;
 import com.wp.user.domain.alarm.entity.AlarmManage;
@@ -22,11 +17,9 @@ import com.wp.user.global.exception.BusinessExceptionHandler;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
