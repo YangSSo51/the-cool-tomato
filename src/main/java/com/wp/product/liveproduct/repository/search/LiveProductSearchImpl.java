@@ -41,6 +41,7 @@ public class LiveProductSearchImpl extends QuerydslRepositorySupport implements 
         List<LiveProductResponse> list = queryFactory.select(Projections.bean(LiveProductResponse.class,
                 liveProduct.liveProductId,
                         product.productId,
+                        product.imgSrc,
                         product.sellerId,
                         product.category.categoryId,
                         product.category.categoryContent.as("categoryName"),
@@ -61,6 +62,7 @@ public class LiveProductSearchImpl extends QuerydslRepositorySupport implements 
                 .on(liveProduct.product.productId.eq(product.productId))
                 .fetchJoin()
                 .where(liveProduct.liveId.eq(request.getLiveId()))
+                .orderBy(liveProduct.mainProductSetting.desc(),liveProduct.registerDate.desc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetch();
@@ -85,6 +87,7 @@ public class LiveProductSearchImpl extends QuerydslRepositorySupport implements 
                         qLiveProduct.liveProductId,
                         qLiveBroadcast.liveBroadcastId,
                         qProduct.productId,
+                        qProduct.imgSrc,
                         qProduct.category.categoryId,
                         qProduct.category.categoryContent.as("categoryName"),
                         qProduct.sellerId,
