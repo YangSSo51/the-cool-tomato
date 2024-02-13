@@ -19,6 +19,7 @@ eureka:
       
 spring:
   cloud:
+    gateway:
       mvc:
         routes:
           - id: auth
@@ -49,7 +50,3 @@ spring:
             uri: lb://CHATBOT
             predicates:
               - Path=/v1/chatbots/**
-          - id: user
-            uri: lb://USER
-            predicates:
-              - Path=/v1/users/**
