@@ -5,7 +5,7 @@ import { getTitleSearchAPI, getSellerSearchAPI } from "../api/livesearch";
 import SearchContents from "../components/search/SearchContents";
 import Recommends from "../components/search/Recommends";
 
-// 검색 전/검색결과가 없을 경우 추천상품 띄우기
+// 검색 전 추천상품 띄우기
 export default function Search() {
     const [showResults, setShowResults] = useState(false);
     const [searchKeyword, setSearchKeyword] = useState('');
@@ -62,7 +62,7 @@ export default function Search() {
                     {searchKeyword}의 검색결과
                 </Text>
                 {(searchtitleResults.length > 0 || searchsellerResults.length > 0) ? (
-                    <SearchContents searchKeyword={searchKeyword} searchtitleResults={searchtitleResults} searchsellerResults={searchsellerResults} />    
+                    <SearchContents searchtitleResults={searchtitleResults} searchsellerResults={searchsellerResults} />    
                 ) : (
                     <Text mt={2} mb={2} fontSize="md" fontWeight="normal" textAlign="center" color="gray.500">
                         검색 결과가 없습니다.
