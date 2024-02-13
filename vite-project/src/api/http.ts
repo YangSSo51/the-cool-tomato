@@ -4,6 +4,8 @@ import SockJS from "sockjs-client";
 const chatWebSocketUrl =
     "ws://i10a501.p.ssafy.io:8085/v1/chat/ws-stomp/websocket";
 
+const chatbotWebSocketUrl = "ws://i10a501.p.ssafy.io:8086/stomp/chat/websocket";
+
 function mainAxios() {
     return axios.create({
         baseURL: "http://3.39.6.29:8084/v1/",
@@ -63,6 +65,20 @@ function chatSocket() {
     return sock;
 }
 
+function chatbotSocket() {
+    const base_url = "http://i10a501.p.ssafy.io:8086";
+    const sock = new SockJS(`${base_url}/stomp/chat`);
+    sock.onclose = (ev: CloseEvent) => {
+        console.log("chatting socket close");
+        console.log(ev);
+    };
+    sock.onopen = (ev: Event) => {
+        console.log("chatting socket open");
+        console.log(ev);
+    };
+    return sock;
+}
+
 function authAxios() {
     return axios.create({
         baseURL: "http://i10a501.p.ssafy.io:8080/v1/",
@@ -93,4 +109,6 @@ export {
     chatAxios,
     chatSocket,
     chatWebSocketUrl,
+    chatbotSocket,
+    chatbotWebSocketUrl,
 };
