@@ -12,18 +12,27 @@ const loginUserThunk = createAsyncThunk(
     }
 );
 
-const updateProfileThunk = createAsyncThunk(
-    "user/updateProfile",
-    async (at: string, rt: string) => {
-        const response = await updateProfile(at, rt);
-        return response.data
-    }
-)
+// const updateProfileThunk = createAsyncThunk(
+//     "user/updateProfile",
+//     async (at: string, rt: string) => {
+//         const response = await updateProfile(at, rt);
+//         return response.data
+//     }
+// )
 
 const logoutUserThunk = createAsyncThunk(
     "user/logout",
-    async ({ accessToken, refreshToken }: { accessToken: string, refreshToken: string }, thunkAPI) => {
-        const response: AxiosResponse = await logoutAPI(accessToken, refreshToken);
+    async (
+        {
+            accessToken,
+            refreshToken,
+        }: { accessToken: string; refreshToken: string },
+        thunkAPI
+    ) => {
+        const response: AxiosResponse = await logoutAPI(
+            accessToken,
+            refreshToken
+        );
         return response.data;
     }
 );
@@ -32,4 +41,4 @@ const testUserThunk = createAsyncThunk("user/test", async () => {
     return "test";
 });
 
-export { loginUserThunk, logoutUserThunk, testUserThunk, updateProfileThunk };
+export { loginUserThunk, logoutUserThunk, testUserThunk };
