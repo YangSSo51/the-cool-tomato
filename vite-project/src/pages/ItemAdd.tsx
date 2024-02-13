@@ -207,7 +207,7 @@ export default function ItemAdd() {
                             />
 
                             <FormHelperText>
-                                제목은 10자 아래로 설정해주세요
+                                제목은 20자 아래로 설정해주세요
                             </FormHelperText>
 
                             {TitleInput.length >= 1 ? null : (
