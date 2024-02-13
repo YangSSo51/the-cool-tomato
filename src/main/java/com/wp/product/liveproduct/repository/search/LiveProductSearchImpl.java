@@ -62,7 +62,7 @@ public class LiveProductSearchImpl extends QuerydslRepositorySupport implements 
                 .on(liveProduct.product.productId.eq(product.productId))
                 .fetchJoin()
                 .where(liveProduct.liveId.eq(request.getLiveId()))
-                .orderBy(liveProduct.mainProductSetting.desc(),liveProduct.registerDate.desc())
+                .orderBy(liveProduct.mainProductSetting.desc(),liveProduct.seq.asc(),liveProduct.registerDate.desc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetch();
