@@ -4,12 +4,18 @@ import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.wp.product.global.common.code.ErrorCode;
 import com.wp.product.global.exception.BusinessExceptionHandler;
+import com.wp.product.global.file.dto.CustomMultipartFile;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.imgscalr.Scalr;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
@@ -22,6 +28,7 @@ import java.util.UUID;
 public class S3UploadService {
 
     private final AmazonS3 amazonS3;
+    static final int TARGET_HEIGHT = 250;
 
     @Value("${cloud.aws.s3.bucket}")
     private String bucket;
@@ -31,11 +38,35 @@ public class S3UploadService {
         amazonS3.putObject(bucket, folderPath + "/", new ByteArrayInputStream(new byte[0]), new ObjectMetadata());
         return folderPath;
     }
+
+    public MultipartFile resizeFile(String fileName,String fileFormatName,MultipartFile multipartFile) {
+        try {
+            BufferedImage sourceImage = ImageIO.read(multipartFile.getInputStream());
+
+            //동일 비율로 리사이징하기 위함
+            double sourceImageRatio = (double) sourceImage.getWidth() / sourceImage.getHeight();
+            int newWidth = (int) (TARGET_HEIGHT * sourceImageRatio);
+
+            //이미지 사이즈 변경
+            sourceImage =  Scalr.resize(sourceImage, newWidth, TARGET_HEIGHT);
+
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            ImageIO.write(sourceImage, fileFormatName, baos);
+            baos.flush();
+            byte[] bytes = baos.toByteArray();
+
+            return new CustomMultipartFile(bytes, "image", fileName, fileFormatName, bytes.length);
+        }catch (IOException e){
+            throw new BusinessExceptionHandler("파일 리사이징 실패",ErrorCode.FAIL_FILE_UPLOAD);
+        }
+    }
+
     public String saveFile(MultipartFile multipartFile) {
         if(multipartFile!= null && !multipartFile.isEmpty()) {
             String folderPath = makeDir();
             String uuid = UUID.randomUUID().toString();
             String originalFilename = uuid+multipartFile.getOriginalFilename();
+            String fileFormatName = multipartFile.getContentType().substring(multipartFile.getContentType().lastIndexOf("/") + 1);
 
             //파일 확장자 확인
             validateFileExtension(multipartFile.getOriginalFilename());
@@ -45,13 +76,18 @@ public class S3UploadService {
             log.info("파일 타입 : " +multipartFile.getContentType());
             log.info("파일 크기 : " +multipartFile.getSize());
 
+            MultipartFile resizedFile = resizeFile(multipartFile.getOriginalFilename(),fileFormatName,multipartFile);
+            log.info("리사이징된 파일 타입 : " +resizedFile.getContentType());
+            log.info("리사이징된 파일 크기 : " +resizedFile.getSize());
+
             ObjectMetadata metadata = new ObjectMetadata();
-            metadata.setContentLength(multipartFile.getSize());
-            metadata.setContentType(multipartFile.getContentType());
+            metadata.setContentLength(resizedFile.getSize());
+            metadata.setContentType(resizedFile.getContentType());
+
             try {
-                amazonS3.putObject(bucket + "/" + folderPath, originalFilename, multipartFile.getInputStream(), metadata);
+                amazonS3.putObject(bucket + "/" + folderPath, originalFilename, resizedFile.getInputStream(), metadata);
             }catch (Exception e){
-                log.debug(e.getMessage());
+                log.info(e.getMessage());
                 throw new BusinessExceptionHandler("파일 업로드 중 에러 발생", ErrorCode.FAIL_FILE_UPLOAD);
             }
             return amazonS3.getUrl(bucket+"/"+folderPath, originalFilename).toString();
