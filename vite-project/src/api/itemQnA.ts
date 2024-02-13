@@ -14,8 +14,8 @@ async function getQnAList(params: {
     "product-id": number;
 }) {
     // return await http.get(url + "/list", { params });
-    const response = await http.get(url + "/list", { params });
-    console.log(response)
+
+    return await http.get(url + "/list", { params });
 }
 
 // 구매자가 상품 문의를 등록함
@@ -42,12 +42,12 @@ async function buyerGetQnaAPI(page: number, size: number, accessToken: string) {
         const response = await http.get(`${url}/buyer/my/list`, {
             params: {
                 page,
-                size
+                size,
             },
             headers: {
                 "Content-Type": "application/json",
-                "Authorization": "Bearer " + accessToken
-            }
+                Authorization: "Bearer " + accessToken,
+            },
         });
         const responseData = response.data;
         if (responseData.status === 200) {
@@ -63,17 +63,21 @@ async function buyerGetQnaAPI(page: number, size: number, accessToken: string) {
 }
 
 // 판매자가 받은 상품 문의 리스트를 조회함
-async function sellerGetQnaAPI(page: number, size: number, accessToken: string) {
+async function sellerGetQnaAPI(
+    page: number,
+    size: number,
+    accessToken: string
+) {
     try {
         const response = await http.get(`${url}/seller/my/list`, {
             params: {
                 page,
-                size
+                size,
             },
             headers: {
                 "Content-Type": "application/json",
-                "Authorization": "Bearer " + accessToken
-            }
+                Authorization: "Bearer " + accessToken,
+            },
         });
         const responseData = response.data;
         if (responseData.status === 200) {
@@ -94,7 +98,7 @@ async function qnaDetailAPI(data: { productQuestionId: number }) {
         const response = await http.get(`${url}/${data.productQuestionId}`);
         const responseData = response.data;
         return responseData;
-        } catch (error) {
+    } catch (error) {
         console.error(error);
     }
 }
@@ -104,19 +108,20 @@ async function sellerPutQnaAPI(
     data: {
         productQuestionBoardId: number;
         answerContent: string;
-    }, accessToken: string) {
+    },
+    accessToken: string
+) {
     try {
         await http.put(`${url}`, data, {
             headers: {
                 "Content-Type": "application/json",
-                "Authorization": "Bearer " + accessToken
-            }
+                Authorization: "Bearer " + accessToken,
+            },
         });
     } catch (error) {
         console.error(error);
     }
 }
-
 
 export {
     getQnAList,

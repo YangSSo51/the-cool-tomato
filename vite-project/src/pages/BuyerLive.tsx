@@ -8,12 +8,16 @@ import { Icon } from "@chakra-ui/react";
 import BuyerLiveNav from "../components/common/BuyerLiveNav";
 
 import OpenViduComponent from "../components/openvidu/OpenViduComponent";
+import React from "react";
 
 function UnfilledHeart() {
     return <Icon as={CiHeart} boxSize={"3rem"} ml={"3px"} mb={"3px"} />;
 }
 
 export default function BuyerLive() {
+    // 임의로 지정 수정하쉐이 props만 내려주셍용
+    const roomId = 1;
+
     return (
         <>
             <BuyerLiveNav />
@@ -55,7 +59,7 @@ export default function BuyerLive() {
                             backgroundColor={"#ffffff"}
                             borderRadius={"20px"}
                         >
-                            <BuyerItem />
+                            <BuyerItem roomId={roomId} />
                         </Box>
                         <Box
                             w={"sm"}

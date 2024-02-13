@@ -198,6 +198,7 @@ export interface AcceptSeller {
     userId: number;
 }
 
+
 export interface UserProfileEdit {
     profileImg: string | null | undefined;
     password: string;
@@ -255,3 +256,35 @@ export interface LiveCalendarShownInterface {
     liveRatePrice: number;
 }
 
+export interface LiveProductAll {
+    liveProductId: number;
+    productId: number;
+    imgSrc: string;
+    sellerId: number;
+    sellerName: string;
+    sellerImg: string;
+    categoryId: number;
+    categoryName: string;
+    productName: string;
+    productContent: string;
+    paymentLink: null;
+    price: number;
+    deliveryCharge: number;
+    quantity: number;
+    liveFlatPrice: number;
+    liveRatePrice: number;
+    livePriceStartDate: string;
+    livePriceEndDate: string;
+    mainProductSetting: boolean;
+    registerDate: string;
+    seq: null;
+}
+export interface chatMessageSend extends chatMessageRecv {
+    roomId: number;
+}
+
+export interface chatMessageRecv {
+    senderId: number;
+    senderNickname: string;
+    message: string;
+}

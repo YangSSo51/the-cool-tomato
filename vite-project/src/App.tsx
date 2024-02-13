@@ -24,12 +24,14 @@ import ProfilePage from "./pages/ProfilePage";
 import AdminPage from "./pages/AdminPage";
 import ItemEditPage from "./pages/ItemEditPage";
 import LivePlanEditForm from "./components/mypage/seller/SellerPlanEdit";
+import LiveResultPage from "./pages/LiveResultsPage";
 
 function App() {
     return (
         <>
             <ChakraProvider theme={Theme}>
                 <Fonts />
+
                 <Routes>
                     <Route path="/" element={<Navigate to={"/v1/main"} />} />
                     <Route path="/v1" element={<LayOut />}>
@@ -87,6 +89,7 @@ function App() {
                         path="v1/live/:roomId"
                         element={<BuyerLive />}
                     ></Route>
+                    <Route path="v1/live/result/:liveBroadcastId" element={<LiveResultPage />} />
                 </Routes>
             </ChakraProvider>
         </>

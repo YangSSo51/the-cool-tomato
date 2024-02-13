@@ -1,5 +1,6 @@
 import { Box, Flex } from "@chakra-ui/layout";
 import { Badge, Button } from "@chakra-ui/react";
+import { useNavigate } from "react-router-dom";
 
 interface broadcastInfo {
     liveBroadcastId: number;
@@ -11,6 +12,11 @@ interface broadcastInfo {
 }
 
 function LiveItems({lives} : {lives: broadcastInfo}) {
+    const navigate = useNavigate();
+    const handleOpenNewTab = (url: string) => {
+        window.open(url, "_blank", "noopener, noreferrer");
+      };
+
     return (
         <Flex justifyContent="space-between" alignItems="center" my="4" mx="auto" p="2" borderWidth='1px' borderRadius='lg' overflow='hidden'>
             <Flex p="2">
@@ -42,7 +48,9 @@ function LiveItems({lives} : {lives: broadcastInfo}) {
                 </Box>
             </Flex>
 
-            <Button>
+            <Button onClick={()=>handleOpenNewTab(`/v1/live/result/${lives.liveBroadcastId}`)}>
+            {/* 위에 오류나면 아래내용으로 변경 */}
+            {/* <Button onClick={()=>navigate(`/v1/live/result/${lives.liveBroadcastId}`)}> */} 
                 데이터확인!
             </Button>
         </Flex>
