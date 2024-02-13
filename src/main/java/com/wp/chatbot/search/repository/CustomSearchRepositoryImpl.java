@@ -21,12 +21,12 @@ public class CustomSearchRepositoryImpl implements CustomSearchRepository{
     @Override
     public SearchHit<SearchChatbot> searchByQuestion(MessageDto message) {
         BoolQueryBuilder boolQuery = QueryBuilders.boolQuery();
-        MatchQueryBuilder matchQuery1 = QueryBuilders.matchQuery("is_deleted", "false");
+        MatchQueryBuilder matchQuery1 = QueryBuilders.matchQuery("is_deleted", false);
         MatchQueryBuilder matchQuery2 = QueryBuilders.matchQuery("question", message.getMessage());
         MatchQueryBuilder matchQuery3 = QueryBuilders.matchQuery("room_id",message.getRoomId());
-        boolQuery.should(matchQuery1);
-        boolQuery.should(matchQuery2);
-        boolQuery.should(matchQuery3);
+        boolQuery.must(matchQuery1);
+        boolQuery.must(matchQuery2);
+        boolQuery.must(matchQuery3);
 
         NativeSearchQuery searchQuery = new NativeSearchQueryBuilder()
                 .withQuery(boolQuery)
