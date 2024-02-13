@@ -20,6 +20,24 @@ eureka:
 spring:
   cloud:
       gateway:
+        default-filters:
+        - DedupeResponseHeader=Access-Control-Allow-Origin Access-Control-Allow-Credentials 
+        globalcors:
+          add-to-simple-url-handler-mapping: true
+          corsConfigurations:
+            '[/**]':
+              allowedOrigins:
+                - 'https://i10a501.p.ssafy.io'
+              allow-credentials: true
+              allowedHeaders: '*'
+              exposedHeaders: '*'
+              allowedMethods:
+                - POST
+                - GET
+                - PUT
+                - PATCH
+                - DELETE
+                - OPTIONS
         routes:
           - id: auth
             uri: lb://AUTH
@@ -52,4 +70,5 @@ spring:
           - id: user
             uri: lb://USER
             predicates:
-                - Path=/v1/users/** 
+                - Path=/v1/users/**
+  
