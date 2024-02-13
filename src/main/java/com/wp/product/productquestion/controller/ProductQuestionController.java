@@ -39,24 +39,14 @@ public class ProductQuestionController {
 
     @GetMapping("/list")
     @Operation(summary = "상품 문의 목록 조회",description = "상품 번호로 상품 문의 리스트를 조회함")
-    public ResponseEntity<?> getProductQuestionList(HttpServletRequest httpServletRequest,
-                                                    @RequestParam int page,
+    public ResponseEntity<?> getProductQuestionList(@RequestParam int page,
                                                     @RequestParam int size,
                                                     @RequestParam("product-id") Long productId){
-        //판매자 권한이 있는지 확인
-        String accessToken = jwtService.resolveAccessToken(httpServletRequest);
-        // 헤더 Access Token 추출
-        authClient.validateToken(AccessTokenRequest.builder().accessToken(accessToken).build());
-
-        Map<String, String> infos = authClient.extraction(ExtractionRequest.builder().accessToken(accessToken).infos(List.of("userId", "auth")).build()).getInfos();
-
-        Long userId = Long.valueOf(infos.get("userId"));
 
         ProductQuestionSearchRequest productQuestionSearchRequest = ProductQuestionSearchRequest.builder()
                 .page(page)
                 .size(size)
-                .productId(productId)
-                .loginId(userId).build();
+                .productId(productId).build();
 
         //상품 문의 리스트 조회
         Map<String, Object> productQuestionList = productQuestionService.getProductQuestionList(productQuestionSearchRequest);
