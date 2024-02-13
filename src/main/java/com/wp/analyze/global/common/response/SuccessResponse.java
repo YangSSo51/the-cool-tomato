@@ -1,4 +1,4 @@
-package com.wp.live.global.common.response;
+package com.wp.analyze.global.common.response;
 
 import lombok.Builder;
 import lombok.Getter;

@@ -1,9 +1,9 @@
-package com.wp.live.global.exception;
+package com.wp.analyze.global.exception;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.google.gson.JsonParseException;
-import com.wp.live.global.common.code.ErrorCode;
-import com.wp.live.global.common.response.ErrorResponse;
+import com.wp.analyze.global.common.code.ErrorCode;
+import com.wp.analyze.global.common.response.ErrorResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

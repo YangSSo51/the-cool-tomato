@@ -24,8 +24,8 @@ public class SwaggerConfig {
 
         return new OpenAPI()
                 .info(new Info()
-                        .title("라이브 커머스 프로젝트 방송 API")
-                        .description("방송 관련 기능을 제공합니다.")
+                        .title("데이터 분석 API")
+                        .description("데이터 분석 관련 기능을 제공합니다.")
                         .version("1.0.0"))
                 .components(components)
                 .addSecurityItem(securityRequirement);

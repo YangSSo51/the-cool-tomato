@@ -1,4 +1,4 @@
-package com.wp.live.global.common.code;
+package com.wp.analyze.global.common.code;
 
 import lombok.Getter;
 /**

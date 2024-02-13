@@ -1,6 +1,6 @@
-package com.wp.live.global.common.response;
+package com.wp.analyze.global.common.response;
 
-import com.wp.live.global.common.code.ErrorCode;
+import com.wp.analyze.global.common.code.ErrorCode;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;

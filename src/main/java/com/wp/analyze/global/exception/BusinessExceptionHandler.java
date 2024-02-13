@@ -1,6 +1,6 @@
-package com.wp.live.global.exception;
+package com.wp.analyze.global.exception;
 
-import com.wp.live.global.common.code.ErrorCode;
+import com.wp.analyze.global.common.code.ErrorCode;
 import lombok.Builder;
 import lombok.Getter;
 
