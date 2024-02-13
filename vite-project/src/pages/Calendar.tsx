@@ -17,10 +17,11 @@ import { useEffect, useState } from "react";
 export default function Calendar() {
     const today = dayjs();
     const [activeTabIndex, setActiveTabIndex] = useState(0);
-    
-    useEffect(() => {
+    const [islive, setislive] = useState(false);
 
-    }, [activeTabIndex])
+    useEffect(() => {
+        setislive(true);
+    }, [activeTabIndex]);
 
     return (
         <Container maxW={"7xl"} minH={"100vh"} p={"2rem"}>
@@ -83,29 +84,41 @@ export default function Calendar() {
                 </TabList>
 
                 <Divider />
-                <Flex
-                    alignItems={"center"}
-                    px={"6"}
-                    py={"6"}
-                    justify={"space-between"}
-                >
-                    <Flex alignItems={"center"} gap={"4"}>
-                        <Flex direction={"row"} gap={"1"}>
-                            <Button backgroundColor={"themeRed.500"}>
-                                <Text color={"white"}>현재 라이브 중</Text>
-                            </Button>
+                {islive ? (
+                    <Flex
+                        alignItems={"center"}
+                        px={"6"}
+                        py={"6"}
+                        justify={"space-between"}
+                    >
+                        <Flex alignItems={"center"} gap={"4"}>
+                            <Flex direction={"row"} gap={"1"}>
+                                <Button backgroundColor={"themeRed.500"}>
+                                    <Text color={"white"}>현재 라이브 중</Text>
+                                </Button>
+                            </Flex>
                         </Flex>
                     </Flex>
-                    <Flex alignItems={"center"} gap={"4"}>
-                        카테고리 항목
-                    </Flex>
-                </Flex>
+                ) : (
+                    ""
+                )}
+
                 <TabPanels>
                     <TabPanel>
-                        <LiveCalendar date={activeTabIndex} />
+                        <LiveCalendar date={0} setIslive={setislive} />
+                    </TabPanel>
+                    <TabPanel>
+                        <LiveCalendar date={1} setIslive={setislive} />
+                    </TabPanel>
+                    <TabPanel>
+                        <LiveCalendar date={2} setIslive={setislive} />
+                    </TabPanel>
+                    <TabPanel>
+                        <LiveCalendar date={3} setIslive={setislive} />
                     </TabPanel>
                 </TabPanels>
             </Tabs>
         </Container>
     );
 }
+
