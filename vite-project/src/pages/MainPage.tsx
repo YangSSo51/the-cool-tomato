@@ -1,5 +1,7 @@
 import MainCarouselComponent from "../components/common/MainCarouselComponent";
 import {
+    SimpleGrid,
+    CardHeader,
     Image,
     Box,
     Flex,
@@ -11,20 +13,27 @@ import {
     Heading,
     Stack,
 } from "@chakra-ui/react";
+import { useNavigate } from "react-router-dom";
 import CloudLeft from "/img/shape_02.png";
 import RainLeft from "/img/shape_02_l.png";
 import CloudLeftBottom from "/img/shape_03.png";
 import CloudRightBottom from "/img/shape_04.png";
-import Fruit from "/img/brandImage.png"
+import CloudBottom1 from "/img/shape_05.png";
+import Veges from "/img/VEGES.png"
+import farmer from "/img/farmer.jpg"
+import leaf from "/img/salad.jpg"
 import "../css/MainPage.css";
 
 export default function MainPage() {
+    const navigate = useNavigate();
     return (
-        <>
+        <Box overflow="hidden">
+
             <Flex w={"100vw"} justifyContent={"center"}>
                 <Box position="relative">
                     <MainCarouselComponent />
                     <Image
+                        marginTop={8}
                         className="mainLeftCloud"
                         position="absolute"
                         top={-8}
@@ -63,23 +72,27 @@ export default function MainPage() {
                     />
                 </Box>
             </Flex>
+
             <Flex className="scroll-downs" direction={"column"} gap={2}>
                 <Text fontSize={"1.2rem"}>scroll</Text>
                 <div className="mousey">
                     <div className="scroller"></div>
                 </div>
             </Flex>
+
             <Box height={"10rem"}></Box>
             <Flex alignItems={"center"} direction={"column"} gap={10}>
                 <Flex direction={"column"} gap={2}>
                     <Text fontSize={".8rem"} textAlign={"center"}>
-                        멋쟁이 토마토
+                        멋쟁이 토마토가 소개하는
                     </Text>
                     <Text fontSize={"2rem"} fontWeight={"bold"}>
                         이달의 멋쟁이
                     </Text>
                 </Flex>
+
                 <Flex wrap={"wrap"} justifyContent={"center"} gap={10}>
+
                     <Card
                         direction={{ base: "column", sm: "row" }}
                         overflow="hidden"
@@ -88,32 +101,39 @@ export default function MainPage() {
                         borderRadius={"1rem"}
                     >
                         <Image
-                            objectFit="fill"
+                            // objectFit="fill"
                             minW={{ sm: "300px" }}
                             maxW={{ sm: "300px" }}
                             maxH={{ sm: "300px"}}
                             minH={{ sm: "300px"}}
-                            src="https://img.sbs.co.kr/newimg/news/20230329/201766751_1280.jpg"
+                            src={farmer}
                             alt="Caffe Latte"
                         />
 
                         <Stack>
                             <CardBody>
-                                <Heading size="md">싱싱한 토마토</Heading>
-
                                 <Text py="2">
-                                  겁나 신선한 토마토 팝니다 사가세요~~~
-                                  먹어보면 반합니다
+                                    이달의 멋쟁이 농부
+                                </Text>
+                                <Heading size="md">이병창</Heading>
+
+                                <Text py="1">
+                                  동그란 모양이 아닌 감자를 주로 판매합니다
+                                </Text>
+                                <Text>
+                                  강원도에서 재배하는 감자, 고구마, 옥수수 등의 작물을 소개합니다
                                 </Text>
                             </CardBody>
 
                             <CardFooter>
-                                <Button variant="solid" colorScheme="blue">
-                                    Buy Latte
+                                <Button variant="solid" colorScheme="green">
+                                    판매자 구경가기
                                 </Button>
                             </CardFooter>
                         </Stack>
                     </Card>
+
+
                     <Card
                         direction={{ base: "column", sm: "row" }}
                         overflow="hidden"
@@ -127,47 +147,101 @@ export default function MainPage() {
                             maxW={{ sm: "300px" }}
                             maxH={{ sm: "300px"}}
                             minH={{ sm: "300px"}}
-                            src="https://tgzzmmgvheix1905536.cdn.ntruss.com/2021/10/ff8332a172ee493eaf3bb61911e43815"
+                            src={leaf}
                             alt="Caffe Latte"
                         />
-
                         <Stack>
                             <CardBody>
-                                <Heading size="md">산지직송 양파</Heading>
-
                                 <Text py="2">
-                                    직접 재배한 양파
-                                    양파의 신선함과 풍부한 영양을 만끽하세요! 건강한 삶의 조각, 양파가 당신을 기다립니다
+                                    이달의 멋쟁이 채소
+                                </Text>
+                                <Heading size="md">청소년잎채소</Heading>
+                                <Text py="2">
+                                    4cm가 넘은 어린잎채소는 판매할 수 없는 상품이 됩니다.
+                                    하지만 조금 더 성장한 어린잎 채소는 향이 더욱 진하고 맛의 풍미를 더욱 강조해줍니다.
                                 </Text>
                             </CardBody>
-
                             <CardFooter>
-                                <Button variant="solid" colorScheme="blue">
-                                    Buy Latte
+                                <Button variant="solid" colorScheme="green">
+                                    상품 구경가기
                                 </Button>
                             </CardFooter>
                         </Stack>
                     </Card>
                 </Flex>
             </Flex>
+
             <Box height={"20rem"}></Box>
+
             <Flex h={"100vh"} direction={"column"}>
-              <Box w={"100%"} background={'url(https://cdn.imweb.me/upload/S201804055ac60211e0c1d/d049e61e55652.jpg) center/cover no-repeat'} h={"30%"}></Box>
-              <Flex h={"70%"} backgroundColor={"#0E3E30"} justifyContent={"center"} alignItems={"center"}>
-                <Flex maxW={"107rem"} h={"80%"} gap={32} color={"white"}>
-                  <Flex w={"55rem"} direction={"column"} gap={5}>
-                    <Text mb={5} fontSize={"2rem"}>맛있는 토마토!</Text>
-                    <Text fontSize={"1.5rem"}>멋쟁이 토마토는 푸른 대자연의 품에서 자란 최상급 토마토로, 자연의 향기와 풍미를 그대로 담아내어 여러분의 식탁을 찾아갑니다.</Text>
-                    <Text fontSize={"1.5rem"}>신선하고 풍요로운 농장에서 선별된 토마토들은 우리의 엄격한 품질 기준을 통과하여 생산되었으며, 그 결과 멋쟁이 토마토는 최상의 맛과 영양을 보장합니다.</Text>
-                    <Text fontSize={"1.5rem"}>달콤한 맛과 고소한 향이 어우러진 멋쟁이 토마토는 다양한 요리에 활용되어 건강하고 맛있는 식사를 제공할 뿐만 아니라, 식탁 위의 아름다운 장식물로도 빛을 발합니다.</Text>
-                    <Text fontSize={"1.5rem"}>우리의 농부들이 마음을 담아 성장시킨 멋쟁이 토마토로, 당신의 일상에 자연의 축복과 즐거움을 더해보세요.</Text>
-                    <Text fontSize={"1.5rem"}>신선함과 맛의 완벽한 조화, 멋쟁이 토마토가 여러분을 찾아갑니다!</Text>
-                    <Text fontSize={"1.5rem"}>자연의 향기와 풍미가 담긴 토마토로 건강하고 맛있는 삶을 채우세요.</Text>
-                  </Flex>
-                  <Image src={Fruit}></Image>
+                <Box w={"100%"} background={'url(https://cdn.imweb.me/upload/S201804055ac60211e0c1d/d049e61e55652.jpg) center/cover no-repeat'} h={"30%"} />
+                <Flex className="aboutus" h={"70%"} justifyContent={"center"} alignItems={"center"}>
+                    <Flex maxW={"107rem"} h={"80%"} gap={10} color={"white"}>
+                        <Flex w={"55rem"} direction={"column"} gap={5} >
+                            <Text mb={5} fontSize={"2rem"}>멋쟁이토마토!</Text>
+                            <Text fontSize={"1.5rem"}>'멋쟁이 토마토'는 노래 가사에서 영감을 받았습니다</Text>
+                            <Text fontSize={"1.5rem"}>채소가 어떤 모습이든 상관없이 그 품질은 변함없다는 것을 의미합니다</Text>
+                            <Text fontSize={"1.5rem"}>못난이 채소들이라도 외관에 상관없이 모든 채소들은 멋쟁이입니다</Text>
+                            <Text fontSize={"1.5rem"}>우리 사이트의 취지는 못난이 채소의 아름다움을 직접 확인하고, 믿을 수 있는 가격에 건강한 먹거리를 챙기는 것입니다</Text>
+                            <Text fontSize={"1.5rem"}>멋쟁이토마토는 당신에게 저렴한 가격에 최상의 품질의 채소를 제공합니다</Text>
+                            <Text fontSize={"1.5rem"}>함께 건강한 삶을 시작해보세요!</Text>
+                        </Flex>
+                        <Image src={Veges}></Image>
+                    </Flex>
                 </Flex>
-              </Flex>
+                <Flex w="100%" h="5%" className="aboutus-end" />
             </Flex>
-        </>
+
+            <Flex mt="20" mb="20" w={"100vw"} justifyContent={"center"}>
+                <Box position="relative">
+                    <SimpleGrid columns={2} gap={2}>
+                        <Card>
+                            <CardHeader>
+                                <Heading size='md'>판매에 관심이 생겼나요?</Heading>
+                            </CardHeader>
+                            <CardBody>
+                                <Text>회원가입하고 직접 상품을 등록해보세요!</Text>
+                            </CardBody>
+                            <CardFooter>
+                                <Button onClick={()=>{navigate('/v1/signup')}}>회원가입</Button>
+                            </CardFooter>
+                        </Card>
+                        <Card>
+                            <CardHeader>
+                                <Heading size='md'>상품을 구경하고 싶나요?</Heading>
+                            </CardHeader>
+                            <CardBody>
+                                <Text>현재 방송중인 멋쟁이 채소들을 확인해보세요!</Text>
+                            </CardBody>
+                            <CardFooter>
+                                <Button onClick={()=>{navigate('/v1/live/list')}}>라이브확인</Button>
+                            </CardFooter>
+                        </Card>
+                    </SimpleGrid>
+                    <Image
+                        className="mainLeftBottom"
+                        position="absolute"
+                        bottom={-20}
+                        left={-20}
+                        w={"18vw"}
+                        src={CloudBottom1}
+                        opacity={"0.2"}
+                        zIndex={-1}
+                        alt=""
+                    />
+                    <Image
+                        className="mainRightBottom"
+                        position="absolute"
+                        bottom={-40}
+                        right={-20}
+                        w={"18vw"}
+                        src={CloudRightBottom}
+                        opacity={"0.2"}
+                        alt=""
+                    />
+                </Box>
+            </Flex>
+
+        </Box>
     );
 }

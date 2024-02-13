@@ -12,12 +12,12 @@ import ProfileBuyerComponent from "./NavComponent/NavBuyerProfileComponent";
 import ProfileSellerComponent from "./NavComponent/NavSellerProfileComponent";
 import LogoutProfileComponent from "./NavComponent/LogoutProfileComponent";
 import ProfileAdminComponent from "./NavComponent/NavAdminProfileComponent";
+import logo from "/img/newlogo.png";
 
 function NavBar() {
     const navigate = useNavigate();
     const user = useSelector((state: RootState) => state.user);
     const [myAuth, setMyAuth] = useState("")
-    const profileImg = user.profileImg
 
     useEffect(() => {
         setMyAuth(user.auth)
@@ -32,8 +32,8 @@ function NavBar() {
             </Flex>
             <Flex minWidth="max-content" alignItems="center" gap="3">
                 <Box
-                    width={"4rem"}
-                    height={"4rem"}
+                    width={"8rem"}
+                    height={"5rem"}
                     onClick={() => {
                         navigate("./main");
                     }}
@@ -41,8 +41,7 @@ function NavBar() {
                     <Image
                         width={"100%"}
                         height={"100%"}
-                        objectFit={"cover"}
-                        src={profileImg}
+                        src={logo}
                     ></Image>
                 </Box>
 
