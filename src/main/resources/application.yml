@@ -1,32 +1,7 @@
-server:
-  port: 8084
 spring:
+  application:
+    name: user
   profiles:
-    include: local
-  datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-  jpa:
-    hibernate:
-      ddl-auto: update
-    properties:
-      hibernate:
-        format_sql: true
-    generate-ddl: true
-  mail:
-    host: smtp.gmail.com
-    port: 587
-    properties:
-      debug: true
-      mail:
-        smtp:
-          auth: true
-          starttls:
-            enable: true
-      mime:
-        charset: UTF-8
-      transport:
-        protocol: smtp
-  cloud:
-    openfeign:
-      okhttp:
-        enabled: true
+    active: dev
+  config:
+    import: optional:configserver:http://MASTER:8888
