@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Box, Flex, Center } from "@chakra-ui/layout";
 import { Button, Avatar, List, ListItem, Breadcrumb, BreadcrumbItem, BreadcrumbLink } from "@chakra-ui/react";
@@ -17,7 +17,6 @@ import Sellerform from "../components/mypage/sellerform";
 export default function BuyerPage() {
     const user = useSelector((state: RootState) => state.user);
     const navigate = useNavigate();
-    const [ boxHeight, setBoxHeight ] = useState("85vh");
     const [ tab, setTab ] = useState(0);
     const [ categoryTabs, setCategoryTabs ] = useState([
         { id: 0, isSelected: true , name: '최근 본 상품', component: <Recent /> },
@@ -40,10 +39,6 @@ export default function BuyerPage() {
         );
     }
 
-    useEffect(() => {
-            setBoxHeight("80vh"); // 탭 변경 시 초기 높이로 리셋
-        }, [tab]);
-
     return (
         <Box minH="100vh" mb="10" paddingBlock="6rem">
 
@@ -51,8 +46,8 @@ export default function BuyerPage() {
                 마이페이지
             </Center>
 
-            <Flex m="auto" border="2px" borderColor="themeGreen.500" rounded="lg" w="85vw" overflow="hidden" minH={boxHeight}>
-                <Flex m="auto" direction={{ base: "column", lg: "row"}} rounded="lg" w="80vw" maxH={{ base:"auto", lg: "80vh"}} px="2">
+            <Flex m="auto" overflow="hidden" rounded="lg" w="85vw" minH={{ base:"85vh", lg: "85vh"}}>
+                <Flex m="auto" direction={{ base: "column", lg: "row"}} rounded="lg" w="80vw" maxH={{ base:"auto"}} px="2">                    
                     <Box w={{ base: "100%", lg: "25%" }} pr="4">
                         <Box w="full" bg="white" rounded="lg" overflow="hidden">
                             <Flex direction="column" align="center" py="6">

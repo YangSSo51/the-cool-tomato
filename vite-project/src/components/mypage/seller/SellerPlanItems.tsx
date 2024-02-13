@@ -61,7 +61,7 @@ function PlanItems({plans, onDelete} : {plans: broadcastInfo, onDelete: (liveBro
     }
   
     return (
-      <Flex justifyContent="space-between" p="2" borderWidth='1px' borderRadius='lg' overflow='hidden'>
+      <Flex justifyContent="space-between" p="2" borderWidth='1px' borderRadius='lg' overflow='hidden' mb="2">
 
         <Flex p="2">
             <Box>

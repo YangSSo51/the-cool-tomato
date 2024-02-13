@@ -58,7 +58,7 @@ export default function LivePlanEditForm() {
     const [planDetail, setPlanDetail] = useState<broadcastDetailInfo | null>(null);
     const [page, setPage] = useState<number>(0);
     const size = 5;
-    
+
     const onSetSelected = (x: boolean): void => {
         setSelected(x);
     };
@@ -285,7 +285,7 @@ export default function LivePlanEditForm() {
                                 placeholder="Select Date and Time"
                                 size="md"
                                 type="datetime-local"
-                                value={planDetail?.broadcastEndDate || ""}
+                                value={priceEndDate}
                                 onChange={(e) =>
                                     setPriceEndDate(e.target.value)
                                 }
@@ -301,7 +301,7 @@ export default function LivePlanEditForm() {
                             <Switch
                                 ml={"2rem"}
                                 size={"lg"}
-                                isChecked={planDetail?.chatbotSetting}
+                                isChecked={faqSetting}
                                 onChange={(e) =>
                                     setFaqSetting(e.target.checked)
                                 }
@@ -314,7 +314,7 @@ export default function LivePlanEditForm() {
                             <Switch
                                 ml={"2rem"}
                                 size={"lg"}
-                                isChecked={planDetail?.ttsSetting}
+                                isChecked={ttsSetting}
                                 onChange={(e) =>
                                     setTtsSetting(e.target.checked)
                                 }

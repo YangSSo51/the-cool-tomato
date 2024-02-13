@@ -68,8 +68,8 @@ export default function SellerPage() {
             </Center>
             
             
-            <Flex m="auto" border="2px" borderColor="themeLightGreen.500" overflow="hidden" rounded="lg" w="85vw" minH={{ base:"85vh", lg: "85vh"}}>
-                <Flex m="auto" direction={{ base: "column", lg: "row"}} rounded="lg" w="80vw" maxH={{ base:"auto", lg: "80vh"}} px="2">
+            <Flex m="auto" overflow="hidden" rounded="lg" w="85vw" minH={{ base:"85vh", lg: "85vh"}}>
+                <Flex m="auto" direction={{ base: "column", lg: "row"}} rounded="lg" w="80vw" maxH={{ base:"auto"}} px="2">
                     <Box w={{ base: "100%", lg: "25%" }} pr="4" >
                         <Box w="full" bg="white" rounded="lg" overflow="hidden">
                             <Flex direction="column" align="center" py="6">
@@ -101,7 +101,7 @@ export default function SellerPage() {
                     </Box>
 
                     <Box w={{ base: "100%", lg: "75%" }} bg="white" p="5" rounded="lg" className="custom-scrollbar">
-                        <Flex justify="center" direction="column" align="center" h="full">
+                        <Flex direction="column" align="center" h="full">
                             
                             <Breadcrumb mb="10" spacing='8px' separator={<ChevronRightIcon color='gray.500' />}>
                                 <BreadcrumbItem>
