@@ -70,13 +70,13 @@ const userSlice = createSlice({
                 state.profileImg = "";
                 state.accessToken = "";
                 state.auth = "INIT";
-            })
-            .addCase(updateProfileThunk.fulfilled, (state, action) => {
-                state.profileImg = action.payload.profileImg;
-                state.auth = action.payload.auth;
-                state.accessToken = action.payload.accessToken;
-                state.refreshToken = action.payload.refreshToken;
             });
+        // .addCase(updateProfileThunk.fulfilled, (state, action) => {
+        //     state.profileImg = action.payload.profileImg;
+        //     state.auth = action.payload.auth;
+        //     state.accessToken = action.payload.accessToken;
+        //     state.refreshToken = action.payload.refreshToken;
+        // });
     },
 });
 

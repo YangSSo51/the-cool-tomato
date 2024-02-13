@@ -1,7 +1,8 @@
 import axios from "axios";
 import SockJS from "sockjs-client";
 
-const BASEURL = "211.63.208.201:8000";
+const BASEURL = "cool-tomato.duckdns.org";
+const credential = true;
 const chatWebSocketUrl = import.meta.env.PROD
     ? "wss://" + BASEURL + "/v1/chat/ws-stomp/websocket"
     : "ws://i10a501.p.ssafy.io:8085/v1/chat/ws-stomp/websocket";
@@ -18,12 +19,13 @@ function mainAxios() {
         headers: {
             "Content-Type": "application/json;charset=utf-8",
         },
+        withCredentials: credential,
     });
 }
 
 function openViduDirectAxios() {
     return axios.create({
-        baseURL: "https://i10a501.p.ssafy.io/openvidu/api/sessions",
+        baseURL: "http://i10a501.p.ssafy.io/openvidu/api/sessions",
         headers: {
             "Content-Type": "application/json",
             Authorization: "Basic T1BFTlZJRFVBUFA6c3NhZnk",
@@ -39,6 +41,7 @@ function liveAxios() {
         headers: {
             "Content-Type": "application/json",
         },
+        withCredentials: credential,
     });
 }
 
@@ -50,6 +53,7 @@ function itemAxios() {
         headers: {
             "Content-Type": "application/json;charset=utf-8",
         },
+        withCredentials: credential,
     });
 }
 
@@ -61,6 +65,7 @@ function chatbotAxios() {
         headers: {
             "Content-Type": "application/json",
         },
+        withCredentials: credential,
     });
 }
 function chatSocket() {
@@ -105,6 +110,7 @@ function authAxios() {
         headers: {
             "Content-Type": "application/json",
         },
+        withCredentials: credential,
     });
 }
 
@@ -116,6 +122,7 @@ function chatAxios() {
         headers: {
             "Content-Type": "application/json;charset=utf-8",
         },
+        withCredentials: credential,
     });
 }
 
