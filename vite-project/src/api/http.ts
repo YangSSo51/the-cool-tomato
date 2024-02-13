@@ -1,7 +1,7 @@
 import axios from "axios";
 import SockJS from "sockjs-client";
 
-const BASEURL = "211.63.208.201:8000";
+const BASEURL = "cool-tomato.duckdns.org";
 const chatWebSocketUrl = import.meta.env.PROD
     ? "wss://" + BASEURL + "/v1/chat/ws-stomp/websocket"
     : "ws://i10a501.p.ssafy.io:8085/v1/chat/ws-stomp/websocket";
