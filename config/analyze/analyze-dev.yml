@@ -24,11 +24,25 @@ openvidu:
   url: http://i10a501.p.ssafy.io:5443
   password: T1BFTlZJRFVBUFA6c3NhZnk=
 
+eureka:
+  instance:
+    disable-delta: true
+    instance-id: ${spring.cloud.client.hostname}:${spring.application.instance_id:${random.value}}
+    lease-renewal-interval-in-seconds: 3
+    lease-expiration-duration-in-seconds: 10
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://MASTER:8761/eureka/
+
 redis:
   master:
-    host: 211.63.208.201
+    host: MASTER
     port: 6379
   nodes:
-    - host: 211.63.208.201
+    - host: SN01
+      port: 6379
+    - host: SN02
       port: 6379
   password: asdf134620!
