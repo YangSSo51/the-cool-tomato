@@ -27,6 +27,7 @@ public class SplitBolt extends BaseRichBolt {
     public void execute(Tuple tuple) {
         String roomId = tuple.getStringByField("roomId");
         String message = tuple.getStringByField("message");
+        System.out.println("wc " + roomId + " " + message);
         KomoranResult analyzeResultList = komoran.analyze(message);
         List<String> nounList = analyzeResultList.getNouns();
         for (String noun: nounList) {

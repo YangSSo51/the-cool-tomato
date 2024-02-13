@@ -37,9 +37,12 @@ public class KafkaSpout extends BaseRichSpout {
         try {
             ConsumerRecords<String, String> records = consumer.poll(100);
             for (ConsumerRecord<String, String> record : records){
+                System.out.println(record.value());
                 JSONObject jsonObject = new JSONObject(record.value());
                 String roomId = jsonObject.get("roomId").toString();
                 String message = jsonObject.get("message").toString();
+                byte[] bytes = message.getBytes();
+                message = new String(bytes);
                 this.collector.emit(new Values(roomId, message));
             }
 
