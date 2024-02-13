@@ -1,40 +1,62 @@
 import { Box, Text, Flex } from "@chakra-ui/layout";
-import { Avatar, Badge, Button } from "@chakra-ui/react";
+import { Avatar, Button } from "@chakra-ui/react";
+import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import { RootState } from "../../../redux/stores/store";
+import { getBlockUserAPI, deleteBlockUserAPI } from "../../../api/chatblock";
+import { followerItem } from "../../../types/DataTypes";
 
 function BanUser() {
+    const accessToken = useSelector((state: RootState) => { return state.user.accessToken })
+    const sellerId = useSelector((state: RootState) => { return state.user.userId })
+    const [ blockList, setBlockList ] = useState<Array<followerItem>>([])
 
-    // const onClickUnBan = () => {
-    //     unfollowSellerAPI(following.userId, accessToken).then((result) => {
-    //         if (result === 1) {
-    //             updateFollowing(following.userId);
-    //         } else {
-    //             // sellerId: number, alarmSetting: boolean, accessToken: string 
-    //         }
-    //     });
-    // };
+    useEffect(() => {
+        getBlockUserAPI(accessToken).then((response) => {
+            setBlockList(response)
+        }).catch((error) => {
+            console.log(error)
+        })
+    }, [])
+
+    const onClickUnBlock = (userId: number, blockedId: number) => {
+        deleteBlockUserAPI({sellerId: userId, blockedId}, accessToken).then(() => {
+        });
+    };
 
     return (
-        <Flex justifyContent="space-between" w="90%" h="full">
-            <Flex>
-                <Avatar src='https://bit.ly/sage-adebayo' />
-                <Box ml='3'>
-                    <Text fontWeight='bold'>
-                    Segun Adebayo
-                    <Badge ml='1' colorScheme='green'>
-                        New
-                    </Badge>
-                    </Text>
-                    <Text fontSize='sm'>UI Engineer</Text>
-                </Box>
-            </Flex>
+        <>
+        { blockList.length > 0 ? 
+            blockList.map((item) => (
+                <Flex justifyContent="space-between" w="90%" h="full" key={item.id}>
+                    <Flex>
+                        <Avatar src={item.profileImg} />
+                        <Box ml='3'>
+                            <Text fontWeight='bold'>
+                                {item.nickname}
+                            </Text>
+                        </Box>
+                    </Flex>
+            
+                    <Button 
+                        onClick={() => onClickUnBlock(sellerId, item.userId)} 
+                        color="white" 
+                        backgroundColor="themeGreen.500" 
+                        _hover={{ backgroundColor: "white", color: "red" }}>
+                        차단해제
+                    </Button>
+                </Flex>
+                )
+            ) : (
+                <Flex mt="20" flexDir="column" mb="10">
+                    <Text fontSize='5xl' color="gray.500" mb="5">차단한 사람이 없습니다</Text>
+                </Flex>
+            )
+        }
+    </>
 
-            <Button 
-                // onClick={onClickUnBan} 
-                color="white" 
-                backgroundColor="themeGreen.500" 
-                _hover={{ backgroundColor: "white", color: "red" }}>
-                차단해제</Button>
-        </Flex>
+        
+
     )
 }
 

@@ -13,7 +13,9 @@ async function getQnAList(params: {
     size: number;
     "product-id": number;
 }) {
-    return await http.get(url + "/list", { params });
+    // return await http.get(url + "/list", { params });
+    const response = await http.get(url + "/list", { params });
+    console.log(response)
 }
 
 // 구매자가 상품 문의를 등록함
@@ -61,12 +63,16 @@ async function buyerGetQnaAPI(page: number, size: number, accessToken: string) {
 }
 
 // 판매자가 받은 상품 문의 리스트를 조회함
-async function sellerGetQnaAPI(page: number, size: number) {
+async function sellerGetQnaAPI(page: number, size: number, accessToken: string) {
     try {
         const response = await http.get(`${url}/seller/my/list`, {
             params: {
                 page,
                 size
+            },
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": "Bearer " + accessToken
             }
         });
         const responseData = response.data;
@@ -98,15 +104,19 @@ async function sellerPutQnaAPI(
     data: {
         productQuestionBoardId: number;
         answerContent: string;
-    }) {
+    }, accessToken: string) {
     try {
-        const response = await http.put(`${url}`, data);
-        const responseData = response.data;
-        return responseData
+        await http.put(`${url}`, data, {
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": "Bearer " + accessToken
+            }
+        });
     } catch (error) {
         console.error(error);
     }
 }
+
 
 export {
     getQnAList,

@@ -44,15 +44,16 @@ async function logoutAPI(accessToken: string, refreshToken: string) {
                 "Authorization": "Bearer " + accessToken
             }
         });
-        localStorage.clear();
         return response;
     } catch (error) {
         if (error instanceof AxiosError) {
             if (error.response) {
                 if (error.response.status === 401) {
                     if (error.response.data.divisionCode === "G013") {
+                        localStorage.clear();
+                        window.location.reload();
                         const response = await ReissueTokenAPI({accessToken, refreshToken});
-                            console.log(response)
+                        console.log(response)
                     }
                 }
             }
@@ -448,12 +449,16 @@ async function getSellerApplicationDetailAPI(sellerInfoId: number) {
 }
 
 // 관리자의 판매자 전환 승인 함수
-async function approveSellerApplicationAPI(sellerInfoId: number) {
+ function approveSellerApplicationAPI(sellerInfoId: number, accessToken: string) {
     try {
-        const response = await http.put(`${url}/sellers/admin/approve/${sellerInfoId}`);
-        const responseData = response.data;
-        return responseData;
+        http.put(`${url}/sellers/admin/approve/${sellerInfoId}`, {
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": "Bearer " + accessToken
+            }
+        })
     } catch (error) {
+        console.log(error)
         console.log("판매자 전환 승인 실패");
         throw error;
     }

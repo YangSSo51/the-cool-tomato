@@ -152,8 +152,8 @@ export type MyQna = {
     questionContent: string;
     questionRegisterDate: string;
     writerId: number;
-    writerNickname: string;
-};
+    writerNickname: string
+}
 
 export type AdminUserInfo = {
     id: number;
@@ -165,7 +165,7 @@ export type AdminUserInfo = {
     birthday: string;
     profileImg: string;
     joinDate: string;
-};
+}
 
 export interface liveProductPrice {
     productId: number;
@@ -185,6 +185,15 @@ export interface liveProduct {
     seq: number;
 }
 
+export interface AcceptSeller {
+    approvalStatus: boolean;
+    loginId: string;
+    nickname: string;
+    profileImg: string;
+    sellerInfoId: number;
+    userId: number;
+}
+    
 export interface UserProfileEdit {
     profileImg: string | null | undefined;
     password: string;

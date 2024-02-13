@@ -1,4 +1,4 @@
-import { Box } from "@chakra-ui/layout";
+import { Box, Flex, Text } from "@chakra-ui/layout";
 import { Button, Center } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 import React, { useEffect, useState } from "react";
@@ -39,10 +39,23 @@ function Items() {
     return (
         <Box flexDirection="column" w="90%" h="full">
             <Button onClick={onclick} colorScheme='yellow'>상품등록</Button>
-            {sellerItem.map((item) => {
-                return <ItemsofItems sellerItem={item} onDelete={handleItemDelete} key={item.productId} />
-            })
+            
+            { sellerItem.length ? (
+                // sellerItem.map((item) => {
+                //     return <ItemsofItems sellerItem = {item} onDelete={handleItemDelete} key={item.productId} />
+                // })
+                sellerItem.map((item) => {
+                    return <ItemsofItems sellerItem={item} onDelete={handleItemDelete} key={item.productId} />
+                })
+                
+            ) : (
+                <Flex mt="20" flexDir="column">
+                    <Text fontSize='5xl' color="gray.500" mb="5">등록한 상품이 없습니다!</Text>
+                    <Button colorScheme="themeGreen" onClick={() => navigate("/v1/itemAdd")}>상품 등록하러 가기</Button>
+                </Flex>)
             }
+
+            
             <Center>
                 <ChevronDownIcon boxSize={"3rem"} onClick={pageUpdate} />
             </Center>

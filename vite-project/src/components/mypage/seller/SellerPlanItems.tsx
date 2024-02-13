@@ -65,7 +65,7 @@ function PlanItems({plans, onDelete} : {plans: broadcastInfo, onDelete: (liveBro
 
         <Flex p="2">
             <Box>
-                <Box display='flex' alignItems='baseline'>
+                <Box display='flex' alignItems='baseline' mt="1rem">
                     <Badge borderRadius='full' px='2' colorScheme='red'>
                     대기중
                     </Badge>
@@ -80,14 +80,14 @@ function PlanItems({plans, onDelete} : {plans: broadcastInfo, onDelete: (liveBro
                     >{plans.broadcastTitle}
                 </Box>
         
-                <Box>
+                <Box mt="2rem">
                     방송예정일자 : {startdate}
                 </Box>
             </Box>
         </Flex>
         
-        <Flex mt='2' alignItems='center'>
-            <Button onClick={onOpen}>바로시작</Button>
+        <Flex mt='2' direction="column" alignItems='center'>
+            <Button mb="0.5rem" colorScheme="red" onClick={onOpen}>시작</Button>
                 <AlertDialog
                     motionPreset='slideInBottom'
                     leastDestructiveRef={cancelRef}
@@ -123,8 +123,8 @@ function PlanItems({plans, onDelete} : {plans: broadcastInfo, onDelete: (liveBro
                     </AlertDialogContent>
                 </AlertDialog>
 
-            <Button onClick={() => {navigate(`/v1/live/edit/${plans.liveBroadcastId}`)}}>수정</Button>
-            <Button onClick={DeleteLive}>등록취소</Button>
+            <Button mb="0.5rem" onClick={() => {navigate(`/v1/live/edit/${plans.liveBroadcastId}`)}}>수정</Button>
+            <Button onClick={DeleteLive}>삭제</Button>
         </Flex>
 
       </Flex>
