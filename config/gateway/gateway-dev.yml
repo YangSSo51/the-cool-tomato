@@ -1,7 +1,7 @@
 server:
 	port: 8000
 	ssl:
-    	key-store: classpath:ssl/AN-keystore.p12
+    	key-store: classpath:AN-keystore.p12
     	key-store-type: PKCS12
     	key-store-password: asdf134620!
 
