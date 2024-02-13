@@ -89,12 +89,17 @@ export default function LiveAddForm() {
             .then((res) => {
                 console.log("LiveAddForm onSubmit reserveLive res");
                 console.log(res);
-                return res.data.liveBroadcaseId;
+                console.log(res.data.liveBroadcastId);
+                return res.data.liveBroadcastId;
             });
 
-        if (liveId === 0) {
+        if (liveId === 0 || liveId === undefined) {
             alert("라이브 아이디가 0입니다.");
+            console.log(liveId);
             return;
+        } else {
+            console.log("LiveAddForm onSubmit liveId");
+            console.log(liveId);
         }
 
         const liveProductArray = filterLiveProduct(
