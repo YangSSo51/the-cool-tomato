@@ -86,29 +86,13 @@ public class ProductServiceImpl implements ProductService{
     @Override
     public ProductFindResponse findProductById(Long productId) {
         //상품 번호로 상품 조회
-        //TODO : 판매자 아이디 확인 필요
-        // 카테고리명, 판매자명 추가 조회 필요
-        Optional<Product> result = productRepository.findById(productId);
+        Optional<ProductFindResponse> result = productRepository.searchByProductId(productId);
 
         //상품이 존재하지 않으면 예외처리
-        Product product = result
+        ProductFindResponse product = result
                             .orElseThrow(()->new BusinessExceptionHandler("상품이 존재하지 않습니다",ErrorCode.NO_ELEMENT_ERROR));
 
-        ProductFindResponse response = ProductFindResponse.builder()
-                                        .productId(product.getProductId())
-                                        .sellerId(product.getSellerId())
-                                        .categoryId(product.getCategory().getCategoryId())
-                                        .productName(product.getProductName())
-                                        .productContent(product.getProductContent())
-                                        .paymentLink(product.getPaymentLink())
-                                        .imgSrc(product.getImgSrc())
-                                        .price(product.getPrice())
-                                        .deliveryCharge(product.getDeliveryCharge())
-                                        .quantity(product.getQuantity())
-                                        .registerDate(product.getRegisterDate())
-                                        .build();
-
-        return response;
+        return product;
     }
 
     @Override

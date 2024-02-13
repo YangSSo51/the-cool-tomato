@@ -13,6 +13,8 @@ import java.time.LocalDateTime;
 public class ProductFindResponse {
     private Long productId;
     private Long sellerId;
+    private String sellerNickname;
+    private String sellerProfile;
     private Long categoryId;
     private String categoryName;
     private String productName;
