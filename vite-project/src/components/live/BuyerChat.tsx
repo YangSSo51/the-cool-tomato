@@ -14,9 +14,14 @@ import { useSelector } from "react-redux";
 import { RootState } from "../../redux/stores/store";
 import { useParams } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
-import { chatMessageRecv, chatMessageSend } from "../../types/DataTypes";
+import {
+    chatMessageRecv,
+    chatMessageSend,
+    chatbotMessage,
+} from "../../types/DataTypes";
 import React from "react";
 import { getStompClient } from "../../api/chatting";
+import { getChatbotStomp } from "../../api/chatbot";
 
 export default function BuyerChat() {
     const [message, setMessage] = useState<string>("");
@@ -30,6 +35,7 @@ export default function BuyerChat() {
     const roomId = useParams().roomId!;
     const id = parseInt(roomId);
     const stomp = useRef(getStompClient(accessToken));
+    const chatbot = useRef(getChatbotStomp());
 
     useEffect(() => {
         console.log("BuyerChat useEffect 1");
@@ -40,16 +46,34 @@ export default function BuyerChat() {
                 `/sub/room/` + id,
                 (msg) => {
                     const recvMsg: chatMessageRecv = JSON.parse(msg.body);
+
                     setRecv((prev) => [...prev, recvMsg]);
                 },
                 { Authorization: "Bearer " + accessToken }
             );
         };
 
+        chatbot.current.onConnect = () => {
+            console.log("chatbot connected");
+            chatbot.current.subscribe(`/sub/chat/room/` + id, (msg) => {
+                const recvMsg: chatbotMessage = JSON.parse(msg.body);
+                const chatbotMessage: chatMessageRecv = {
+                    senderId: 0,
+                    senderNickname: "챗봇",
+                    message: recvMsg.message,
+                };
+
+                setRecv((prev) => [...prev, chatbotMessage]);
+            });
+        };
+
         stomp.current.activate();
+        chatbot.current.activate();
         const stompClient = stomp.current;
+        const chatbotClient = chatbot.current;
         return () => {
             stompClient.deactivate();
+            chatbotClient.deactivate();
         };
     }, []);
 
@@ -58,14 +82,21 @@ export default function BuyerChat() {
     }
     function handleKeyEnter(e: React.KeyboardEvent<HTMLInputElement>) {
         if (e.key === "Enter") {
-            sendMessage();
+            if (!stomp.current.connected) stomp.current.activate();
+            if (!chatbot.current.connected) chatbot.current.activate();
+            if (message === "") return;
+            if (message[0] === "!") sendChatbotMessage();
+            else sendMessage();
             setMessage("");
         }
     }
     function handleSubmit(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
         e.preventDefault();
         if (!stomp.current.connected) stomp.current.activate();
-        sendMessage();
+        if (!chatbot.current.connected) chatbot.current.activate();
+        if (message === "") return;
+        if (message[0] === "!") sendChatbotMessage();
+        else sendMessage();
         setMessage("");
     }
 
@@ -76,12 +107,22 @@ export default function BuyerChat() {
             message: message,
             roomId: id,
         };
-        console.log("BuyerChat sendMessage messageSend");
-        console.log(messageSend);
         stomp.current.publish({
             destination: "/pub/message",
             headers: { Authorization: "Bearer " + accessToken },
             body: JSON.stringify(messageSend),
+        });
+    }
+
+    function sendChatbotMessage() {
+        const chatbotMessage: chatbotMessage = {
+            roomId: id,
+            writer: userId,
+            message: message.slice(1),
+        };
+        chatbot.current.publish({
+            destination: "/pub/chat/message",
+            body: JSON.stringify(chatbotMessage),
         });
     }
 
