@@ -92,3 +92,13 @@
         opacity: 0;
     }
 }
+
+.aboutus {
+    position: relative; /* 추가 */
+    background-color: #0E3E30;
+}
+
+.aboutus-end {
+    background: url("/img/waveline.png") no-repeat center center;
+    background-size: 100% auto;
+}
