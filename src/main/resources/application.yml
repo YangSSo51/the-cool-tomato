@@ -1,6 +1,7 @@
-application:
-  name: product
-profiles:
-  active: dev
-config:
-  import: optional:configserver:http://MASTER:8888
+spring:
+  application:
+    name: product
+  profiles:
+    active: dev
+  config:
+    import: optional:configserver:http://MASTER:8888
