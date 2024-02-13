@@ -286,3 +286,9 @@ export interface LiveCalendarShownInterface {
     liveFlatPrice: number;
     liveRatePrice: number;
 }
+
+export interface chatbotMessage {
+    roomId: number;
+    message: string;
+    writer: number;
+}

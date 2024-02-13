@@ -1,11 +1,12 @@
 import { Box, Text, Flex } from "@chakra-ui/layout";
 import ChatList from "./ChatList";
-import { chatMessageRecv } from "../../types/DataTypes";
+import { chatMessageRecv, chatbotMessage } from "../../types/DataTypes";
 import { useEffect, useRef, useState } from "react";
 import { getStompClient } from "../../api/chatting";
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/stores/store";
 import { useParams } from "react-router-dom";
+import { getChatbotStomp } from "../../api/chatbot";
 
 function Chat() {
     const [recv, setRecv] = useState<Array<chatMessageRecv>>([]);
@@ -13,6 +14,7 @@ function Chat() {
         (state: RootState) => state.user.accessToken
     );
     const stomp = useRef(getStompClient(accessToken));
+    const chatbot = useRef(getChatbotStomp());
     const roomId = useParams().roomId!;
     const id = parseInt(roomId);
 
@@ -30,10 +32,28 @@ function Chat() {
                 { Authorization: "Bearer " + accessToken }
             );
         };
+
+        chatbot.current.onConnect = () => {
+            console.log("chatbot connected");
+            chatbot.current.subscribe(`/sub/chat/room/` + id, (msg) => {
+                const recvMsg: chatbotMessage = JSON.parse(msg.body);
+                const chatbotMessage: chatMessageRecv = {
+                    senderId: 0,
+                    senderNickname: "챗봇",
+                    message: recvMsg.message,
+                };
+
+                setRecv((prev) => [...prev, chatbotMessage]);
+            });
+        };
+
         stomp.current.activate();
+        chatbot.current.activate();
         const stompClient = stomp.current;
+        const chatbotClient = chatbot.current;
         return () => {
             stompClient.deactivate();
+            chatbotClient.deactivate();
         };
     }, []);
 

@@ -15,9 +15,11 @@ function ChatList({ recv }: ChatListProps) {
     const accessToken = useSelector(
         (state: RootState) => state.user.accessToken
     );
-    function handleClick(useId: number) {
+    const userId = useSelector((state: RootState) => state.user.userId);
+    function handleClick(id: number) {
+        if (id === 0 || id === userId) return;
         if (confirm("정말로 차단하시겠습니까?") === false) return;
-        postBlockUser(useId, accessToken).then(() => {
+        postBlockUser(id, accessToken).then(() => {
             console.log("block user success");
         });
     }
