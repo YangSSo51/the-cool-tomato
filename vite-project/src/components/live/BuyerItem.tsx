@@ -12,7 +12,7 @@ export default function BuyerItem({ roomId }: { roomId: number }) {
 
     useEffect(() => {
         const fetchData = async () => {
-            const response = await getLiveProduct({"live-id":39}, accessToken);
+            const response = await getLiveProduct({ "live-id": roomId }, accessToken);
             setLiveproducts(response.list)
         };
         fetchData();

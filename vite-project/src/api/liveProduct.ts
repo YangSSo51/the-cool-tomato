@@ -28,4 +28,9 @@ async function getLiveProduct(params: {
     return response.data.data
 }
 
-export { postLiveProduct, getLiveProduct };
+async function delLiveProduct(liveId: string, accessToken: string) {
+    headers.set("Authorization", `Bearer ${accessToken}`);
+    return await http.delete(`${url}/${liveId}`, { headers });
+}
+
+export { postLiveProduct, getLiveProduct, delLiveProduct };

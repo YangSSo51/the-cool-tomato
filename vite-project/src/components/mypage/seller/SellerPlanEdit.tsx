@@ -21,11 +21,11 @@ import {
     ItemDetailInterface,
     broadcastInfo,
     liveProduct,
-    liveProductPrice
+    liveProductPrice,
+    LiveProductAll
 } from "../../../types/DataTypes";
-import { editLivePlanAPI } from "../../../api/openVidu";
-import { postLiveProduct } from "../../../api/liveProduct";
-import { getLiveDetailAPI } from "../../../api/openVidu";
+import { editLivePlanAPI, getLiveDetailAPI } from "../../../api/openVidu";
+import { postLiveProduct, getLiveProduct } from "../../../api/liveProduct";
 
 interface broadcastDetailInfo {
     broadcastTitle: string;
@@ -58,10 +58,23 @@ export default function LivePlanEditForm() {
     const [planDetail, setPlanDetail] = useState<broadcastDetailInfo | null>(null);
     const [page, setPage] = useState<number>(0);
     const size = 5;
+    const [ liveproducts, setLiveproducts ] = useState<LiveProductAll[]>([])
 
     const onSetSelected = (x: boolean): void => {
         setSelected(x);
     };
+
+    function addHoursToUTC(utcString: string | null): string | null {
+        if (!utcString) {
+            return null;
+        }
+        const [datePart, timePart] = utcString.split('T');
+        const [hour, minute, second] = timePart.split(':');
+        const newHour = (parseInt(hour) + 9) % 24;
+        const newTimePart = `${newHour.toString().padStart(2, '0')}:${minute}:${second}`;
+        const newUTCString = `${datePart}T${newTimePart}`;
+        return newUTCString;
+    }
 
     useEffect(() => {
         const fetchData = async () => {
@@ -72,7 +85,10 @@ export default function LivePlanEditForm() {
                 setMemo(response?.script || "");
                 setTtsSetting(response?.ttsSetting || false);
                 setFaqSetting(response?.chatbotSetting || false);
-                setStartDate(response?.broadcastStartDate || "");
+                const koreanStartDate = addHoursToUTC(response?.broadcastStartDate || "");
+                if (koreanStartDate !== null) {
+                    setStartDate(koreanStartDate);
+                }
                 setPriceEndDate(response?.broadcastEndDate || "");
             } catch (error) {
                 console.error("Error fetching live detail:", error);
@@ -80,7 +96,15 @@ export default function LivePlanEditForm() {
         };
         fetchData();
     }, [accessToken, broadcastIdNumber]);
-    
+
+    useEffect(() => {
+        const fetchData = async () => {
+            const response = await getLiveProduct({ "live-id": broadcastIdNumber }, accessToken)
+            setLiveproducts(response.list)
+        };
+        fetchData();
+    }, [])
+
     async function onSubmit(event: React.SyntheticEvent): Promise<void> {
         event.preventDefault();
 
@@ -259,6 +283,7 @@ export default function LivePlanEditForm() {
                                     </Button>
                                 </Center>
                             )}
+
                             <LiveItemAdd
                                 isSelected={isSelected}
                                 isSelectedState={onSetSelected}
