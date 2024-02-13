@@ -15,8 +15,8 @@ export default function ItemComponent() {
                 setDummylist(res.list);
             }
         );
-    }, [currentpage]);
-    
+    }, [currentpage]);   
+
     return (
         <Flex direction={"column"} width={"100%"}>
             <Box p={"1rem"} mb={"1rem"}>
@@ -36,6 +36,7 @@ export default function ItemComponent() {
                             img={data?.imgSrc}
                             title={data?.productName}
                             price={data?.price}
+                            sellerId={data?.sellerId}
                         />
                     </Flex>
                 ))}
