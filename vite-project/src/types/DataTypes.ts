@@ -198,6 +198,7 @@ export interface AcceptSeller {
     userId: number;
 }
 
+
 export interface UserProfileEdit {
     profileImg: string | null | undefined;
     password: string;
@@ -207,13 +208,52 @@ export interface UserProfileEdit {
     birthday: string;
 }
 
-export interface LiveCalendarInterface {
+export interface LiveFetchInterface {
     liveBroadcastId: number;
     broadcastTitle: string;
     nickName: string;
-    viewCount: number | null;
+    viewCount: null;
     sellerId: number;
-    broadcastStatus: boolean;
+    broadcastStatus: false;
+    startDate: string;
+}
+
+export interface LiveCalendarInterface {
+    liveProductId: number;
+    productId: number;
+    imgSrc: string;
+    sellerId: number;
+    sellerName: string;
+    sellerImg: string;
+    categoryId: number;
+    categoryName: string;
+    productName: string;
+    productContent: string;
+    paymentLink: null;
+    price: number;
+    deliveryCharge: number;
+    quantity: number;
+    liveFlatPrice: number;
+    liveRatePrice: number;
+    livePriceStartDate: string;
+    livePriceEndDate: string;
+    mainProductSetting: true;
+    registerDate: string;
+    seq: number;
+}
+
+export interface LiveCalendarShownInterface {
+    startDate: string;
+    nickName: string;
+    liveBroadcastId: number;
+    broadcastTitle: string;
+    imgSrc: string;
+    sellerImg: string;
+    categoryId: number;
+    productName: string;
+    price: number;
+    liveFlatPrice: number;
+    liveRatePrice: number;
 }
 
 export interface LiveProductAll {
