@@ -5,7 +5,6 @@ spring:
     active: dev
   config:
     import: optional:configserver:http://MASTER:8888
-    spring.clo
 cloud:
   aws:
     s3:
