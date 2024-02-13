@@ -8,12 +8,55 @@ import { Icon } from "@chakra-ui/react";
 import BuyerLiveNav from "../components/common/BuyerLiveNav";
 
 import OpenViduComponent from "../components/openvidu/OpenViduComponent";
+import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import { RootState } from "../redux/stores/store";
+import { LiveProductAll, SellerInfo } from "../types/DataTypes";
+import { useParams } from "react-router-dom";
+import { getLiveProduct } from "../api/liveProduct";
+import { getSellerDetailAPI } from "../api/user";
 
 function UnfilledHeart() {
     return <Icon as={CiHeart} boxSize={"3rem"} ml={"3px"} mb={"3px"} />;
 }
 
 export default function BuyerLive() {
+    const accessToken = useSelector((state: RootState) => {
+        return state.user.accessToken;
+    });
+    const [liveproducts, setLiveproducts] = useState<LiveProductAll[]>([]);
+    const [sellerImg, setSellerImg] = useState<string>("");
+    const [sellerName, setSellerName] = useState<string>("");
+    const roomId = useParams().roomId!;
+    const id = parseInt(roomId);
+
+    useEffect(() => {
+        const fetchData = async () => {
+            const response = await getLiveProduct(
+                { "live-id": id },
+                accessToken
+            );
+            setLiveproducts(response.list);
+            if (response.list.length === 0) return;
+            const sellerId = response.list[0].sellerId;
+            const res = await getSellerDetailAPI(sellerId);
+            const sellerInfo: SellerInfo = res.data;
+            if (
+                sellerInfo.profileImg === null ||
+                sellerInfo.profileImg === undefined
+            )
+                sellerInfo.profileImg = "";
+            if (
+                sellerInfo.nickname === null ||
+                sellerInfo.nickname === undefined
+            )
+                sellerInfo.nickname = "";
+            setSellerImg(sellerInfo.profileImg);
+            setSellerName(sellerInfo.nickname);
+        };
+        fetchData();
+    }, [roomId, accessToken]);
+
     return (
         <>
             <BuyerLiveNav />
@@ -25,9 +68,9 @@ export default function BuyerLive() {
                         direction={"row"}
                         alignItems={"center"}
                     >
-                        <Avatar bg="teal.500" />
+                        <Avatar bg="teal.500" src={sellerImg} />
                         <Text ml={"1rem"} as={"b"} fontSize={"xl"}>
-                            성실한 판매자 2222{" "}
+                            {sellerName ? sellerName : "라이브"}
                         </Text>
                     </Flex>
                 </Center>
@@ -55,7 +98,7 @@ export default function BuyerLive() {
                             backgroundColor={"#ffffff"}
                             borderRadius={"20px"}
                         >
-                            <BuyerItem />
+                            <BuyerItem liveproducts={liveproducts} />
                         </Box>
                         <Box
                             w={"sm"}

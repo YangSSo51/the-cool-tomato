@@ -3,26 +3,42 @@ import {
     Button
   } from '@chakra-ui/react'
 import { FaEdit } from "react-icons/fa";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
+import { getLivePlanAPI } from "../../../api/openVidu";
+import { RootState } from "../../../redux/stores/store";
 import ChatbotRegistrationModal from "./ChatbotRegister";
 import ChatbotList from "./ChatbotAccoList"
 
-// 임시로 지정
-interface ChatbotData {
-    roomId: number;
-    livetitle: string;
+interface broadcastInfo {
+    liveBroadcastId: number;
+    broadcastTitle: string;
+    nickName: string;
+    viewCount: number;
+    sellerId: number;
+    broadcastStatus: boolean;
 }
 
 function Chatbot() {
+    const user = useSelector((state: RootState) => state.user);
     const [modalOpen, setModalOpen] = useState(false);
-    const dummydata: ChatbotData[] = [
-        {roomId : 1, livetitle : "불금을 빛낼 불타는 고구마"},
-        {roomId : 2, livetitle : "설날떡국에 빠질 수 없는 토종 김 특별할인"}
-    ]
+    const [chatbotChanged, setChatbotChanged] = useState(false);
+    const [ livePlans, setLivePlans ] = useState<Array<broadcastInfo>>([]);
 
-    function handleModalOpen() {
-        setModalOpen(!modalOpen);
+    useEffect(() => {
+        const fetchData = async () => {
+            const response = await getLivePlanAPI({page:0, size:10}, user.accessToken);
+            setLivePlans(response.broadcastInfoList);
+        };
+        fetchData();
+    }, [user.accessToken])
+
+
+    const handleModalOpen = () => {
+        setModalOpen(prevState => !prevState);
+        setChatbotChanged(true); // Set chatbotChanged to true when a chatbot is registered
     }
+    
 
     return (
         <Box flexDirection="column" w="90%" h="full">
@@ -32,7 +48,7 @@ function Chatbot() {
                 <ChatbotRegistrationModal
                     isOpen={modalOpen}
                     handleModalOpen={handleModalOpen}
-                    dummydata={dummydata}
+                    livePlans={livePlans}
                 />
                 <Button
                     leftIcon={<FaEdit />}
@@ -45,7 +61,7 @@ function Chatbot() {
             </Flex>
 
             {/* 방송 별 챗봇 리스트 */}
-            <ChatbotList dummydata={dummydata} />
+            <ChatbotList livePlans={livePlans} chatbotChanged={chatbotChanged} setChatbotChanged={setChatbotChanged} />
         </Box>
     )
 }

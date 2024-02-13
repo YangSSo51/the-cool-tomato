@@ -1,74 +1,113 @@
 import { Box, Flex } from "@chakra-ui/layout";
-import { Image, Badge, Button, Accordion,Input, InputGroup, InputRightElement,
-    AccordionItem,
-    AccordionButton,
-    AccordionPanel,
-    AccordionIcon } from "@chakra-ui/react";
+import { Image, Badge, Button, Accordion, Input, InputGroup, InputRightElement, AccordionItem, AccordionButton, AccordionPanel, AccordionIcon } from "@chakra-ui/react";
+import { useState } from "react";
+import { useSelector } from "react-redux";
+import { RootState } from "../../../redux/stores/store";
+import { sellerPutQnaAPI } from "../../../api/itemQnA";
 
-function QnaItems() {
-    const handleSendresponse = () => {
-        //
+interface sellerQnaType {
+    productQuestionBoardId: number;
+    writerId: number;
+    writerNickname: string;
+    productId: number;
+    imgSrc: string;
+    productName: string;
+    productContent: string;
+    questionContent: string;
+    answerContent: string | null;
+    questionRegisterDate: string;
+    answerRegisterDate: string | null;
+    answer: number;
+}
+
+interface QnaItemsProps {
+    sellerQnaList: sellerQnaType[];
+    onAnswer: (id: number, answerContent: string) => void;
+}
+
+function QnaItems({ sellerQnaList, onAnswer }: QnaItemsProps) {
+    const [inputValues, setInputValues] = useState<{ [key: number]: string }>({});
+    const accessToken = useSelector((state: RootState) => {return state.user.accessToken})
+
+    const handleInputChange = (id: number) => (event: React.ChangeEvent<HTMLInputElement>) => {
+        setInputValues({ ...inputValues, [id]: event.target.value });
     }
 
-    const qnaInfo = {
-      imageUrl: 'https://www.vegannews.co.kr/data/photos/20230727/art_1688713002447_e60ce1.png',
-      imageAlt: 'Rear view of modern home with pool',
-      title: '병창농부의 특급 제안-소나무같은 브룩껄리',
-      content: '브로컬리 샀는데 팔뚝만한다더니 굴뚝만한데요? 이걸 어떻게 요리해먹어야할까요?', 
-      time: '2024.01.25 오후 8:00 예정',
-      reviewCount: 34,
-      rating: 4,
+    const handleSendresponse = (id: number) => () => {
+        if(inputValues[id]) {
+            sellerPutQnaAPI({ productQuestionBoardId: id, answerContent: inputValues[id] }, accessToken).then(() => {
+                onAnswer(id, inputValues[id]);
+            }).catch(error => {
+                console.error(error);
+            });
+        } else {
+            alert("답변을 입력해주세요")
+        }
     }
-  
+
     return (
-        <>
         <Accordion allowMultiple>
-            <AccordionItem>
-                <h2>
-                    <AccordionButton>
-                        <Image mr="2" boxSize="100px" src={qnaInfo.imageUrl} alt={qnaInfo.imageAlt} />
-                        <Flex alignItems='baseline'>
-                            <Badge colorScheme='red'>새문의</Badge>
-                            <Box
-                                color='gray.500'
-                                fontWeight='semibold'
-                                letterSpacing='wide'
-                                fontSize='m'
-                                textTransform='uppercase'
-                                ml='2'
+            {sellerQnaList.map((qnaInfo, index) => (
+                <AccordionItem key={index}>
+                    <h2>
+                        <AccordionButton>
+                            <Image mr="2" boxSize="100px" src={qnaInfo.imgSrc} alt="Product Image" />
+                            <Flex alignItems='baseline'>
+                                {qnaInfo.answer ? (
+                                    <Badge colorScheme='yellow'>답변완료</Badge>
+                                ) : (
+                                    <Badge colorScheme='red'>새문의</Badge>)}
+                                <Box
+                                    color='gray.500'
+                                    fontWeight='semibold'
+                                    letterSpacing='wide'
+                                    fontSize='m'
+                                    textTransform='uppercase'
+                                    ml='2'
                                 >
-                                {qnaInfo.title} 
+                                    {qnaInfo.productName}
+                                </Box>
+                            </Flex>
+                            <AccordionIcon />
+                        </AccordionButton>
+                    </h2>
+                    <AccordionPanel pb={4}>
+                        {qnaInfo.questionContent}
+                        {qnaInfo.answer === 1 ? (
+                            <Box mt="3">
+                                {qnaInfo.answerContent}
                             </Box>
-                        </Flex>
-                        <AccordionIcon />
-                    </AccordionButton>
-                </h2>
-                <AccordionPanel pb={4}>
-                    {qnaInfo.content}
-                    <InputGroup>
-                        <Input mt="3" type="text" placeholder="문의답변" />
-                        <InputRightElement mt="3" pr="2" w="5rem">
-                            <Button
-                                h="1.75rem"
-                                size="m"
-                                colorScheme="themeGreen"
-                                variant="ghost"
-                                onClick={handleSendresponse}
-                                borderRadius="md"
-                                _hover={{
-                                    bg: "themeGreen.500",
-                                    color: "white",
-                                }}
-                            >
-                                답변하기
-                            </Button>
-                        </InputRightElement>   
-                    </InputGroup>
-                </AccordionPanel>
-            </AccordionItem>
+                        ) : (
+                            <InputGroup>
+                                <Input 
+                                type="text" 
+                                placeholder="문의답변" 
+                                value={inputValues[qnaInfo.productQuestionBoardId] || ''}
+                                onChange={handleInputChange(qnaInfo.productQuestionBoardId)}
+                            />
+                                <InputRightElement pr="2" w="5rem">
+                                    <Button
+                                        h="1.75rem"
+                                        size="m"
+                                        colorScheme="themeGreen"
+                                        variant="ghost"
+                                        onClick={handleSendresponse(qnaInfo.productQuestionBoardId)}
+                                        borderRadius="md"
+                                        _hover={{
+                                            bg: "themeGreen.500",
+                                            color: "white",
+                                        }}
+                                    >
+                                        답변하기
+                                    </Button>
+                                </InputRightElement>
+                            </InputGroup>
+                        )}
+                    </AccordionPanel>
+                </AccordionItem>
+            ))}
         </Accordion>
-    </>
     )
 }
 
-export default QnaItems
+export default QnaItems;

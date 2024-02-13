@@ -1,10 +1,12 @@
 import { Box, Center, Divider, Flex, Text } from "@chakra-ui/react";
-import dummy from "../../components/item/dummylist/dummy";
+import { LiveProductAll } from "../../types/DataTypes";
 import BuyerLiveItem from "./BuyerLiveItem";
 
-export default function BuyerItem() {
-    const dummylist = dummy;
+interface BuyerItemProps {
+    liveproducts: LiveProductAll[];
+}
 
+export default function BuyerItem({ liveproducts }: BuyerItemProps) {
     return (
         <>
             <Flex direction={"column"}>
@@ -15,13 +17,13 @@ export default function BuyerItem() {
                 </Center>
                 <Divider></Divider>
                 <Box p={"0.5rem"}>
-                    {dummylist.map((data) => (
+                    {liveproducts.map((item) => (
                         <BuyerLiveItem
-                            key={data.id}
-                            id={data.id}
-                            img={data.img}
-                            title={data.title}
-                            price={data.price}
+                            key={item.liveProductId}
+                            id={item.liveProductId}
+                            img={item.imgSrc}
+                            title={item.productName}
+                            price={item.price}
                         />
                     ))}
                 </Box>

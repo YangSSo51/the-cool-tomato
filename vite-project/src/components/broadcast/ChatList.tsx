@@ -1,40 +1,56 @@
-import { Flex, Text, Box } from "@chakra-ui/layout";
-import { Avatar } from "@chakra-ui/react";
-import { Button } from "@chakra-ui/react";
+import { Flex, Text } from "@chakra-ui/layout";
+import { IconButton, List, ListItem } from "@chakra-ui/react";
+import { FaBan } from "react-icons/fa";
+import { chatMessageRecv } from "../../types/DataTypes";
+import { postBlockUser } from "../../api/chatting";
+import { useSelector } from "react-redux";
+import { RootState } from "../../redux/stores/store";
 
-function ChatList() {
-    return (
-        <>
-        <Flex alignItems="center" justifyContent="space-between" w="100%" my="4" mx="auto" borderRadius="1rem" flexDirection="column">
-            <Flex justifyContent="space-between" w="full">
-            <Box>
-                <Button mr="1">
-                    ❌
-                </Button>
-                <Button mr="1">
-                    ❓
-                </Button>
-            </Box>
-            <Flex alignItems="center">
-                <Avatar my="1" mx="1" size="xs" bg="gray.200" />
-                <Text ml="2">별명1</Text>
-            </Flex>
-            </Flex>
-            <Text>고구마.너무.맛있어보여요. 근데 유기농 땅에서 자란 거맞지요? 저희집 애가.까딸스러워서~ 입안에 넣으면 ,흙이 좋읁 지아닌지두.바로알더라구요.ㅎ</Text>
-        </Flex>
-        <Flex alignItems="center" justifyContent="space-between" w="100%" my="4" mx="auto" borderRadius="1rem">
-            <Button mr="1">
-                삭제
-            </Button>
-            <Button mr="1">
-                차단
-            </Button>
-            <Avatar my="1" mx="1" size="xs" bg="gray.200" />
-            <Text>별명2</Text>
-            <Text>웹소켓 연동해서 하는듯 API 안보여서 대충쓰자요</Text>
-        </Flex>
-        </>
-    )
+interface ChatListProps {
+    recv: Array<chatMessageRecv>;
+    setRecv: React.Dispatch<React.SetStateAction<chatMessageRecv[]>>;
 }
 
-export default ChatList
+function ChatList({ recv }: ChatListProps) {
+    const accessToken = useSelector(
+        (state: RootState) => state.user.accessToken
+    );
+    const userId = useSelector((state: RootState) => state.user.userId);
+    function handleClick(id: number) {
+        if (id === 0 || id === userId) return;
+        if (confirm("정말로 차단하시겠습니까?") === false) return;
+        postBlockUser(id, accessToken).then(() => {
+            console.log("block user success");
+        });
+    }
+    return (
+        <>
+            <Flex
+                alignItems="center"
+                justifyContent="space-between"
+                w="90%"
+                my="4"
+                mx="auto"
+                borderRadius="1rem"
+            >
+                <List spacing={2}>
+                    {recv.map((msg, index) => (
+                        <ListItem key={index}>
+                            <Text whiteSpace={"normal"}>
+                                <IconButton
+                                    aria-label="block user"
+                                    icon={<FaBan color="red" />}
+                                    onClick={() => handleClick(msg.senderId)}
+                                    variant={"ghost"}
+                                ></IconButton>
+                                {msg.senderNickname} : {msg.message}
+                            </Text>
+                        </ListItem>
+                    ))}
+                </List>
+            </Flex>
+        </>
+    );
+}
+
+export default ChatList;

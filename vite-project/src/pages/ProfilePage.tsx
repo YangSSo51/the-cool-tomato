@@ -25,7 +25,6 @@ function ProfilePage() {
     })
     const [products, setProducts] = useState<ItemDetailInterface[]>([])
 
-
     useEffect(() => {
         getSellerDetailAPI(sellerIdNumber)
         .then((response) => {

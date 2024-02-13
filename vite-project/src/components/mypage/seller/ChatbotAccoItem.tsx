@@ -3,49 +3,54 @@ import {
     Tr,
     Td,
 } from "@chakra-ui/react";
-// import { useState, ChangeEvent } from "react";
-// import { useSelector } from "react-redux";
-// import { RootState } from "../../../redux/stores/store";
 
-function ChatbotItem() {
-    // const user = useSelector((state: RootState) => state.user);
+interface chatbotInfo {
+    chatbotId: number;
+    roomId: number;
+    question: string;
+    answer: string;
+    registerDate: string;
+}
 
-    const onClickEdit = () => {
-        // API().then((result) => {
-        //  //
-        // });
-    };
+function ChatbotItem({chatbotList, deleteChatbot} : {chatbotList: chatbotInfo[], deleteChatbot: (chatbotId: number) => void;}) {
 
-    const onClickDelete = () => {
-    //    API().then((result) => {
-    //    //
-    //     });
-    };
+    if (!chatbotList || chatbotList.length === 0) {
+        return (
+                <Tr>
+                    <Td width="10%" />
+                    <Td width="70%">
+                        등록된 자동응답이 없습니다!
+                    </Td>
+                    <Td width="20%" />
+                </Tr>
+        );
+    }
 
     return (
         <>
-            <Tr>
-                <Td style={{ maxWidth: "10%", whiteSpace: "pre-wrap" }}>
-                    집
-                </Td>
-                <Td style={{ maxWidth: "70%", whiteSpace: "pre-wrap" }}>
-                    집가고싶다 집에너무가고싶다 집가서 전기장판틀고자고싶다집가고싶다 집에너무가고싶다 집가서전기장판 틀고자고싶다
-                </Td>
-                <Td display="flex" style={{ wordWrap: "break-word", maxWidth: "20%" }}>
-                    <Button 
-                        mr="1"
-                        onClick={onClickEdit}
-                    >
-                        수정
-                    </Button>
-                    <Button 
-                        colorScheme="red"
-                        onClick={onClickDelete}
-                    >
-                        삭제
-                    </Button>
-                </Td>
-            </Tr>           
+            {chatbotList.map((item, index) => (
+                <Tr key={index}>
+                    <Td style={{ whiteSpace: "pre-wrap" }}>{item.question}</Td>
+                    <Td style={{ whiteSpace: "pre-wrap" }}>{item.answer}</Td>
+                    <Td width="20%">
+                        {/* <Button
+                            onClick={onClickEdit}
+                            colorScheme="teal"
+                            size="sm"
+                            mr={2}
+                        >
+                            수정
+                        </Button> */}
+                        <Button
+                            onClick={()=>{deleteChatbot(item.chatbotId);}}
+                            colorScheme="red"
+                            size="sm"
+                        >
+                            삭제
+                        </Button>
+                    </Td>
+                </Tr>
+            ))}
         </>
     );
 }

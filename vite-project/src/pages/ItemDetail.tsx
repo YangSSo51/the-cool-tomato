@@ -9,6 +9,7 @@ import {
     Tab,
     TabPanels,
     TabPanel,
+    AspectRatio,
 } from "@chakra-ui/react";
 import ItemDetailDetail from "../components/item/ItemDetailDetail";
 import { useNavigate, useParams } from "react-router-dom";
@@ -23,7 +24,7 @@ export default function ItemDetail() {
     const BuyNow = () => {
         navigate("https://naver.com")
     }
-    
+
     const [fetchData, setFetchData] = useState<
         ItemDetailInterface | undefined
     >();
@@ -33,7 +34,7 @@ export default function ItemDetail() {
         ItemDetailFetch(Number(id)).then((res) => {
             setFetchData(res);
         });
-    }, []);
+    }, [id]);
 
     return (
         <>
@@ -42,22 +43,23 @@ export default function ItemDetail() {
                     <Box maxW={"4xl"} mx={"auto"} p={6}>
                         <Flex grow={1}>
                             <Box maxW={"26rem"}>
-                                <Image
-                                    src={fetchData?.imgSrc}
-                                    aspectRatio="1/1"
-                                    objectFit="cover"
-                                    width="100%"
-                                    overflow={"hidden"}
-                                    position={"relative"}
-                                    borderRadius={"20px"}
-                                />
+                                <AspectRatio w='450px' ratio={1 / 1}>
+                                    <Image
+                                        src={fetchData?.imgSrc}
+                                        aspectRatio="1/1"
+                                        objectFit="cover"
+                                        overflow={"hidden"}
+                                        position={"relative"}
+                                        borderRadius={"20px"}
+                                    />
+                                </AspectRatio>
                             </Box>
 
-                            <Flex display={"block"} pl={"2.5rem"} ml={"3rem"}>
+                            <Flex display={"block"} pl={"2.5rem"} ml={"5rem"}>
                                 <Box mb={"1rem"}>
-                                <Text fontSize={"2xl"} as={"b"}>
-                                    {fetchData?.productName}
-                                </Text>
+                                    <Text fontSize={"2xl"} as={"b"}>
+                                        {fetchData?.productName}
+                                    </Text>
                                 </Box>
                                 <Text fontSize={"lg"} mb={"1"}>
                                     <Text color={"themeRed.500"} as={"b"}>
@@ -105,8 +107,9 @@ export default function ItemDetail() {
                                     <Button
                                         borderRadius={"md"}
                                         bg={"themeGreen.500"}
+                                        onClick={BuyNow}
                                     >
-                                        <Text color={"white"} onClick={BuyNow}>바로 구매</Text>
+                                        <Text color={"white"}>바로 구매</Text>
                                     </Button>
                                 </Box>
                             </Flex>
@@ -133,7 +136,7 @@ export default function ItemDetail() {
                             <Text as={"b"}>상품 문의</Text>
                         </Tab>
                     </TabList>
-                    <TabPanels>
+                    <TabPanels mt={"5rem"} mb={"5rem"}>
                         <TabPanel>
                             <Flex
                                 direction={"column"}
