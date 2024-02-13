@@ -37,12 +37,14 @@ export default function Recommends() {
                                 width="200"
                                 src={item.imgSrc}
                             />
+                            <Box w="200px">
                             <Text fontSize="lg" fontWeight="semibold" m={2}>
                                 {item.productName}
                             </Text>
-                            <Text color="gray.500">
+                            <Text color="gray.500" overflow="hidden" whiteSpace="nowrap" textOverflow="ellipsis">
                                 {item.productContent}
                             </Text>
+                            </Box>
                             </CardBody>
                         </Card>
                     </GridItem>
