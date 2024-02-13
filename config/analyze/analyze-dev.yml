@@ -1,0 +1,34 @@
+server:
+  port: 8087
+
+spring:
+  application:
+    name: analyze
+  datasource:
+    url: jdbc:mysql://kpc.chf1yiylcr3s.ap-northeast-2.rds.amazonaws.com:3306/wp?serverTimezone=UTC
+    username: kpc
+    password: asdf134620!
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        format_sql: true
+
+logging.level:
+  org.hibernate.SQL: debug
+  org.hibernate.type: trace
+
+openvidu:
+  url: http://i10a501.p.ssafy.io:5443
+  password: T1BFTlZJRFVBUFA6c3NhZnk=
+
+redis:
+  master:
+    host: 211.63.208.201
+    port: 6379
+  nodes:
+    - host: 211.63.208.201
+      port: 6379
+  password: asdf134620!
