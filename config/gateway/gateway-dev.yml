@@ -1,5 +1,5 @@
 server:
-  port: 8000
+  port: 443
   ssl:
     key-store: src/main/resources/test-keystore.p12
     key-store-type: PKCS12
