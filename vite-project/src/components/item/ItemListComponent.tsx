@@ -38,27 +38,6 @@ const Goods = ({ id, img, title, price, profile, sellerId }: GoodsProps) => {
                             />
                         </AspectRatio>
                     </Box>
-                    <Flex mt={"0.5rem"}>
-                        <Center>
-                            <Avatar
-                                size="md"
-                                name="Ryan Florence"
-                                src={
-                                    profile === null
-                                        ? "/img/default_profile.jpeg"
-                                        : profile
-                                }
-                                mr={"1rem"}
-                            />
-                        </Center>
-
-                        <Box>
-                            <Box className="Text">
-                                <Box className="TextTitle">{title}</Box>
-                            </Box>
-                            <Box className="tagWrap">{price}</Box>
-                        </Box>
-                    </Flex>
                 </Box>
                 <Flex mt={"0.5rem"}>
                     <Center>
