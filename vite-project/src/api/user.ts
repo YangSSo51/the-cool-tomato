@@ -483,22 +483,17 @@ async function getSellerApplicationDetailAPI(sellerInfoId: number) {
 }
 
 // 관리자의 판매자 전환 승인 함수
-function approveSellerApplicationAPI(
+async function approveSellerApplicationAPI(
     sellerInfoId: number,
     accessToken: string
 ) {
-    try {
-        http.put(`${url}/sellers/admin/approve/${sellerInfoId}`, {
-            headers: {
-                "Content-Type": "application/json",
-                Authorization: "Bearer " + accessToken,
-            },
-        });
-    } catch (error) {
-        console.log(error);
-        console.log("판매자 전환 승인 실패");
-        throw error;
-    }
+    headers.set("Authorization", `Bearer ${accessToken}`);
+
+    return await http.put(
+        `${url}/sellers/admin/approve/${sellerInfoId}`,
+        {},
+        { headers: headers }
+    );
 }
 
 // 관리자의 판매자 전환 철회 함수
