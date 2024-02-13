@@ -10,6 +10,7 @@ import com.wp.product.liveproduct.dto.response.LiveProductResponse;
 import com.wp.product.liveproduct.entity.LiveProduct;
 import com.wp.product.liveproduct.entity.QLiveProduct;
 import com.wp.product.product.entity.QProduct;
+import com.wp.product.user.entity.QUser;
 import jakarta.transaction.Transactional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -36,6 +37,7 @@ public class LiveProductSearchImpl extends QuerydslRepositorySupport implements 
 
         QLiveProduct liveProduct = QLiveProduct.liveProduct;
         QProduct product = QProduct.product;
+        QUser user = QUser.user;
 
         //방송 상품 목록 조회 쿼리
         List<LiveProductResponse> list = queryFactory.select(Projections.bean(LiveProductResponse.class,
@@ -43,6 +45,8 @@ public class LiveProductSearchImpl extends QuerydslRepositorySupport implements 
                         product.productId,
                         product.imgSrc,
                         product.sellerId,
+                        user.nickname.as("sellerName"),
+                        user.profileImg.as("sellerImg"),
                         product.category.categoryId,
                         product.category.categoryContent.as("categoryName"),
                         product.productName,
@@ -61,6 +65,8 @@ public class LiveProductSearchImpl extends QuerydslRepositorySupport implements 
                 .innerJoin(product)
                 .on(liveProduct.product.productId.eq(product.productId))
                 .fetchJoin()
+                .leftJoin(user)
+                .on(product.sellerId.eq(user.userId))
                 .where(liveProduct.liveId.eq(request.getLiveId()))
                 .orderBy(liveProduct.mainProductSetting.desc(),liveProduct.seq.asc(),liveProduct.registerDate.desc())
                 .offset(pageable.getOffset())
