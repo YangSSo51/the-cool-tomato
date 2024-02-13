@@ -41,9 +41,9 @@ public class BroadcastSearchServiceImpl implements BroadcastSearchService {
             List<ZSetOperations.TypedTuple<String>> carouselList = Objects.requireNonNull(redisTemplate.opsForZSet().reverseRangeWithScores(RANK, 0, 19)).stream().toList();
             List<Long> liveBroadcastIds = new ArrayList<>();
             Map<Long, Long> viewCounts = new HashMap<>();
+            int cnt = 0;
             for (ZSetOperations.TypedTuple<String> stringTypedTuple : carouselList) {
                 Long id = Long.parseLong(Objects.requireNonNull(stringTypedTuple.getValue()));
-                System.out.println(id);
                 Long viewCount = Objects.requireNonNull(stringTypedTuple.getScore()).longValue();
                 liveBroadcastIds.add(id);
                 viewCounts.put(id, viewCount);

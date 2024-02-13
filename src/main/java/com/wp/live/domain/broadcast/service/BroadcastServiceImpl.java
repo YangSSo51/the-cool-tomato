@@ -135,8 +135,7 @@ public class BroadcastServiceImpl implements BroadcastService{
 
             BroadcastAnalyze analyze = BroadcastAnalyze.builder().liveBroadcastId(liveBroadcast.getUser().getId()).content(info).build();
             broadcastAnalyzeRepository.save(analyze);
-
-            redisTemplate.opsForZSet().incrementScore(RANK, String.valueOf(stop.getLiveBroadcastId()), -1000000000);
+            redisTemplate.opsForZSet().remove(RANK, String.valueOf(stop.getLiveBroadcastId()));
             redisTemplate.opsForHash().delete(VIEW, Long.toString(stop.getLiveBroadcastId()));
         } catch (Exception e){
             throw new BusinessExceptionHandler("아이고 미안합니다. 김현종에게 문의해주세요~", ErrorCode.INTERNAL_SERVER_ERROR);
