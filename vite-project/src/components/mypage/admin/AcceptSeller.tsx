@@ -48,10 +48,20 @@ export default AcceptSeller;
 function UserList({ allUserData }: { allUserData: AcceptSeller[]}) {
     const user = useSelector((state: RootState) => state.user);
 
+    const approvefunction = (sellerid : number, at : string) => {
+        try {
+            approveSellerApplicationAPI(sellerid, at).then((res) => {console.log(res)})
+        } catch(err) {
+            console.log(err)
+        }
+    }
+    
+
     return (
         <>
         <Accordion allowMultiple>
             {allUserData.map((item, index) => (
+                
                 <AccordionItem key={index}>
                     {/* 아코디언 초기 상태 */}
                     <AccordionButton justifyContent="space-between">
@@ -74,7 +84,8 @@ function UserList({ allUserData }: { allUserData: AcceptSeller[]}) {
 
                     <AccordionPanel>
                         {item.sellerInfoId}
-                        <Button onClick={()=>{approveSellerApplicationAPI(item.sellerInfoId, user.accessToken)}}>
+                        
+                        <Button onClick={()=>{approvefunction(item.sellerInfoId, user.accessToken)}}>
                             승인
                         </Button>
                     </AccordionPanel>
