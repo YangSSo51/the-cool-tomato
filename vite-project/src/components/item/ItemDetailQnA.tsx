@@ -7,8 +7,13 @@ import { getQnAList } from "../../api/itemQnA";
 import { useEffect, useState } from "react";
 import { ItemQnA } from "../../types/DataTypes";
 import { AxiosResponse } from "axios";
+import { useSelector } from "react-redux";
+import { RootState } from "../../redux/stores/store";
 
 function ItemDetailQnA() {
+    const accessToken = useSelector(
+        (state: RootState) => state.user.accessToken
+    );
     const size = 5;
     const { id } = useParams() as { id: string };
     const productID = parseInt(id);
@@ -47,11 +52,14 @@ function ItemDetailQnA() {
             refreshQnA(0, (page + 1) * size, true);
         } else {
             console.log("refreshQnA(newPage, newSize, isReset)");
-            getQnAList({
-                page: newPage,
-                size: newSize,
-                "product-id": productID,
-            }).then((res: AxiosResponse) => {
+            getQnAList(
+                {
+                    page: newPage,
+                    size: newSize,
+                    "product-id": productID,
+                },
+                accessToken
+            ).then((res: AxiosResponse) => {
                 if (isReset) {
                     setAccortionList([...res.data.data.list]);
                 } else {
@@ -62,7 +70,7 @@ function ItemDetailQnA() {
     }
 
     useEffect(() => {
-        getQnAList({ page, size, "product-id": productID }).then(
+        getQnAList({ page, size, "product-id": productID }, accessToken).then(
             (res: AxiosResponse) => {
                 setAccortionList([...accortionList, ...res.data.data.list]);
                 if (maxPage === 0) {

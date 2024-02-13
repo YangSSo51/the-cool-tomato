@@ -21,11 +21,11 @@ function QnaAccordion({
     data: ItemQnA;
     refreshQnA: () => void;
 }) {
-    console.log("QnaAccordion");
     const [alertOpen, setAlertOpen] = useState(false);
     const accessToken = useSelector(
         (state: RootState) => state.user.accessToken
     );
+    const userId = useSelector((state: RootState) => state.user.userId);
     const questionDate = data.questionRegisterDate
         ? data.questionRegisterDate.split("T")[0].replaceAll("-", ".")
         : "";
@@ -92,7 +92,7 @@ function QnaAccordion({
                         <Box as="span" pr={"2"}>
                             {questionTitle}
                         </Box>
-                        {data.isMine === 0 ? (
+                        {data.writerId === userId ? (
                             <DeleteIcon
                                 color={"lightgrey"}
                                 onClick={handleClick}
