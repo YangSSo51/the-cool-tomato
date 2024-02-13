@@ -16,7 +16,7 @@ import { useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import { RootState } from "../../../redux/stores/store";
 import LiveItemAdd from "../../broadcast/LiveItemAdd";
-import AddGoods from "../../broadcast/AddGoods";
+import AddGoods from "./PlanEditAddGoods";
 import {
     ItemDetailInterface,
     broadcastInfo,
@@ -73,7 +73,7 @@ export default function LivePlanEditForm() {
         const newHour = (parseInt(hour) + 9) % 24;
         const newTimePart = `${newHour.toString().padStart(2, '0')}:${minute}:${second}`;
         const newUTCString = `${datePart}T${newTimePart}`;
-        return newUTCString;
+        return newUTCString.split('.')[0];
     }
 
     useEffect(() => {
@@ -96,7 +96,7 @@ export default function LivePlanEditForm() {
         };
         fetchData();
     }, [accessToken, broadcastIdNumber]);
-
+console.log(startDate)
     useEffect(() => {
         const fetchData = async () => {
             const response = await getLiveProduct({ "live-id": broadcastIdNumber }, accessToken)
@@ -206,7 +206,7 @@ export default function LivePlanEditForm() {
             <Container maxW={"container.xl"} p={"3rem"}>
                 <Center>
                     <Text as={"b"} fontSize={"5xl"}>
-                        라이브 등록
+                        라이브 수정
                     </Text>
                 </Center>
                 <Center p={"1rem"} display={"block"}>
@@ -274,7 +274,7 @@ export default function LivePlanEditForm() {
                                         mainProductId={mainProductId}
                                         setMainProductId={setMainProductId}
                                         setIsOpen={setIsOpen}
-                                        // liveproducts={liveproducts}
+                                        liveproducts={liveproducts}
                                     />
                                 </Box>
                             ) : (
@@ -303,7 +303,6 @@ export default function LivePlanEditForm() {
                                 size={size}
                                 isOpen={isOpen}
                                 setIsOpen={setIsOpen}
-                                // liveproducts={liveproducts}
                             />
                         </Box>
                     </Box>

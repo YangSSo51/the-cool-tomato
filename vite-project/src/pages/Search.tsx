@@ -8,7 +8,7 @@ import Recommends from "../components/search/Recommends";
 // 검색 전 추천상품 띄우기
 export default function Search() {
     const [showResults, setShowResults] = useState(false);
-    const [searchKeyword, setSearchKeyword] = useState('');
+    const [searchKeyword, setSearchKeyword] = useState<string>('');
     const [searchtitleResults, setSearchtitleResults] = useState([]);
     const [searchsellerResults, setSearchsellerResults] = useState([]);
     
