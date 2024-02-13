@@ -1,13 +1,48 @@
 import { Flex, Text, Box } from "@chakra-ui/react";
-import { Avatar, Badge } from "@chakra-ui/react";
+import { Avatar, Badge, Image } from "@chakra-ui/react";
 import { SearchIcon } from "@chakra-ui/icons";
-// import { ResponsiveLine } from "@nivo/line";
+import { Line } from 'react-chartjs-2';
+import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import { RootState } from "../redux/stores/store";
+import logo from "/img/newlogo.png";
 
 export default function LiveResultPage() {
+    const navigate = useNavigate();
+    // const accessToken = useSelector((state: RootState) => state.user.accessToken);
+    // const [ liveResult, setLiveResult ] = useState([])
+
+    // useEffect(() => {
+    //     const fetchData = async () => {
+    //         const response = getLiveResultAPI(accessToken);
+    //         console.log(response)
+    //     }
+    // },  [])
 
     return (
-    
-        <Flex direction="column" align="center" py={8}>
+        <Flex justifyContent="center" direction="column" alignItems="center" width={"100%"} p="5">
+
+        <Box
+            mb="3"
+            width={"12rem"}
+            height={"8rem"}
+            onClick={() => {
+                navigate("./main")}}
+            _hover={{ 
+                opacity: 1,
+                cursor: "pointer"
+            }}
+        >
+            <Image
+                width={"100%"}
+                height={"100%"}
+                objectFit={"cover"}
+                src={logo}
+            />
+        </Box>
+
+        <Flex w="80vw" direction="column" align="center" py={8} border="2px" borderColor="themeLightGreen.500">
 
             <Avatar mt="4" size="xl" src="임시링크" />
             
@@ -50,82 +85,27 @@ export default function LiveResultPage() {
 
             <Box>
                 <Text fontSize="2xl" fontWeight="semibold" mb={4} textAlign="center">시간대별 접속자 추이</Text>
-                <LineChart className="w-full h-[200px]" />
+                {/* <LineChart /> */}
             </Box>
         </Flex>
+
+        </Flex>    
     );
 }
     
 function LineChart(props) {
+    const labels = ["30분", "1시간", "1시간30분", "2시간", "2시간30분"];
+    const dataLine = {
+        labels: labels,
+        datasets: [{
+            label: '30분 간격 시청차 추이',
+            data: [65, 59, 80, 81, 56],
+            fill: false,
+            borderColor: 'rgb(75, 192, 192)',
+            tension: 0.1
+        }]
+    };
     return (
-        <Text>임시선차트</Text>
-    // <div {...props}>
-    //     <ResponsiveLine
-    //     data={[
-    //         {
-    //         id: "Desktop",
-    //         data: [
-    //             { x: "Jan", y: 43 },
-    //             { x: "Feb", y: 137 },
-    //             { x: "Mar", y: 61 },
-    //             { x: "Apr", y: 145 },
-    //             { x: "May", y: 26 },
-    //             { x: "Jun", y: 154 },
-    //         ],
-    //         },
-    //         {
-    //         id: "Mobile",
-    //         data: [
-    //             { x: "Jan", y: 60 },
-    //             { x: "Feb", y: 48 },
-    //             { x: "Mar", y: 177 },
-    //             { x: "Apr", y: 78 },
-    //             { x: "May", y: 96 },
-    //             { x: "Jun", y: 204 },
-    //         ],
-    //         },
-    //     ]}
-    //     margin={{ top: 10, right: 10, bottom: 40, left: 40 }}
-    //     xScale={{
-    //         type: "point",
-    //     }}
-    //     yScale={{
-    //         type: "linear",
-    //     }}
-    //     axisTop={null}
-    //     axisRight={null}
-    //     axisBottom={{
-    //         tickSize: 0,
-    //         tickPadding: 16,
-    //     }}
-    //     axisLeft={{
-    //         tickSize: 0,
-    //         tickValues: 5,
-    //         tickPadding: 16,
-    //     }}
-    //     colors={["#2563eb", "#e11d48"]}
-    //     pointSize={6}
-    //     useMesh={true}
-    //     gridYValues={6}
-    //     theme={{
-    //         tooltip: {
-    //         chip: {
-    //             borderRadius: "9999px",
-    //         },
-    //         container: {
-    //             fontSize: "12px",
-    //             textTransform: "capitalize",
-    //             borderRadius: "6px",
-    //         },
-    //         },
-    //         grid: {
-    //         line: {
-    //             stroke: "#f3f4f6",
-    //         },
-    //         },
-    //     }}
-    //     role="application"
-    //     />
-    // </div>
+        <Line data={dataLine} />
     );
 }
