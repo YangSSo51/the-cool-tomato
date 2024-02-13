@@ -26,6 +26,9 @@ auth:
 mediate:
   url: http://3.39.6.29:8081
 
+user:
+  url: http://MASTER:8000
+
 redis:
   master:
     host: SN01
