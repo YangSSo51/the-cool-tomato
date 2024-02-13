@@ -1,23 +1,12 @@
 import { Box, Center, Divider, Flex, Text } from "@chakra-ui/react";
-import { useEffect, useState } from "react";
-import { getLiveProduct } from "../../api/liveProduct";
-import { useSelector } from "react-redux";
-import { RootState } from "../../redux/stores/store";
 import { LiveProductAll } from "../../types/DataTypes";
 import BuyerLiveItem from "./BuyerLiveItem";
 
-export default function BuyerItem({ roomId }: { roomId: number }) {
-    const accessToken = useSelector((state: RootState) => { return state.user.accessToken })
-    const [ liveproducts, setLiveproducts ] = useState<LiveProductAll[]>([])
+interface BuyerItemProps {
+    liveproducts: LiveProductAll[];
+}
 
-    useEffect(() => {
-        const fetchData = async () => {
-            const response = await getLiveProduct({ "live-id": roomId }, accessToken);
-            setLiveproducts(response.list)
-        };
-        fetchData();
-    }, [roomId, accessToken])
-
+export default function BuyerItem({ liveproducts }: BuyerItemProps) {
     return (
         <>
             <Flex direction={"column"}>
