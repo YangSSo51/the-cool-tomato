@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-@FeignClient(name = "auth", url = "http://i10a501.p.ssafy.io:8080/v1/auth", configuration = FeignClientConfig.class)
+@FeignClient(name = "auth", url = "http://211.63.208.201:8000/v1/auth", configuration = FeignClientConfig.class)
 public interface AuthClient {
     @PostMapping
     IssueTokenResponse issueToken(@RequestBody IssueTokenRequest issueTokenRequest);
