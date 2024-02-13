@@ -7,7 +7,7 @@ interface GoodsProps {
     id: number | undefined;
     img: string | undefined;
     title: string | undefined;
-    price: number;
+    price: number | undefined;
     profile: string | null | undefined;
     sellerId: number | undefined;
 }
@@ -53,7 +53,7 @@ const Goods = ({ id, img, title, price, profile, sellerId }: GoodsProps) => {
                         <Box className="Text">
                             <Box className="TextTitle">{title}</Box>
                         </Box>
-                        <Box className="tagWrap">{formatNumberWithComma(price)}</Box>
+                        <Box className="tagWrap">{price ? formatNumberWithComma(price) : ''}</Box>
                     </Box>
                 </Flex>
             </Box>
