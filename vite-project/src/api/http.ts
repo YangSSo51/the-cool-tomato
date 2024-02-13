@@ -3,17 +3,17 @@ import SockJS from "sockjs-client";
 
 const BASEURL = "211.63.208.201:8000";
 const chatWebSocketUrl = import.meta.env.PROD
-    ? "ws://" + BASEURL + "/v1/chat/ws-stomp/websocket"
+    ? "wss://" + BASEURL + "/v1/chat/ws-stomp/websocket"
     : "ws://i10a501.p.ssafy.io:8085/v1/chat/ws-stomp/websocket";
 
 const chatbotWebSocketUrl = import.meta.env.PROD
-    ? "ws://" + BASEURL + "/stomp/chat/websocket"
+    ? "wss://" + BASEURL + "/stomp/chat/websocket"
     : "ws://i10a501.p.ssafy.io:8086/stomp/chat/websocket";
 
 function mainAxios() {
     return axios.create({
         baseURL: import.meta.env.PROD
-            ? "http://" + BASEURL + "/v1/"
+            ? "https://" + BASEURL + "/v1/"
             : "http://3.39.6.29:8084/v1/",
         headers: {
             "Content-Type": "application/json;charset=utf-8",
@@ -34,7 +34,7 @@ function openViduDirectAxios() {
 function liveAxios() {
     return axios.create({
         baseURL: import.meta.env.PROD
-            ? "http://" + BASEURL + "/v1"
+            ? "https://" + BASEURL + "/v1"
             : "http://i10a501.p.ssafy.io:8083/v1",
         headers: {
             "Content-Type": "application/json",
@@ -45,7 +45,7 @@ function liveAxios() {
 function itemAxios() {
     return axios.create({
         baseURL: import.meta.env.PROD
-            ? "http://" + BASEURL + "/v1"
+            ? "https://" + BASEURL + "/v1"
             : "http://i10a501.p.ssafy.io:8082/v1",
         headers: {
             "Content-Type": "application/json;charset=utf-8",
@@ -56,7 +56,7 @@ function itemAxios() {
 function chatbotAxios() {
     return axios.create({
         baseURL: import.meta.env.PROD
-            ? "http://" + BASEURL + "/v1"
+            ? "https://" + BASEURL + "/v1"
             : "http://i10a501.p.ssafy.io:8086/v1/",
         headers: {
             "Content-Type": "application/json",
@@ -65,7 +65,7 @@ function chatbotAxios() {
 }
 function chatSocket() {
     const base_url = import.meta.env.PROD
-        ? "http://" + BASEURL + "/v1"
+        ? "https://" + BASEURL + "/v1"
         : "http://i10a501.p.ssafy.io:8085/v1";
     const sock = new SockJS(`${base_url}/chat/ws-stomp`);
     sock.onclose = (ev: CloseEvent) => {
@@ -81,7 +81,7 @@ function chatSocket() {
 
 function chatbotSocket() {
     const base_url = import.meta.env.PROD
-        ? "http://" + BASEURL
+        ? "https://" + BASEURL
         : "http://i10a501.p.ssafy.io:8086";
     const sock = new SockJS(`${base_url}/stomp/chat`);
     sock.onclose = (ev: CloseEvent) => {
@@ -98,7 +98,7 @@ function chatbotSocket() {
 function authAxios() {
     return axios.create({
         baseURL: import.meta.env.PROD
-            ? "http://" + BASEURL + "/v1"
+            ? "https://" + BASEURL + "/v1"
             : "http://i10a501.p.ssafy.io:8080/v1/",
         // 테스트용 API: 위에 서버가 작동을 안해서 테스트할 땐 아래 써주세욤
         // baseURL: "http://211.63.208.201:8080/v1/",
@@ -111,7 +111,7 @@ function authAxios() {
 function chatAxios() {
     return axios.create({
         baseURL: import.meta.env.PROD
-            ? "http://" + BASEURL + "/v1"
+            ? "https://" + BASEURL + "/v1"
             : "http://i10a501.p.ssafy.io:8085/v1/",
         headers: {
             "Content-Type": "application/json;charset=utf-8",
