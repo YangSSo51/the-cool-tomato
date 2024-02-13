@@ -21,17 +21,22 @@ spring:
   cloud:
     gateway:
       globalcors:
-        cors-configurations:
+        corsConfigurations:
           '[/**]':
-            allowedOrigins: 'https://i10a501.p.ssafy.io'
-            allowedHeaders: '*'
-            allow-credentials: true
+            allowedOrigins: "https://i10a501.p.ssafy.io"
+            allowedHeaders:
+              - x-requested-with
+              - authorization
+              - content-type
+              - credential
+              - X-AUTH-TOKEN
+              - X-CSRF-TOKEN
             allowedMethods:
-              - PUT
-              - GET
               - POST
-              - DELETE
+              - GET
+              - PUT
               - OPTIONS
+              - DELETE
       mvc:
         routes:
           - id: auth
