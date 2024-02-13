@@ -1,12 +1,7 @@
 import { mainAxios } from "./http";
 import { AxiosHeaders, AxiosError } from "axios";
 import { ReissueTokenAPI } from "./auth";
-import {
-    RegisterUser,
-    RegisterSeller,
-    userInfo,
-    SellerInfo,
-} from "../types/DataTypes";
+import { RegisterUser, RegisterSeller, userInfo } from "../types/DataTypes";
 
 const http = mainAxios();
 const headers = new AxiosHeaders();
@@ -487,9 +482,13 @@ async function approveSellerApplicationAPI(
     sellerInfoId: number,
     accessToken: string
 ) {
-    headers.set("Authorization", `Bearer ${accessToken}`)
-  
-    return await http.put(`${url}/sellers/admin/approve/${sellerInfoId}`, {}, {headers : headers})
+    headers.set("Authorization", `Bearer ${accessToken}`);
+
+    return await http.put(
+        `${url}/sellers/admin/approve/${sellerInfoId}`,
+        {},
+        { headers: headers }
+    );
 }
 
 // 관리자의 판매자 전환 철회 함수
