@@ -28,8 +28,9 @@ public class ChattingServiceImpl implements ChattingService{
         SearchHit<SearchChatbot> searchHit = elasticSearchRepository.searchByQuestion(message);
 
         String returnMessage = "해당 질문에 대해 등록된 답변이 없습니다.";
-        if(searchHit.getContent()!=null && searchHit.getScore() > 0.6){
-            log.debug(searchHit.getContent() +" "+searchHit.getScore());
+
+        if(searchHit !=null && searchHit.getContent()!=null && searchHit.getScore() > 3){
+            log.info(searchHit.getContent() +" "+searchHit.getScore());
             returnMessage = searchHit.getContent().getAnswer();
         }
 
