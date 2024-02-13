@@ -15,33 +15,44 @@ eureka:
 
 spring:
   cloud:
-        mvc:
-          routes:
-            - id: auth
-              uri: lb://AUTH
-              predicates:
-                  - Path=/v1/auth/**
-            - id: broadcast
-              uri: lb://BROADCAST
-              predicates:
-                  - Path=/v1/live/**
-            - id: product
-              uri: lb://PRODUCT
-              predicates:
-                - Path=/v1/products/**
-            - id: categories
-              uri: lb://PRODUCT
-              predicates:
-                - Path=/v1/categories/**
-            - id: live-product
-              uri: lb://PRODUCT
-              predicates:
-                - Path=/v1/live-product/**
-            - id: product-questions
-              uri: lb://PRODUCT
-              predicates:
-                - Path=/v1/product-questions/**
-            - id: chatbot
-              uri: lb://CHATBOT
-              predicates:
-                  - Path=/v1/chatbots/** 
+    gateway:
+      globalcors:
+        cors-configurations:
+          '[/**]':
+            allowedOrigins: 'http://localhost:3000'
+            allowedMethods: # 메서드를 명시하지 않으면 안되는 경우도 있기 때문에 메서드는 명시해주는 편이 좋다고 한다.
+              - PUT
+              - GET
+              - POST
+              - DELETE
+              - OPTIONS
+    mvc:
+      routes:
+        - id: auth
+          uri: lb://AUTH
+          predicates:
+            - Path=/v1/auth/**
+        - id: broadcast
+          uri: lb://BROADCAST
+          predicates:
+            - Path=/v1/live/**
+        - id: product
+          uri: lb://PRODUCT
+          predicates:
+            - Path=/v1/products/**
+        - id: categories
+          uri: lb://PRODUCT
+          predicates:
+            - Path=/v1/categories/**
+        - id: live-product
+          uri: lb://PRODUCT
+          predicates:
+            - Path=/v1/live-product/**
+        - id: product-questions
+          uri: lb://PRODUCT
+          predicates:
+            - Path=/v1/product-questions/**
+        - id: chatbot
+          uri: lb://CHATBOT
+          predicates:
+            - Path=/v1/chatbots/**
