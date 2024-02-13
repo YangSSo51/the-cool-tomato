@@ -43,11 +43,13 @@ public class ChatbotRepositorySearchImpl extends QuerydslRepositorySupport imple
                 ))
                 .from(chatbot)
                 .where(chatbot.sellerId.eq(request.getSellerId()))
-                .orderBy(chatbot.registerDate.desc()).fetch();
+                .where(chatbot.isDeleted.eq(false))
+                .orderBy(chatbot.roomId.desc(),chatbot.registerDate.desc()).fetch();
 
         JPQLQuery<Long> countQuery = queryFactory.select(chatbot.count())
                 .from(chatbot)
-                .where(chatbot.sellerId.eq(request.getSellerId()));
+                .where(chatbot.sellerId.eq(request.getSellerId()))
+                .where(chatbot.isDeleted.eq(false));
 
         return PageableExecutionUtils.getPage(result,pageable,countQuery::fetchOne);
     }
@@ -68,6 +70,8 @@ public class ChatbotRepositorySearchImpl extends QuerydslRepositorySupport imple
                         chatbot.answer
                 )
                 .from(chatbot)
-                .where(booleanBuilder).fetchFirst();
+                .where(booleanBuilder)
+                .where(chatbot.isDeleted.eq(false))
+                .fetchFirst();
     }
 }

@@ -81,7 +81,8 @@ public class ChatbotServiceImpl implements ChatbotService{
             if (!equals) {
                 throw new Exception();
             }
-            chatbotRepository.deleteById(chatbotId);
+            chatbot.delete();
+            chatbotRepository.save(chatbot);
         }catch (Exception e){
             throw new BusinessExceptionHandler("챗봇 질의응답 삭제 중 에러가 발생했습니다",ErrorCode.DELETE_ERROR);
         }
