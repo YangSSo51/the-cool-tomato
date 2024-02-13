@@ -105,6 +105,12 @@ export default function LivePlanEditForm() {
         fetchData();
     }, [])
 
+    useEffect(() => {
+        if (liveproducts.length > 0) {
+            setSelected(true);
+        }
+    }, [liveproducts])
+
     async function onSubmit(event: React.SyntheticEvent): Promise<void> {
         event.preventDefault();
 
@@ -268,6 +274,7 @@ export default function LivePlanEditForm() {
                                         mainProductId={mainProductId}
                                         setMainProductId={setMainProductId}
                                         setIsOpen={setIsOpen}
+                                        // liveproducts={liveproducts}
                                     />
                                 </Box>
                             ) : (
@@ -296,6 +303,7 @@ export default function LivePlanEditForm() {
                                 size={size}
                                 isOpen={isOpen}
                                 setIsOpen={setIsOpen}
+                                // liveproducts={liveproducts}
                             />
                         </Box>
                     </Box>
