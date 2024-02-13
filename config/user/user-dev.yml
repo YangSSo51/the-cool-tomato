@@ -35,17 +35,18 @@ spring:
     openfeign:
       okhttp:
         enabled: true
-    aws:
-      s3:
-        bucket: wp-ht-s3
-      credentials:
-        access-key: AKIA4MDWI2KWXGRMYXSC
-        secret-key: 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
-      region:
-        static: ap-northeast-2
-        auto: false
-      stack:
-        auto: false
+cloud:
+  aws:
+    s3:
+      bucket: wp-ht-s3
+    credentials:
+      access-key: AKIA4MDWI2KWXGRMYXSC
+      secret-key: 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
+    region:
+      static: ap-northeast-2
+      auto: false
+    stack:
+      auto: false
         
 logging.level:
   org.hibernate.SQL: debug
