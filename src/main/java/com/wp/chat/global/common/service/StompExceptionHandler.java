@@ -1,8 +1,6 @@
 package com.wp.chat.global.common.service;
 
-import com.wp.chat.global.common.code.ErrorCode;
 import com.wp.chat.global.exception.BusinessExceptionHandler;
-import com.wp.chat.global.exception.GlobalExceptionHandler;
 import org.springframework.http.HttpStatus;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageDeliveryException;
@@ -39,7 +37,7 @@ public class StompExceptionHandler extends StompSubProtocolErrorHandler {
     }
 
     private Message<byte[]> handleBusinessException(Message<byte[]> clientMessage, Throwable ex) {
-        return prepareErrorMessage(clientMessage, ex.getMessage(), HttpStatus.UNAUTHORIZED.name());
+        return prepareErrorMessage(clientMessage, ex.getMessage(), ((BusinessExceptionHandler) ex).getErrorCode().getDivisionCode());
     }
 
     private Message<byte[]> prepareErrorMessage(final Message<byte[]> clientMessage, final String message, final String errorCode) {

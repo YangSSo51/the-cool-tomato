@@ -43,7 +43,7 @@
 <script>
     //alert(document.title);
     // websocket & stomp initialize
-    var sock = new SockJS("/v1/ws-stomp");
+    var sock = new SockJS("/v1/chat/ws-stomp");
     var ws = Stomp.over(sock);
     var reconnect = 0;
     // vue.js
@@ -65,7 +65,7 @@
         },
         methods: {
             sendMessage: function() {
-                ws.send("/pub/chat/message", {Authorization: "Bearer " + this.sender}, JSON.stringify({roomId:this.roomId, senderId:this.senderId, senderNickname:this.senderNickname, message:this.message}));
+                ws.send("/pub/message", {Authorization: "Bearer " + this.sender}, JSON.stringify({roomId:this.roomId, senderId:this.senderId, senderNickname:this.senderNickname, message:this.message}));
                 this.message = '';
             },
             recvMessage: function(recv) {
@@ -77,7 +77,7 @@
     function connect() {
         // pub/sub event
         ws.connect({Authorization: "Bearer " + vm.$data.sender}, function(frame) {
-            ws.subscribe("/sub/chat/room/"+vm.$data.roomId, function(message) {
+            ws.subscribe("/sub/room/"+vm.$data.roomId, function(message) {
                 var recv = JSON.parse(message.body);
                 console.log(recv);
                 vm.recvMessage(recv);
@@ -86,7 +86,7 @@
             if(reconnect++ < 5) {
                 setTimeout(function() {
                     // console.log("connection reconnect");
-                    sock = new SockJS("/v1/ws-stomp");
+                    sock = new SockJS("/v1/chat/ws-stomp");
                     ws = Stomp.over(sock);
                     connect();
                 },10*1000);

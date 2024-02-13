@@ -85,6 +85,10 @@ public enum ErrorCode {
     // 판매자
     NOT_SELLER(401, "B002", "판매자가 아닙니다."),
     NOT_FOUND_SELLER_ID(401, "B003", "판매자를 찾을 수 없습니다."),
+    // 차단
+    BLOCKED_USER_ID(401, "B004", "차단된 사용자입니다."),
+    // 방송
+    NOT_START_BROADCAST(401, "B005", "방송이 시작되지 않았습니다."),
     /**
      * ******************************* Custom Error CodeList ***************************************
      */

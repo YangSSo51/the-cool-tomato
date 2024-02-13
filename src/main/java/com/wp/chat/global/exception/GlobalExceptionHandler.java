@@ -1,7 +1,7 @@
 package com.wp.chat.global.exception;
 
-import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.google.gson.JsonParseException;
 import com.wp.chat.global.common.code.ErrorCode;
 import com.wp.chat.global.common.response.ErrorResponse;
 import jakarta.validation.ConstraintViolationException;
