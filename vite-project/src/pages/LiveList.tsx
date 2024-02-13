@@ -1,10 +1,10 @@
 import { Flex, Text } from "@chakra-ui/react";
-
-
 import LiveCarouselComponent from "../components/broadcast/LiveCarouselComponent";
 import CarouselComponent from "../components/common/CarouselComponent";
 
+
 export default function LiveList() {
+
     return (
         <>
             <CarouselComponent />
@@ -27,6 +27,7 @@ export default function LiveList() {
                 </Text>
 
                 <LiveCarouselComponent />
+
                 <Text
                     color={"themeGreen.500"}
                     fontSize={"3xl"}

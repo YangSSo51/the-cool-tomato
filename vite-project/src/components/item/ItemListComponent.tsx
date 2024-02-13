@@ -7,9 +7,10 @@ interface GoodsProps {
     img: string | undefined;
     title: string | undefined;
     price: number | undefined;
+    profile: string | null;
 }
 
-const Goods = ({ id, img, title, price }: GoodsProps) => {
+const Goods = ({ id, img, title, price, profile }: GoodsProps) => {
     return (
         <Link to={`/v1/items/detail/${id}`}>
             <Box>
@@ -31,7 +32,8 @@ const Goods = ({ id, img, title, price }: GoodsProps) => {
                             <Avatar
                                 size="md"
                                 name="Ryan Florence"
-                                // src={profile}
+                                
+                                src={profile === null ? '/img/default_profile.jpeg' : profile}
                                 mr={"1rem"}
                             />
                         </Center>

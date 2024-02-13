@@ -1,8 +1,17 @@
 import { Box, Button, Flex, Text, Image } from "@chakra-ui/react";
 import dummylivelist from "../item/dummylist/dummylivelist";
+import { LiveCalendarInterface } from "../../types/DataTypes";
 
-export default function LiveCalendar() {
-    const dummylive = dummylivelist;
+interface LiveCalendarProps {
+    data : LiveCalendarInterface[] | undefined
+}
+
+export default function LiveCalendar(
+    {data} : LiveCalendarProps
+) {
+    
+    console.log(data)
+
     return (
         <>
             <Flex
@@ -29,18 +38,25 @@ export default function LiveCalendar() {
                 gap={"4"}
                 overflowY={"hidden"}
             >
-                {dummylive.map((data, index) => (
-                    <Flex alignItems={"center"} gap={"4"} key={index} mb={"1rem"}>
+                {data?.map((data, index) => (
+                    <Flex
+                        alignItems={"center"}
+                        gap={"4"}
+                        key={index}
+                        mb={"1rem"}
+                    >
                         <Flex
                             direction={"column"}
                             justifyContent={"flex-start"}
                             mr={"1rem"}
                         >
-                            <Text fontSize={"1.7rem"} fontFamily={"GmkBold"}>10 : 00</Text>
+                            <Text fontSize={"1.7rem"} fontFamily={"GmkBold"}>
+                                10 : 00
+                            </Text>
                         </Flex>
                         <Box w={"12rem"} h={"100%"} mr={"1rem"}>
                             <Image
-                                src={`${dummylive[data.id].img}`}
+                                // src={`${dummylive[data.id].img}`}
                                 objectFit={"cover"}
                             />
                         </Box>

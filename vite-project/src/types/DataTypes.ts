@@ -81,6 +81,10 @@ export interface AddItemInterface {
     quantity: number;
 }
 
+export interface ItemWholeFetchInterface extends ItemDetailInterface {
+    sellerProfile: string;
+}
+
 export interface PutItemInterface {
     categoryId: number;
     productName: string;
@@ -119,12 +123,12 @@ export type followerItem = {
     nickname: string;
     profileImg: string;
     userId: number;
-}
+};
 
 export type UploadImage = {
-    file: File
-    type: string
-}
+    file: File;
+    type: string;
+};
 
 export type SellerInfo = {
     auth: string;
@@ -137,7 +141,7 @@ export type SellerInfo = {
     sellerInfoId: number;
     sex: string;
     userId: number;
-}
+};
 
 export type MyQna = {
     answer: number;
@@ -150,8 +154,8 @@ export type MyQna = {
     questionContent: string;
     questionRegisterDate: string;
     writerId: number;
-    writerNickname: string
-}
+    writerNickname: string;
+};
 
 export type AdminUserInfo = {
     id: number;
@@ -163,7 +167,7 @@ export type AdminUserInfo = {
     birthday: string;
     profileImg: string;
     joinDate: string;
-}
+};
 
 export interface liveProductPrice {
     productId: number;
@@ -189,5 +193,14 @@ export interface UserProfileEdit {
     newPassword: string;
     nickname: string;
     sex: string;
-    birthday: string
+    birthday: string;
+}
+
+export interface LiveCalendarInterface {
+    liveBroadcastId: number;
+    broadcastTitle: string;
+    nickName: string;
+    viewCount: number | null;
+    sellerId: number;
+    broadcastStatus: boolean;
 }

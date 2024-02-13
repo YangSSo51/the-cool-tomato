@@ -9,12 +9,12 @@ export default function CarouselComponent() {
     const [elapsed, setElapsed] = useState(1)
 
     useEffect(() => {
-        setOffset(4 * elapsed)
+        setOffset(3 * elapsed)
     }, [elapsed])
 
     setInterval(()=> {
         setElapsed(elapsed + 1)
-    }, 3330)
+    }, 2500)
         
     return (
         <>
