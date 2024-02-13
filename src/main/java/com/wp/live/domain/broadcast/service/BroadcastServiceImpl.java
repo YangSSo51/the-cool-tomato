@@ -12,6 +12,7 @@ import com.wp.live.domain.broadcast.entity.User;
 import com.wp.live.domain.broadcast.repository.BroadcastAnalyzeRepository;
 import com.wp.live.domain.broadcast.repository.LiveBroadcastRepository;
 import com.wp.live.domain.broadcast.utils.MediateOpenviduConnection;
+import com.wp.live.domain.broadcast.utils.UserConnection;
 import com.wp.live.global.common.code.ErrorCode;
 import com.wp.live.global.exception.BusinessExceptionHandler;
 import lombok.RequiredArgsConstructor;
@@ -35,6 +36,7 @@ public class BroadcastServiceImpl implements BroadcastService{
     private final LiveBroadcastRepository liveBroadcastRepository;
     private final StringRedisTemplate redisTemplate;
     private final BroadcastAnalyzeRepository broadcastAnalyzeRepository;
+    private final UserConnection userConnection;
     private final String RANK="ranking";
     private final String VIEW="view";
     private final String HS="broadcast_info";
@@ -77,6 +79,8 @@ public class BroadcastServiceImpl implements BroadcastService{
             liveBroadcast.setTopicId(sessionId);
             liveBroadcast.setBroadcastStartDate(LocalDateTime.now());
             liveBroadcastRepository.save(liveBroadcast);
+
+            userConnection.registerAlarm(liveBroadcast.getUser().getId(), liveBroadcast.getTopicId(), liveBroadcast.getUser().getNickname());
 
             redisTemplate.opsForZSet().add(RANK, String.valueOf(start.getLiveBroadcastId()), 0);
             redisTemplate.opsForHash().put(VIEW, String.valueOf(start.getLiveBroadcastId()), "0");
