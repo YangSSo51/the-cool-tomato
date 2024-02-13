@@ -29,7 +29,7 @@ spring:
     okhttp:
         enabled: true
   kafka:
-    bootstrap-servers: http://i10a501.p.ssafy.io:9092
+    bootstrap-servers: localhost:9092
     template:
       default-topic: chat
     consumer:
