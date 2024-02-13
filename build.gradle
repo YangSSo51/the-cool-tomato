@@ -42,19 +42,11 @@ dependencies {
 	testCompileOnly 'org.projectlombok:lombok' // 테스트 의존성 추가
 	testAnnotationProcessor 'org.projectlombok:lombok' // 테스트 의존성 추가
 
-	//feign setting
 	implementation 'org.springframework.cloud:spring-cloud-starter-openfeign'
 	implementation group: 'io.github.openfeign', name: 'feign-okhttp', version: '13.1'
 	implementation 'org.springframework.cloud:spring-cloud-starter-openfeign'
 
-	//AWS setting
 	implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
-
-	//spring cloud setting
-	implementation 'org.springframework.cloud:spring-cloud-starter-config'
-	implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
-
-	implementation group: 'javax.annotation', name: 'javax.annotation-api', version: '1.3.2'
 }
 
 dependencyManagement {

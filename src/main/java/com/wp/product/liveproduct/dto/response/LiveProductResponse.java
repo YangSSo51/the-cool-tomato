@@ -17,6 +17,7 @@ public class LiveProductResponse {
     private String imgSrc;
     private Long sellerId;
     private String sellerName;
+    private String sellerImg;
     private Long categoryId;
     private String categoryName;
     private String productName;
