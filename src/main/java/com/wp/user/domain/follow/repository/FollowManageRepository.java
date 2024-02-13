@@ -12,7 +12,9 @@ import java.util.List;
 public interface FollowManageRepository extends JpaRepository<FollowManage, Long> {
     void deleteByFollowerIdAndFollowingId(Long followerId, Long followingId);
     boolean existsByFollowerIdAndFollowingId(Long followerId, Long followingId);
+    @EntityGraph(attributePaths = {"following"})
     List<FollowManage> findAllByFollowerId(Long followerId);
+    @EntityGraph(attributePaths = {"follower"})
     List<FollowManage> findAllByFollowingId(Long sellerId);
     @Query("SELECT e.follower FROM FollowManage e WHERE e.following.id = :sellerId")
 
