@@ -20,37 +20,36 @@ eureka:
 spring:
   cloud:
       gateway:
-        mvc:
-          routes:
-            - id: auth
-              uri: lb://AUTH
-              predicates:
-                  - Path=/v1/auth/**
-            - id: broadcast
-              uri: lb://BROADCAST
-              predicates:
-                  - Path=/v1/live/**
-            - id: product
-              uri: lb://PRODUCT
-              predicates:
-                - Path=/v1/products/**
-            - id: categories
-              uri: lb://PRODUCT
-              predicates:
-                - Path=/v1/categories/**
-            - id: live-product
-              uri: lb://PRODUCT
-              predicates:
-                - Path=/v1/live-product/**
-            - id: product-questions
-              uri: lb://PRODUCT
-              predicates:
-                - Path=/v1/product-questions/**
-            - id: chatbot
-              uri: lb://CHATBOT
-              predicates:
-                  - Path=/v1/chatbots/**
-            - id: user
-              uri: lb://USER
-              predicates:
-                  - Path=/v1/users/** 
+        routes:
+          - id: auth
+            uri: lb://AUTH
+            predicates:
+                - Path=/v1/auth/**
+          - id: broadcast
+            uri: lb://BROADCAST
+            predicates:
+                - Path=/v1/live/**
+          - id: product
+            uri: lb://PRODUCT
+            predicates:
+              - Path=/v1/products/**
+          - id: categories
+            uri: lb://PRODUCT
+            predicates:
+              - Path=/v1/categories/**
+          - id: live-product
+            uri: lb://PRODUCT
+            predicates:
+              - Path=/v1/live-product/**
+          - id: product-questions
+            uri: lb://PRODUCT
+            predicates:
+              - Path=/v1/product-questions/**
+          - id: chatbot
+            uri: lb://CHATBOT
+            predicates:
+                - Path=/v1/chatbots/**
+          - id: user
+            uri: lb://USER
+            predicates:
+                - Path=/v1/users/** 
