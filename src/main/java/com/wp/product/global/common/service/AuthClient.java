@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 
-@FeignClient(name = "auth", url = "http://3.39.6.29:8080/v1/auth", configuration = FeignClientConfig.class)
+@FeignClient(name = "auth", url = "211.63.208.201:8000/v1/auth", configuration = FeignClientConfig.class)
 public interface AuthClient {
     @PostMapping
     IssueTokenResponse issueToken(@RequestBody IssueTokenRequest issueTokenRequest);
