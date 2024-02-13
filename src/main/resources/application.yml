@@ -5,9 +5,3 @@ spring:
     active: dev
   config:
     import: optional:configserver:http://MASTER:8888
-cloud:
-  aws:
-    s3:
-      bucket: wp
-    credentials:
-      access-key:
