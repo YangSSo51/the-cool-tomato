@@ -8,17 +8,14 @@ headers.set("Content-Type", "application/json;charset=utf-8");
 const url = "/product-questions";
 
 // 상품 번호로 상품 문의 리스트를 조회함
-async function getQnAList(
-    params: {
-        page: number;
-        size: number;
-        "product-id": number;
-    },
-    accessToken: string
-) {
+async function getQnAList(params: {
+    page: number;
+    size: number;
+    "product-id": number;
+}) {
     // return await http.get(url + "/list", { params });
-    headers.set("Authorization", `Bearer ${accessToken}`);
-    return await http.get(url + "/list", { params, headers });
+
+    return await http.get(url + "/list", { params });
 }
 
 // 구매자가 상품 문의를 등록함
