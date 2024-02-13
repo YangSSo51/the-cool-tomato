@@ -20,9 +20,12 @@ spring:
   cloud:
     gateway:
       globalcors:
+        default-filters:
+	        - DedupeResponseHeader=Access-Control-Allow-Origin Access-Control-Allow-Credentials 
         cors-configurations:
           '[/**]':
-            allowedOrigins: '*'
+            allowedOrigins: 'https://i10a501.p.ssafy.io'
+            allow-credentials: true
             allowedMethods: # 메서드를 명시하지 않으면 안되는 경우도 있기 때문에 메서드는 명시해주는 편이 좋다고 한다.
               - PUT
               - GET
