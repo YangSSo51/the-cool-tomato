@@ -1,27 +1,7 @@
-server:
-  port: 8085
 spring:
+  application:
+    name: chat
   profiles:
-    include: local
-  datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-  jpa:
-    hibernate:
-      ddl-auto: update
-    properties:
-      hibernate:
-        format_sql: true
-    generate-ddl: true
-  devtools:
-    livereload:
-      enabled: true
-    restart:
-      enabled: true
-  freemarker:
-    cache: false
-    template-loader-path: classpath:/templates
-    suffix: .ftl
-  cloud:
-    openfeign:
-      okhttp:
-        enabled: true
+    active: dev
+  config:
+    import: optional:configserver:http://MASTER:8888
