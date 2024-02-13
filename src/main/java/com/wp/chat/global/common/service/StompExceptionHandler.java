@@ -1,7 +1,6 @@
 package com.wp.chat.global.common.service;
 
 import com.wp.chat.global.exception.BusinessExceptionHandler;
-import org.springframework.http.HttpStatus;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageDeliveryException;
 import org.springframework.messaging.simp.stomp.StompCommand;
