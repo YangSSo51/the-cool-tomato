@@ -1,5 +1,7 @@
 package com.wp.user.domain.user.service;
 
+import com.wp.user.domain.alarm.entity.AlarmToken;
+import com.wp.user.domain.alarm.repository.AlarmTokenRepository;
 import com.wp.user.domain.user.dto.request.*;
 import com.wp.user.domain.user.dto.response.*;
 import com.wp.user.domain.user.entity.Auth;
@@ -45,6 +47,7 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final EmailCodeRepository emailCodeRepository;
+    private final AlarmTokenRepository alarmTokenRepository;
     private final JwtService jwtService;
     private final BCryptPasswordEncoder passwordEncoder;
     private final JavaMailSender javaMailSender;
@@ -123,6 +126,8 @@ public class UserServiceImpl implements UserService {
         }
         // 토큰 발급
         IssueTokenResponse issueTokenResponse = authClient.issueToken(IssueTokenRequest.builder().userId(user.getId()).auth(user.getAuth()).build());
+        // 알림을 위한 토큰 Redis 저장
+        alarmTokenRepository.save(AlarmToken.builder().id(user.getId()).token(logInRequest.getToken()).build());
         return LoginResponse.builder()
                 .userId(user.getId())
                 .nickname(user.getNickname())
@@ -189,6 +194,10 @@ public class UserServiceImpl implements UserService {
         authClient.validateToken(AccessTokenRequest.builder().accessToken(accessToken).build());
         // 로그아웃 처리
         authClient.deleteToken(AccessTokenRequest.builder().accessToken(accessToken).build());
+        // 회원 정보 추출
+        Map<String, String> infos = authClient.extraction(ExtractionRequest.builder().accessToken(accessToken).infos(List.of("userId")).build()).getInfos();
+        // 알림을 위한 토큰 Redis 삭제
+        alarmTokenRepository.deleteById(Long.valueOf(infos.get("userId")));
     }
 
     // 개인 회원 정보 조회

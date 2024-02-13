@@ -37,8 +37,6 @@ public class AlarmManage {
 
     private String alarmUrl;
 
-    private String token;
-
     private boolean status;
 
     @CreatedDate

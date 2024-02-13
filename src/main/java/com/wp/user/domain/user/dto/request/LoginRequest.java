@@ -18,4 +18,7 @@ public class LoginRequest {
     @NotBlank(message = "회원의 비밀번호를 입력해 주세요.")
     @Schema(description = "비밀번호를 입력해주세요." , example = "ssafy123!")
     private String password;
+
+    @Schema(description = "알림을 받기 위한 FCM 토큰을 입력해주세요.")
+    private String token;
 }

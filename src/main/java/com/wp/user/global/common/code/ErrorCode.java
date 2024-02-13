@@ -101,6 +101,9 @@ public enum ErrorCode {
     ALREADY_CANCEL_SELLER(409, "B0012", "이미 판매자 전환 신청이 철회되었습니다."),
     NOT_SELLER(401, "B013", "판매자가 아닙니다."),
     NOT_FOUND_SELLER_ID(401, "B014", "판매자를 찾을 수 없습니다."),
+    // 알림
+    NOT_FOUND_ALARM_ID(401, "B015", "알림을 찾을 수 없습니다."),
+    SEND_ALARM_ERROR(500, "B016", "알림을 보낼 수 없습니다."),
     /**
      * ******************************* Custom Error CodeList ***************************************
      */
