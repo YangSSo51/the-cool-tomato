@@ -10,12 +10,13 @@ import {
 import "../../css/ItemListComponentcss.css";
 import { useNavigate } from "react-router-dom";
 import React from "react";
+import { formatNumberWithComma } from "../common/Comma";
 
 interface GoodsProps {
     id: number | undefined;
     img: string | undefined;
     title: string | undefined;
-    price: number | undefined;
+    price: number;
     profile: string | null | undefined;
     sellerId: number | undefined;
 }
@@ -68,7 +69,9 @@ const Goods = ({ id, img, title, price, profile, sellerId }: GoodsProps) => {
                         <Box className="Text">
                             <Box className="TextTitle">{title}</Box>
                         </Box>
-                        <Box className="tagWrap">{price}</Box>
+                        <Box className="tagWrap">
+                            {formatNumberWithComma(price)}
+                        </Box>
                     </Box>
                 </Flex>
             </Box>
