@@ -13,4 +13,9 @@ async function postLiveProduct(data: Array<liveProduct>, accessToken: string) {
     return await http.post(url, data, { headers });
 }
 
-export { postLiveProduct };
+async function fetchCalendarItem(page: number, size: number, liveid: number) {
+    return await http.get(`${url}/list`, 
+    {params: {'page': page, 'size': size, 'live-id': liveid}}
+    )}
+
+export { postLiveProduct, fetchCalendarItem };

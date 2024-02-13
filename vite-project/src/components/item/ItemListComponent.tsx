@@ -16,21 +16,37 @@ const Goods = ({ id, img, title, price, profile, sellerId }: GoodsProps) => {
     return (
         <Box>
             <Box>
-                <Box 
-                    maxW={"25rem"}
-                    onClick={()=>{navigate(`/v1/items/detail/${id}`)}}
-                    _hover={{ cursor: "pointer" }}
-                >
-                    <AspectRatio w='256px' ratio={1 / 1}>
-                        <Image
-                            src={img}
-                            aspectRatio="1/1"
-                            objectFit="cover"
-                            overflow={"hidden"}
-                            position={"relative"}
-                            borderRadius={"20px"}
-                        />
-                    </AspectRatio>
+                <Box>
+                    <Box maxW={"25rem"}>
+                        <AspectRatio w='350px' ratio={1 / 1}>
+                            <Image
+                                src={img}
+                                aspectRatio="1/1"
+                                objectFit="cover"
+                                overflow={"hidden"}
+                                position={"relative"}
+                                borderRadius={"20px"}
+                            />
+                        </AspectRatio>
+                    </Box>
+                    <Flex mt={"0.5rem"}>
+                        <Center>
+                            <Avatar
+                                size="md"
+                                name="Ryan Florence"
+                                
+                                src={profile === null ? '/img/default_profile.jpeg' : profile}
+                                mr={"1rem"}
+                            />
+                        </Center>
+
+                        <Box>
+                            <Box className="Text">
+                                <Box className="TextTitle">{title}</Box>
+                            </Box>
+                            <Box className="tagWrap">{price}</Box>
+                        </Box>
+                    </Flex>
                 </Box>
                 <Flex mt={"0.5rem"}>
                     <Center>
