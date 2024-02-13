@@ -1,12 +1,7 @@
 import { mainAxios } from "./http";
 import { AxiosHeaders, AxiosError } from "axios";
 import { ReissueTokenAPI } from "./auth";
-import {
-    RegisterUser,
-    RegisterSeller,
-    userInfo,
-    SellerInfo,
-} from "../types/DataTypes";
+import { RegisterUser, RegisterSeller, userInfo } from "../types/DataTypes";
 
 const http = mainAxios();
 const headers = new AxiosHeaders();
