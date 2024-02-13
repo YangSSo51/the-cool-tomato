@@ -33,4 +33,4 @@ async function getLiveProduct(params: {
     return response.data.data
 }
 
-export { postLiveProduct, getLiveProduct fetchCalendarItem };
+export { postLiveProduct, getLiveProduct, fetchCalendarItem };
