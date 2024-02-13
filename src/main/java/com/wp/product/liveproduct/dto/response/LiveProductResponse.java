@@ -14,6 +14,7 @@ public class LiveProductResponse {
     private Long liveProductId;
     //상품 내용
     private Long productId;
+    private String imgSrc;
     private Long sellerId;
     private String sellerName;
     private Long categoryId;
