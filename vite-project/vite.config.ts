@@ -30,4 +30,13 @@ export default defineConfig({
     define: {
         global: {},
     },
+    server: {
+        host: true,
+        strictPort: true,
+        port: 5173,
+        hmr: {
+            protocol: "ws",
+            clientPort: 5173,
+        },
+    },
 });

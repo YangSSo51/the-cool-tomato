@@ -42,7 +42,7 @@ export default function BuyerLive() {
                         borderRadius={"20px"}
                         backgroundColor={"#ffffff"}
                     >
-                        <OpenViduComponent type="live" />
+                        {/* <OpenViduComponent type="live" /> */}
                     </Box>
                     <Flex direction={"column"} alignSelf={"flex-end"}>
                         <UnfilledHeart />

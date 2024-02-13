@@ -16,12 +16,14 @@ import { RootState } from "../../redux/stores/store";
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { chatMessageRecv, chatMessageSend } from "../../types/DataTypes";
+import SockJS from "sockjs-client";
+import { Client } from "@stomp/stompjs";
 
 export default function BuyerChat() {
-    const client = getStompClient();
     const [message, setMessage] = useState<string>("");
     const [recv, setRecv] = useState<Array<chatMessageRecv>>([]);
     const [reconnect, setReconnect] = useState<number>(0);
+    const [client, setClient] = useState<Client>(new Client());
 
     const accessToken = useSelector(
         (state: RootState) => state.user.accessToken
@@ -30,49 +32,7 @@ export default function BuyerChat() {
     const userId = useSelector((state: RootState) => state.user.userId);
     const roomId = useParams().roomId!;
     const id = parseInt(roomId);
-
-    useEffect(() => {
-        let timerId: NodeJS.Timeout;
-        client.connect(
-            { Authorization: `Bearer ${accessToken}` },
-            () => {
-                client.subscribe(
-                    `/sub/room/${id}`,
-                    (message) => {
-                        const msg = JSON.parse(message.body);
-                        // console.log(msg);
-                        setRecv([...recv, msg]);
-                    },
-                    { Authorization: `Bearer ${accessToken}` }
-                );
-            },
-            (error) => {
-                console.log(error);
-                if (reconnect < 5) {
-                    timerId = setTimeout(() => {
-                        setReconnect(reconnect + 1);
-                    }, 10 * 1000);
-                }
-            }
-        );
-        return () => {
-            clearTimeout(timerId);
-        };
-    }, [reconnect]);
-
-    function sendMessage() {
-        const sendMsg: chatMessageSend = {
-            roomId: id,
-            senderId: userId,
-            senderNickname: nickname,
-            message: message,
-        };
-        client.send(
-            "/pub/message",
-            { Authorization: "Bearer " + accessToken },
-            JSON.stringify(sendMsg)
-        );
-    }
+    const { stomp } = getStompClient(accessToken);
 
     function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
         setMessage(e.target.value);

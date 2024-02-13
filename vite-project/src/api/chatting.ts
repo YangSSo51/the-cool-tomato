@@ -1,11 +1,17 @@
-import Stomp from "stompjs";
+import { Client, IStompSocket } from "@stomp/stompjs";
 import { chatSocket } from "./http";
 
-function getStompClient() {
+function getStompClient(accessToken: string) {
     const socket = chatSocket();
-    console.log("getStompClient socket");
-    console.log(socket);
-    return Stomp.over(socket);
+    const client = new Client();
+
+    client.configure({
+        connectHeaders: {
+            Authorization: "Bearer " + accessToken,
+        },
+    });
+
+    return { stomp: client, sock: socket };
 }
 
 export { getStompClient };

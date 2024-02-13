@@ -40,7 +40,20 @@ function itemAxios() {
 
 function chatSocket() {
     const base_url = "http://i10a501.p.ssafy.io:8085/v1";
-    return new SockJS(`${base_url}/chat/ws-stomp`);
+    const sock = new SockJS(`${base_url}/chat/ws-stomp`);
+    sock.onclose = (ev: CloseEvent) => {
+        console.log("chatting socket close");
+        console.log(ev);
+    };
+    sock.onopen = (ev: Event) => {
+        console.log("chatting socket open");
+        console.log(ev);
+    };
+    sock.onmessage = (e) => {
+        console.log("chatting socket message");
+        console.log(e);
+    };
+    return sock;
 }
 
 export { mainAxios, openViduDirectAxios, liveAxios, itemAxios, chatSocket };
