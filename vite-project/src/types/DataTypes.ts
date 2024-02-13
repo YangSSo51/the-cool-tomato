@@ -215,3 +215,27 @@ export interface LiveCalendarInterface {
     sellerId: number;
     broadcastStatus: boolean;
 }
+
+export interface LiveProductAll {
+    liveProductId: number;
+    productId: number;
+    imgSrc: string;
+    sellerId: number;
+    sellerName: string;
+    sellerImg: string;
+    categoryId: number;
+    categoryName: string;
+    productName: string;
+    productContent: string;
+    paymentLink: null,
+    price: number;
+    deliveryCharge: number;
+    quantity: number;
+    liveFlatPrice: number;
+    liveRatePrice: number;
+    livePriceStartDate: string;
+    livePriceEndDate: string;
+    mainProductSetting: boolean;
+    registerDate: string;
+    seq: null;  
+}

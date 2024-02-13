@@ -14,6 +14,9 @@ function UnfilledHeart() {
 }
 
 export default function BuyerLive() {
+    // 임의로 지정 수정하쉐이 props만 내려주셍용
+    const roomId = 1
+
     return (
         <>
             <BuyerLiveNav />
@@ -55,7 +58,7 @@ export default function BuyerLive() {
                             backgroundColor={"#ffffff"}
                             borderRadius={"20px"}
                         >
-                            <BuyerItem />
+                            <BuyerItem roomId={roomId} />
                         </Box>
                         <Box
                             w={"sm"}

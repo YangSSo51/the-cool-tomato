@@ -13,4 +13,19 @@ async function postLiveProduct(data: Array<liveProduct>, accessToken: string) {
     return await http.post(url, data, { headers });
 }
 
-export { postLiveProduct };
+async function getLiveProduct(params: {
+    page?:number; 
+    size?:number; 
+    "live-id":number;
+}, accessToken: string) {
+    const response =  await http.get(`${url}/list`, { 
+        params: params,
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer " + accessToken
+        }
+    });
+    return response.data.data
+}
+
+export { postLiveProduct, getLiveProduct };
