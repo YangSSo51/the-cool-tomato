@@ -26,7 +26,6 @@ spring:
               - POST
               - DELETE
               - OPTIONS
-    mvc:
       routes:
         - id: auth
           uri: lb://AUTH
