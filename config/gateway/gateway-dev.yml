@@ -26,6 +26,7 @@ spring:
         cors-configurations:
           '[/**]':
             allowedOrigins: 'https://i10a501.p.ssafy.io/'
+            allowedHeaders: '*'
             allow-credentials: true
             allowedMethods:
               - PUT
