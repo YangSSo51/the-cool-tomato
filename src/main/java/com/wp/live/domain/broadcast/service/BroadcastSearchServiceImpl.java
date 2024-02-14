@@ -40,7 +40,6 @@ public class BroadcastSearchServiceImpl implements BroadcastSearchService {
             List<ZSetOperations.TypedTuple<String>> carouselList = Objects.requireNonNull(redisTemplate.opsForZSet().reverseRangeWithScores(RANK, 0, 19)).stream().toList();
             List<Long> liveBroadcastIds = new ArrayList<>();
             Map<Long, Long> viewCounts = new HashMap<>();
-            int cnt = 0;
             for (ZSetOperations.TypedTuple<String> stringTypedTuple : carouselList) {
                 Long id = Long.parseLong(Objects.requireNonNull(stringTypedTuple.getValue()));
                 Long viewCount = Objects.requireNonNull(stringTypedTuple.getScore()).longValue();
@@ -93,7 +92,6 @@ public class BroadcastSearchServiceImpl implements BroadcastSearchService {
 
             return SearchByTitleResponseDto.builder().totalSize(elsResults.getTotalElements()).totalPage(elsResults.getTotalPages()).broadcastInfoList(infos).build();
         }catch (NoSuchElementException e1){
-            e1.printStackTrace();
             throw new BusinessExceptionHandler(ErrorCode.BAD_REQUEST_ERROR); //DB에 데이터가 없을 때 - JPA
         }catch (Exception e2){
             e2.printStackTrace();
