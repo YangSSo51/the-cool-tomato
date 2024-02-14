@@ -56,7 +56,7 @@ function Header({ setStream }: HeaderProps) {
                 handleClick={handleClick}
                 setStream={setStream}
             />
-            ;
+
             <ProfileBuyerComponent />
         </Flex>
     );

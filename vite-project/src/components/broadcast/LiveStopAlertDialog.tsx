@@ -45,6 +45,7 @@ function LiveStopAlertDialog({
         //         console.log("handleStopLive stopLive error");
         //         navigate("/");
         //     });
+        navigate("/");
     }
 
     return (
