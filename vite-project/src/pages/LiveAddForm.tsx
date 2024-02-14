@@ -119,31 +119,6 @@ export default function LiveAddForm() {
         } else {
             navigate("/v1/seller");
         }
-        // console.log("LiveAddForm onSubmit");
-        // console.log("now_date");
-        // console.log(now_date);
-        // console.log("startDate");
-        // console.log(startDate);
-        // console.log("start_date");
-        // console.log(start_date);
-        // console.log("priceEndDate");
-        // console.log(priceEndDate);
-        // console.log("end_date");
-        // console.log(end_date);
-        // console.log("title");
-        // console.log(title);
-        // console.log("memo");
-        // console.log(memo);
-        // console.log("faqSetting");
-        // console.log(faqSetting);
-        // console.log("chatbotSetting");
-        // console.log(chatbotSetting);
-        // console.log("selectedProductId");
-        // console.log(selectedProductId);
-        // console.log("mainProductId");
-        // console.log(mainProductId);
-        // console.log("products");
-        // console.log(products);
     }
 
     function filterLiveProduct(
@@ -316,7 +291,7 @@ export default function LiveAddForm() {
                             />
                         </Box>
                         <Box p={"2rem"}>
-                            <Text fontSize={"xl"} as={"b"}>
+                            {/* <Text fontSize={"xl"} as={"b"}>
                                 채팅을 자동으로 읽어주기 설정
                             </Text>
                             <Switch
@@ -326,7 +301,7 @@ export default function LiveAddForm() {
                                 onChange={(e) =>
                                     setTtsSetting(e.target.checked)
                                 }
-                            />
+                            /> */}
                         </Box>
                     </Flex>
 
