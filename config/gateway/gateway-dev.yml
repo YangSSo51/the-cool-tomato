@@ -28,8 +28,8 @@ spring:
             '[/**]':
               allowedOrigins:
                 - 'https://i10a501.p.ssafy.io'
-                - 'https://localhost:5173'
-                - 'https://localhost:4173'
+                - 'http://localhost:5173'
+                - 'http://localhost:4173'
               allow-credentials: true
               allowedHeaders: '*'
               exposedHeaders: '*'
