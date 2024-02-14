@@ -27,6 +27,7 @@ export default function BuyerLive() {
     const [liveproducts, setLiveproducts] = useState<LiveProductAll[]>([]);
     const [sellerImg, setSellerImg] = useState<string>("");
     const [sellerName, setSellerName] = useState<string>("");
+    const [stream, setStream] = useState<boolean>(true);
     const roomId = useParams().roomId!;
     const id = parseInt(roomId);
 
@@ -59,7 +60,7 @@ export default function BuyerLive() {
 
     return (
         <>
-            <BuyerLiveNav />
+            <BuyerLiveNav setStream={setStream} />
             <Flex direction={"column"} backgroundColor={"themeWhite.500"}>
                 <Center mt={"1rem"} p={"1rem"}>
                     <Flex
@@ -85,7 +86,7 @@ export default function BuyerLive() {
                         borderRadius={"20px"}
                         backgroundColor={"#ffffff"}
                     >
-                        <OpenViduComponent type="live" />
+                        <OpenViduComponent type="live" stream={stream} />
                     </Box>
                     <Flex direction={"column"} alignSelf={"flex-end"}>
                         <UnfilledHeart />

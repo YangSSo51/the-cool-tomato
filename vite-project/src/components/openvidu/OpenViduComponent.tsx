@@ -8,7 +8,12 @@ import { useSelector } from "react-redux";
 import { RootState } from "../../redux/stores/store";
 import { useParams } from "react-router-dom";
 
-function OpenViduComponent({ type }: { type: string }) {
+interface OpenViduComponentProps {
+    type: string;
+    stream: boolean;
+}
+
+function OpenViduComponent({ type, stream }: OpenViduComponentProps) {
     const [session, setSession] = useState<Session | null>(null);
     const [subscribers, setSubscribers] = useState<Subscriber[] | null>(null);
     const [subscriber, setSubscriber] = useState<Subscriber | null>(null);
@@ -24,7 +29,9 @@ function OpenViduComponent({ type }: { type: string }) {
     console.log("OpenViduComponent");
 
     const leaveSession = useCallback(() => {
+        console.log("OpenViduComponent leaveSession");
         if (session) {
+            console.log("OpenViduComponent leaveSession session disconnect");
             session.disconnect();
         }
         setSession(null);
@@ -39,6 +46,15 @@ function OpenViduComponent({ type }: { type: string }) {
         setOV(OVs);
         setSession(OVs.initSession());
     };
+
+    //종료 버튼 누르면 session도 날라가도록 useEffect 설정
+    useEffect(() => {
+        console.log("OpenViduComponent useEffect stream");
+        if (!stream) {
+            console.log("OpenViduComponent useEffect stream false");
+            leaveSession();
+        }
+    }, [leaveSession, stream]);
 
     useEffect(() => {
         console.log("useEffect eventListener");

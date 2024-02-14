@@ -3,7 +3,11 @@ import { Box, Text } from "@chakra-ui/layout";
 import OpenViduComponent from "../openvidu/OpenViduComponent";
 import { useState } from "react";
 
-function BroadcastScreen() {
+interface BroadcastScreenProps {
+    stream: boolean;
+}
+
+function BroadcastScreen({ stream }: BroadcastScreenProps) {
     console.log("BroadcastScreen");
     const [flag, setFlag] = useState(false);
     const activateOpenVidu = () => {
@@ -26,7 +30,9 @@ function BroadcastScreen() {
                 방송화면
             </Text>
             {/* <Box bg="gray.200" rounded="md" h="84vh" /> */}
-            {flag ? <OpenViduComponent type="broadcast" /> : null}
+            {flag ? (
+                <OpenViduComponent type="broadcast" stream={stream} />
+            ) : null}
         </Box>
     );
 }

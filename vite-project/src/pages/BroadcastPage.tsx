@@ -4,13 +4,15 @@ import Header from "../components/broadcast/Header";
 import BroadcastScreen from "../components/broadcast/Screen";
 import Chat from "../components/broadcast//Chat";
 import Menu from "../components/broadcast//Menu";
+import { useState } from "react";
 
 function Broadcast() {
+    const [stream, setStream] = useState(true);
     return (
         <Flex direction="column" h="100vh">
-            <Header />
+            <Header setStream={setStream} />
             <Flex flex="1" overflow="hidden">
-                <BroadcastScreen />
+                <BroadcastScreen stream={stream} />
                 <Chat />
                 <Menu />
             </Flex>
