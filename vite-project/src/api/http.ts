@@ -54,58 +54,6 @@ function chatbotSocket() {
     return sock;
 }
 
-// function liveAxios() {
-//     return axios.create({
-//         baseURL: "https://" + BASEURL + "/v1",
-//         headers: {
-//             "Content-Type": "application/json",
-//         },
-//         withCredentials: credential,
-//     });
-// }
-
-// function itemAxios() {
-//     return axios.create({
-//         baseURL: "https://" + BASEURL + "/v1",
-//         headers: {
-//             "Content-Type": "application/json;charset=utf-8",
-//         },
-//         withCredentials: credential,
-//     });
-// }
-
-// function chatbotAxios() {
-//     return axios.create({
-//         baseURL: "https://" + BASEURL + "/v1",
-//         headers: {
-//             "Content-Type": "application/json",
-//         },
-//         withCredentials: credential,
-//     });
-// }
-
-// function authAxios() {
-//     return axios.create({
-//         baseURL: "https://" + BASEURL + "/v1",
-//         // 테스트용 API: 위에 서버가 작동을 안해서 테스트할 땐 아래 써주세욤
-//         // baseURL: "http://211.63.208.201:8080/v1/",
-//         headers: {
-//             "Content-Type": "application/json",
-//         },
-//         withCredentials: credential,
-//     });
-// }
-
-// function chatAxios() {
-//     return axios.create({
-//         baseURL: "https://" + BASEURL + "/v1",
-//         headers: {
-//             "Content-Type": "application/json;charset=utf-8",
-//         },
-//         withCredentials: credential,
-//     });
-// }
-
 export {
     mainAxios,
     liveAxios,
