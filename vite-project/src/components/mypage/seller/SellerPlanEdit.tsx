@@ -71,7 +71,7 @@ export default function LivePlanEditForm() {
         const [datePart, timePart] = utcString.split('T');
         const [hour, minute, second] = timePart.split(':');
         const newHour = (parseInt(hour) + 9) % 24;
-        const newTimePart = `${newHour.toString().padStart(2, '0')}:${minute}:${second}`;
+        const newTimePart = `${newHour.toString().padStart(2, '0')}:${minute}`;
         const newUTCString = `${datePart}T${newTimePart}`;
         return newUTCString.split('.')[0];
     }
@@ -80,6 +80,7 @@ export default function LivePlanEditForm() {
         const fetchData = async () => {
             try {
                 const response = await getLiveDetailAPI({ broadcastId: broadcastIdNumber }, accessToken);
+                console.log(response)
                 setPlanDetail(response);
                 setTitle(response?.broadcastTitle || "");
                 setMemo(response?.script || "");
@@ -96,7 +97,8 @@ export default function LivePlanEditForm() {
         };
         fetchData();
     }, [accessToken, broadcastIdNumber]);
-console.log(startDate)
+console.log(broadcastIdNumber)
+
     useEffect(() => {
         const fetchData = async () => {
             const response = await getLiveProduct({ "live-id": broadcastIdNumber }, accessToken)
@@ -104,6 +106,7 @@ console.log(startDate)
         };
         fetchData();
     }, [])
+    console.log(liveproducts)
 
     useEffect(() => {
         if (liveproducts.length > 0) {
@@ -113,23 +116,6 @@ console.log(startDate)
 
     async function onSubmit(event: React.SyntheticEvent): Promise<void> {
         event.preventDefault();
-
-        // try {
-        //     await editLivePlanAPI({ 
-        //         broadcastId: broadcastIdNumber, 
-        //         accessToken,
-        //         broadcastTitle: title,
-        //         content: "라이브 방송",
-        //         script: memo,
-        //         ttsSetting,
-        //         chatbotSetting: faqSetting,
-        //         broadcastStartDate: startDate,
-        //     }, accessToken);
-        //     navigate("/v1/seller");
-        // } catch (error) {
-        //     console.error("Error editing live plan:", error);
-        //     // 에러 처리
-        // }
 
         const now_date = new Date();
         const start_date = new Date(startDate);
@@ -152,6 +138,7 @@ console.log(startDate)
             broadcastStartDate: start_date.toISOString(),
         };
 
+        console.log(liveEditData)
         
         const liveProductArray = filterLiveProduct(
             0,
@@ -163,8 +150,8 @@ console.log(startDate)
             throw error;
         });
 
-        navigate("/v1/seller");
         editLivePlanAPI({editbroadcastInfo: liveEditData}, accessToken)
+        navigate("/v1/seller");
     }
 
     function filterLiveProduct(

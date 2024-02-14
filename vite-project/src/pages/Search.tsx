@@ -8,6 +8,7 @@ import Recommends from "../components/search/Recommends";
 // 검색 전 추천상품 띄우기
 export default function Search() {
     const [showResults, setShowResults] = useState(false);
+    const [keywordResult, setKeywordResult] = useState('');
     const [searchKeyword, setSearchKeyword] = useState<string>('');
     const [searchtitleResults, setSearchtitleResults] = useState([]);
     const [searchsellerResults, setSearchsellerResults] = useState([]);
@@ -26,6 +27,7 @@ export default function Search() {
             setSearchtitleResults(titleResults.data.broadcastInfoList)
             setSearchsellerResults(sellerResults.data.broadcastInfoList)
             setShowResults(true)
+            setKeywordResult(searchKeyword)
         } catch (error) {
             console.error('Search request failed', error);
         }
@@ -59,7 +61,7 @@ export default function Search() {
                 { showResults && searchKeyword.length > 0 ? (
                 <>
                 <Text mt={10} mb={4} fontWeight="semibold" textAlign="center" color="gray.700">
-                    {searchKeyword}의 검색결과
+                    {keywordResult}의 검색결과
                 </Text>
                 {(searchtitleResults.length > 0 || searchsellerResults.length > 0) ? (
                     <SearchContents searchtitleResults={searchtitleResults} searchsellerResults={searchsellerResults} />    
@@ -74,7 +76,7 @@ export default function Search() {
                 ) : (
                 <>
                 <Text mt={10} mb={5} p={5} fontSize="xl" fontWeight="semibold" textAlign="center" color="gray.700">
-                    💥최신상 상품 구경하기💥
+                    💥따끈따끈 신상품 구경하기💥
                 </Text>
                 <Recommends />
                 </>
