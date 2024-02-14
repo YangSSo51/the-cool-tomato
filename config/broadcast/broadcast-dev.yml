@@ -21,13 +21,13 @@ logging.level:
   org.hibernate.type: trace
 
 auth:
-  url: https://i10a501.p.ssafy.io:443
+  url: https://cool-tomato.duckdns.org/:443
 
 mediate:
   url: http://3.39.6.29:8081
 
 user:
-  url: https://i10a501.p.ssafy.io:443
+  url: https://cool-tomato.duckdns.org/:443
 
 redis:
   master:
