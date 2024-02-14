@@ -65,4 +65,5 @@ export {
     chatWebSocketUrl,
     chatbotSocket,
     chatbotWebSocketUrl,
+    BASEURL,
 };
