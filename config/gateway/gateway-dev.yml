@@ -73,4 +73,8 @@ spring:
             uri: lb://USER
             predicates:
                 - Path=/v1/users/**
+          - id: chat
+            uri: lb://CHAT
+            predicates:
+                - Path=/v1/chat/**
   
