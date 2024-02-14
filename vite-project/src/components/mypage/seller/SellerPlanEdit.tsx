@@ -338,7 +338,7 @@ console.log(startDate)
                                 }
                             />
                         </Box>
-                        <Box p={"2rem"}>
+                        {/* <Box p={"2rem"}>
                             <Text fontSize={"xl"} as={"b"}>
                                 채팅을 자동으로 읽어주기 설정
                             </Text>
@@ -350,7 +350,7 @@ console.log(startDate)
                                     setTtsSetting(e.target.checked)
                                 }
                             />
-                        </Box>
+                        </Box> */}
                     </Flex>
 
                     <Box p={"2rem"}>
