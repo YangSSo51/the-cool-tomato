@@ -27,8 +27,14 @@ const Goods = ({ id, img, title, price, profile, sellerId }: GoodsProps) => {
         <Box>
             <Box>
                 <Box>
-                    <Box maxW={"25rem"}>
-                        <AspectRatio w="350px" ratio={1 / 1}>
+                    <Box
+                        maxW={"100%"}
+                        onClick={() => {
+                            navigate(`/v1/items/detail/${id}`);
+                        }}
+                        _hover={{ cursor: "pointer" }}
+                    >
+                        <AspectRatio w="23rem" ratio={1 / 1}>
                             <Image
                                 src={img}
                                 aspectRatio="1/1"

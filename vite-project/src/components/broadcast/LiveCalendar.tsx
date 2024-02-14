@@ -35,15 +35,17 @@ export default function LiveCalendar({
     >();
 
     useEffect(() => {
+        setIslive(!!LiveCalendar);
+    }, [dates]);
+
+    useEffect(() => {
         fetchLiveCalendar(dates, 0, 10).then((res) => {
             setLiveCalendar(res.data.data.broadcastInfoList);
         });
     }, [dates]);
 
     useEffect(() => {
-        
         if (LiveCalendar && LiveCalendar.length > 0) {
-            
             Promise.all(
                 LiveCalendar.map((item) =>
                     fetchCalendarItem(0, 10, item.liveBroadcastId)
@@ -156,4 +158,3 @@ export default function LiveCalendar({
         </>
     );
 }
-
