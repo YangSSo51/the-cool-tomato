@@ -19,7 +19,7 @@ import LiveItemAdd from "../../broadcast/LiveItemAdd";
 import AddGoods from "./PlanEditAddGoods";
 import {
     ItemDetailInterface,
-    broadcastInfo,
+    editbroadcastInfo,
     liveProduct,
     liveProductPrice,
     LiveProductAll
@@ -114,24 +114,22 @@ console.log(startDate)
     async function onSubmit(event: React.SyntheticEvent): Promise<void> {
         event.preventDefault();
 
-        try {
-            await editLivePlanAPI({ 
-                broadcastId: broadcastIdNumber, 
-                broadcastInfo: {
-                    accessToken,
-                    broadcastTitle: title,
-                    content: "라이브 방송",
-                    script: memo,
-                    ttsSetting,
-                    chatbotSetting: faqSetting,
-                    broadcastStartDate: startDate,
-                }
-            }, accessToken);
-            navigate("/v1/seller");
-        } catch (error) {
-            console.error("Error editing live plan:", error);
-            // 에러 처리
-        }
+        // try {
+        //     await editLivePlanAPI({ 
+        //         broadcastId: broadcastIdNumber, 
+        //         accessToken,
+        //         broadcastTitle: title,
+        //         content: "라이브 방송",
+        //         script: memo,
+        //         ttsSetting,
+        //         chatbotSetting: faqSetting,
+        //         broadcastStartDate: startDate,
+        //     }, accessToken);
+        //     navigate("/v1/seller");
+        // } catch (error) {
+        //     console.error("Error editing live plan:", error);
+        //     // 에러 처리
+        // }
 
         const now_date = new Date();
         const start_date = new Date(startDate);
@@ -143,7 +141,8 @@ console.log(startDate)
             return;
         }
         
-        const liveReservationData: broadcastInfo = {
+        const liveEditData: editbroadcastInfo = {
+            broadcastId: broadcastIdNumber,
             accessToken,
             broadcastTitle: title,
             content: "라이브 방송",
@@ -165,7 +164,7 @@ console.log(startDate)
         });
 
         navigate("/v1/seller");
-        editLivePlanAPI({broadcastId: broadcastIdNumber, broadcastInfo: liveReservationData}, accessToken)
+        editLivePlanAPI({editbroadcastInfo: liveEditData}, accessToken)
     }
 
     function filterLiveProduct(

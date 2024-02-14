@@ -1,5 +1,5 @@
 import { liveAxios } from "./http";
-import { broadcastInfo } from "../types/DataTypes";
+import { broadcastInfo, editbroadcastInfo } from "../types/DataTypes";
 
 const http = liveAxios();
 
@@ -76,7 +76,7 @@ async function deleteLivePlanAPI(params: {broadcastId: number}, accessToken: str
 }
 
 // 예약된 라이브 수정
-async function editLivePlanAPI(data: {broadcastId: number, broadcastInfo: broadcastInfo}, accessToken: string) {
+async function editLivePlanAPI(data: {editbroadcastInfo: editbroadcastInfo}, accessToken: string) {
     await http.put(`${url}/reservation`, data, {
         headers: {
             "Content-Type": "application/json",

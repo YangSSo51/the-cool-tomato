@@ -59,7 +59,7 @@ export default function LiveResultPage() {
                 />
         </Box>
 
-        <Flex w="80vw" direction="column" align="center" py={8} border="2px" borderColor="themeLightGreen.500">
+        <Flex w="80vw" direction="column" align="center" py={8} border="2px" mb="10" borderColor="themeLightGreen.500">
 
             <Avatar mt="4" size="xl" src="임시링크" />
             

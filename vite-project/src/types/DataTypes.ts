@@ -119,6 +119,17 @@ export type broadcastInfo = {
     broadcastStartDate: string;
 };
 
+export type editbroadcastInfo = {
+    broadcastId: number;
+    accessToken: string;
+    broadcastTitle: string;
+    content: string;
+    script: string;
+    ttsSetting: boolean;
+    chatbotSetting: boolean;
+    broadcastStartDate: string;
+};
+
 export type followerItem = {
     id: number;
     loginId: string;
