@@ -126,6 +126,7 @@ public class BroadcastController {
     @Operation(summary = "예약 방송 설정 변경", description = "예약 방송 설정을 변경합니다.")
     public ResponseEntity<SuccessResponse<Boolean>> updateReservationBroadcast(@RequestBody @Validated UpdateReservationRequestDto updateReservationRequestDto){
         String accessToken = updateReservationRequestDto.getAccessToken();
+        System.out.println(accessToken);
         if(authService.validateToken(accessToken)){
             if(authService.getAuth(accessToken).equals("SELLER")){
                 broadcastService.updateBroadcastInfo(updateReservationRequestDto);

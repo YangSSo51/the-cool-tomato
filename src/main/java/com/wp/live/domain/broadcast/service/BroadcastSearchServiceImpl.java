@@ -33,7 +33,6 @@ public class BroadcastSearchServiceImpl implements BroadcastSearchService {
     private final LiveBroadcastRepository liveBroadcastRepository;
     private final StringRedisTemplate redisTemplate;
     private final String RANK = "ranking";
-    private final String VIEW = "view";
 
     @Override
     public GetCarouselResponseDto getCarousel() {
@@ -82,12 +81,11 @@ public class BroadcastSearchServiceImpl implements BroadcastSearchService {
             List<LiveBroadcast> queryResults = liveBroadcastRepository.findAllById(liveBroadcastIds);
             List<BroadcastInfo> infos = new ArrayList<>();
             for (LiveBroadcast queryResult : queryResults) {
-                Long viewCount = Long.parseLong((String) redisTemplate.opsForHash().get(VIEW, String.valueOf(queryResult.getId())));
                 BroadcastInfo info = BroadcastInfo.builder()
                         .liveBroadcastId(queryResult.getId())
                         .broadcastTitle(queryResult.getBroadcastTitle())
                         .sellerId(queryResult.getUser().getId())
-                        .viewCount(viewCount)
+                        .broadcastStatus(queryResult.getBroadcastStatus())
                         .nickName(queryResult.getUser().getNickname())
                         .build();
                 infos.add(info);
@@ -95,8 +93,10 @@ public class BroadcastSearchServiceImpl implements BroadcastSearchService {
 
             return SearchByTitleResponseDto.builder().totalSize(elsResults.getTotalElements()).totalPage(elsResults.getTotalPages()).broadcastInfoList(infos).build();
         }catch (NoSuchElementException e1){
+            e1.printStackTrace();
             throw new BusinessExceptionHandler(ErrorCode.BAD_REQUEST_ERROR); //DB에 데이터가 없을 때 - JPA
         }catch (Exception e2){
+            e2.printStackTrace();
             throw new BusinessExceptionHandler(ErrorCode.INTERNAL_SERVER_ERROR);
         }
     }
@@ -104,6 +104,7 @@ public class BroadcastSearchServiceImpl implements BroadcastSearchService {
     @Override
     public SearchBySellerResponse searchLivebBroadcastSeller(String sellerKeyword, int page, int size) {
         try {
+            System.out.println(sellerKeyword);
             List<UserDocument> elsResults = userSearchRepository.findByNicknameContaining(sellerKeyword);
             List<Long> userIds = new ArrayList<>();
             for (UserDocument elsResult : elsResults) {
@@ -111,15 +112,14 @@ public class BroadcastSearchServiceImpl implements BroadcastSearchService {
             }
 
             Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "id"));
-            Page<LiveBroadcast> queryResults = liveBroadcastRepository.findByUserIdIn(userIds, pageable);
+            Page<LiveBroadcast> queryResults = liveBroadcastRepository.findByUserIdInAndIsDeleted(userIds, false, pageable);
             List<BroadcastInfo> infos = new ArrayList<>();
             for (LiveBroadcast queryResult : queryResults) {
-                Long viewCount = Long.parseLong((String) redisTemplate.opsForHash().get(VIEW, String.valueOf(queryResult.getId())));
                 BroadcastInfo info = BroadcastInfo.builder()
                         .liveBroadcastId(queryResult.getId())
                         .broadcastTitle(queryResult.getBroadcastTitle())
                         .sellerId(queryResult.getUser().getId())
-                        .viewCount(viewCount)
+                        .broadcastStatus(queryResult.getBroadcastStatus())
                         .nickName(queryResult.getUser().getNickname())
                         .build();
                 infos.add(info);
@@ -128,6 +128,7 @@ public class BroadcastSearchServiceImpl implements BroadcastSearchService {
         }catch (NoSuchElementException e1){
             throw new BusinessExceptionHandler(ErrorCode.BAD_REQUEST_ERROR); //DB에 데이터가 없을 때 - JPA
         }catch (Exception e2){
+            e2.printStackTrace();
             throw new BusinessExceptionHandler(ErrorCode.INTERNAL_SERVER_ERROR);
         }
     }

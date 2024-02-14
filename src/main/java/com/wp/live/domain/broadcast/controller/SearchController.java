@@ -33,6 +33,7 @@ public class SearchController {
     @GetMapping("/seller")
     @Operation(summary = "판매자 기반 방송 목록 검색", description = "판매자 이름을 기반으로 방송 목록 검색합니다.")
     public ResponseEntity<SuccessResponse<SearchBySellerResponse>> searchBySeller(@RequestParam String name, @RequestParam int page, @RequestParam int size){
+        System.out.println(name);
         SearchBySellerResponse result = broadcastSearchService.searchLivebBroadcastSeller(name, page, size);
         return new ResponseEntity<>(SuccessResponse.<SearchBySellerResponse>builder().data(result).status(200).message("닉네임 기반 검색 결과 반환 성공").build(), HttpStatus.OK);
     }
@@ -41,7 +42,9 @@ public class SearchController {
     @GetMapping("/title")
     @Operation(summary = "방속 제목 기반 방송 목록 검색", description = "방속 제목을 기반으로 방송 목록 반환합니다.")
     public ResponseEntity<SuccessResponse<SearchByTitleResponseDto>> searchByTitle(@RequestParam String keyword, @RequestParam int page, @RequestParam int size){
+        System.out.println(keyword);
         SearchByTitleResponseDto result = broadcastSearchService.searchLivebBroadcastTitle(keyword, page, size);
+
         return new ResponseEntity<>(SuccessResponse.<SearchByTitleResponseDto>builder().data(result).status(200).message("제목 기반 검색 결과 반환 성공").build(), HttpStatus.OK);
     }
 

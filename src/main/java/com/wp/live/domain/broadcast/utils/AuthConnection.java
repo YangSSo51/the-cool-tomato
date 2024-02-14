@@ -36,6 +36,7 @@ public class AuthConnection {
     }
 
     public boolean validationToken(String token){
+
         ValidationRequestDto validationRequestDto = ValidationRequestDto.builder().accessToken(token).build();
         ResponseDto result = webClient.post()
                 .uri("/validationToken")

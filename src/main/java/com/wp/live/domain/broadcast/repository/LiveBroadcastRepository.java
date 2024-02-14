@@ -21,7 +21,7 @@ public interface LiveBroadcastRepository extends JpaRepository<LiveBroadcast, Lo
     public Optional<LiveBroadcast> findById(Long id);
     @EntityGraph(attributePaths = {"user"})
     public Page<LiveBroadcast> findAllByBroadcastStatus(Boolean broadcastStatus, Pageable pageable);
-    public Page<LiveBroadcast> findByUserIdIn(Collection<Long> id, Pageable pageable);
+    public Page<LiveBroadcast> findByUserIdInAndIsDeleted(Collection<Long> id, Boolean isDeleted, Pageable pageable);
     @EntityGraph(attributePaths = {"user"})
     public Page<LiveBroadcast> findByUserIdAndIsDeleted(Long id, Boolean isDeleted, Pageable pageable);
     @EntityGraph(attributePaths = {"user"})
