@@ -4,9 +4,9 @@ import SockJS from "sockjs-client";
 const BASEURL = "cool-tomato.duckdns.org";
 const credential = true;
 
-const chatWebSocketUrl = "wss://" + BASEURL + "/v1/chat/ws-stomp/websocket";
+const chatWebSocketUrl = "ws://" + BASEURL + "/v1/chat/ws-stomp/websocket";
 
-const chatbotWebSocketUrl = "wss://" + BASEURL + "/stomp/chat/websocket";
+const chatbotWebSocketUrl = "ws://" + BASEURL + "/stomp/chat/websocket";
 
 function mainAxios() {
     return axios.create({
