@@ -12,7 +12,7 @@ import {
     AlertDialogOverlay,
     AlertDialogCloseButton,
 } from "@chakra-ui/react";
-import { useRef, useEffect, useState } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../redux/stores/store";
 import { getLiveDetailAPI, getLiveStartToken } from "../../../api/openVidu";
@@ -120,7 +120,12 @@ function PlanItems({
 
                     <Flex direction={"column"} mt="2rem">
                         <Text>방송 예정 일자</Text>
-                        <Text as={"b"} fontSize={"1.3rem"}>{dayjs.utc(startdate).local().format("MM월 DD일 HH:mm")}</Text>
+                        <Text as={"b"} fontSize={"1.3rem"}>
+                            {dayjs
+                                .utc(startdate)
+                                .local()
+                                .format("MM월 DD일 HH:mm")}
+                        </Text>
                     </Flex>
                 </Box>
             </Flex>

@@ -198,7 +198,6 @@ export interface AcceptSeller {
     userId: number;
 }
 
-
 export interface UserProfileEdit {
     profileImg: string | null | undefined;
     password: string;
@@ -287,6 +286,19 @@ export interface chatMessageRecv {
     senderId: number;
     senderNickname: string;
     message: string;
+}
+export interface LiveCalendarShownInterface {
+    startDate: string;
+    nickName: string;
+    liveBroadcastId: number;
+    broadcastTitle: string;
+    imgSrc: string;
+    sellerImg: string;
+    categoryId: number;
+    productName: string;
+    price: number;
+    liveFlatPrice: number;
+    liveRatePrice: number;
 }
 
 export interface chatbotMessage {
