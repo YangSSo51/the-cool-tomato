@@ -32,7 +32,7 @@ export default function Search() {
     }
 
     return (
-        <Flex direction="column" h="100vh" align="center">
+        <Flex direction="column"  align="center">
             
             <Flex justify={"center"} className="MainText" color={"themeGreen.500"} mt="0.5rem">
                 검색하기
