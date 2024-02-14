@@ -28,7 +28,7 @@ import java.util.UUID;
 public class S3UploadService {
 
     private final AmazonS3 amazonS3;
-    static final int TARGET_HEIGHT = 250;
+    static final int TARGET_HEIGHT = 1000;
 
     @Value("${cloud.aws.s3.bucket}")
     private String bucket;
@@ -43,19 +43,22 @@ public class S3UploadService {
         try {
             BufferedImage sourceImage = ImageIO.read(multipartFile.getInputStream());
 
-            //동일 비율로 리사이징하기 위함
-            double sourceImageRatio = (double) sourceImage.getWidth() / sourceImage.getHeight();
-            int newWidth = (int) (TARGET_HEIGHT * sourceImageRatio);
+            if(sourceImage.getHeight() > TARGET_HEIGHT) {
+                //동일 비율로 리사이징하기 위함
+                double sourceImageRatio = (double) sourceImage.getWidth() / sourceImage.getHeight();
+                int newWidth = (int) (TARGET_HEIGHT * sourceImageRatio);
 
-            //이미지 사이즈 변경
-            sourceImage =  Scalr.resize(sourceImage, newWidth, TARGET_HEIGHT);
+                //이미지 사이즈 변경
+                sourceImage = Scalr.resize(sourceImage, newWidth, TARGET_HEIGHT);
 
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            ImageIO.write(sourceImage, fileFormatName, baos);
-            baos.flush();
-            byte[] bytes = baos.toByteArray();
+                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                ImageIO.write(sourceImage, fileFormatName, baos);
+                baos.flush();
+                byte[] bytes = baos.toByteArray();
 
-            return new CustomMultipartFile(bytes, "image", fileName, fileFormatName, bytes.length);
+                return new CustomMultipartFile(bytes, "image", fileName, fileFormatName, bytes.length);
+            }
+            return multipartFile;
         }catch (IOException e){
             throw new BusinessExceptionHandler("파일 리사이징 실패",ErrorCode.FAIL_FILE_UPLOAD);
         }
