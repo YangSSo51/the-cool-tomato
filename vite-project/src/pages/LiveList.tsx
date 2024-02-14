@@ -1,9 +1,20 @@
 import { Flex, Text } from "@chakra-ui/react";
 import LiveCarouselComponent from "../components/broadcast/LiveCarouselComponent";
 import CarouselComponent from "../components/common/CarouselComponent";
-
+import { fetchLiveCarousel } from "../api/live";
+import { useEffect } from "react";
 
 export default function LiveList() {
+
+    useEffect(() => {
+        try {
+            fetchLiveCarousel().then((res) => {
+                console.log(res)
+            })
+        } catch (err) {
+            console.log(err)
+        }
+    })
 
     return (
         <>

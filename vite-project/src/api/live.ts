@@ -17,4 +17,8 @@ async function fetchLiveCalendar(date: string, page: number, size: number) {
     })
 }
 
-export { fetchLiveCalendar }
+async function fetchLiveCarousel() {
+    return http.get(`${url}/carousel`)
+}
+
+export { fetchLiveCalendar, fetchLiveCarousel }
