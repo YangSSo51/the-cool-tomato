@@ -77,4 +77,8 @@ spring:
             uri: lb://CHAT
             predicates:
                 - Path=/v1/chat/**
+          - id: stomp
+            uri: lb://CHATBOT
+            predicates:
+                - Path=/stomp/chat/**
   
