@@ -1,6 +1,5 @@
-import { Box, Flex } from "@chakra-ui/layout";
+import { Box, Divider, Flex, Text } from "@chakra-ui/layout";
 import { Badge, Button } from "@chakra-ui/react";
-// import { useNavigate } from "react-router-dom";
 
 interface broadcastInfo {
     liveBroadcastId: number;
@@ -9,6 +8,7 @@ interface broadcastInfo {
     viewCount: number;
     sellerId: number;
     broadcastStatus: boolean;
+    startDate: string;
 }
 
 function LiveItems({lives} : {lives: broadcastInfo}) {
@@ -37,7 +37,8 @@ function LiveItems({lives} : {lives: broadcastInfo}) {
                     </Box>
 
                     <Box
-                        mt='1'
+                        mt='3'
+                        mb='1'
                         fontWeight='semibold'
                         as='h4'
                         lineHeight='tight'
@@ -45,12 +46,12 @@ function LiveItems({lives} : {lives: broadcastInfo}) {
                         >
                         {lives.broadcastTitle}
                     </Box>
+                    <Divider mb="1" />
+                    <Text fontSize={"sm"}>방송일자: {lives.startDate}</Text>
                 </Box>
             </Flex>
 
             <Button onClick={()=>handleOpenNewTab(`/v1/live/result/${lives.liveBroadcastId}`)}>
-            {/* 위에 오류나면 아래내용으로 변경 */}
-            {/* <Button onClick={()=>navigate(`/v1/live/result/${lives.liveBroadcastId}`)}> */} 
                 데이터확인!
             </Button>
         </Flex>

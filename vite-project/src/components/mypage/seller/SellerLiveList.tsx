@@ -16,7 +16,7 @@ function LiveList() {
         const fetchData = async () => {
             try {
                 const response = await getEndedLiveAPI({page:0,size:10},accessToken)
-                if (response.data) {setLivedItem(response.data)}
+                if (response) {setLivedItem(response)}
             } catch (error) {
                 console.error(error)
             }

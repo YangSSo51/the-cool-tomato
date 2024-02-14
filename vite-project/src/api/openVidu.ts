@@ -109,7 +109,7 @@ async function getEndedLiveAPI(
             Authorization: "Bearer " + accessToken,
         },
     });
-    return response.data.broadcastInfoList;
+    return response.data.data.broadcastInfoList;
 }
 
 export {
