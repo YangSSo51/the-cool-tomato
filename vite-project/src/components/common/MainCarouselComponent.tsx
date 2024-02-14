@@ -15,9 +15,10 @@ export default function MainCarouselComponent() {
     const [slideIndex, setSlideIndex] = useState(0);
 
     const dummylist = [
-        { img: "/img/MainC1.PNG" },
-        { img: "/img/MainC2.PNG" },
-        { img: "/img/MainC3.PNG" },
+        { img: "/img/MainBanner_1.jpg" },
+        { img: "/img/MainBanner_2.jpg" },
+        { img: "/img/MainBanner_3.jpg" },
+        { img: "/img/MainBanner_4.jpg" },
     ];
 
     // moveBar
@@ -37,7 +38,7 @@ export default function MainCarouselComponent() {
         const totalSlides = dummylist.length;
         const interval = setInterval(() => {
             setSlideIndex((currentIndex) => (currentIndex + 1) % totalSlides);
-        }, 9000);
+        }, 20000);
 
         return () => clearInterval(interval);
     }, [dummylist.length]);
@@ -66,7 +67,7 @@ export default function MainCarouselComponent() {
                 position={"absolute"}
                 top={"50%"}
                 transform={"translateY(-50%)"}
-                left={"20%"}
+                left={"10%"}
                 zIndex={2}
             >
                 <ChevronLeftIcon boxSize={10} onClick={moveLeft} />
@@ -75,7 +76,7 @@ export default function MainCarouselComponent() {
                 position={"absolute"}
                 top={"50%"}
                 transform={"translateY(-50%)"}
-                right={"20%"}
+                right={"10%"}
                 zIndex={2}
             >
                 <ChevronRightIcon boxSize={10} onClick={moveRight} />
@@ -86,11 +87,12 @@ export default function MainCarouselComponent() {
                 color={"white"}
                 width={"100%"}
                 textAlign={"center"}
-                mb={"2rem"}
+                mb={"1rem"}
             >
                 {slideIndex === 0 ? <FaRegCircleActive /> : <FaRegCircleNone />}
                 {slideIndex === 1 ? <FaRegCircleActive /> : <FaRegCircleNone />}
                 {slideIndex === 2 ? <FaRegCircleActive /> : <FaRegCircleNone />}
+                {slideIndex === 3 ? <FaRegCircleActive /> : <FaRegCircleNone />}
             </Box>
         </Box>
     );

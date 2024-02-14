@@ -7,7 +7,7 @@ const http = mainAxios();
 const headers = new AxiosHeaders();
 headers.set("Content-Type", "application/json;charset=utf-8");
 
-const url = "users";
+const url = "/users";
 
 // 회원 API
 

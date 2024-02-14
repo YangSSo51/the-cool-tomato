@@ -29,6 +29,7 @@ import { CloseIcon } from "@chakra-ui/icons";
 import { FaRegEdit } from "react-icons/fa";
 import { useSelector } from "react-redux";
 import { RootState } from "../redux/stores/store";
+import { BASEURL } from "../api/http"
 
 export default function ItemAdd() {
     const accessToken = useSelector((state: RootState) => {
@@ -42,7 +43,7 @@ export default function ItemAdd() {
             heightMin: 600,
             autofocus: true,
             attribution: false,
-            imageUploadURL: "http://i10a501.p.ssafy.io:8082/v1/products/fileupload"
+            imageUploadURL: `https://${BASEURL}/v1/products/fileupload`
         };
 
     const [values, setValues] = useState<AddItemInterface>({

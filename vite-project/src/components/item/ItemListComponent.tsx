@@ -9,6 +9,7 @@ import {
 } from "@chakra-ui/react";
 import "../../css/ItemListComponentcss.css";
 import { useNavigate } from "react-router-dom";
+import React from "react";
 import { formatNumberWithComma } from "../common/Comma";
 
 interface GoodsProps {
@@ -27,7 +28,7 @@ const Goods = ({ id, img, title, price, profile, sellerId }: GoodsProps) => {
             <Box>
                 <Box>
                     <Box maxW={"25rem"}>
-                        <AspectRatio w="270px" ratio={1 / 1}>
+                        <AspectRatio w="350px" ratio={1 / 1}>
                             <Image
                                 src={img}
                                 aspectRatio="1/1"
@@ -68,7 +69,9 @@ const Goods = ({ id, img, title, price, profile, sellerId }: GoodsProps) => {
                         <Box className="Text">
                             <Box className="TextTitle">{title}</Box>
                         </Box>
-                        <Box className="tagWrap">{price ? formatNumberWithComma(price) : ''}</Box>
+                        <Box className="tagWrap">
+                            {price ? formatNumberWithComma(price) : ""}
+                        </Box>
                     </Box>
                 </Flex>
             </Box>
