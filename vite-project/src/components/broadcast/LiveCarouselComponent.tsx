@@ -1,53 +1,112 @@
 import { Box, Flex } from "@chakra-ui/react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import dummylivelist from "../item/dummylist/dummylivelist";
 import LiveListComponent from "./LiveListComponent";
+import { FirstDisplayInterface } from "../../types/DataTypes";
+import { fetchCalendarItem } from "../../api/liveProduct";
 
-export default function LiveCarouselComponent() {
+interface CarouselComponentInterface {
+    fetchLiveData: Array<Object> | undefined;
+}
+
+export default function LiveCarouselComponent(
+    fetchLiveData: CarouselComponentInterface
+) {
     const [{ x }, setPosition] = useState({
         x: 0,
     });
 
+    const [displayData, setDisplayData] = useState<FirstDisplayInterface>();
+
+    useEffect(() => {
+        console.log(fetchLiveData);
+        if (
+            fetchLiveData.fetchLiveData &&
+            fetchLiveData.fetchLiveData.length > 0
+        ) {
+            Promise.all(
+                fetchLiveData.fetchLiveData.map((item) =>
+                    fetchCalendarItem(0, 10, item.liveBroadcastId)
+                )
+            ).then((res) => {
+                const enrichedData = res.flatMap((res, index) => {
+                    const liveItem = fetchLiveData.fetchLiveData[index];
+                    const detail = res.data.data.list[0];
+
+                    return {
+                        price: detail.price,
+                        broadcastTitle: liveItem.broadcastTitle,
+                        productName: detail.productName,
+                        liveRatePrice: detail.liveRatePrice,
+                        liveFlatPrice: detail.liveFlatPrice,
+                        imgSrc: detail.imgSrc,
+                        liveBroadcastId: liveItem.liveBroadcastId,
+                    };
+                });
+                setDisplayData(enrichedData);
+            });
+        }
+    }, [fetchLiveData]);
+
     return (
-        <Box display={"block"} overflowX={"hidden"} w={"80%"} mt={"1rem"} mb={"1rem"}>
+        <Box
+            display={"block"}
+            overflowX={"hidden"}
+            overflowY={"hidden"}
+            w={"80%"}
+            mt={"1rem"}
+            mb={"1rem"}
+            h={"27rem"}
+        >
             <Flex
                 wrap={"nowrap"}
                 direction={"row"}
                 m={"auto"}
                 overflowX={"hidden"}
                 overflowY={"auto"}
-                w={`${16 * dummylivelist.length}vw`}
+                w={`${9 * 14.5}rem`}
                 style={{ transform: `translateX(${x}px)` }}
-                onMouseDown={(clickEvent: React.MouseEvent<Element, MouseEvent>) => {
+                onMouseDown={(
+                    clickEvent: React.MouseEvent<Element, MouseEvent>
+                ) => {
+                    const startX = clickEvent.screenX;
+
                     const mouseMoveHandler = (moveEvent: MouseEvent) => {
-
-                        const deltaX = moveEvent.screenX - clickEvent.screenX;
-
-                        setPosition({
-                            x: x + deltaX,
-                        });
+                        const deltaX = moveEvent.screenX - startX;
+                        const newX = x + deltaX;
+                        if (newX > 0) {
+                            setPosition({ x: 0 });
+                        } else {
+                            setPosition({ x: newX });
+                        }
                     };
 
                     const mouseUpHandler = () => {
-                        document.removeEventListener('mousemove', mouseMoveHandler);
+                        document.removeEventListener(
+                            "mousemove",
+                            mouseMoveHandler
+                        );
                     };
 
-                    document.addEventListener('mousemove', mouseMoveHandler);
-                    document.addEventListener('mouseup', mouseUpHandler, { once: true });
+                    document.addEventListener("mousemove", mouseMoveHandler);
+                    document.addEventListener("mouseup", mouseUpHandler, {
+                        once: true,
+                    });
                 }}
-
             >
-                {dummylivelist.map((data) => (
-                    <Box key={data.id} w="calc(10.33%)" pointerEvents={"none"}>
+                {displayData?.map((data, index) => (
+                    <Box key={index} w="100%" pointerEvents={"none"}>
                         <LiveListComponent
-                            id={data.id}
-                            url={data.img}
-                            title={data.title}
+                            liveFlatPrice={data.liveFlatPrice}
+                            liveBroadcastId={data.liveBroadcastId}
+                            url={data.imgSrc}
+                            title={data.broadcastTitle}
                             price={data.price}
                         />
                     </Box>
                 ))}
             </Flex>
         </Box>
-    )
+    );
 }
+

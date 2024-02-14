@@ -41,11 +41,6 @@ export default function LiveCalendar({ date }: LiveCalendarInterface) {
     }, [dates]);
 
     useEffect(() => {
-        console.log(LiveCalendar);
-        console.log(enrichedLiveCalendar);
-    }, [enrichedLiveCalendar, LiveCalendar]);
-
-    useEffect(() => {
         if (LiveCalendar && LiveCalendar.length > 0) {
             Promise.all(
                 LiveCalendar.map((item) =>
@@ -74,6 +69,10 @@ export default function LiveCalendar({ date }: LiveCalendarInterface) {
             });
         }
     }, [LiveCalendar]);
+
+    useEffect(() => {
+        console.log(enrichedLiveCalendar)
+    }, [enrichedLiveCalendar])
 
     return (
         <>

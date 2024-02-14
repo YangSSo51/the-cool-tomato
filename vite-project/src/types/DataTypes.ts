@@ -317,3 +317,20 @@ export interface chatbotMessage {
     message: string;
     writer: number;
 }
+
+export interface DisplayInterface {
+    price: number;
+    liveFlatPrice: number;
+    imgSrc: string;
+    liveBroadcastId: number;
+}
+
+export interface FirstDisplayInterface {
+    price: number;
+    liveBroadcastId: number;
+    imgSrc: string;
+    broadcastTitle: string;
+    productName: string;
+    liveFlatPrice: number;
+    liveRatePrice: number;
+}
