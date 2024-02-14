@@ -5,7 +5,7 @@ spring:
   application:
     name: user
   datasource:
-    url: jdbc:mysql://kpc.chf1yiylcr3s.ap-northeast-2.rds.amazonaws.com:3306/m5s?serverTimezone=UTC
+    url: jdbc:mysql://kpc.chf1yiylcr3s.ap-northeast-2.rds.amazonaws.com:3306/wp?serverTimezone=UTC
     username: kpc
     password: asdf134620!
     driver-class-name: com.mysql.cj.jdbc.Driver
