@@ -21,13 +21,13 @@ logging.level:
   org.hibernate.type: trace
 
 auth:
-  url: http://MASTER:8000
+  url: https://i10a501.p.ssafy.io:443
 
 mediate:
   url: http://3.39.6.29:8081
 
 user:
-  url: http://MASTER:8000
+  url: https://i10a501.p.ssafy.io:443
 
 redis:
   master:
