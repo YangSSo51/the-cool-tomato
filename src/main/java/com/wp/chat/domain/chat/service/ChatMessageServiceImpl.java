@@ -1,6 +1,5 @@
 package com.wp.chat.domain.chat.service;
 
-import com.wp.chat.domain.block.service.BlockManageService;
 import com.wp.chat.domain.chat.dto.request.ChatMessageRequest;
 import com.wp.chat.domain.chat.entity.ChatMessage;
 import lombok.RequiredArgsConstructor;

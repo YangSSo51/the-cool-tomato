@@ -43,16 +43,13 @@ public class FilterChannelInterceptor implements ChannelInterceptor {
             ChatMessageRequest chatMessageRequest = objectMapper.readValue(body, ChatMessageRequest.class);
             Long sellerId = chatRoomService.getSellerId(chatMessageRequest.getRoomId());
             List<Long> blockIds = blockManageService.getBlockManagesBySellerId(sellerId);
-            if(blockIds.contains(chatMessageRequest.getSenderId())) {
+            if (blockIds.contains(chatMessageRequest.getSenderId())) {
                 throw new BusinessExceptionHandler(ErrorCode.BLOCKED_USER_ID);
             }
-        }
-        // JWT 토큰 인증
-        if (StompCommand.CONNECT.equals(headerAccessor.getCommand()) || StompCommand.SEND.equals(headerAccessor.getCommand())
-                || StompCommand.SUBSCRIBE.equals(headerAccessor.getCommand())) {
+            // JWT 토큰 인증
             String accessToken = Objects.requireNonNull(headerAccessor.getNativeHeader("Authorization")).toString();
             if (StringUtils.hasText(accessToken) && accessToken.startsWith("[Bearer")) {
-                accessToken = accessToken.substring(8, accessToken.length()-1);
+                accessToken = accessToken.substring(8, accessToken.length() - 1);
             }
             authClient.validateToken(AccessTokenRequest.builder().accessToken(accessToken).build());
         }
