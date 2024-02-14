@@ -60,7 +60,7 @@ spring:
           - id: live-product
             uri: lb://PRODUCT
             predicates:
-              - Path=/v1/live-product/**
+              - Path=/v1/live-products/**
           - id: product-questions
             uri: lb://PRODUCT
             predicates:
