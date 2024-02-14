@@ -1,6 +1,6 @@
-import { Flex, Text, Box } from "@chakra-ui/react";
-import { Avatar, Badge, Image } from "@chakra-ui/react";
-// import { SearchIcon } from "@chakra-ui/icons";
+import { Flex, Text, Box, Container, Center } from "@chakra-ui/react";
+import { Avatar, Badge, Image, Button } from "@chakra-ui/react";
+import { CloseIcon } from "@chakra-ui/icons";
 // import { Line } from 'react-chartjs-2';
 import { useNavigate } from "react-router-dom";
 // import { useEffect, useState } from "react";
@@ -21,7 +21,24 @@ export default function LiveResultPage() {
     // },  [])
 
     return (
-        <Flex justifyContent="center" direction="column" alignItems="center" width={"100%"} p="5">
+        <>
+
+        <Container centerContent>
+        <Button
+                p={"1.5rem"}
+                size={"lg"}
+                leftIcon={<CloseIcon />}
+                colorScheme="teal"
+                variant="link"
+                onClick={() => {
+                    navigate("/v1/seller");
+                }}
+            >
+                <Center><Text as={"b"}>나가기</Text></Center>
+                
+            </Button>
+        </Container>
+        <Flex justifyContent="center" direction="column" alignItems="center" width={"100%"}>
 
         <Box
             mb="3"
@@ -29,17 +46,17 @@ export default function LiveResultPage() {
             height={"8rem"}
             onClick={() => {
                 navigate("./main")}}
-            _hover={{ 
-                opacity: 1,
-                cursor: "pointer"
-            }}
-        >
+                _hover={{ 
+                    opacity: 1,
+                    cursor: "pointer"
+                }}
+                >
             <Image
                 width={"100%"}
                 height={"100%"}
                 objectFit={"cover"}
                 src={logo}
-            />
+                />
         </Box>
 
         <Flex w="80vw" direction="column" align="center" py={8} border="2px" borderColor="themeLightGreen.500">
@@ -56,6 +73,17 @@ export default function LiveResultPage() {
                 <br />
                 방송종료시간: 2024년 2월 12일 오후 10시 34분
             </Text>
+
+            
+            <Text mt={2} textAlign="center">
+                판매한 상품!               
+            </Text>
+            <Flex>
+                <Avatar mt="4" size="xl" src="임시링크" />
+                <Avatar mt="4" size="xl" src="임시링크" />
+                <Avatar mt="4" size="xl" src="임시링크" />
+                <Avatar mt="4" size="xl" src="임시링크" />
+            </Flex>
 
             <Flex justify="space-around" py={8}>
                 <Box>
@@ -90,20 +118,22 @@ export default function LiveResultPage() {
         </Flex>
 
         </Flex>    
+    </>
+
     );
 }
     
 // function LineChart(props) {
-//     const labels = ["30분", "1시간", "1시간30분", "2시간", "2시간30분"];
-//     const dataLine = {
-//         labels: labels,
-//         datasets: [{
-//             label: '30분 간격 시청차 추이',
-//             data: [65, 59, 80, 81, 56],
-//             fill: false,
-//             borderColor: 'rgb(75, 192, 192)',
-//             tension: 0.1
-//         }]
+    //     const labels = ["30분", "1시간", "1시간30분", "2시간", "2시간30분"];
+    //     const dataLine = {
+        //         labels: labels,
+        //         datasets: [{
+            //             label: '30분 간격 시청차 추이',
+            //             data: [65, 59, 80, 81, 56],
+            //             fill: false,
+            //             borderColor: 'rgb(75, 192, 192)',
+            //             tension: 0.1
+            //         }]
 //     };
 //     return (
 //         <Line data={dataLine} />

@@ -94,18 +94,18 @@ export default function MainPage() {
                 <Flex wrap={"wrap"} justifyContent={"center"} gap={10}>
 
                     <Card
-                        direction={{ base: "column", sm: "row" }}
+                        direction={{ base: "column", lg: "row" }}
                         overflow="hidden"
                         variant="outline"
                         w={"40%"}
                         borderRadius={"1rem"}
                     >
                         <Image
-                            // objectFit="fill"
-                            minW={{ sm: "300px" }}
-                            maxW={{ sm: "300px" }}
-                            maxH={{ sm: "300px"}}
-                            minH={{ sm: "300px"}}
+                            objectFit='cover'
+                            maxW={{ base: '100%', sm: '200px' }}
+                            // maxW={{ sm: "100px" }}
+                            // maxH={{ sm: "100px"}}
+                            // minH={{ sm: "100px"}}
                             src={farmer}
                             alt="Caffe Latte"
                         />
@@ -135,18 +135,15 @@ export default function MainPage() {
 
 
                     <Card
-                        direction={{ base: "column", sm: "row" }}
+                        direction={{ base: "column", lg: "row" }}
                         overflow="hidden"
                         variant="outline"
                         w={"40%"}
                         borderRadius={"1rem"}
                     >
                         <Image
-                            objectFit="fill"
-                            minW={{ sm: "300px" }}
-                            maxW={{ sm: "300px" }}
-                            maxH={{ sm: "300px"}}
-                            minH={{ sm: "300px"}}
+                            objectFit='cover'
+                            maxW={{ base: '100%', sm: '200px' }}
                             src={leaf}
                             alt="Caffe Latte"
                         />
@@ -176,8 +173,8 @@ export default function MainPage() {
             <Flex h={"100vh"} direction={"column"}>
                 <Box w={"100%"} background={'url(https://cdn.imweb.me/upload/S201804055ac60211e0c1d/d049e61e55652.jpg) center/cover no-repeat'} h={"30%"} />
                 <Flex className="aboutus" h={"70%"} justifyContent={"center"} alignItems={"center"}>
-                    <Flex maxW={"107rem"} h={"80%"} gap={10} color={"white"}>
-                        <Flex w={"55rem"} direction={"column"} gap={5} >
+                    <Flex direction={{ base: "column", lg: "row" }} maxW={"107rem"} h={"80%"} gap={10} color={"white"}>
+                        <Flex maxW={"55rem"} direction={"column"} gap={5} >
                             <Text mb={5} fontSize={"2rem"}>멋쟁이토마토!</Text>
                             <Text fontSize={"1.5rem"}>'멋쟁이 토마토'는 노래 가사에서 영감을 받았습니다</Text>
                             <Text fontSize={"1.5rem"}>채소가 어떤 모습이든 상관없이 그 품질은 변함없다는 것을 의미합니다</Text>

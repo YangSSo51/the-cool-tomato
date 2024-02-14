@@ -1,12 +1,14 @@
-import { Box, Flex } from "@chakra-ui/layout";
+import { Box, Flex, Text } from "@chakra-ui/layout";
 import { FormControl, FormLabel, FormHelperText, Input, Button, Alert, AlertIcon } from '@chakra-ui/react'
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
 import { registerSellerAPI } from "../../api/user";
 import { setAuthSeller } from "../../redux/reducers/user/userSlice";
-import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../../redux/stores/store";
 
 export default function Sellerform() {
+    const navigate = useNavigate();
     const dispatch = useDispatch();
     const user = useSelector((state: RootState) => state.user);
     const accessToken = user.accessToken;
@@ -139,46 +141,63 @@ export default function Sellerform() {
     }
 
     return (
-        <Box bg="white" w="full" rounded="lg" overflow="hidden">
-            <Box h="full" pl="4">
-                <Flex justify="center" direction="column" align="center" h="full">
-                { !isSubmitted ? (
-                <form onSubmit={onSubmit}>
-                    {sellerData.map((data, index:number) => (
-                        <FormControl key={index} mb={4}>
-                            <FormLabel>{data.title}</FormLabel>
-                            <Input
-                                type='text'
-                                value={data.key}
-                                onChange={(e) => handleInputChange(e, data.title, data.change)}
-                                placeholder={data.enTitle}
-                            />
-                            <FormHelperText>
-                                {validMessage[data.title]}
-                            </FormHelperText>
-                        </FormControl>
-                    ))}
-                    <Button
-                        my={4}
-                        w="95%"
-                        colorScheme="themeGreen"
-                        type="submit"
-                        borderRadius="3xl"
-                        _hover={{
-                            bg: "red"
-                        }}
-                    >
-                        판매자 신청
-                    </Button>
-                </form>
-                ) : (
-                <Alert status='success' textAlign='center' mb="10" m="auto">
-                    <AlertIcon />
-                    판매자 신청이 완료되었습니다! <br />
-                    판매자 전환은 영업일 기준 3일 이내 완료됩니다.
-                </Alert>)}
-                </Flex>
+        <>
+        {user.auth !== "SELLER" && (
+            <Box bg="white" w="full" rounded="lg" overflow="hidden">
+                <Box h="full" pl="4">
+                    <Flex justify="center" direction="column" align="center" h="full">
+                    { !isSubmitted ? (
+                    <form onSubmit={onSubmit}>
+                        {sellerData.map((data, index:number) => (
+                            <FormControl key={index} mb={4}>
+                                <FormLabel>{data.title}</FormLabel>
+                                <Input
+                                    type='text'
+                                    value={data.key}
+                                    onChange={(e) => handleInputChange(e, data.title, data.change)}
+                                    placeholder={data.enTitle}
+                                />
+                                <FormHelperText>
+                                    {validMessage[data.title]}
+                                </FormHelperText>
+                            </FormControl>
+                        ))}
+                        <Button
+                            my={4}
+                            w="95%"
+                            colorScheme="themeGreen"
+                            type="submit"
+                            borderRadius="3xl"
+                            _hover={{
+                                bg: "red"
+                            }}
+                        >
+                            판매자 신청
+                        </Button>
+                    </form>
+                    ) : (
+                    <Alert status='success' textAlign='center' mb="10" m="auto">
+                        <AlertIcon />
+                        판매자 신청이 완료되었습니다! <br />
+                        판매자 전환은 영업일 기준 3일 이내 완료됩니다.
+                    </Alert>)}
+                    </Flex>
+                </Box>
             </Box>
-        </Box>
+        )}
+
+        {user.auth == "SELLER" && (
+            <Box bg="white" w="full" rounded="lg" overflow="hidden">
+                <Box h="full" pl="4">
+                    <Flex justify="center" direction="column" align="center" h="full">
+                    <Flex m="auto" flexDir="column" mb="10">
+                        <Text fontSize='5xl' color="gray.500" mb="5">판매자 승인이 완료되었습니다</Text>
+                        <Button colorScheme="themeGreen" onClick={()=>{navigate('/v1/seller')}}>판매자 마이페이지 가기</Button>
+                    </Flex>
+                    </Flex>
+                </Box>
+            </Box>
+        )}
+    </>
     );
 }
