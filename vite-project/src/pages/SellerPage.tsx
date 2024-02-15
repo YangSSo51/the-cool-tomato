@@ -61,7 +61,7 @@ export default function SellerPage() {
     });    
 
     return (
-        <Box minH="100vh" mb="10" paddingBlock="6rem">
+        <Box minH="100vh" mb="10">
 
             <Center fontFamily="GmkBold" fontSize={{ base: "4rem", md: "5rem", lg: "6rem" }} color={"themeRed.500"}>
                 판매자 마이페이지
