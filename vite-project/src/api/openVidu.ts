@@ -86,7 +86,7 @@ async function deleteLivePlanAPI(
 
 // 예약된 라이브 수정
 async function editLivePlanAPI(
-    data: {editbroadcastInfo: editbroadcastInfo},
+    data: { editbroadcastInfo: editbroadcastInfo },
     accessToken: string
 ) {
     await http.put(`${url}/reservation`, data, {
@@ -109,6 +109,7 @@ async function getEndedLiveAPI(
             Authorization: "Bearer " + accessToken,
         },
     });
+    console.log(response);
     return response.data.data.broadcastInfoList;
 }
 

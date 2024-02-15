@@ -1,22 +1,55 @@
 import { Flex, Text, Box, Container, Center } from "@chakra-ui/react";
 import { Avatar, Badge, Image, Button } from "@chakra-ui/react";
 import { CloseIcon } from "@chakra-ui/icons";
-// import { Line } from 'react-chartjs-2';
+import {
+    Chart as ChartJS,
+    CategoryScale,
+    LinearScale,
+    PointElement,
+    LineElement,
+    Title,
+    Tooltip,
+    Legend,
+} from "chart.js";
+import { Line } from "react-chartjs-2";
 import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { postmortemAPI } from "../api/analyze";
+import { getLiveProduct } from "../api/liveProduct";
 import { RootState } from "../redux/stores/store";
+import { LiveProductAll } from "../types/DataTypes";
 import logo from "/img/newlogo.png";
+
+ChartJS.register(
+    CategoryScale,
+    LinearScale,
+    PointElement,
+    LineElement,
+    Title,
+    Tooltip,
+    Legend
+);
+
+interface ProductType {
+    imgSrc: string;
+    productId: number;
+    productName: string;
+    price: number;
+    liveFlatPrice: number;
+    mainProductSetting: boolean;
+}
 
 export default function LiveResultPage() {
     const navigate = useNavigate();
+    const user = useSelector((state: RootState) => state.user);
     const accessToken = useSelector(
         (state: RootState) => state.user.accessToken
     );
     const { broadcastId } = useParams<{ broadcastId: string }>();
     const broadcastIdNumber = Number(broadcastId);
     const [liveResult, setLiveResult] = useState([]);
+    const [products, setProducts] = useState<ProductType[]>([]);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -25,9 +58,49 @@ export default function LiveResultPage() {
                 accessToken
             );
             console.log(response);
+            setLiveResult(response.connNum);
         };
         fetchData();
     }, []);
+
+    useEffect(() => {
+        const fetchData = async () => {
+            const response = await getLiveProduct(
+                { "live-id": broadcastIdNumber },
+                accessToken
+            );
+            const selectedProducts = response.list.map(
+                (item: LiveProductAll) => ({
+                    imgSrc: item.imgSrc,
+                    productId: item.productId,
+                    productName: item.productName,
+                    price: item.price,
+                    liveFlatPrice: item.liveFlatPrice,
+                    mainProductSetting: item.mainProductSetting,
+                })
+            );
+            console.log(response);
+            setProducts(selectedProducts);
+        };
+        fetchData();
+    }, []);
+
+    // useEffect(() => {
+    //     const fetchData = async () => {
+    //         try {
+    //             const response = await getEndedLiveAPI(
+    //                 { page: 0, size: 10 },
+    //                 accessToken
+    //             );
+    //             if (response) {
+    //                 setLivedItem(response);
+    //             }
+    //         } catch (error) {
+    //             console.error(error);
+    //         }
+    //     };
+    //     fetchData();
+    // }, []);
 
     return (
         <>
@@ -85,7 +158,7 @@ export default function LiveResultPage() {
                     <Avatar mt="4" size="xl" src="임시링크" />
 
                     <Text mt={4} fontSize="3xl" fontWeight="bold">
-                        "셀러"님의 "발품팔이의 다단계 발품코치"
+                        "{user.nickname}"님의 "발품팔이의 다단계 발품코치"
                     </Text>
                     <Text mt={2} textAlign="center">
                         라이브 정보!
@@ -100,12 +173,20 @@ export default function LiveResultPage() {
                     <Text mt={2} textAlign="center">
                         판매한 상품!
                     </Text>
-                    <Flex>
-                        <Avatar mt="4" size="xl" src="임시링크" />
-                        <Avatar mt="4" size="xl" src="임시링크" />
-                        <Avatar mt="4" size="xl" src="임시링크" />
-                        <Avatar mt="4" size="xl" src="임시링크" />
-                    </Flex>
+
+                    {products.slice(0, 5).map((product) => (
+                        <Flex key={product.productId} direction="column">
+                            <Avatar
+                                mt="4"
+                                size="xl"
+                                src={product.imgSrc}
+                                width="100%"
+                            />
+                            <Text width="100%" textAlign="center">
+                                {product.productName}
+                            </Text>
+                        </Flex>
+                    ))}
 
                     <Flex justify="space-around" py={8}>
                         <Box>
@@ -161,7 +242,7 @@ export default function LiveResultPage() {
                         >
                             시간대별 접속자 추이
                         </Text>
-                        {/* <LineChart /> */}
+                        {/* <LineLine /> */}
                     </Box>
                 </Flex>
             </Flex>
@@ -185,3 +266,42 @@ export default function LiveResultPage() {
 //         <Line data={dataLine} />
 //     );
 // }
+export function LineLine() {
+    const labels = [
+        "January",
+        "February",
+        "March",
+        "April",
+        "May",
+        "June",
+        "July",
+    ];
+    const [viewerData, setViewerData] = useState([]);
+
+    const data = {
+        labels,
+        datasets: [
+            {
+                label: "30분 간격 시청자수 추이",
+                data: viewerData.map((data) => data.e),
+                borderColor: "rgb(255, 99, 132)",
+                backgroundColor: "rgba(255, 99, 132, 0.5)",
+            },
+        ],
+    };
+
+    const options = {
+        responsive: true,
+        plugins: {
+            legend: {
+                position: "top" as const,
+            },
+            title: {
+                display: true,
+                text: "Chart.js Line Chart",
+            },
+        },
+    };
+
+    return <Line options={options} data={data} />;
+}
