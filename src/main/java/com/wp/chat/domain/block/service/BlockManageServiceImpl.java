@@ -84,7 +84,7 @@ public class BlockManageServiceImpl implements  BlockManageService {
 //    @CacheEvict(cacheNames = BLOCK_LIST, key = "#sellerId", cacheManager = "cacheManager")
     public void removeBlocked(String auth, Long sellerId, Long blockedId) {
         try {
-            if(auth.equals("SELLER")) {
+            if(!auth.equals("SELLER")) {
                 throw new BusinessExceptionHandler(ErrorCode.NOT_SELLER);
             }
         } catch (Exception e) {
