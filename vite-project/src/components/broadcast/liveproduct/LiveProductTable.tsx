@@ -16,6 +16,8 @@ import {
     ItemDetailInterface,
     liveProductPrice,
 } from "../../../types/DataTypes";
+import React from "react";
+import { formatNumberWithComma } from "../../common/Comma";
 
 interface LiveProductTableProps {
     selected: Array<ItemDetailInterface>;
@@ -100,7 +102,7 @@ function LiveProductTable({
                                     fontSize={"xl"}
                                     textAlign="center"
                                 >
-                                    {product.price}
+                                    {formatNumberWithComma(product.price)}
                                 </Text>
                             </Td>
                             <Td textAlign="center">

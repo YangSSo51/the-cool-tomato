@@ -3,6 +3,8 @@ import {
     ItemDetailInterface,
     liveProductPrice,
 } from "../../../types/DataTypes";
+import React from "react";
+import { formatNumberWithComma } from "../../common/Comma";
 
 interface ProductTableBodyProps {
     product: ItemDetailInterface;
@@ -39,7 +41,7 @@ function ProductTableBody({
             </WrapItem>
             <WrapItem>
                 <Center w="9rem" h="2.5rem">
-                    {product.price}
+                    {formatNumberWithComma(product.price)}
                 </Center>
             </WrapItem>
             <WrapItem>
