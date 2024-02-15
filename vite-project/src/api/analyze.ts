@@ -10,7 +10,8 @@ async function postmortemAPI(broadcastId: number, accessToken: string) {
             Authorization: "Bearer " + accessToken,
         },
     });
-    return response;
+    // console.log(response);
+    return response.data.data;
 }
 
 export { postmortemAPI };

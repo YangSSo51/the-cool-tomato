@@ -90,7 +90,12 @@ export default function MainPage() {
                     </Text>
                 </Flex>
 
-                <Flex wrap={"wrap"} justifyContent={"center"} gap={10} maxW={"90%"}>
+                <Flex
+                    wrap={"wrap"}
+                    justifyContent={"center"}
+                    gap={10}
+                    maxW={"90%"}
+                >
                     <Card
                         direction={{ base: "column", lg: "row" }}
                         overflow="hidden"
@@ -124,7 +129,13 @@ export default function MainPage() {
                             </CardBody>
 
                             <CardFooter>
-                                <Button variant="solid" colorScheme="green">
+                                <Button
+                                    variant="solid"
+                                    colorScheme="green"
+                                    onClick={() => {
+                                        navigate("/v1/seller/profile/10");
+                                    }}
+                                >
                                     판매자 구경가기
                                 </Button>
                             </CardFooter>
@@ -135,7 +146,6 @@ export default function MainPage() {
                         direction={{ base: "column", lg: "row" }}
                         overflow="hidden"
                         variant="outline"
-                        
                         maxW={"55%"}
                         borderRadius={"1rem"}
                     >
@@ -157,14 +167,22 @@ export default function MainPage() {
                                     4cm가 넘은 어린잎채소는 판매할 수 없는
                                     상품이 됩니다.
                                 </Text>
-                                <Text mb={"1"}>하지만 조금 더 성장한 어린잎 채소는</Text>
+                                <Text mb={"1"}>
+                                    하지만 조금 더 성장한 어린잎 채소는
+                                </Text>
                                 <Text>
                                     향이 더욱 진하고 맛의 풍미를 더욱
                                     강조해줍니다.
                                 </Text>
                             </CardBody>
                             <CardFooter>
-                                <Button variant="solid" colorScheme="green">
+                                <Button
+                                    variant="solid"
+                                    colorScheme="green"
+                                    onClick={() => {
+                                        navigate("/v1/items/detail/24");
+                                    }}
+                                >
                                     상품 구경가기
                                 </Button>
                             </CardFooter>
@@ -217,8 +235,8 @@ export default function MainPage() {
                                 직접 확인하고
                             </Text>
                             <Text fontSize={"1.5rem"}>
-                            믿을 수 있는 가격에 건강한
-                                먹거리를 챙기는 것입니다
+                                믿을 수 있는 가격에 건강한 먹거리를 챙기는
+                                것입니다
                             </Text>
                             <Text fontSize={"1.5rem"}>
                                 멋쟁이토마토는 당신에게 저렴한 가격에 최상의
@@ -235,7 +253,6 @@ export default function MainPage() {
             </Flex>
 
             <Box height={"10rem"}></Box>
-
 
             <Flex mt={"2rem"} mb={"2rem"} w={"100vw"} justifyContent={"center"}>
                 <Box position="relative">

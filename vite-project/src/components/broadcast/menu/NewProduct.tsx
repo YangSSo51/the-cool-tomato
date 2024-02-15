@@ -7,18 +7,15 @@ import {
     FormControl,
     FormHelperText,
     FormLabel,
-    Icon,
     Input,
     Select,
     Text,
 } from "@chakra-ui/react";
 
 import "../../../css/FileUpload.css";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useState } from "react";
 import { ItemAddFunction } from "../../../api/Itemlist";
 import { AddItemInterface, UploadImage } from "../../../types/DataTypes";
-import { CloseIcon } from "@chakra-ui/icons";
-import { FaRegEdit } from "react-icons/fa";
 import { formatNumberWithComma } from "../../../components/common/Comma";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../redux/stores/store";
@@ -118,46 +115,6 @@ export default function NewProduct() {
         }
     };
 
-    // 사진 등록
-    // const inputEl = useRef(null);
-    // const [fileName, setFileName] = useState<string>("");
-    // const fileInputHandler = useCallback(
-    //     (e: React.ChangeEvent<HTMLInputElement>) => {
-    //         const files = e.target.files;
-    //         if (files && files[0]) {
-    //             setFileName(files[0].name);
-    //         }
-    //     },
-    //     []
-    // );
-
-    // useEffect(() => {
-    //     const currentInputEl = inputEl.current;
-    //     if (currentInputEl) {
-    //         currentInputEl.addEventListener("input", fileInputHandler);
-    //         setValues((prevValues) => ({
-    //             ...prevValues,
-    //             ["imgSrc"]: fileName,
-    //         }));
-    //     }
-    //     return () => {
-    //         if (currentInputEl) {
-    //             currentInputEl.removeEventListener("input", fileInputHandler);
-    //         }
-    //     };
-    // }, [fileInputHandler, fileName]);
-
-    // const ClearFile = () => {
-    //     setFileName("");
-    // };
-    // 여기까지
-
-    // function EditIcon() {
-    //     return (
-    //         <Icon mt={"0.5rem"} boxSize={"1.8rem"} ml={"3rem"} as={FaRegEdit} />
-    //     );
-    // }
-
     return (
         <>
             <Center mb={"1.5rem"}>
@@ -224,68 +181,7 @@ export default function NewProduct() {
                         </FormControl>
                     </Box>
 
-                    {/* <Box mt={"2.5rem"}>
-                        <Text fontSize={"2xl"} as={"b"}>
-                            사진
-                        </Text>
-
-                        <Box className="Container">
-                            {fileName ? (
-                                <Center>
-                                    <Text
-                                        fontSize={"1rem"}
-                                        as={"b"}
-                                        mr={"0.5rem"}
-                                    >
-                                        업로드 된 파일 :
-                                    </Text>
-                                    <Box className="AttachedFile">
-                                        {fileName}
-                                    </Box>
-                                    <Flex alignItems="center">
-                                        <Input
-                                            className="Input"
-                                            type="file"
-                                            id="file"
-                                            ref={inputEl}
-                                            disabled={fileName ? false : true}
-                                            style={{ display: "none" }}
-                                        />
-
-                                        <label htmlFor="file">
-                                            <EditIcon />
-                                        </label>
-
-                                        <CloseIcon
-                                            ml={"2rem"}
-                                            boxSize={"1rem"}
-                                            onClick={ClearFile}
-                                        />
-                                    </Flex>
-                                </Center>
-                            ) : (
-                                <>
-                                    <Input
-                                        className="Input"
-                                        type="file"
-                                        id="file"
-                                        ref={inputEl}
-                                        disabled={fileName ? true : false}
-                                        style={{ display: "none" }}
-                                    />
-
-                                    <label
-                                        htmlFor="file"
-                                        className="AttachmentButton"
-                                    >
-                                        🔗 사진 업로드하기
-                                    </label>
-                                </>
-                            )}
-                        </Box>
-                    </Box> */}
-                    <Box onClick={() => fileInputHandler}>
-                    </Box>
+                    <Box onClick={() => fileInputHandler}></Box>
 
                     <Box mt={"2.5rem"}>
                         <Flex>
@@ -298,9 +194,13 @@ export default function NewProduct() {
                             placeholder="카테고리를 선택해주세요"
                             onChange={handleCategory}
                         >
-                            <option value="0">농산물</option>
-                            <option value="1">수산물</option>
-                            <option value="2">김현종</option>
+                            <option value="4">과일</option>
+                            <option value="5">채소</option>
+                            <option value="6">건과류</option>
+                            <option value="7">견과류</option>
+                            <option value="1">해산물</option>
+                            <option value="2">생선</option>
+                            <option value="3">건어물</option>
                         </Select>
                     </Box>
 

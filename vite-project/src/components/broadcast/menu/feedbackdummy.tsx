@@ -1,5 +1,11 @@
-import { Flex, Text, Box, Container, Center } from "@chakra-ui/react";
-import { Avatar, Image, Button, Divider, Highlight } from "@chakra-ui/react";
+import {
+    Avatar,
+    Badge,
+    Image,
+    Button,
+    Divider,
+    Highlight,
+} from "@chakra-ui/react";
 import { CloseIcon } from "@chakra-ui/icons";
 import {
     Chart as ChartJS,
@@ -11,7 +17,7 @@ import {
     Tooltip,
     Legend,
 } from "chart.js";
-// import { Line } from "react-chartjs-2";
+import { Line } from "react-chartjs-2";
 import { useNavigate, useParams } from "react-router-dom";
 // import { useNavigate, useParams, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
@@ -39,10 +45,9 @@ interface ProductType {
     price: number;
     liveFlatPrice: number;
     mainProductSetting: boolean;
-    livePriceStartDate: string;
 }
 
-export default function LiveResultPage() {
+export default function FeedBackDummy() {
     const navigate = useNavigate();
     const user = useSelector((state: RootState) => state.user);
     const accessToken = useSelector(
@@ -51,14 +56,26 @@ export default function LiveResultPage() {
     const params = new URLSearchParams(window.location.search);
     const { broadcastId } = useParams<{ broadcastId: string }>();
     const broadcastTitle: string | null = params.get("broadcastTitle");
+    const nickName: string | null = params.get("nickName");
     const viewCount: string | null = params.get("viewCount");
-    // const startDate: string | null = params.get("startDate");
+    const sellerId: string | null = params.get("sellerId");
+    const broadcastStatus: string | null = params.get("broadcastStatus");
+    const startDate: string | null = params.get("startDate");
+
     const broadcastIdNumber = Number(broadcastId);
     const viewCountNumber = Number(viewCount);
 
-    // const [liveResult, setLiveResult] = useState([]);
+    console.log("liveBroadcastId:", broadcastIdNumber);
+    console.log("broadcastTitle:", broadcastTitle);
+    console.log("nickName:", nickName);
+    console.log("viewCount:", viewCountNumber);
+    console.log("sellerId:", sellerId);
+    console.log("broadcastStatus:", broadcastStatus);
+    console.log("startDate:", startDate);
+
+    const [liveResult, setLiveResult] = useState([]);
     const [products, setProducts] = useState<ProductType[]>([]);
-    const [keywordlist, setKeywordlist] = useState<string[]>([]);
+    const keywordlist = ["1", "2", "3", "4", "5"];
 
     useEffect(() => {
         const fetchData = async () => {
@@ -66,9 +83,8 @@ export default function LiveResultPage() {
                 broadcastIdNumber,
                 accessToken
             );
-            const data = JSON.parse(response); // JSON 문자열을 JavaScript 객체로 변환
-            // setLiveResult(data.connNum);
-            setKeywordlist(data.hotKeywords);
+            console.log(response);
+            setLiveResult(response.connNum);
         };
         fetchData();
     }, []);
@@ -87,13 +103,30 @@ export default function LiveResultPage() {
                     price: item.price,
                     liveFlatPrice: item.liveFlatPrice,
                     mainProductSetting: item.mainProductSetting,
-                    livePriceStartDate: item.livePriceStartDate,
                 })
             );
+            // console.log(response);
             setProducts(selectedProducts);
         };
         fetchData();
     }, []);
+
+    // useEffect(() => {
+    //     const fetchData = async () => {
+    //         try {
+    //             const response = await getEndedLiveAPI(
+    //                 { page: 0, size: 10 },
+    //                 accessToken
+    //             );
+    //             if (response) {
+    //                 setLivedItem(response);
+    //             }
+    //         } catch (error) {
+    //             console.error(error);
+    //         }
+    //     };
+    //     fetchData();
+    // }, []);
 
     return (
         <>
@@ -146,7 +179,7 @@ export default function LiveResultPage() {
                     py={8}
                     p="5"
                     border="2px"
-                    mb="20"
+                    mb="10"
                     borderColor="themeLightGreen.500"
                 >
                     <Avatar mt="4" size="xl" src={user.profileImg} />
@@ -157,7 +190,7 @@ export default function LiveResultPage() {
 
                     <Divider mt={3} mb={7} />
 
-                    {/* <Text
+                    <Text
                         mt="2"
                         fontSize="2xl"
                         fontWeight="semibold"
@@ -169,12 +202,12 @@ export default function LiveResultPage() {
                     <Text mt="2" mb="4" textAlign="center">
                         예정 방송시간: 2024년 2월 12일 오후 8시
                         <br />
-                        실제 방송시간: {product.livePriceStartDate}
+                        실제 방송시간: {startDate}
                         <br />
                         방송종료시간: 2024년 2월 12일 오후 10시 34분
-                    </Text> */}
+                    </Text>
 
-                    {/* <Divider mt={3} mb={7} /> */}
+                    <Divider mt={3} mb={7} />
 
                     <Text
                         mt="2"
@@ -210,7 +243,7 @@ export default function LiveResultPage() {
                                 {viewCountNumber}
                             </Text>
                         </Box>
-                        {/* <Box textAlign="center" mr="5">
+                        <Box textAlign="center" mr="5">
                             <Text fontSize="xl" fontWeight="semibold">
                                 전체 좋아요수
                             </Text>
@@ -225,7 +258,7 @@ export default function LiveResultPage() {
                             <Text fontSize="5xl" fontWeight="bold">
                                 남은량
                             </Text>
-                        </Box> */}
+                        </Box>
                     </Flex>
 
                     <Divider mt={3} mb={7} />
@@ -241,7 +274,7 @@ export default function LiveResultPage() {
                         </Text>
                         <Flex justify="space-around" mb="4">
                             {keywordlist.map((keyword, index) => (
-                                <Text key={index} fontSize="3xl" mr={3}>
+                                <Text key={index} fontSize="3xl">
                                     <Highlight
                                         query={keyword}
                                         styles={{
@@ -259,7 +292,7 @@ export default function LiveResultPage() {
                     </Box>
 
                     <Divider mt={3} mb={7} />
-                    {/* 추후 수정이 된다면...
+
                     <Box>
                         <Text
                             fontSize="2xl"
@@ -270,45 +303,45 @@ export default function LiveResultPage() {
                             시간대별 접속자 추이
                         </Text>
                         <LineLine />
-                    </Box> */}
+                    </Box>
                 </Flex>
             </Flex>
         </>
     );
 }
 
-// export function LineLine() {
-//     const labels = [
-//         "30분",
-//         "1시간",
-//         "1시간 30분",
-//         "2시간",
-//         "2시간 30분",
-//         "3시간",
-//     ];
-//     // const [viewerData, setViewerData] = useState([]);
+export function LineLine() {
+    const labels = [
+        "30분",
+        "1시간",
+        "1시간 30분",
+        "2시간",
+        "2시간 30분",
+        "3시간",
+    ];
+    // const [viewerData, setViewerData] = useState([]);
 
-//     const data = {
-//         labels,
-//         datasets: [
-//             {
-//                 label: "30분 간격 시청자수",
-//                 // data: viewerData.map((data) => data.e),
-//                 data: 0,
-//                 borderColor: "rgb(255, 99, 132)",
-//                 backgroundColor: "rgba(255, 99, 132, 0.5)",
-//             },
-//         ],
-//     };
+    const data = {
+        labels,
+        datasets: [
+            {
+                label: "30분 간격 시청자수",
+                // data: viewerData.map((data) => data.e),
+                data: 0,
+                borderColor: "rgb(255, 99, 132)",
+                backgroundColor: "rgba(255, 99, 132, 0.5)",
+            },
+        ],
+    };
 
-//     const options = {
-//         responsive: true,
-//         plugins: {
-//             legend: {
-//                 position: "top" as const,
-//             },
-//         },
-//     };
+    const options = {
+        responsive: true,
+        plugins: {
+            legend: {
+                position: "top" as const,
+            },
+        },
+    };
 
-//     return <Line options={options} data={data} height={400} width={600} />;
-// }
+    return <Line options={options} data={data} />;
+}
