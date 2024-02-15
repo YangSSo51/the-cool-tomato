@@ -3,7 +3,6 @@ import { Flex, Text } from "@chakra-ui/layout";
 import { FaWifi, FaVideoSlash } from "react-icons/fa";
 
 import ProfileBuyerComponent from "../common/NavComponent/NavBuyerProfileComponent";
-import LiveStopAlertDialog from "./LiveStopAlertDialog";
 import { useState } from "react";
 
 interface HeaderProps {
@@ -51,11 +50,6 @@ function Header({ setStream }: HeaderProps) {
                     </Flex>
                 ))} */}
             </Flex>
-            <LiveStopAlertDialog
-                isOpen={isOpen}
-                handleClick={handleClick}
-                setStream={setStream}
-            />
 
             <ProfileBuyerComponent />
         </Flex>
