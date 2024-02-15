@@ -51,6 +51,7 @@ export default function LiveResultPage() {
     const broadcastIdNumber = Number(broadcastId);
     const [liveResult, setLiveResult] = useState([]);
     const [products, setProducts] = useState<ProductType[]>([]);
+    const keywordlist = ["1", "2", "3", "4", "5"];
 
     useEffect(() => {
         const fetchData = async () => {
@@ -239,11 +240,11 @@ export default function LiveResultPage() {
                             채팅에서 많이 나온 키워드 5개!
                         </Text>
                         <Flex justify="space-around" mb="4">
-                            <Badge variant="secondary">품질</Badge>
-                            <Badge variant="secondary">상세</Badge>
-                            <Badge variant="secondary">맛</Badge>
-                            <Badge variant="secondary">풍취</Badge>
-                            <Badge variant="secondary">자세히</Badge>
+                            {keywordlist.map((keyword, index) => (
+                                <Badge key={index} variant="secondary">
+                                    {keyword}
+                                </Badge>
+                            ))}
                         </Flex>
                     </Box>
 
