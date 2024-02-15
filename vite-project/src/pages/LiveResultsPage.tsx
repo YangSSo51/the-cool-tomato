@@ -13,6 +13,7 @@ import {
 } from "chart.js";
 import { Line } from "react-chartjs-2";
 import { useNavigate, useParams } from "react-router-dom";
+// import { useNavigate, useParams, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { postmortemAPI } from "../api/analyze";
@@ -79,7 +80,7 @@ export default function LiveResultPage() {
                     mainProductSetting: item.mainProductSetting,
                 })
             );
-            console.log(response);
+            // console.log(response);
             setProducts(selectedProducts);
         };
         fetchData();
@@ -157,12 +158,20 @@ export default function LiveResultPage() {
                 >
                     <Avatar mt="4" size="xl" src="임시링크" />
 
-                    <Text mt={4} fontSize="3xl" fontWeight="bold">
+                    <Text mt={4} mb={4} fontSize="3xl" fontWeight="bold">
                         "{user.nickname}"님의 "발품팔이의 다단계 발품코치"
                     </Text>
-                    <Text mt={2} textAlign="center">
+
+                    <Text
+                        mt="2"
+                        fontSize="2xl"
+                        fontWeight="semibold"
+                        mb={2}
+                        textAlign="center"
+                    >
                         라이브 정보!
-                        <br />
+                    </Text>
+                    <Text mt="2" mb="4" textAlign="center">
                         예정 방송시간: 2024년 2월 12일 오후 8시
                         <br />
                         실제 방송시간: 2024년 2월 12일 오후 7시 47분
@@ -170,14 +179,19 @@ export default function LiveResultPage() {
                         방송종료시간: 2024년 2월 12일 오후 10시 34분
                     </Text>
 
-                    <Text mt={2} textAlign="center">
+                    <Text
+                        mt="2"
+                        fontSize="2xl"
+                        fontWeight="semibold"
+                        mb={2}
+                        textAlign="center"
+                    >
                         판매한 상품!
                     </Text>
 
                     {products.slice(0, 5).map((product) => (
                         <Flex key={product.productId} direction="column">
                             <Avatar
-                                mt="4"
                                 size="xl"
                                 src={product.imgSrc}
                                 width="100%"
@@ -215,7 +229,7 @@ export default function LiveResultPage() {
                         </Box>
                     </Flex>
 
-                    <Box>
+                    <Box mb="4">
                         <Text
                             fontSize="2xl"
                             fontWeight="semibold"
@@ -224,7 +238,7 @@ export default function LiveResultPage() {
                         >
                             채팅에서 많이 나온 키워드 5개!
                         </Text>
-                        <Flex justify="space-around">
+                        <Flex justify="space-around" mb="4">
                             <Badge variant="secondary">품질</Badge>
                             <Badge variant="secondary">상세</Badge>
                             <Badge variant="secondary">맛</Badge>
@@ -242,7 +256,7 @@ export default function LiveResultPage() {
                         >
                             시간대별 접속자 추이
                         </Text>
-                        {/* <LineLine /> */}
+                        <LineLine />
                     </Box>
                 </Flex>
             </Flex>
@@ -250,40 +264,24 @@ export default function LiveResultPage() {
     );
 }
 
-// function LineChart(props) {
-//     const labels = ["30분", "1시간", "1시간30분", "2시간", "2시간30분"];
-//     const dataLine = {
-//         labels: labels,
-//         datasets: [{
-//             label: '30분 간격 시청차 추이',
-//             data: [65, 59, 80, 81, 56],
-//             fill: false,
-//             borderColor: 'rgb(75, 192, 192)',
-//             tension: 0.1
-//         }]
-//     };
-//     return (
-//         <Line data={dataLine} />
-//     );
-// }
 export function LineLine() {
     const labels = [
-        "January",
-        "February",
-        "March",
-        "April",
-        "May",
-        "June",
-        "July",
+        "30분",
+        "1시간",
+        "1시간 30분",
+        "2시간",
+        "2시간 30분",
+        "3시간",
     ];
-    const [viewerData, setViewerData] = useState([]);
+    // const [viewerData, setViewerData] = useState([]);
 
     const data = {
         labels,
         datasets: [
             {
-                label: "30분 간격 시청자수 추이",
-                data: viewerData.map((data) => data.e),
+                label: "30분 간격 시청자수",
+                // data: viewerData.map((data) => data.e),
+                data: 0,
                 borderColor: "rgb(255, 99, 132)",
                 backgroundColor: "rgba(255, 99, 132, 0.5)",
             },
@@ -295,10 +293,6 @@ export function LineLine() {
         plugins: {
             legend: {
                 position: "top" as const,
-            },
-            title: {
-                display: true,
-                text: "Chart.js Line Chart",
             },
         },
     };
