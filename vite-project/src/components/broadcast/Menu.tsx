@@ -19,35 +19,30 @@ import Feedback from "./menu/Feedback";
 import NewProduct from "./menu/NewProduct";
 import ProductList from "./menu/ProductList";
 import Prompter from "./menu/Prompter";
-import Statistic from "./menu/Statistic";
 import { useState } from "react";
 
 function Menu() {
-    const [activeTab, SetTab] = useState('Feedback')
+    const [activeTab, SetTab] = useState("Feedback");
 
     const StateChangeFeedback = () => {
-        SetTab('Feedback')
-    }
-
-    const StateChangeStatistic = () => {
-        SetTab('Statistic')
-    }
+        SetTab("Feedback");
+    };
 
     const StateChangeProductList = () => {
-        SetTab('ProductList')
-    }
+        SetTab("ProductList");
+    };
 
     const StateChangeNewProduct = () => {
-        SetTab('NewProduct')
-    }
+        SetTab("NewProduct");
+    };
 
     const StateChangeLiveInfo = () => {
-        SetTab('LiveInfo')
-    }
+        SetTab("LiveInfo");
+    };
 
     const StateChangePrompter = () => {
-        SetTab('Prompter')
-    }
+        SetTab("Prompter");
+    };
 
     return (
         <Box w={"33%"} borderLeft="1px" overflow="auto" p={6}>
@@ -64,44 +59,39 @@ function Menu() {
                         <Tabs variant="soft-rounded" colorScheme="green">
                             <TabList>
                                 <Flex w={"100%"}>
-                                    <Tab
-                                        onClick={
-                                            StateChangeFeedback
-                                        }
-                                    >
+                                    <Tab onClick={StateChangeFeedback}>
                                         실시간 피드백
                                     </Tab>
                                     <Spacer />
-                                    <Tab
-                                        onClick={
-                                            StateChangeStatistic
-                                        }
-                                    >
-                                        실시간 통계
+                                    <Tab onClick={StateChangeProductList}>
+                                        상품 목록
                                     </Tab>
-                                    <Spacer />
-                                <Tab onClick={StateChangeProductList}>상품 목록</Tab>
                                 </Flex>
                             </TabList>
                             <TabList mt={"0.7rem"}>
                                 <Flex w={"100%"}>
-                                    <Tab onClick={StateChangeNewProduct}>새상품 등록하기</Tab>
+                                    <Tab onClick={StateChangeNewProduct}>
+                                        새상품 등록하기
+                                    </Tab>
                                     <Spacer />
-                                    <Tab onClick={StateChangeLiveInfo}>방송 정보 수정</Tab>
+                                    <Tab onClick={StateChangeLiveInfo}>
+                                        방송 정보 수정
+                                    </Tab>
                                     <Spacer />
-                                    <Tab onClick={StateChangePrompter}>대본 보기</Tab>
+                                    <Tab onClick={StateChangePrompter}>
+                                        대본 보기
+                                    </Tab>
                                 </Flex>
                             </TabList>
                         </Tabs>
                     </AccordionPanel>
                 </AccordionItem>
             </Accordion>
-            {activeTab === 'Feedback' ? <Feedback /> : null}
-            {activeTab === 'Statistic' ? <Statistic /> : null}
-            {activeTab === 'ProductList' ? <ProductList /> : null}
-            {activeTab === 'NewProduct' ? <NewProduct /> : null}
-            {activeTab === 'LiveInfo' ? <LiveInfo /> : null}
-            {activeTab === 'Prompter' ? <Prompter /> : null}
+            {activeTab === "Feedback" ? <Feedback /> : null}
+            {activeTab === "ProductList" ? <ProductList /> : null}
+            {activeTab === "NewProduct" ? <NewProduct /> : null}
+            {activeTab === "LiveInfo" ? <LiveInfo /> : null}
+            {activeTab === "Prompter" ? <Prompter /> : null}
         </Box>
     );
 }
