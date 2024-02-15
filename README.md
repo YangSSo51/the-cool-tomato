@@ -5,7 +5,7 @@
 
 ## 1. 주요 기능 & 목적
 
-![프로젝트 소개](./upload/image/프로젝트 소개.png)
+![프로젝트 소개](./upload/image/프로젝트 소개.PNG)
 
 라이브 커머스에 실시간 방송 분석, 채팅, 챗봇 서비스를 더해 보다 편하게 농수산물을 판매할 수 있도록 함
 
@@ -193,4 +193,4 @@ https://www.notion.so/API-4fe3d76c7fcf4d12bfd03163c551eb1b?pvs=4
 - 한국어 분석기인 nori를 사용하여 한국어 검색 내용 정확도 개선
 
 ### 6. 프로젝트 소개 UCC
-![UCC](./upload/video/ucc.mp4) 
+![프로젝트 소개](./upload/video/ucc.mp4) 
