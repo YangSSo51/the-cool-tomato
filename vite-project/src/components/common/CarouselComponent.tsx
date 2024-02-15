@@ -87,7 +87,7 @@ export default function CarouselComponent(
                     overflowX={"hidden"}
                     wrap={"nowrap"}
                     style={{
-                        width: `${19 * 10}vw`,
+                        width: `${19 * 17}vw`,
                         transitionDuration: "10s",
                         transform: `translateX(-${offset}%)`,
                         transition: "transform 10s linear",
