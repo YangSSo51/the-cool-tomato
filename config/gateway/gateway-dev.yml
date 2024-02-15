@@ -85,4 +85,8 @@ spring:
             uri: lb://ANALYZE
             predicates:
                 - Path=/v1/analyze/**
+          - id: block
+            uri: lb://CHAT
+            predicates:
+                - Path=/chat/room/**
   
