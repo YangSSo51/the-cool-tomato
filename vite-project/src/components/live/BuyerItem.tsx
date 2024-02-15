@@ -24,6 +24,7 @@ export default function BuyerItem({ liveproducts }: BuyerItemProps) {
                             img={item.imgSrc}
                             title={item.productName}
                             price={item.price}
+                            liveFlatPrice={item.liveFlatPrice}
                         />
                     ))}
                 </Box>
