@@ -63,14 +63,10 @@ public class BlockManageServiceImpl implements  BlockManageService {
     // 차단 등록
     @Override
     @Transactional
-    public void addBlocked(HttpServletRequest httpServletRequest, Long blockedId) {
-        String accessToken = jwtService.resolveAccessToken(httpServletRequest);
-        // 인증
-        authClient.validateToken(AccessTokenRequest.builder().accessToken(accessToken).build());
-        // 회원 정보 추출
-        Map<String, String> infos = authClient.extraction(ExtractionRequest.builder().accessToken(accessToken).infos(List.of("userId")).build()).getInfos();
+    @CacheEvict(cacheNames = BLOCK_LIST, key = "#sellerId", cacheManager = "cacheManager")
+    public void addBlocked(Long sellerId, Long blockedId) {
         // 판매자
-        User seller = userRepository.findById(Long.valueOf(infos.get("userId"))).orElseThrow(() -> new BusinessExceptionHandler(ErrorCode.NOT_FOUND_SELLER_ID));
+        User seller = userRepository.findById(sellerId).orElseThrow(() -> new BusinessExceptionHandler(ErrorCode.NOT_FOUND_SELLER_ID));
         try {
             if(!seller.getAuth().equals(Auth.SELLER)) {
                 throw new BusinessExceptionHandler(ErrorCode.NOT_SELLER);
@@ -79,39 +75,22 @@ public class BlockManageServiceImpl implements  BlockManageService {
             throw new BusinessExceptionHandler(ErrorCode.NOT_SELLER);
         }
         User blocked = userRepository.findById(blockedId).orElseThrow(() -> new BusinessExceptionHandler(ErrorCode.NOT_FOUND_USER_ID));
-        add(seller, blocked);
-    }
-
-    @Override
-    @Transactional
-    @CacheEvict(cacheNames = BLOCK_LIST, key = "#seller.id", cacheManager = "cacheManager")
-    public void add(User seller, User blocked) {
         blockManageRepository.save(BlockManage.builder().seller(seller).blocked(blocked).build());
     }
 
     // 차단 삭제
     @Override
     @Transactional
-    public void removeBlocked(HttpServletRequest httpServletRequest, Long blockedId) {
-        String accessToken = jwtService.resolveAccessToken(httpServletRequest);
-        // 인증
-        authClient.validateToken(AccessTokenRequest.builder().accessToken(accessToken).build());
-        // 회원 정보 추출
-        Map<String, String> infos = authClient.extraction(ExtractionRequest.builder().accessToken(accessToken).infos(List.of("userId", "auth")).build()).getInfos();
+    @CacheEvict(cacheNames = BLOCK_LIST, key = "#sellerId", cacheManager = "cacheManager")
+    public void removeBlocked(String auth, Long sellerId, Long blockedId) {
         try {
-            if(!infos.get("auth").equals("SELLER")) {
+            if(auth.equals("SELLER")) {
                 throw new BusinessExceptionHandler(ErrorCode.NOT_SELLER);
             }
         } catch (Exception e) {
             throw new BusinessExceptionHandler(ErrorCode.NOT_SELLER);
         }
-        remove(blockedId, Long.valueOf(infos.get("userId")));
-    }
 
-    @Override
-    @Transactional
-    @CacheEvict(cacheNames = BLOCK_LIST, key = "sellerId", cacheManager = "cacheManager")
-    public void remove(Long blockedId, Long sellerId) {
         blockManageRepository.deleteByBlockedIdAndSellerId(blockedId, sellerId);
     }
 }

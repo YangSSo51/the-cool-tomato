@@ -10,11 +10,8 @@ public interface BlockManageService {
     GetBlockManageListResponse getBlockManages(HttpServletRequest httpServletRequest);
     List<Long> getBlockManagesBySellerId(Long sellerId);
 
-    void addBlocked(HttpServletRequest httpServletRequest, Long blockedId);
+    void addBlocked(Long sellerId, Long blockedId);
 
-    void add(User seller, User blocked);
+    void removeBlocked(String auth, Long sellerId, Long blockedId);
 
-    void removeBlocked(HttpServletRequest httpServletRequest, Long blockedId);
-
-    void remove(Long blockedId, Long sellerId);
 }
