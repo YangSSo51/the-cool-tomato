@@ -118,7 +118,7 @@ public class BroadcastServiceImpl implements BroadcastService{
             liveBroadcast.setBroadcastEndDate(LocalDateTime.now());
             liveBroadcastRepository.save(liveBroadcast);
 
-            List<ZSetOperations.TypedTuple<String>> hotKeywordList = Objects.requireNonNull(redisTemplate.opsForZSet().reverseRangeWithScores(liveBroadcast.getTopicId(), 0, 4)).stream().toList();
+            List<ZSetOperations.TypedTuple<String>> hotKeywordList = Objects.requireNonNull(redisTemplate.opsForZSet().reverseRangeWithScores(String.valueOf(liveBroadcast.getId()), 0, 4)).stream().toList();
             List<String> hotKeywords = new ArrayList<>();
             for (ZSetOperations.TypedTuple<String> stringTypedTuple : hotKeywordList) {
                 String keyword = Objects.requireNonNull(stringTypedTuple.getValue());
@@ -137,7 +137,7 @@ public class BroadcastServiceImpl implements BroadcastService{
             ObjectMapper objectMapper = new ObjectMapper();
             String info = objectMapper.writeValueAsString(analyzeInfo);
 
-            BroadcastAnalyze analyze = BroadcastAnalyze.builder().liveBroadcastId(liveBroadcast.getUser().getId()).content(info).build();
+            BroadcastAnalyze analyze = BroadcastAnalyze.builder().liveBroadcastId(liveBroadcast.getId()).content(info).build();
             broadcastAnalyzeRepository.save(analyze);
             redisTemplate.opsForZSet().remove(RANK, String.valueOf(stop.getLiveBroadcastId()));
             redisTemplate.opsForHash().delete(VIEW, Long.toString(stop.getLiveBroadcastId()));
@@ -157,6 +157,7 @@ public class BroadcastServiceImpl implements BroadcastService{
         }catch (NoSuchElementException e) {
             throw new BusinessExceptionHandler("방송 내역이 없습니다.", ErrorCode.NOT_FOUND_ERROR);
         }catch (Exception e){
+            e.printStackTrace();
             throw new BusinessExceptionHandler("아이고 미안합니다. 김현종에게 문의해주세요~", ErrorCode.INTERNAL_SERVER_ERROR);
         }
     }
