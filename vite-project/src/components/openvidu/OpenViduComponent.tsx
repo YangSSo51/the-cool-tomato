@@ -1,5 +1,5 @@
 import { OpenVidu, Publisher, Session, Subscriber } from "openvidu-browser";
-import { Button, Text } from "@chakra-ui/react";
+import { Button, Flex, Text } from "@chakra-ui/react";
 
 import UserVideoComponent from "./UserVideoComponent";
 import { useCallback, useEffect, useState } from "react";
@@ -194,19 +194,21 @@ function OpenViduComponent({
         if (type === "broadcast" && publisher !== null) {
             return (
                 <>
-                    <Text fontSize="2xl" fontWeight="bold" mb={4}>
-                        방송화면
-                    </Text>
-                    <LiveStopAlertDialog
-                        isOpen={isOpen}
-                        handleClick={handleClick}
-                        setStream={setStream}
-                        leaveSession={leaveSession}
-                    />
+                    <Flex justifyContent={"space-between"}>
+                        <Text fontSize="2xl" fontWeight="bold" mb={4}>
+                            방송화면
+                        </Text>
+                        <LiveStopAlertDialog
+                            isOpen={isOpen}
+                            handleClick={handleClick}
+                            setStream={setStream}
+                            leaveSession={leaveSession}
+                        />
 
-                    <Button colorScheme="red" onClick={handleClick} mb={2}>
-                        방송종료
-                    </Button>
+                        <Button colorScheme="red" onClick={handleClick} mb={2}>
+                            방송종료
+                        </Button>
+                    </Flex>
                     <UserVideoComponent streamManager={publisher} />
                 </>
             );
