@@ -1,5 +1,5 @@
 import { Text } from "@chakra-ui/layout";
-import { Center } from "@chakra-ui/react";
+import { Center, Flex } from "@chakra-ui/react";
 
 export default function Prompter() {
     return (
@@ -9,7 +9,11 @@ export default function Prompter() {
                     스크립트
                 </Text>
             </Center>
-            <h1>스크립트 내용이 나올 부분입니다.</h1>
+            <Flex direction={"column"}>
+                <Text fontSize={"2xl"} mb={"1rem"}>고구마 제품 이상 없다는 것 증명</Text>
+                <Text fontSize={"2xl"} mb={"1rem"}>고구마 산지 직송 강조</Text>
+                <Text fontSize={"2xl"} mb={"1rem"}>고구마 가격 강조</Text>
+            </Flex>
         </>
     );
 }

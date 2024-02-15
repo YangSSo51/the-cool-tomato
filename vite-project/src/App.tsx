@@ -64,7 +64,10 @@ function App() {
                             element={<FindAccountPage type="password" />}
                         />
                         <Route path="live/form" element={<LiveAddForm />} />
-                        <Route path="live/edit/:broadcastId" element={<LivePlanEditForm />} />
+                        <Route
+                            path="live/edit/:broadcastId"
+                            element={<LivePlanEditForm />}
+                        />
                         <Route
                             path="findaccount"
                             element={<FindAccountPage type="result" />}
@@ -79,7 +82,6 @@ function App() {
                             path="items/edit/:productParams"
                             element={<ItemEditPage />}
                         ></Route>
-                        
                     </Route>
                     <Route
                         path="v1/broadcast/:roomId"
@@ -89,7 +91,10 @@ function App() {
                         path="v1/live/:roomId"
                         element={<BuyerLive />}
                     ></Route>
-                    <Route path="v1/live/result/:liveBroadcastId" element={<LiveResultPage />} />
+                    <Route
+                        path="v1/live/result/:broadcastId"
+                        element={<LiveResultPage />}
+                    />
                 </Routes>
             </ChakraProvider>
         </>
