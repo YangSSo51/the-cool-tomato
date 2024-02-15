@@ -1,16 +1,25 @@
 import { Doughnut } from "react-chartjs-2";
-import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
+import { Chart as ChartJS, ArcElement, Tooltip, Legend, CategoryScale, LinearScale, PointElement, LineElement, Title } from "chart.js";
 import { Box, Center, Text } from "@chakra-ui/react";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
+ChartJS.register(
+    CategoryScale,
+    LinearScale,
+    PointElement,
+    LineElement,
+    Title,
+    Tooltip,
+    Legend
+);
 
 export default function Statistic() {
     const dataDoughnut = {
-        labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
+        labels: ["남성", "여성", "20대", "30대", "40대", "50대"],
         datasets: [
             {
                 label: "# of Votes",
-                data: [12, 19, 3, 5, 2, 3],
+                data: [1, 1, 3, 5, 2, 3],
                 backgroundColor: [
                     "rgba(255, 99, 132, 0.2)",
                     "rgba(54, 162, 235, 0.2)",
@@ -39,6 +48,7 @@ export default function Statistic() {
                     실시간 통계
                 </Text>
             </Center>
+            
             <Box bgSize={"1rem"}>
                 <Doughnut data={dataDoughnut} />;
             </Box>

@@ -1,7 +1,26 @@
-import { Text, Highlight } from "@chakra-ui/layout";
-import { Center } from "@chakra-ui/react";
+import { Text } from "@chakra-ui/layout";
+import { Box, Button, Center, Flex } from "@chakra-ui/react";
+import { useParams } from "react-router-dom";
+import { fetchKeyword } from "../../../api/liverealtime";
+import { useEffect, useState } from "react";
 
 export default function Feedback() {
+    const params = useParams();
+    const [keyword, setKeyword] = useState<Array<string>>([]);
+    const [isButton, setIsButton] = useState(0);
+
+    useEffect(() => {
+       
+        fetchKeyword(Number(params.roomId)).then((res) => {
+            setKeyword(res.data.data);
+            
+        });
+    }, [isButton]);
+
+    const buttonClick = () => {
+        setIsButton(isButton + 1);
+    };
+
     return (
         <>
             <Center mb={"1.5rem"}>
@@ -9,39 +28,26 @@ export default function Feedback() {
                     실시간 피드백
                 </Text>
             </Center>
-            <Text mb="4" borderBottom="1px" borderBottomColor="lightgray">
-                말 좀 잘하세용!!
-            </Text>
-            <Text mb="4" borderBottom="1px" borderBottomColor="lightgray">
-                하 피드백 어케 들어오려나
-            </Text>
-            <Text mb="4" borderBottom="1px" borderBottomColor="lightgray">
-                어케들어올거냐고요
-            </Text>
-            <Text mb="4" borderBottom="1px" borderBottomColor="lightgray">
-                모르겠어용
-            </Text>
-            <Text mb="4" borderBottom="1px" borderBottomColor="lightgray">
-                <Highlight
-                    query={[
-                        "목소리 크게",
-                        "튼실한 고구마",
-                        "최적의 토양",
-                        "우리아이 안심",
-                    ]}
-                    styles={{
-                        px: "2",
-                        py: "1",
-                        rounded: "full",
-                        bg: "themeRed.500",
-                        color: "white",
-                    }}
-                >
-                    With the 목소리 크게 component, 우리아이 안심 you can
-                    spotlight, 튼실한 고구마 emphasize 최적의 토양 and
-                    accentuate words.
-                </Highlight>
-            </Text>
+
+            <Center mb={"3rem"}>
+                <Button onClick={buttonClick}>실시간 키워드 분석</Button>
+            </Center>
+
+            <Center>
+                <Flex direction={"column"} textAlign={"center"}>
+                    <Text as={"b"} fontSize={"3xl"} color={"red"}>
+                        {"< 실시간 키워드 >"}
+                    </Text>
+                    <Box mt={"1rem"}></Box>
+                    {keyword.map((res, index) => (
+                        <Box key={index} mb={"1rem"}>
+                            <Text as={"b"} fontSize={"5xl"}>
+                                {res}
+                            </Text>
+                        </Box>
+                    ))}
+                </Flex>
+            </Center>
         </>
     );
 }
