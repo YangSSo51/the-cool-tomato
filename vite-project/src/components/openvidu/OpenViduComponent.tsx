@@ -9,6 +9,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "../../redux/stores/store";
 import { useParams } from "react-router-dom";
 import LiveStopAlertDialog from "../broadcast/LiveStopAlertDialog";
+import React from "react";
 
 interface OpenViduComponentProps {
     type: string;
