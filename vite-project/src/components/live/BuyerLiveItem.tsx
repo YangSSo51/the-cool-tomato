@@ -16,7 +16,7 @@ const BuyerLiveItem = ({ id, img, title, price, liveFlatPrice }: Items) => {
             p={"0.3rem"}
             justifyContent={"space-between"}
         >
-            <Image objectFit={"cover"} boxSize={"6rem"} src={`${img}`} />
+            <Image borderRadius={"20px"} objectFit={"cover"} boxSize={"6rem"} src={`${img}`} />
             <Center>
                 <Flex direction={"column"} gap={1}>
                     <Text as={"b"} fontSize={"lg"}>
