@@ -81,7 +81,7 @@
 
 ## 3. 프로젝트 설계
 ### 피그마
-![피그마](./upload/image/피그마.png)
+https://www.figma.com/file/AMgvQLyr3iSKXPtkqlp61p/%EB%AF%80%EC%A7%B8%EC%9D%B4%ED%84%B0%EB%A7%88%ED%84%B0?type=design&node-id=0%3A1&mode=design&t=AvI2KsDaySKUKA2e-1 
 
 ### API 명세
 https://www.notion.so/API-4fe3d76c7fcf4d12bfd03163c551eb1b?pvs=4
