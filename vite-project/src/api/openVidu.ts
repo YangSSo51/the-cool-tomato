@@ -10,11 +10,13 @@ async function getLiveStartToken(data: {
     liveBroadcastId: number;
 }): Promise<string> {
     const res = await http.post(url + `/start`, data);
+    console.log("getLiveStartToken");
     return res.data.data.token;
 }
 
 async function getLiveJoinToken(data: { liveBroadcastId: number }) {
     const res = await http.post(url + `/participation`, data);
+    console.log("getLiveJoinToken");
     return res.data.data.token;
 }
 
@@ -86,7 +88,7 @@ async function deleteLivePlanAPI(
 
 // 예약된 라이브 수정
 async function editLivePlanAPI(
-    data: {editbroadcastInfo: editbroadcastInfo},
+    data: { editbroadcastInfo: editbroadcastInfo },
     accessToken: string
 ) {
     await http.put(`${url}/reservation`, data, {
