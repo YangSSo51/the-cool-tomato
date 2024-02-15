@@ -13,15 +13,21 @@ interface broadcastInfo {
 }
 
 function LiveItems({ lives }: { lives: broadcastInfo }) {
-    // const navigate = useNavigate();
-    const handleOpenNewTab = (url: string) => {
-        window.open(url, "_blank", "noopener, noreferrer");
-    };
-    // const handleOpenNewTab = (url: string, data) => {
-    //     const query = new URLSearchParams(data).toString();
-    //     window.open(`${url}?${query}`, "_blank");
+    // const handleOpenNewTab = (url: string) => {
+    //     window.open(url, "_blank", "noopener, noreferrer");
     // };
-
+    const handleOpenNewTab = (url: string, data: broadcastInfo) => {
+        const params = new URLSearchParams({
+            liveBroadcastId: String(data.liveBroadcastId),
+            broadcastTitle: data.broadcastTitle,
+            nickName: data.nickName,
+            viewCount: String(data.viewCount),
+            sellerId: String(data.sellerId),
+            broadcastStatus: String(data.broadcastStatus),
+            startDate: data.startDate,
+        });
+        window.open(`${url}?${params.toString()}`, "_blank");
+    };
     return (
         <Flex
             justifyContent="space-between"
@@ -67,8 +73,8 @@ function LiveItems({ lives }: { lives: broadcastInfo }) {
             <Button
                 onClick={() =>
                     handleOpenNewTab(
-                        `/v1/live/result/${lives.liveBroadcastId}`
-                        // lives
+                        `/v1/live/result/${lives.liveBroadcastId}`,
+                        lives
                     )
                 }
             >

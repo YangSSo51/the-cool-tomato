@@ -1,5 +1,12 @@
 import { Flex, Text, Box, Container, Center } from "@chakra-ui/react";
-import { Avatar, Badge, Image, Button } from "@chakra-ui/react";
+import {
+    Avatar,
+    Badge,
+    Image,
+    Button,
+    Divider,
+    Highlight,
+} from "@chakra-ui/react";
 import { CloseIcon } from "@chakra-ui/icons";
 import {
     Chart as ChartJS,
@@ -47,8 +54,26 @@ export default function LiveResultPage() {
     const accessToken = useSelector(
         (state: RootState) => state.user.accessToken
     );
+    const params = new URLSearchParams(window.location.search);
     const { broadcastId } = useParams<{ broadcastId: string }>();
+    const broadcastTitle: string | null = params.get("broadcastTitle");
+    const nickName: string | null = params.get("nickName");
+    const viewCount: string | null = params.get("viewCount");
+    const sellerId: string | null = params.get("sellerId");
+    const broadcastStatus: string | null = params.get("broadcastStatus");
+    const startDate: string | null = params.get("startDate");
+
     const broadcastIdNumber = Number(broadcastId);
+    const viewCountNumber = Number(viewCount);
+
+    console.log("liveBroadcastId:", broadcastIdNumber);
+    console.log("broadcastTitle:", broadcastTitle);
+    console.log("nickName:", nickName);
+    console.log("viewCount:", viewCountNumber);
+    console.log("sellerId:", sellerId);
+    console.log("broadcastStatus:", broadcastStatus);
+    console.log("startDate:", startDate);
+
     const [liveResult, setLiveResult] = useState([]);
     const [products, setProducts] = useState<ProductType[]>([]);
     const keywordlist = ["1", "2", "3", "4", "5"];
@@ -153,15 +178,18 @@ export default function LiveResultPage() {
                     direction="column"
                     align="center"
                     py={8}
+                    p="5"
                     border="2px"
                     mb="10"
                     borderColor="themeLightGreen.500"
                 >
-                    <Avatar mt="4" size="xl" src="임시링크" />
+                    <Avatar mt="4" size="xl" src={user.profileImg} />
 
                     <Text mt={4} mb={4} fontSize="3xl" fontWeight="bold">
-                        "{user.nickname}"님의 "발품팔이의 다단계 발품코치"
+                        "{user.nickname}"님의 "{broadcastTitle}"
                     </Text>
+
+                    <Divider mt={3} mb={7} />
 
                     <Text
                         mt="2"
@@ -175,10 +203,12 @@ export default function LiveResultPage() {
                     <Text mt="2" mb="4" textAlign="center">
                         예정 방송시간: 2024년 2월 12일 오후 8시
                         <br />
-                        실제 방송시간: 2024년 2월 12일 오후 7시 47분
+                        실제 방송시간: {startDate}
                         <br />
                         방송종료시간: 2024년 2월 12일 오후 10시 34분
                     </Text>
+
+                    <Divider mt={3} mb={7} />
 
                     <Text
                         mt="2"
@@ -203,16 +233,18 @@ export default function LiveResultPage() {
                         </Flex>
                     ))}
 
+                    <Divider mt={3} mb={7} />
+
                     <Flex justify="space-around" py={8}>
-                        <Box>
+                        <Box textAlign="center" mr="5">
                             <Text fontSize="xl" fontWeight="semibold">
                                 전체 조회수
                             </Text>
                             <Text fontSize="5xl" fontWeight="bold">
-                                15,561
+                                {viewCountNumber}
                             </Text>
                         </Box>
-                        <Box>
+                        <Box textAlign="center" mr="5">
                             <Text fontSize="xl" fontWeight="semibold">
                                 전체 좋아요수
                             </Text>
@@ -220,7 +252,7 @@ export default function LiveResultPage() {
                                 1,268
                             </Text>
                         </Box>
-                        <Box>
+                        <Box textAlign="center">
                             <Text fontSize="xl" fontWeight="semibold">
                                 남은 재고량 상품
                             </Text>
@@ -229,6 +261,8 @@ export default function LiveResultPage() {
                             </Text>
                         </Box>
                     </Flex>
+
+                    <Divider mt={3} mb={7} />
 
                     <Box mb="4">
                         <Text
@@ -241,12 +275,24 @@ export default function LiveResultPage() {
                         </Text>
                         <Flex justify="space-around" mb="4">
                             {keywordlist.map((keyword, index) => (
-                                <Badge key={index} variant="secondary">
-                                    {keyword}
-                                </Badge>
+                                <Text key={index} fontSize="3xl">
+                                    <Highlight
+                                        query={keyword}
+                                        styles={{
+                                            px: "2",
+                                            py: "1",
+                                            rounded: "full",
+                                            bg: "red.100",
+                                        }}
+                                    >
+                                        {keyword}
+                                    </Highlight>
+                                </Text>
                             ))}
                         </Flex>
                     </Box>
+
+                    <Divider mt={3} mb={7} />
 
                     <Box>
                         <Text
