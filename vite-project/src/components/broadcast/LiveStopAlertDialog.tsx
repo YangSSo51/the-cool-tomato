@@ -1,5 +1,4 @@
 import {
-    useDisclosure,
     Button,
     AlertDialog,
     AlertDialogOverlay,
@@ -15,13 +14,19 @@ import { RootState } from "../../redux/stores/store";
 import { useNavigate, useParams } from "react-router-dom";
 import { stopLive } from "../../api/openVidu";
 
+interface LiveStopAlertDialogProps {
+    isOpen: boolean;
+    handleClick: () => void;
+    setStream: React.Dispatch<React.SetStateAction<boolean>>;
+    leaveSession: () => void;
+}
+
 function LiveStopAlertDialog({
     isOpen,
     handleClick,
-}: {
-    isOpen: boolean;
-    handleClick: () => void;
-}) {
+    setStream,
+    leaveSession,
+}: LiveStopAlertDialogProps) {
     const cancelRef = React.useRef(null);
 
     const navigate = useNavigate();
@@ -32,8 +37,11 @@ function LiveStopAlertDialog({
     const { roomId } = useParams() as { roomId: string };
     const liveBroadcastId = parseInt(roomId);
 
-    async function handleStopLive() {
-        await stopLive({ accessToken, liveBroadcastId })
+    function handleStopLive() {
+        console.log("LiveStopAlertDialog handleStopLive");
+        setStream(false);
+        leaveSession();
+        stopLive({ accessToken, liveBroadcastId })
             .then(() => {
                 navigate("/");
             })
