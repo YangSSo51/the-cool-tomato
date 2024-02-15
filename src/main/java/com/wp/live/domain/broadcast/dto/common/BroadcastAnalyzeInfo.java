@@ -13,6 +13,5 @@ import java.util.Map;
 @NoArgsConstructor
 @AllArgsConstructor
 public class BroadcastAnalyzeInfo {
-    private Map<String, String> connNum;
     private List<String> hotKeywords;
 }

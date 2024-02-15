@@ -125,15 +125,7 @@ public class BroadcastServiceImpl implements BroadcastService{
                 hotKeywords.add(keyword);
             }
 
-            String topicId = liveBroadcast.getTopicId();
-            Set<Object> keys = redisTemplate.opsForHash().keys(topicId);
-            Map<String, String> connNum = new HashMap<>();
-            for (Object key : keys) {
-                String num = redisTemplate.opsForHash().get(topicId+"_connNum", key.toString()).toString();
-                connNum.put(key.toString(), num);
-            }
-
-            BroadcastAnalyzeInfo analyzeInfo = BroadcastAnalyzeInfo.builder().hotKeywords(hotKeywords).connNum(connNum).build();
+            BroadcastAnalyzeInfo analyzeInfo = BroadcastAnalyzeInfo.builder().hotKeywords(hotKeywords).build();
             ObjectMapper objectMapper = new ObjectMapper();
             String info = objectMapper.writeValueAsString(analyzeInfo);
 
