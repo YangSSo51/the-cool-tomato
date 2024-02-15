@@ -11,7 +11,7 @@ import {
     Tooltip,
     Legend,
 } from "chart.js";
-import { Line } from "react-chartjs-2";
+// import { Line } from "react-chartjs-2";
 import { useNavigate, useParams } from "react-router-dom";
 // import { useNavigate, useParams, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
@@ -39,6 +39,7 @@ interface ProductType {
     price: number;
     liveFlatPrice: number;
     mainProductSetting: boolean;
+    livePriceStartDate: string;
 }
 
 export default function LiveResultPage() {
@@ -51,12 +52,11 @@ export default function LiveResultPage() {
     const { broadcastId } = useParams<{ broadcastId: string }>();
     const broadcastTitle: string | null = params.get("broadcastTitle");
     const viewCount: string | null = params.get("viewCount");
-    const startDate: string | null = params.get("startDate");
-
+    // const startDate: string | null = params.get("startDate");
     const broadcastIdNumber = Number(broadcastId);
     const viewCountNumber = Number(viewCount);
 
-    const [liveResult, setLiveResult] = useState([]);
+    // const [liveResult, setLiveResult] = useState([]);
     const [products, setProducts] = useState<ProductType[]>([]);
     const [keywordlist, setKeywordlist] = useState<string[]>([]);
 
@@ -66,10 +66,8 @@ export default function LiveResultPage() {
                 broadcastIdNumber,
                 accessToken
             );
-            const data = JSON.parse(response); // JSON 문자열을 JavaScript 객체로 변환합니다.
-            // console.log(data);
-            // console.log(data.hotKeywords); // hotKeywords에 접근합니다.
-            setLiveResult(data.connNum);
+            const data = JSON.parse(response); // JSON 문자열을 JavaScript 객체로 변환
+            // setLiveResult(data.connNum);
             setKeywordlist(data.hotKeywords);
         };
         fetchData();
@@ -89,6 +87,7 @@ export default function LiveResultPage() {
                     price: item.price,
                     liveFlatPrice: item.liveFlatPrice,
                     mainProductSetting: item.mainProductSetting,
+                    livePriceStartDate: item.livePriceStartDate,
                 })
             );
             setProducts(selectedProducts);
@@ -158,7 +157,7 @@ export default function LiveResultPage() {
 
                     <Divider mt={3} mb={7} />
 
-                    <Text
+                    {/* <Text
                         mt="2"
                         fontSize="2xl"
                         fontWeight="semibold"
@@ -170,12 +169,12 @@ export default function LiveResultPage() {
                     <Text mt="2" mb="4" textAlign="center">
                         예정 방송시간: 2024년 2월 12일 오후 8시
                         <br />
-                        실제 방송시간: {startDate}
+                        실제 방송시간: {product.livePriceStartDate}
                         <br />
                         방송종료시간: 2024년 2월 12일 오후 10시 34분
-                    </Text>
+                    </Text> */}
 
-                    <Divider mt={3} mb={7} />
+                    {/* <Divider mt={3} mb={7} /> */}
 
                     <Text
                         mt="2"
@@ -211,7 +210,7 @@ export default function LiveResultPage() {
                                 {viewCountNumber}
                             </Text>
                         </Box>
-                        <Box textAlign="center" mr="5">
+                        {/* <Box textAlign="center" mr="5">
                             <Text fontSize="xl" fontWeight="semibold">
                                 전체 좋아요수
                             </Text>
@@ -226,7 +225,7 @@ export default function LiveResultPage() {
                             <Text fontSize="5xl" fontWeight="bold">
                                 남은량
                             </Text>
-                        </Box>
+                        </Box> */}
                     </Flex>
 
                     <Divider mt={3} mb={7} />
@@ -260,7 +259,7 @@ export default function LiveResultPage() {
                     </Box>
 
                     <Divider mt={3} mb={7} />
-
+                    {/* 추후 수정이 된다면...
                     <Box>
                         <Text
                             fontSize="2xl"
@@ -271,45 +270,45 @@ export default function LiveResultPage() {
                             시간대별 접속자 추이
                         </Text>
                         <LineLine />
-                    </Box>
+                    </Box> */}
                 </Flex>
             </Flex>
         </>
     );
 }
 
-export function LineLine() {
-    const labels = [
-        "30분",
-        "1시간",
-        "1시간 30분",
-        "2시간",
-        "2시간 30분",
-        "3시간",
-    ];
-    // const [viewerData, setViewerData] = useState([]);
+// export function LineLine() {
+//     const labels = [
+//         "30분",
+//         "1시간",
+//         "1시간 30분",
+//         "2시간",
+//         "2시간 30분",
+//         "3시간",
+//     ];
+//     // const [viewerData, setViewerData] = useState([]);
 
-    const data = {
-        labels,
-        datasets: [
-            {
-                label: "30분 간격 시청자수",
-                // data: viewerData.map((data) => data.e),
-                data: 0,
-                borderColor: "rgb(255, 99, 132)",
-                backgroundColor: "rgba(255, 99, 132, 0.5)",
-            },
-        ],
-    };
+//     const data = {
+//         labels,
+//         datasets: [
+//             {
+//                 label: "30분 간격 시청자수",
+//                 // data: viewerData.map((data) => data.e),
+//                 data: 0,
+//                 borderColor: "rgb(255, 99, 132)",
+//                 backgroundColor: "rgba(255, 99, 132, 0.5)",
+//             },
+//         ],
+//     };
 
-    const options = {
-        responsive: true,
-        plugins: {
-            legend: {
-                position: "top" as const,
-            },
-        },
-    };
+//     const options = {
+//         responsive: true,
+//         plugins: {
+//             legend: {
+//                 position: "top" as const,
+//             },
+//         },
+//     };
 
-    return <Line options={options} data={data} height={400} width={600} />;
-}
+//     return <Line options={options} data={data} height={400} width={600} />;
+// }

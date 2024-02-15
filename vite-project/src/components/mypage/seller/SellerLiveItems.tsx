@@ -1,4 +1,4 @@
-import { Box, Divider, Flex, Text } from "@chakra-ui/layout";
+import { Box, Divider, Flex } from "@chakra-ui/layout";
 import { Badge, Button } from "@chakra-ui/react";
 // import { useHistory } from "react-router-dom";
 
@@ -66,7 +66,7 @@ function LiveItems({ lives }: { lives: broadcastInfo }) {
                         {lives.broadcastTitle}
                     </Box>
                     <Divider mb="1" />
-                    <Text fontSize={"sm"}>방송일자: {lives.startDate}</Text>
+                    {/* <Text fontSize={"sm"}>방송일자: {lives.startDate}</Text> */}
                 </Box>
             </Flex>
 
