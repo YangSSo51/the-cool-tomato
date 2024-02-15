@@ -1,9 +1,10 @@
-
 # 멋쟁이 토마토
 못난이 농수산물을 위한 새로운 유통 판로, 멋쟁이 토마토
+
 서비스 URL : https://i10a501.p.ssafy.io/v1/main
 
 ## 1. 주요 기능 & 목적
+
 ![프로젝트 소개](./upload/image/프로젝트 소개.png)
 
 라이브 커머스에 실시간 방송 분석, 채팅, 챗봇 서비스를 더해 보다 편하게 농수산물을 판매할 수 있도록 함
@@ -11,16 +12,20 @@
 ## 2. 개발 환경
 #### 백엔드 
 - **Spring boot 3.2.1**
-https://start.spring.io/
+    
+    https://start.spring.io/
 - **java 17**
-https://www.oracle.com/java/technologies/javase/jdk17-archive-downloads.html
+
+    https://www.oracle.com/java/technologies/javase/jdk17-archive-downloads.html
 - **Kafka 3.6.0**
 - **Elastic Search 7.17.18**
 - **Logstash 7.10.2**
 - **Kibana 7.10.2**
 
 #### 프론트엔드
-- **Node.js (up to 20.10.0)** https://nodejs.org/en/download/
+- **Node.js (up to 20.10.0)** 
+    
+    https://nodejs.org/en/download/
 ```
 //package.json
 "@chakra-ui/icons": "^2.1.1",
@@ -57,15 +62,22 @@ https://www.oracle.com/java/technologies/javase/jdk17-archive-downloads.html
 - **Srping cloud config 3.2.2**
 
 ### DB 설정
-- **mysql 8.1.0** https://downloads.mysql.com/archives/community/
+- **mysql 8.1.0** 
+    
+    https://downloads.mysql.com/archives/community/
 - **redis 7.2.3**
 - dump 파일 위치 : 
 
 ### IDE
-- **IntelliJ IDEA 2023.3.2** https://www.jetbrains.com/ko-kr/idea/download/?section=windows
+- **IntelliJ IDEA 2023.3.2** 
+    
+    https://www.jetbrains.com/ko-kr/idea/download/?section=windows
 - **VisualStudio Code (up to 1.86.1)**
-https://code.visualstudio.com/Download
-- **DBeaver 23.3.1** https://dbeaver.io/download/
+
+    https://code.visualstudio.com/Download
+- **DBeaver 23.3.1** 
+    
+    https://dbeaver.io/download/
 
 ## 3. 프로젝트 설계
 ### 피그마
@@ -81,57 +93,81 @@ https://www.notion.so/API-4fe3d76c7fcf4d12bfd03163c551eb1b?pvs=4
 ## 4. 서비스 화면
 ### 메인
 ![메인캐러셀](./upload/image/main_carousel.gif)
+
 ![메인페이지](./upload/image/main_page.gif)
 
 ### 회원
 - 로그인
+
 ![로그인 페이지](./upload/image/login_page.gif)
 - 회원가입
+
 ![회원가입 페이지](./upload/image/user_registration_page.gif)
 - 회원 정보 수정
+
 ![회원정보수정 페이지](./upload/image/buyer_mypage.gif)
 - 판매자 프로필(팔로우, 상품)
+
 ![판매자 프로필](./upload/image/seller_profile_page.gif)
 - 구매자용 마이페이지
+
 ![구매자 마이페이지](./upload/image/buyer_mypage.gif)
 - 판매자용 마이페이지
+
 ![판매자 마이페이지](./upload/image/seller_mypage.gif)
 - 관리자용 마이페이지(공지사항, 회원 조회, 판매자 신청 관리)
+
 ![관리자 마이페이지](./upload/image/admin_mypage.gif)
 
 ### 상품
 - 상품 목록
+
 ![상품 페이지](./upload/image/product_page.gif)
 - 상품 상세
+
 ![상품 상세 페이지](./upload/image/product_detail_page.gif)
 - 상품 등록
+
 ![상품 등록 페이지](./upload/image/product_registration.gif)
 - 구매자용 상품 문의 등록
+
 ![상품 문의 등록 페이지](./upload/image/product_qna_page.gif)
 - 판매자용 상품 문의 확인
+
 ![상품 문의 확인 페이지](./upload/image/seller_qna_check_page.gif)
 
 ### 라이브
 - 라이브 달력
+
 ![라이브 달력 페이지](./upload/image/live_calendar_page.gif)
 - 라이브 검색
+
 ![라이브 달력 페이지](./upload/image/search_page.gif)
 - 라이브 등록
+
 ![라이브 등록 페이지](./upload/image/live_registration.gif)
 - 구매자용 라이브(방송, 채팅, 챗봇, 차단, 라이브 상품)
+
 ![구매자용 채팅 페이지](./upload/image/buyer_live_chatting_page.gif)
+
 ![구매자용 챗봇 페이지](./upload/image/buyer_live_chatbot_page.gif)
 - 판매자용 라이브(방송, 채팅, 차단, 실시간 분석)
+
 ![판매자용 채팅 페이지](./upload/image/seller_live_chat_page.gif)
+
 ![판매자용 실시간 분석 페이지](./upload/image/seller_live_analysis_page.gif)
 - 라이브 사후 분석
+
 ![라이브 분석 페이지](./upload/image/live_analyze_page.gif)
 - 차단 목록, 해제
+
 ![차단 페이지](./upload/image/seller_ban_user_page.gif)
 - 챗봇 설정
+
 ![챗봇 설정 페이지](./upload/image/seller_chatbot_page.gif)
 
 ### 그 외 페이지
+
 ![공지사항 페이지](./upload/image/notice.gif)
 
 ## 5. 주요 기능 소개
