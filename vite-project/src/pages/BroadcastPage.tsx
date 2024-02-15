@@ -12,7 +12,7 @@ function Broadcast() {
         <Flex direction="column" h="100vh">
             <Header setStream={setStream} />
             <Flex flex="1" overflow="hidden">
-                <BroadcastScreen stream={stream} />
+                <BroadcastScreen stream={stream} setStream={setStream} />
                 <Chat />
                 <Menu />
             </Flex>

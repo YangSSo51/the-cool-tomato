@@ -1,4 +1,5 @@
 import { OpenVidu, Publisher, Session, Subscriber } from "openvidu-browser";
+import { Button, Text } from "@chakra-ui/react";
 
 import UserVideoComponent from "./UserVideoComponent";
 import { useCallback, useEffect, useState } from "react";
@@ -7,18 +8,25 @@ import { getLiveStartToken, getLiveJoinToken } from "../../api/openVidu";
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/stores/store";
 import { useParams } from "react-router-dom";
+import LiveStopAlertDialog from "../broadcast/LiveStopAlertDialog";
 
 interface OpenViduComponentProps {
     type: string;
     stream: boolean;
+    setStream: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-function OpenViduComponent({ type, stream }: OpenViduComponentProps) {
+function OpenViduComponent({
+    type,
+    stream,
+    setStream,
+}: OpenViduComponentProps) {
     const [session, setSession] = useState<Session | null>(null);
     const [subscribers, setSubscribers] = useState<Subscriber[] | null>(null);
     const [subscriber, setSubscriber] = useState<Subscriber | null>(null);
     const [publisher, setPublisher] = useState<Publisher | null>(null);
     const [OV, setOV] = useState<OpenVidu | null>(null);
+    const [isOpen, setIsOpen] = useState(false);
 
     const accessToken: string = useSelector(
         (state: RootState) => state.user.accessToken
@@ -38,6 +46,7 @@ function OpenViduComponent({ type, stream }: OpenViduComponentProps) {
         setSubscribers(null);
         setPublisher(null);
         setOV(null);
+        setStream(false);
     }, [session]);
 
     const joinSession = () => {
@@ -50,6 +59,7 @@ function OpenViduComponent({ type, stream }: OpenViduComponentProps) {
     //종료 버튼 누르면 session도 날라가도록 useEffect 설정
     useEffect(() => {
         console.log("OpenViduComponent useEffect stream");
+        console.log(stream);
         if (!stream) {
             console.log("OpenViduComponent useEffect stream false");
             leaveSession();
@@ -58,10 +68,10 @@ function OpenViduComponent({ type, stream }: OpenViduComponentProps) {
 
     useEffect(() => {
         console.log("useEffect eventListener");
-        window.addEventListener("beforeunload", leaveSession, true);
+        window.addEventListener("beforeunload", leaveSession);
 
         return () => {
-            window.removeEventListener("beforeunload", leaveSession, true);
+            // window.removeEventListener("beforeunload", leaveSession);
         };
     }, [leaveSession]);
 
@@ -91,15 +101,15 @@ function OpenViduComponent({ type, stream }: OpenViduComponentProps) {
     }, [session, subscribers]);
 
     useEffect(() => {
-        if (session === null) {
+        if (!stream) return;
+        if (session === null && stream) {
             console.log("joinSession");
             joinSession();
-            return;
         }
 
         async function getToken(): Promise<string> {
             try {
-                if (session === null) throw new Error("No active session");
+                if (session === null) joinSession();
                 let token = "";
                 if (type === "broadcast") {
                     const test_data = {
@@ -122,13 +132,17 @@ function OpenViduComponent({ type, stream }: OpenViduComponentProps) {
         console.log("useEffect getToken start");
         getToken()
             .then((token) => {
-                if (!session) return;
+                if (!session) {
+                    console.log("session is null");
+                    return Promise.reject("session is null");
+                }
                 session
                     .connect(token)
                     .then(() => {
                         if (!OV) {
                             return Promise.reject("OV is not initialized");
                         }
+                        console.log("useEffect getToken session connect");
                         if (type === "live") return;
                         const publishers = OV.initPublisher(undefined, {
                             audioSource: undefined,
@@ -162,7 +176,11 @@ function OpenViduComponent({ type, stream }: OpenViduComponentProps) {
                 console.log("getToken error");
                 console.log(e);
             });
-    }, [OV, session, type]);
+    }, [session]);
+
+    function handleClick() {
+        setIsOpen(!isOpen);
+    }
 
     function View() {
         if (type === "broadcast" && publisher !== null) {
@@ -171,7 +189,24 @@ function OpenViduComponent({ type, stream }: OpenViduComponentProps) {
             return <UserVideoComponent streamManager={subscriber} />;
         } else return null;
     }
-    return <View />;
+    return (
+        <>
+            <Text fontSize="2xl" fontWeight="bold" mb={4}>
+                방송화면
+            </Text>
+            <LiveStopAlertDialog
+                isOpen={isOpen}
+                handleClick={handleClick}
+                setStream={setStream}
+                leaveSession={leaveSession}
+            />
+
+            <Button colorScheme="red" onClick={handleClick} mb={2}>
+                방송종료
+            </Button>
+            <View />
+        </>
+    );
 }
 
 export default OpenViduComponent;

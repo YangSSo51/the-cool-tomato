@@ -39,7 +39,7 @@ function Header({ setStream }: HeaderProps) {
                 <Text>므째이터마터</Text>
             </Flex>
             <Flex>
-                {iconData.map((item, index) => (
+                {/* {iconData.map((item, index) => (
                     <Flex
                         key={index}
                         alignItems="center"
@@ -49,7 +49,7 @@ function Header({ setStream }: HeaderProps) {
                         {item.icon}
                         <Text marginLeft="0.3rem">{item.content}</Text>
                     </Flex>
-                ))}
+                ))} */}
             </Flex>
             <LiveStopAlertDialog
                 isOpen={isOpen}

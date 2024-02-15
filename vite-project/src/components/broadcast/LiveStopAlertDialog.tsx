@@ -18,12 +18,14 @@ interface LiveStopAlertDialogProps {
     isOpen: boolean;
     handleClick: () => void;
     setStream: React.Dispatch<React.SetStateAction<boolean>>;
+    leaveSession: () => void;
 }
 
 function LiveStopAlertDialog({
     isOpen,
     handleClick,
     setStream,
+    leaveSession,
 }: LiveStopAlertDialogProps) {
     const cancelRef = React.useRef(null);
 
@@ -35,17 +37,18 @@ function LiveStopAlertDialog({
     const { roomId } = useParams() as { roomId: string };
     const liveBroadcastId = parseInt(roomId);
 
-    async function handleStopLive() {
+    function handleStopLive() {
+        console.log("LiveStopAlertDialog handleStopLive");
         setStream(false);
-        // await stopLive({ accessToken, liveBroadcastId })
-        //     .then(() => {
-        //         navigate("/");
-        //     })
-        //     .catch(() => {
-        //         console.log("handleStopLive stopLive error");
-        //         navigate("/");
-        //     });
-        navigate("/");
+        leaveSession();
+        stopLive({ accessToken, liveBroadcastId })
+            .then(() => {
+                navigate("/");
+            })
+            .catch(() => {
+                console.log("handleStopLive stopLive error");
+                navigate("/");
+            });
     }
 
     return (
