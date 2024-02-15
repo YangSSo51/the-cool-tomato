@@ -19,7 +19,7 @@ import LiveItemAdd from "../../broadcast/LiveItemAdd";
 import AddGoods from "./PlanEditAddGoods";
 import {
     ItemDetailInterface,
-    broadcastInfo,
+    editbroadcastInfo,
     liveProduct,
     liveProductPrice,
     LiveProductAll
@@ -71,7 +71,7 @@ export default function LivePlanEditForm() {
         const [datePart, timePart] = utcString.split('T');
         const [hour, minute, second] = timePart.split(':');
         const newHour = (parseInt(hour) + 9) % 24;
-        const newTimePart = `${newHour.toString().padStart(2, '0')}:${minute}:${second}`;
+        const newTimePart = `${newHour.toString().padStart(2, '0')}:${minute}`;
         const newUTCString = `${datePart}T${newTimePart}`;
         return newUTCString.split('.')[0];
     }
@@ -80,6 +80,7 @@ export default function LivePlanEditForm() {
         const fetchData = async () => {
             try {
                 const response = await getLiveDetailAPI({ broadcastId: broadcastIdNumber }, accessToken);
+                console.log(response)
                 setPlanDetail(response);
                 setTitle(response?.broadcastTitle || "");
                 setMemo(response?.script || "");
@@ -96,7 +97,8 @@ export default function LivePlanEditForm() {
         };
         fetchData();
     }, [accessToken, broadcastIdNumber]);
-console.log(startDate)
+console.log(broadcastIdNumber)
+
     useEffect(() => {
         const fetchData = async () => {
             const response = await getLiveProduct({ "live-id": broadcastIdNumber }, accessToken)
@@ -104,6 +106,7 @@ console.log(startDate)
         };
         fetchData();
     }, [])
+    console.log(liveproducts)
 
     useEffect(() => {
         if (liveproducts.length > 0) {
@@ -113,25 +116,6 @@ console.log(startDate)
 
     async function onSubmit(event: React.SyntheticEvent): Promise<void> {
         event.preventDefault();
-
-        try {
-            await editLivePlanAPI({ 
-                broadcastId: broadcastIdNumber, 
-                broadcastInfo: {
-                    accessToken,
-                    broadcastTitle: title,
-                    content: "라이브 방송",
-                    script: memo,
-                    ttsSetting,
-                    chatbotSetting: faqSetting,
-                    broadcastStartDate: startDate,
-                }
-            }, accessToken);
-            navigate("/v1/seller");
-        } catch (error) {
-            console.error("Error editing live plan:", error);
-            // 에러 처리
-        }
 
         const now_date = new Date();
         const start_date = new Date(startDate);
@@ -143,7 +127,8 @@ console.log(startDate)
             return;
         }
         
-        const liveReservationData: broadcastInfo = {
+        const liveEditData: editbroadcastInfo = {
+            broadcastId: broadcastIdNumber,
             accessToken,
             broadcastTitle: title,
             content: "라이브 방송",
@@ -153,6 +138,7 @@ console.log(startDate)
             broadcastStartDate: start_date.toISOString(),
         };
 
+        console.log(liveEditData)
         
         const liveProductArray = filterLiveProduct(
             0,
@@ -164,8 +150,8 @@ console.log(startDate)
             throw error;
         });
 
+        editLivePlanAPI({editbroadcastInfo: liveEditData}, accessToken)
         navigate("/v1/seller");
-        editLivePlanAPI({broadcastId: broadcastIdNumber, broadcastInfo: liveReservationData}, accessToken)
     }
 
     function filterLiveProduct(
@@ -339,7 +325,7 @@ console.log(startDate)
                                 }
                             />
                         </Box>
-                        <Box p={"2rem"}>
+                        {/* <Box p={"2rem"}>
                             <Text fontSize={"xl"} as={"b"}>
                                 채팅을 자동으로 읽어주기 설정
                             </Text>
@@ -351,7 +337,7 @@ console.log(startDate)
                                     setTtsSetting(e.target.checked)
                                 }
                             />
-                        </Box>
+                        </Box> */}
                     </Flex>
 
                     <Box p={"2rem"}>

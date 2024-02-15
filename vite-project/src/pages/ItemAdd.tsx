@@ -346,9 +346,13 @@ export default function ItemAdd() {
                             placeholder="카테고리를 선택해주세요"
                             onChange={handleCategory}
                         >
-                            <option value="0">농산물</option>
-                            <option value="1">수산물</option>
-                            <option value="2">김현종</option>
+                            <option value="4">과일</option>
+                            <option value="5">채소</option>
+                            <option value="6">건과류</option>
+                            <option value="7">견과류</option>
+                            <option value="1">해산물</option>
+                            <option value="2">생선</option>
+                            <option value="3">건어물</option>
                         </Select>
                     </Box>
 

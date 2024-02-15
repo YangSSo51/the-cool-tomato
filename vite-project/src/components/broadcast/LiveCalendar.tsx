@@ -16,13 +16,9 @@ dayjs.extend(timezone);
 
 interface LiveCalendarInterface {
     date: number;
-    setIslive: (isLive: boolean) => void;
 }
 
-export default function LiveCalendar({
-    date,
-    setIslive,
-}: LiveCalendarInterface) {
+export default function LiveCalendar({ date }: LiveCalendarInterface) {
     const today = dayjs();
     const dates = today.add(date, "day").format("YY-MM-DD");
 
@@ -34,6 +30,10 @@ export default function LiveCalendar({
         Array<LiveFetchInterface> | undefined
     >();
 
+    // useEffect(() => {
+    //     setIslive(!!LiveCalendar);
+    // }, [dates]);
+
     useEffect(() => {
         fetchLiveCalendar(dates, 0, 10).then((res) => {
             setLiveCalendar(res.data.data.broadcastInfoList);
@@ -41,15 +41,13 @@ export default function LiveCalendar({
     }, [dates]);
 
     useEffect(() => {
-        
         if (LiveCalendar && LiveCalendar.length > 0) {
-            
             Promise.all(
                 LiveCalendar.map((item) =>
                     fetchCalendarItem(0, 10, item.liveBroadcastId)
                 )
             ).then((results) => {
-                const enrichedData = results.map((res, index) => {
+                const enrichedData = results.flatMap((res, index) => {
                     const item = LiveCalendar[index];
                     const detail = res.data.data.list[0];
 
@@ -72,6 +70,10 @@ export default function LiveCalendar({
         }
     }, [LiveCalendar]);
 
+    useEffect(() => {
+        console.log(enrichedLiveCalendar)
+    }, [enrichedLiveCalendar])
+
     return (
         <>
             {!enrichedLiveCalendar ? (
@@ -84,76 +86,85 @@ export default function LiveCalendar({
                 </Box>
             ) : (
                 enrichedLiveCalendar?.map((res, index) => (
-                    <Flex
-                        direction={"column"}
-                        px={"6"}
-                        py={"4"}
-                        gap={"4"}
-                        overflowY={"hidden"}
-                        key={index}
-                    >
+                    <>
                         <Flex
-                            alignItems={"center"}
+                            direction={"column"}
+                            py={"4"}
                             gap={"4"}
+                            overflowY={"hidden"}
                             key={index}
                             mb={"1rem"}
                         >
                             <Flex
-                                direction={"column"}
-                                justifyContent={"flex-start"}
-                                mr={"1rem"}
-                            >
-                                <Text
-                                    fontSize={"1.7rem"}
-                                    fontFamily={"GmkBold"}
-                                >
-                                    {dayjs
-                                        .utc(res.startDate)
-                                        .local()
-                                        .format("HH:mm")}{" "}
-                                </Text>
-                            </Flex>
-                            <AspectRatio w="12rem" ratio={3 / 4}>
-                                <Image src={res.imgSrc} objectFit={"cover"} />
-                            </AspectRatio>
-                            <Flex
-                                direction={"column"}
-                                justifyContent={"flex-start"}
+                                alignItems={"center"}
+                                gap={"4"}
                                 key={index}
+                                mb={"1rem"}
                             >
-                                <Text
-                                    fontSize={"xl"}
-                                    mb={"1.5"}
-                                    as={"b"}
-                                    color={"themeGreen.500"}
+                                <Flex
+                                    direction={"column"}
+                                    justifyContent={"flex-start"}
+                                    mr={"1rem"}
                                 >
-                                    {res.productName}
-                                </Text>
-                                <Text fontSize={"2xl"} mb={"1.5"} as={"b"}>
-                                    {res.broadcastTitle}
-                                </Text>
-                                <Text fontSize={"lg"} mb={2}>
-                                    라이브 시간에만 적용되는 가격입니다
-                                </Text>
-                                <Text fontSize={"xl"} as={"s"}>
-                                    {formatNumberWithComma(res.price)}
-                                </Text>
-                                <Flex alignItems={"center"} mt={"2"}>
-                                    <Text fontSize={"2xl"} mr={3} color={"red"}>
-                                        {res.liveRatePrice + "%"}
+                                    <Text
+                                        fontSize={"1.7rem"}
+                                        fontFamily={"GmkBold"}
+                                    >
+                                        {dayjs
+                                            .utc(res.startDate)
+                                            .local()
+                                            .format("HH:mm")}{" "}
                                     </Text>
-                                    <Text fontSize={"xl"} mr={5}>
-                                        {formatNumberWithComma(
-                                            res.liveFlatPrice
-                                        )}
+                                </Flex>
+                                <AspectRatio w="12rem" ratio={3 / 4}>
+                                    <Image
+                                        src={res.imgSrc}
+                                        objectFit={"cover"}
+                                    />
+                                </AspectRatio>
+                                <Flex
+                                    direction={"column"}
+                                    justifyContent={"flex-start"}
+                                    key={index}
+                                >
+                                    <Text
+                                        fontSize={"xl"}
+                                        mb={"1.5"}
+                                        as={"b"}
+                                        color={"themeGreen.500"}
+                                    >
+                                        {res.productName}
                                     </Text>
+                                    <Text fontSize={"2xl"} mb={"1.5"} as={"b"}>
+                                        {res.broadcastTitle}
+                                    </Text>
+                                    <Text fontSize={"lg"} mb={2}>
+                                        라이브 시간에만 적용되는 가격입니다
+                                    </Text>
+                                    <Text fontSize={"xl"} as={"s"}>
+                                        {formatNumberWithComma(res.price)}
+                                    </Text>
+                                    <Flex alignItems={"center"} mt={"2"}>
+                                        <Text
+                                            fontSize={"2xl"}
+                                            mr={3}
+                                            color={"red"}
+                                        >
+                                            {res.liveRatePrice + "%"}
+                                        </Text>
+                                        <Text fontSize={"xl"} mr={5}>
+                                            {formatNumberWithComma(
+                                                res.liveFlatPrice
+                                            )}
+                                        </Text>
+                                    </Flex>
                                 </Flex>
                             </Flex>
                         </Flex>
-                    </Flex>
+                        
+                    </>
                 ))
             )}
         </>
     );
 }
-

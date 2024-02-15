@@ -2,7 +2,11 @@ import { CloseIcon } from "@chakra-ui/icons";
 import { Button, Center, Container, Text } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 
-export default function BuyerLiveNav() {
+interface BuyerLiveNavProps {
+    setStream: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+export default function BuyerLiveNav({ setStream }: BuyerLiveNavProps) {
     const navigate = useNavigate();
     return (
         <Container centerContent>
@@ -13,11 +17,13 @@ export default function BuyerLiveNav() {
                 colorScheme="teal"
                 variant="link"
                 onClick={() => {
+                    setStream(false);
                     navigate("/v1/main");
                 }}
             >
-                <Center><Text as={"b"}>라이브 나가기</Text></Center>
-                
+                <Center>
+                    <Text as={"b"}>라이브 나가기</Text>
+                </Center>
             </Button>
         </Container>
     );

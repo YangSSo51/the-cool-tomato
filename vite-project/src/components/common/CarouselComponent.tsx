@@ -1,26 +1,69 @@
-import { Box, Flex, Text } from "@chakra-ui/react";
-import GoodsList from "../item/dummylist/dummy";
+import { AspectRatio, Box, Flex, Text, Image, Icon, Center } from "@chakra-ui/react";
 import "../../css/ItemListComponentcss.css";
 import { useEffect, useState } from "react";
+import { DisplayInterface } from "../../types/DataTypes";
+import { fetchCalendarItem } from "../../api/liveProduct";
+import { useNavigate } from "react-router-dom";
+import { formatNumberWithComma } from "./Comma";
+import { TbLivePhoto } from "react-icons/tb";
 
-export default function CarouselComponent() {
-    const dummylist = GoodsList; 
+interface CarouselComponentInterface {
+    fetchLiveData: Array<Object> | undefined;
+}
+
+export default function CarouselComponent(
+    fetchLiveData: CarouselComponentInterface
+) {
+    const navigate = useNavigate()
     const [offset, setOffset] = useState(0);
-    const [elapsed, setElapsed] = useState(1)
+    const [elapsed, setElapsed] = useState(1);
+
+    const [displayData, setDisplayData] = useState<DisplayInterface>();
 
     useEffect(() => {
-        setOffset(3 * elapsed)
-    }, [elapsed])
+        if (
+            fetchLiveData.fetchLiveData &&
+            fetchLiveData.fetchLiveData.length > 0
+        ) {
+            Promise.all(
+                fetchLiveData.fetchLiveData.map((item) =>
+                    fetchCalendarItem(0, 10, item.liveBroadcastId)
+                )
+            ).then((res) => {
+                const enrichedData = res.flatMap((res, index) => {
+                    const liveItem = fetchLiveData.fetchLiveData[index];
+                    const detail = res.data.data.list[0];
 
-    setInterval(()=> {
-        setElapsed(elapsed + 1)
-    }, 2500)
-        
+                    return {
+                        price: detail.price,
+                        liveFlatPrice: detail.liveFlatPrice,
+                        imgSrc: detail.imgSrc,
+                        liveBroadcastId: liveItem.liveBroadcastId,
+                    };
+                });
+                setDisplayData(enrichedData);
+            });
+        }
+    }, [fetchLiveData]);
+
+    useEffect(() => {
+        setOffset(3 * elapsed);
+    }, [elapsed]);
+
+    setInterval(() => {
+        setElapsed(elapsed + 1);
+    }, 2500);
+
     return (
         <>
-            <Flex justify={"center"} className="MainText" mt={"1.5rem"} mb={"5rem"}>
+            <Flex
+                justify={"center"}
+                className="MainText"
+                mb={"2rem"}
+            >
                 <Text mr={"2rem"} color={"themeFontGreen.500"}>
-                    현재 <span style={{ color: "red" }}>라이브</span> 중인 상품</Text>
+                    현재 <span style={{ color: "red" }}>라이브</span> 중인 상품
+                </Text>
             </Flex>
 
             <Box display={"block"} p={"1rem"} overflowX={"hidden"}>
@@ -28,36 +71,47 @@ export default function CarouselComponent() {
                     overflowX={"hidden"}
                     wrap={"nowrap"}
                     style={{
-                        width: `${26 * dummylist.length}vw`,
+                        width: `${26 * displayData?.length}vw`,
                         transitionDuration: "10s",
                         transform: `translateX(-${offset}%)`,
-                        transition: 'transform 10s linear',
+                        transition: "transform 10s linear",
                     }}
                 >
-                    {dummylist.map((data, index) => (
-                        <Box key={index} p={2}>
-                            <Box width="20rem" mb={"1rem"}>
-                                <img className="img" src={data.img}></img>
-                            </Box>
+                    {displayData?.map((data, index) => (
+                        <Box key={index} p={2} onClick={() => {
+                            navigate(`/v1/live/${data.liveBroadcastId}`)
+                        }}>
+                            <AspectRatio w="19rem" ratio={1 / 1} mb={"0.5rem"}>
+                                <Image
+                                    src={data.imgSrc}
+                                    aspectRatio="1/1"
+                                    objectFit="cover"
+                                    overflow={"hidden"}
+                                    position={"relative"}
+                                    borderRadius={"20px"}
+                                />
+                            </AspectRatio>
+                            <Flex mt={"0.3rem"} mb={"0.3rem"}><Icon as={TbLivePhoto} w={"8"} h={"8"} color={'red.500'} mr={"0.5rem"} /><Center><Text as={"b"} color={"red"}>ON LIVE</Text></Center></Flex>
                             <Text
                                 color={"themeRed.500"}
                                 as={"b"}
-                                fontSize={"xl"}
+                                fontSize={"2xl"}
+                                
                             >
-                                9,900원
+                                {formatNumberWithComma(`${data.liveFlatPrice}`) + "원"}
                             </Text>
                             <Text
-                                fontSize={"lg"}
-                                ml={"1rem"}
+                                fontSize={"xl"}
+                                ml={"1.5rem"}
                                 color={"black"}
                                 as={"b"}
                                 textDecorationLine={"line-through"}
-                            >{`${data.price}원`}</Text>
+                            >{formatNumberWithComma(`${data.price}`)+"원"}</Text>
                         </Box>
                     ))}
                 </Flex>
             </Box>
-            <Flex justify={"center"} p={"2.5rem"} mt={"5rem"}>
+            <Flex justify={"center"} mt={"4rem"}>
                 <Box
                     w={"80%"}
                     h={"0.5px"}
@@ -67,3 +121,4 @@ export default function CarouselComponent() {
         </>
     );
 }
+

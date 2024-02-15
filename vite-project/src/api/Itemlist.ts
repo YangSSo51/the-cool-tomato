@@ -94,6 +94,10 @@ async function GetRecentAPI(params: {idList: [number]}, accessToken: string) {
     return response.data
 }
 
+async function fetchCategory() {
+    return await http.get('categories')
+}
+
 
 
 export {
@@ -107,5 +111,6 @@ export {
     ItemListSellerGet,
     ItemOneFetch,
     ItemPutFunction,
-    GetRecentAPI
+    GetRecentAPI,
+    fetchCategory
 };

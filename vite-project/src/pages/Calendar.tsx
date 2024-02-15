@@ -105,16 +105,16 @@ export default function Calendar() {
 
                 <TabPanels>
                     <TabPanel>
-                        <LiveCalendar date={0} setIslive={setislive} />
+                        <LiveCalendar date={0} />
                     </TabPanel>
                     <TabPanel>
-                        <LiveCalendar date={1} setIslive={setislive} />
+                        <LiveCalendar date={1} />
                     </TabPanel>
                     <TabPanel>
-                        <LiveCalendar date={2} setIslive={setislive} />
+                        <LiveCalendar date={2} />
                     </TabPanel>
                     <TabPanel>
-                        <LiveCalendar date={3} setIslive={setislive} />
+                        <LiveCalendar date={3}/>
                     </TabPanel>
                 </TabPanels>
             </Tabs>

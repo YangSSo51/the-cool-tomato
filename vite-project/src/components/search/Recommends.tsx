@@ -23,10 +23,12 @@ export default function Recommends() {
                     <GridItem 
                         key={item.productId} 
                         onClick={()=>{navigate(`/v1/items/detail/${item.productId}`)}}
-                        _hover={{ cursor: "pointer", border: "2px", borderRadius:"5", borderColor: "themeRed.500" }}
+                        // _hover={{ cursor: "pointer", border: "2px", borderRadius:"5", borderColor: "themeRed.500" }}
                     >
                         <Card>
-                            <CardBody p={6}>
+                            <CardBody p={6}
+                            _hover={{ cursor: "pointer", border: "2px", borderRadius:"5", borderColor: "themeRed.500" }}
+                            >
                             <img
                                 alt={`Product ${item} Image`}
                                 height="200"
@@ -40,9 +42,6 @@ export default function Recommends() {
                             <Box w="200px">
                             <Text fontSize="lg" fontWeight="semibold" m={2}>
                                 {item.productName}
-                            </Text>
-                            <Text color="gray.500" overflow="hidden" whiteSpace="nowrap" textOverflow="ellipsis">
-                                {item.productContent}
                             </Text>
                             </Box>
                             </CardBody>

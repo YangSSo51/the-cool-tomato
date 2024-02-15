@@ -6,7 +6,11 @@ import ProfileBuyerComponent from "../common/NavComponent/NavBuyerProfileCompone
 import LiveStopAlertDialog from "./LiveStopAlertDialog";
 import { useState } from "react";
 
-function Header() {
+interface HeaderProps {
+    setStream: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+function Header({ setStream }: HeaderProps) {
     const [isOpen, setIsOpen] = useState(false);
     const iconData = [
         { icon: <TimeIcon />, content: "2시간 30분", onclick: undefined },
@@ -35,7 +39,7 @@ function Header() {
                 <Text>므째이터마터</Text>
             </Flex>
             <Flex>
-                {iconData.map((item, index) => (
+                {/* {iconData.map((item, index) => (
                     <Flex
                         key={index}
                         alignItems="center"
@@ -45,9 +49,14 @@ function Header() {
                         {item.icon}
                         <Text marginLeft="0.3rem">{item.content}</Text>
                     </Flex>
-                ))}
+                ))} */}
             </Flex>
-            <LiveStopAlertDialog isOpen={isOpen} handleClick={handleClick} />;
+            <LiveStopAlertDialog
+                isOpen={isOpen}
+                handleClick={handleClick}
+                setStream={setStream}
+            />
+
             <ProfileBuyerComponent />
         </Flex>
     );

@@ -119,6 +119,17 @@ export type broadcastInfo = {
     broadcastStartDate: string;
 };
 
+export type editbroadcastInfo = {
+    broadcastId: number;
+    accessToken: string;
+    broadcastTitle: string;
+    content: string;
+    script: string;
+    ttsSetting: boolean;
+    chatbotSetting: boolean;
+    broadcastStartDate: string;
+};
+
 export type followerItem = {
     id: number;
     loginId: string;
@@ -305,4 +316,21 @@ export interface chatbotMessage {
     roomId: number;
     message: string;
     writer: number;
+}
+
+export interface DisplayInterface {
+    price: number;
+    liveFlatPrice: number;
+    imgSrc: string;
+    liveBroadcastId: number;
+}
+
+export interface FirstDisplayInterface {
+    price: number;
+    liveBroadcastId: number;
+    imgSrc: string;
+    broadcastTitle: string;
+    productName: string;
+    liveFlatPrice: number;
+    liveRatePrice: number;
 }
