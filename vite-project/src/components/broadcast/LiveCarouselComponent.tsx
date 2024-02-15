@@ -19,7 +19,7 @@ export default function LiveCarouselComponent(
     const [displayData, setDisplayData] = useState<FirstDisplayInterface>();
 
     useEffect(() => {
-        console.log(fetchLiveData);
+        
         if (
             fetchLiveData.fetchLiveData &&
             fetchLiveData.fetchLiveData.length > 0
@@ -63,7 +63,7 @@ export default function LiveCarouselComponent(
                 direction={"row"}
                 m={"auto"}
                 overflowX={"hidden"}
-                overflowY={"auto"}
+                overflowY={"hidden"}
                 w={`${9 * 14.5}rem`}
                 style={{ transform: `translateX(${x}px)` }}
                 onMouseDown={(
@@ -95,7 +95,7 @@ export default function LiveCarouselComponent(
                 }}
             >
                 {displayData?.map((data, index) => (
-                    <Box key={index} w="100%" pointerEvents={"none"}>
+                    <Box key={index} w="100%">
                         <LiveListComponent
                             liveFlatPrice={data.liveFlatPrice}
                             liveBroadcastId={data.liveBroadcastId}

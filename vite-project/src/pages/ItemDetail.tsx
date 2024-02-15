@@ -18,12 +18,13 @@ import ItemDetailQnA from "../components/item/ItemDetailQnA";
 import { useEffect, useState } from "react";
 import { ItemDetailInterface } from "../types/DataTypes";
 import { ItemDetailFetch } from "../api/Itemlist";
+import { formatNumberWithComma } from "../components/common/Comma";
 
 export default function ItemDetail() {
-    const navigate = useNavigate()
+    const navigate = useNavigate();
     const BuyNow = () => {
-        navigate("https://naver.com")
-    }
+        navigate("https://naver.com");
+    };
 
     const [fetchData, setFetchData] = useState<
         ItemDetailInterface | undefined
@@ -43,7 +44,7 @@ export default function ItemDetail() {
                     <Box maxW={"4xl"} mx={"auto"} p={6}>
                         <Flex grow={1}>
                             <Box maxW={"26rem"}>
-                                <AspectRatio w='450px' ratio={1 / 1}>
+                                <AspectRatio w="450px" ratio={1 / 1}>
                                     <Image
                                         src={fetchData?.imgSrc}
                                         aspectRatio="1/1"
@@ -57,26 +58,22 @@ export default function ItemDetail() {
 
                             <Flex display={"block"} pl={"2.5rem"} ml={"5rem"}>
                                 <Box mb={"1rem"}>
-                                    <Text fontSize={"2xl"} as={"b"}>
+                                    <Text fontSize={"3xl"} as={"b"}>
                                         {fetchData?.productName}
                                     </Text>
                                 </Box>
-                                <Text fontSize={"lg"} mb={"1"}>
-                                    <Text color={"themeRed.500"} as={"b"}>
-                                        33% 9,900원
-                                    </Text>
-                                    <Text
-                                        ml={"1rem"}
-                                        color={"black"}
-                                        as={"b"}
-                                        textDecorationLine={"line-through"}
-                                    >
-                                        {fetchData?.price}
+                                <Text fontSize={"lg"} mb={"0.2rem"}>
+                                    <Text color={"black"} as={"b"}>
+                                        {fetchData
+                                            ? formatNumberWithComma(
+                                                  fetchData?.price
+                                              ) + "원"
+                                            : ""}
                                     </Text>
                                 </Text>
-                                <Box mb={"4"}>
+                                <Box mb={"1.5rem"}>
                                     <Text as={"b"} color={"themeGreen.500"}>
-                                        라이브 기간만 적용되는 가격입니다.
+                                        라이브 시작시 특별가가 적용됩니다
                                     </Text>
                                 </Box>
                                 <Box mb={"1.5rem"}>
@@ -98,10 +95,10 @@ export default function ItemDetail() {
                                     <Text>상품 별도 표기</Text>
                                 </Box>
                                 <Box mb={"1.5rem"}>
-                                    <Text fontSize={"lg"} as={"b"} mb={2}>
+                                    <Text fontSize={"lg"} as={"b"} mb={"1rem"}>
                                         상품 문의
                                     </Text>
-                                    <Text>010-4944-9850</Text>
+                                    <Text></Text>
                                 </Box>
                                 <Box mb={"6rem"} alignItems={"center"}>
                                     <Button
@@ -143,7 +140,9 @@ export default function ItemDetail() {
                                 alignItems={"center"}
                                 justify={"center"}
                             >
-                                <ItemDetailDetail content={fetchData?.productContent} />
+                                <ItemDetailDetail
+                                    content={fetchData?.productContent}
+                                />
                             </Flex>
                         </TabPanel>
                         <TabPanel>
@@ -170,3 +169,4 @@ export default function ItemDetail() {
         </>
     );
 }
+
