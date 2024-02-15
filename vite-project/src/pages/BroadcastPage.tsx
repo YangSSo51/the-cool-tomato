@@ -5,6 +5,7 @@ import BroadcastScreen from "../components/broadcast/Screen";
 import Chat from "../components/broadcast//Chat";
 import Menu from "../components/broadcast//Menu";
 import { useState } from "react";
+import React from "react";
 
 function Broadcast() {
     const [stream, setStream] = useState(true);
