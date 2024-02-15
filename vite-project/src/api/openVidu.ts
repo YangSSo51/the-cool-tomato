@@ -111,6 +111,7 @@ async function getEndedLiveAPI(
             Authorization: "Bearer " + accessToken,
         },
     });
+    console.log(response);
     return response.data.data.broadcastInfoList;
 }
 
