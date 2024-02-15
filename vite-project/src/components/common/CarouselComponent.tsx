@@ -1,4 +1,12 @@
-import { AspectRatio, Box, Flex, Text, Image, Icon, Center } from "@chakra-ui/react";
+import {
+    AspectRatio,
+    Box,
+    Flex,
+    Text,
+    Image,
+    Icon,
+    Center,
+} from "@chakra-ui/react";
 import "../../css/ItemListComponentcss.css";
 import { useEffect, useState } from "react";
 import { DisplayInterface } from "../../types/DataTypes";
@@ -8,17 +16,17 @@ import { formatNumberWithComma } from "./Comma";
 import { TbLivePhoto } from "react-icons/tb";
 
 interface CarouselComponentInterface {
-    fetchLiveData: Array<Object> | undefined;
+    fetchLiveData: Array<DisplayInterface> | undefined;
 }
 
 export default function CarouselComponent(
     fetchLiveData: CarouselComponentInterface
 ) {
-    const navigate = useNavigate()
+    const navigate = useNavigate();
     const [offset, setOffset] = useState(0);
     const [elapsed, setElapsed] = useState(1);
 
-    const [displayData, setDisplayData] = useState<DisplayInterface>();
+    const [displayData, setDisplayData] = useState<Array<DisplayInterface>>([]);
 
     useEffect(() => {
         if (
@@ -30,37 +38,43 @@ export default function CarouselComponent(
                     fetchCalendarItem(0, 10, item.liveBroadcastId)
                 )
             ).then((res) => {
-                const enrichedData = res.flatMap((res, index) => {
-                    const liveItem = fetchLiveData.fetchLiveData[index];
-                    const detail = res.data.data.list[0];
+                if (fetchLiveData.fetchLiveData !== undefined) {
+                    const enrichedData = res.flatMap((res, index) => {
+                        if (fetchLiveData.fetchLiveData === undefined) {
+                            return {
+                                price: 0,
+                                liveFlatPrice: 0,
+                                imgSrc: '',
+                                liveBroadcastId: 0,
+                            };
+                        }
+                        const liveItem = fetchLiveData.fetchLiveData[index];
+                        const detail = res.data.data.list[0];
 
-                    return {
-                        price: detail.price,
-                        liveFlatPrice: detail.liveFlatPrice,
-                        imgSrc: detail.imgSrc,
-                        liveBroadcastId: liveItem.liveBroadcastId,
-                    };
-                });
-                setDisplayData(enrichedData);
+                        return {
+                            price: detail.price,
+                            liveFlatPrice: detail.liveFlatPrice,
+                            imgSrc: detail.imgSrc,
+                            liveBroadcastId: liveItem.liveBroadcastId,
+                        };
+                    });
+                    setDisplayData(enrichedData);
+                }
             });
         }
     }, [fetchLiveData]);
 
     useEffect(() => {
-        setOffset(3 * elapsed);
+        setOffset(10 * elapsed);
     }, [elapsed]);
 
     setInterval(() => {
         setElapsed(elapsed + 1);
-    }, 2500);
+    }, 10000);
 
     return (
         <>
-            <Flex
-                justify={"center"}
-                className="MainText"
-                mb={"2rem"}
-            >
+            <Flex justify={"center"} className="MainText" mb={"2rem"}>
                 <Text mr={"2rem"} color={"themeFontGreen.500"}>
                     현재 <span style={{ color: "red" }}>라이브</span> 중인 상품
                 </Text>
@@ -71,16 +85,20 @@ export default function CarouselComponent(
                     overflowX={"hidden"}
                     wrap={"nowrap"}
                     style={{
-                        width: `${26 * displayData?.length}vw`,
+                        width: `${19 * 10}vw`,
                         transitionDuration: "10s",
                         transform: `translateX(-${offset}%)`,
                         transition: "transform 10s linear",
                     }}
                 >
                     {displayData?.map((data, index) => (
-                        <Box key={index} p={2} onClick={() => {
-                            navigate(`/v1/live/${data.liveBroadcastId}`)
-                        }}>
+                        <Box
+                            key={index}
+                            p={2}
+                            onClick={() => {
+                                navigate(`/v1/live/${data.liveBroadcastId}`);
+                            }}
+                        >
                             <AspectRatio w="19rem" ratio={1 / 1} mb={"0.5rem"}>
                                 <Image
                                     src={data.imgSrc}
@@ -91,14 +109,27 @@ export default function CarouselComponent(
                                     borderRadius={"20px"}
                                 />
                             </AspectRatio>
-                            <Flex mt={"0.3rem"} mb={"0.3rem"}><Icon as={TbLivePhoto} w={"8"} h={"8"} color={'red.500'} mr={"0.5rem"} /><Center><Text as={"b"} color={"red"}>ON LIVE</Text></Center></Flex>
+                            <Flex mt={"0.3rem"} mb={"0.3rem"}>
+                                <Icon
+                                    as={TbLivePhoto}
+                                    w={"8"}
+                                    h={"8"}
+                                    color={"red.500"}
+                                    mr={"0.5rem"}
+                                />
+                                <Center>
+                                    <Text as={"b"} color={"red"}>
+                                        ON LIVE
+                                    </Text>
+                                </Center>
+                            </Flex>
                             <Text
                                 color={"themeRed.500"}
                                 as={"b"}
                                 fontSize={"2xl"}
-                                
                             >
-                                {formatNumberWithComma(`${data.liveFlatPrice}`) + "원"}
+                                {formatNumberWithComma(data.liveFlatPrice) +
+                                    "원"}
                             </Text>
                             <Text
                                 fontSize={"xl"}
@@ -106,7 +137,9 @@ export default function CarouselComponent(
                                 color={"black"}
                                 as={"b"}
                                 textDecorationLine={"line-through"}
-                            >{formatNumberWithComma(`${data.price}`)+"원"}</Text>
+                            >
+                                {formatNumberWithComma(data.price) + "원"}
+                            </Text>
                         </Box>
                     ))}
                 </Flex>
@@ -121,4 +154,3 @@ export default function CarouselComponent(
         </>
     );
 }
-

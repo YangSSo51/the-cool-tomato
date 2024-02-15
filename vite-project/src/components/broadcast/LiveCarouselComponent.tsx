@@ -1,12 +1,11 @@
 import { Box, Flex } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
-import dummylivelist from "../item/dummylist/dummylivelist";
 import LiveListComponent from "./LiveListComponent";
-import { FirstDisplayInterface } from "../../types/DataTypes";
+import { DisplayInterface, FirstDisplayInterface } from "../../types/DataTypes";
 import { fetchCalendarItem } from "../../api/liveProduct";
 
 interface CarouselComponentInterface {
-    fetchLiveData: Array<Object> | undefined;
+    fetchLiveData: Array<DisplayInterface> | undefined;
 }
 
 export default function LiveCarouselComponent(
@@ -16,10 +15,9 @@ export default function LiveCarouselComponent(
         x: 0,
     });
 
-    const [displayData, setDisplayData] = useState<FirstDisplayInterface>();
+    const [displayData, setDisplayData] = useState<Array<FirstDisplayInterface>>();
 
     useEffect(() => {
-        
         if (
             fetchLiveData.fetchLiveData &&
             fetchLiveData.fetchLiveData.length > 0
@@ -30,6 +28,18 @@ export default function LiveCarouselComponent(
                 )
             ).then((res) => {
                 const enrichedData = res.flatMap((res, index) => {
+                    if (fetchLiveData.fetchLiveData === undefined) {
+                        return {
+                            price: 0,
+                            liveFlatPrice: 0,
+                            imgSrc: "",
+                            liveBroadcastId: 0,
+                            broadcastTitle: '',
+                            productName: '',
+                            liveRatePrice: 0,
+                        };
+                    }
+
                     const liveItem = fetchLiveData.fetchLiveData[index];
                     const detail = res.data.data.list[0];
 
@@ -109,4 +119,3 @@ export default function LiveCarouselComponent(
         </Box>
     );
 }
-
