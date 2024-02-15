@@ -46,6 +46,7 @@ export default function CarouselComponent(
                                 liveFlatPrice: 0,
                                 imgSrc: '',
                                 liveBroadcastId: 0,
+                                broadcastTitle: ''
                             };
                         }
                         const liveItem = fetchLiveData.fetchLiveData[index];
@@ -56,6 +57,7 @@ export default function CarouselComponent(
                             liveFlatPrice: detail.liveFlatPrice,
                             imgSrc: detail.imgSrc,
                             liveBroadcastId: liveItem.liveBroadcastId,
+                            broadcastTitle: liveItem.broadcastTitle
                         };
                     });
                     setDisplayData(enrichedData);
