@@ -323,6 +323,7 @@ export interface DisplayInterface {
     liveFlatPrice: number;
     imgSrc: string;
     liveBroadcastId: number;
+    broadcastTitle: string;
 }
 
 export interface FirstDisplayInterface {

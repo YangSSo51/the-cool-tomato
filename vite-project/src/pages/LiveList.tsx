@@ -3,10 +3,11 @@ import LiveCarouselComponent from "../components/broadcast/LiveCarouselComponent
 import CarouselComponent from "../components/common/CarouselComponent";
 import { fetchLiveCarousel } from "../api/live";
 import { useEffect, useState } from "react";
+import { DisplayInterface,  } from "../types/DataTypes";
 
 export default function LiveList() {
-    const [fetchLiveData, setFetchLiveData] = useState<Array<Object>>()
-    const [shuffledData, setRandomLiveData] = useState<Array<Object>>()
+    const [fetchLiveData, setFetchLiveData] = useState<Array<DisplayInterface>>([])
+    const [shuffledData, setRandomLiveData] = useState<Array<DisplayInterface>>([])
 
     useEffect(() => {
         try {
@@ -36,8 +37,8 @@ export default function LiveList() {
             <Flex
                 direction={"column"}
                 alignItems={"center"}
-                mt={"2rem"}
-                mb={"5rem"}
+                mt={"4rem"}
+                mb={"10rem"}
                 maxW={"100vw"}
             >
                 <Text
