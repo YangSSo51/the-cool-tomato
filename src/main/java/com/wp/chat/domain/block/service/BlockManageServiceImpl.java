@@ -54,7 +54,7 @@ public class BlockManageServiceImpl implements  BlockManageService {
 
     // 차단 목록 조회 (sellerId)
 
-    @Cacheable(cacheNames = BLOCK_LIST, key = "#sellerId", condition = "#sellerId != null", cacheManager = "cacheManager")
+//    @Cacheable(cacheNames = BLOCK_LIST, key = "#sellerId", condition = "#sellerId != null", cacheManager = "cacheManager")
     @Override
     public List<Long> getBlockManagesBySellerId(Long sellerId) {
         return blockManageRepository.findAllBlockedIdBySellerId(sellerId);
@@ -63,7 +63,7 @@ public class BlockManageServiceImpl implements  BlockManageService {
     // 차단 등록
     @Override
     @Transactional
-    @CacheEvict(cacheNames = BLOCK_LIST, key = "#sellerId", cacheManager = "cacheManager")
+//    @CacheEvict(cacheNames = BLOCK_LIST, key = "#sellerId", cacheManager = "cacheManager")
     public void addBlocked(Long sellerId, Long blockedId) {
         // 판매자
         User seller = userRepository.findById(sellerId).orElseThrow(() -> new BusinessExceptionHandler(ErrorCode.NOT_FOUND_SELLER_ID));
@@ -81,7 +81,7 @@ public class BlockManageServiceImpl implements  BlockManageService {
     // 차단 삭제
     @Override
     @Transactional
-    @CacheEvict(cacheNames = BLOCK_LIST, key = "#sellerId", cacheManager = "cacheManager")
+//    @CacheEvict(cacheNames = BLOCK_LIST, key = "#sellerId", cacheManager = "cacheManager")
     public void removeBlocked(String auth, Long sellerId, Long blockedId) {
         try {
             if(auth.equals("SELLER")) {
