@@ -112,9 +112,11 @@ public class BroadcastServiceImpl implements BroadcastService{
         if(!liveBroadcast.getUser().getId().equals(sellerId))throw new BusinessExceptionHandler("올바른 판매자가 아닙니다.", ErrorCode.FORBIDDEN_ERROR);
 
         try {
+            Long viewCount = Long.parseLong((String)redisTemplate.opsForHash().get(VIEW, String.valueOf(stop.getLiveBroadcastId())));
             mediateOpenviduConnection.deleteSession(liveBroadcast.getSessionId());
             liveBroadcast.setBroadcastStatus(false);
             liveBroadcast.setIsDeleted(true);
+            liveBroadcast.setViewCount(viewCount);
             liveBroadcast.setBroadcastEndDate(LocalDateTime.now());
             liveBroadcastRepository.save(liveBroadcast);
 
