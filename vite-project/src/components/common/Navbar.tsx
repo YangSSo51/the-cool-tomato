@@ -17,11 +17,11 @@ import logo from "/img/newlogo.png";
 function NavBar() {
     const navigate = useNavigate();
     const user = useSelector((state: RootState) => state.user);
-    const [myAuth, setMyAuth] = useState("")
+    const [myAuth, setMyAuth] = useState("");
 
     useEffect(() => {
-        setMyAuth(user.auth)
-        }, [user.accessToken]);
+        setMyAuth(user.auth);
+    }, [user.accessToken]);
 
     return (
         <Box className="paddingNavBar">
@@ -37,12 +37,9 @@ function NavBar() {
                     onClick={() => {
                         navigate("./main");
                     }}
+                    _hover={{ cursor: "pointer" }}
                 >
-                    <Image
-                        width={"100%"}
-                        height={"100%"}
-                        src={logo}
-                    ></Image>
+                    <Image width={"100%"} height={"100%"} src={logo}></Image>
                 </Box>
 
                 <Spacer />

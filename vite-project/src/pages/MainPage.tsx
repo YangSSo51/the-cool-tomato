@@ -176,7 +176,13 @@ export default function MainPage() {
                                 </Text>
                             </CardBody>
                             <CardFooter>
-                                <Button variant="solid" colorScheme="green">
+                                <Button
+                                    variant="solid"
+                                    colorScheme="green"
+                                    onClick={() => {
+                                        navigate("/v1/items/detail/24");
+                                    }}
+                                >
                                     상품 구경가기
                                 </Button>
                             </CardFooter>

@@ -1,12 +1,5 @@
 import { Flex, Text, Box, Container, Center } from "@chakra-ui/react";
-import {
-    Avatar,
-    Badge,
-    Image,
-    Button,
-    Divider,
-    Highlight,
-} from "@chakra-ui/react";
+import { Avatar, Image, Button, Divider, Highlight } from "@chakra-ui/react";
 import { CloseIcon } from "@chakra-ui/icons";
 import {
     Chart as ChartJS,
@@ -57,26 +50,15 @@ export default function LiveResultPage() {
     const params = new URLSearchParams(window.location.search);
     const { broadcastId } = useParams<{ broadcastId: string }>();
     const broadcastTitle: string | null = params.get("broadcastTitle");
-    const nickName: string | null = params.get("nickName");
     const viewCount: string | null = params.get("viewCount");
-    const sellerId: string | null = params.get("sellerId");
-    const broadcastStatus: string | null = params.get("broadcastStatus");
     const startDate: string | null = params.get("startDate");
 
     const broadcastIdNumber = Number(broadcastId);
     const viewCountNumber = Number(viewCount);
 
-    console.log("liveBroadcastId:", broadcastIdNumber);
-    console.log("broadcastTitle:", broadcastTitle);
-    console.log("nickName:", nickName);
-    console.log("viewCount:", viewCountNumber);
-    console.log("sellerId:", sellerId);
-    console.log("broadcastStatus:", broadcastStatus);
-    console.log("startDate:", startDate);
-
     const [liveResult, setLiveResult] = useState([]);
     const [products, setProducts] = useState<ProductType[]>([]);
-    const keywordlist = ["1", "2", "3", "4", "5"];
+    const [keywordlist, setKeywordlist] = useState<string[]>([]);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -84,8 +66,11 @@ export default function LiveResultPage() {
                 broadcastIdNumber,
                 accessToken
             );
-            console.log(response);
-            setLiveResult(response.connNum);
+            const data = JSON.parse(response); // JSON 문자열을 JavaScript 객체로 변환합니다.
+            // console.log(data);
+            // console.log(data.hotKeywords); // hotKeywords에 접근합니다.
+            setLiveResult(data.connNum);
+            setKeywordlist(data.hotKeywords);
         };
         fetchData();
     }, []);
@@ -106,28 +91,10 @@ export default function LiveResultPage() {
                     mainProductSetting: item.mainProductSetting,
                 })
             );
-            // console.log(response);
             setProducts(selectedProducts);
         };
         fetchData();
     }, []);
-
-    // useEffect(() => {
-    //     const fetchData = async () => {
-    //         try {
-    //             const response = await getEndedLiveAPI(
-    //                 { page: 0, size: 10 },
-    //                 accessToken
-    //             );
-    //             if (response) {
-    //                 setLivedItem(response);
-    //             }
-    //         } catch (error) {
-    //             console.error(error);
-    //         }
-    //     };
-    //     fetchData();
-    // }, []);
 
     return (
         <>
@@ -180,7 +147,7 @@ export default function LiveResultPage() {
                     py={8}
                     p="5"
                     border="2px"
-                    mb="10"
+                    mb="20"
                     borderColor="themeLightGreen.500"
                 >
                     <Avatar mt="4" size="xl" src={user.profileImg} />
@@ -275,7 +242,7 @@ export default function LiveResultPage() {
                         </Text>
                         <Flex justify="space-around" mb="4">
                             {keywordlist.map((keyword, index) => (
-                                <Text key={index} fontSize="3xl">
+                                <Text key={index} fontSize="3xl" mr={3}>
                                     <Highlight
                                         query={keyword}
                                         styles={{
@@ -344,5 +311,5 @@ export function LineLine() {
         },
     };
 
-    return <Line options={options} data={data} />;
+    return <Line options={options} data={data} height={400} width={600} />;
 }
