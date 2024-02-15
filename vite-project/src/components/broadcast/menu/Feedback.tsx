@@ -12,7 +12,7 @@ export default function Feedback() {
     useEffect(() => {
        
         fetchKeyword(Number(params.roomId)).then((res) => {
-            setKeyword(res.data.data);
+            setKeyword(res.data.data.slice(0,5));
             
         });
     }, [isButton]);
@@ -29,7 +29,7 @@ export default function Feedback() {
                 </Text>
             </Center>
 
-            <Center mb={"3rem"}>
+            <Center mb={"2rem"}>
                 <Button onClick={buttonClick}>실시간 키워드 분석</Button>
             </Center>
 
