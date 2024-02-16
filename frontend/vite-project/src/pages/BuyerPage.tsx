@@ -47,7 +47,7 @@ export default function BuyerPage() {
             </Center>
 
             <Flex m="auto" overflow="hidden" rounded="lg" w="85vw" minH={{ base:"85vh", lg: "85vh"}}>
-                <Flex m="auto" direction={{ base: "column", lg: "row"}} rounded="lg" w="80vw" maxH={{ base:"auto"}} px="2">                    
+                <Flex direction={{ base: "column", lg: "row"}} rounded="lg" w="80vw" maxH={{ base:"auto"}} px="2">                    
                     <Box w={{ base: "100%", lg: "25%" }} pr="4">
                         <Box w="full" bg="white" rounded="lg" overflow="hidden">
                             <Flex direction="column" align="center" py="6">

@@ -44,9 +44,9 @@ export default function CarouselComponent(
                             return {
                                 price: 0,
                                 liveFlatPrice: 0,
-                                imgSrc: '',
+                                imgSrc: "",
                                 liveBroadcastId: 0,
-                                broadcastTitle: ''
+                                broadcastTitle: "",
                             };
                         }
                         const liveItem = fetchLiveData.fetchLiveData[index];
@@ -57,7 +57,7 @@ export default function CarouselComponent(
                             liveFlatPrice: detail.liveFlatPrice,
                             imgSrc: detail.imgSrc,
                             liveBroadcastId: liveItem.liveBroadcastId,
-                            broadcastTitle: liveItem.broadcastTitle
+                            broadcastTitle: liveItem.broadcastTitle,
                         };
                     });
                     setDisplayData(enrichedData);
@@ -67,8 +67,8 @@ export default function CarouselComponent(
     }, [fetchLiveData]);
 
     useEffect(() => {
-        console.log(displayData)
-    },[displayData])
+        console.log(displayData);
+    }, [displayData]);
 
     useEffect(() => {
         setOffset(10 * elapsed);
@@ -104,8 +104,15 @@ export default function CarouselComponent(
                             onClick={() => {
                                 navigate(`/v1/live/${data.liveBroadcastId}`);
                             }}
+                            borderRadius={"20px"}
                         >
-                            <AspectRatio w="19rem" ratio={1 / 1} mb={"0.5rem"}>
+                            <AspectRatio
+                                w="19rem"
+                                ratio={1 / 1}
+                                mb={"0.5rem"}
+                                position={"relative"}
+                                overflow={"hidden"}
+                            >
                                 <Image
                                     src={data.imgSrc}
                                     aspectRatio="1/1"
@@ -113,6 +120,15 @@ export default function CarouselComponent(
                                     overflow={"hidden"}
                                     position={"relative"}
                                     borderRadius={"20px"}
+                                    transition="all 0.2s ease-out"
+                                    transform="translate(-0.5%, -0.5%)"
+                                    style={{
+                                        top: "0.5%",
+                                        left: "0.5%",
+                                        width: "100%",
+                                        height: "100%",
+                                    }}
+                                    _hover={{ transform: "scale(1.1)" }}
                                 />
                             </AspectRatio>
                             <Flex mt={"0.3rem"} mb={"0.3rem"}>
@@ -160,3 +176,4 @@ export default function CarouselComponent(
         </>
     );
 }
+

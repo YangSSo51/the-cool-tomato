@@ -33,6 +33,7 @@ const LiveListComponent = ({ url, title, price, liveFlatPrice,liveBroadcastId }:
                         position={"relative"}
                         borderRadius={"20px"}
                         onClick={() => navigate(`/v1/live/${liveBroadcastId}`)}
+                        _hover={{ cursor: "pointer" }}
                     />
                 </AspectRatio>
                 <Stack mt="6" spacing="3">

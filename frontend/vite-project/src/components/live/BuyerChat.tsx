@@ -140,6 +140,7 @@ export default function BuyerChat() {
                     direction={"column"}
                     overflowY={"auto"}
                     pt={"1rem"}
+                    justifyContent={"flex-end"}
                 >
                     <UnorderedList>
                         {recv.map((msg, index) => (

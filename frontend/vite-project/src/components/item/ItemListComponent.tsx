@@ -33,15 +33,24 @@ const Goods = ({ id, img, title, price, profile, sellerId }: GoodsProps) => {
                             navigate(`/v1/items/detail/${id}`);
                         }}
                         _hover={{ cursor: "pointer" }}
+                        borderRadius={"20px"}
+                        
                     >
-                        <AspectRatio w="23rem" ratio={1 / 1}>
+                        <AspectRatio w="23rem" ratio={1 / 1} overflow={"hidden"} position={"relative"}>
                             <Image
                                 src={img}
-                                aspectRatio="1/1"
                                 objectFit="cover"
-                                overflow={"hidden"}
-                                position={"relative"}
-                                borderRadius={"20px"}
+                                position="absolute"
+                                borderRadius="20px"
+                                transition="all 0.2s ease-out"
+                                transform = "translate(-0.5%, -0.5%)"
+                                style={{
+                                    top: "0.5%",
+                                    left: "0.5%",
+                                    width: "100%",
+                                    height: "100%",
+                                }}
+                                _hover={{ transform: "scale(1.1)" }}
                             />
                         </AspectRatio>
                     </Box>
@@ -86,3 +95,4 @@ const Goods = ({ id, img, title, price, profile, sellerId }: GoodsProps) => {
 };
 
 export default Goods;
+

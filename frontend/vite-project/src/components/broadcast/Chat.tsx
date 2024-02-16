@@ -68,6 +68,7 @@ function Chat() {
                 h="82vh"
                 flexDirection="column"
                 justifyContent="end"
+                overflow={"hidden"}
             >
                 <ChatList recv={recv} setRecv={setRecv} />
             </Flex>

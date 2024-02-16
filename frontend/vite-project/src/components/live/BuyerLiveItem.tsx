@@ -1,4 +1,5 @@
 import { Text, Flex, Image, Center } from "@chakra-ui/react";
+import { formatNumberWithComma } from "../common/Comma";
 
 interface Items {
     id: number;
@@ -23,10 +24,10 @@ const BuyerLiveItem = ({ id, img, title, price, liveFlatPrice }: Items) => {
                         {title}
                     </Text>
                     <Text as={"b"} fontSize={"lg"} color={"red"}>
-                        {liveFlatPrice}
+                        {formatNumberWithComma(liveFlatPrice)}
                     </Text>
                     <Text as={"s"} fontSize={"lg"}>
-                        {price}
+                        {formatNumberWithComma(price)}
                     </Text>
                 </Flex>
             </Center>

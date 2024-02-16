@@ -52,16 +52,7 @@ export default function LiveList() {
 
                 <LiveCarouselComponent fetchLiveData={shuffledData} />
 
-                {/* <Text
-                    color={"themeGreen.500"}
-                    fontSize={"3xl"}
-                    as={"b"}
-                    mt={"1rem"}
-                    textAlign={"left"}
-                >
-                    회원님이 평소 검색한 라이브
-                </Text> */}
-                {/* <LiveCarouselComponent fetchLiveData={fetchLiveData} /> */}
+                
             </Flex>
         </>
     );
