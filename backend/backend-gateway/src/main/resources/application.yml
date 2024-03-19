@@ -1,9 +1,9 @@
 spring:
   port: 8000
   ssl:
-    key-store: src/main/resources/AN-keystore.p12
+    key-store: MAKING_PATH
     key-store-type: PKCS12
-    key-store-password: asdf134620!
+    key-store-password: MASKING_PASSWORD
   application:
     name: gateway
   profiles:
