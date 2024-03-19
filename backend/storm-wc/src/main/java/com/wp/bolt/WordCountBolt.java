@@ -20,14 +20,14 @@ public class WordCountBolt extends BaseRichBolt {
     public void prepare(Map map, TopologyContext topologyContext, OutputCollector outputCollector) {
         this.collector = outputCollector;
         this.jedisPoolConfig = new JedisPoolConfig();
-        this.pool = new JedisPool(this.jedisPoolConfig, "172.30.1.51", 6379, 1000, "asdf134620!");
+        this.pool = new JedisPool(this.jedisPoolConfig, "MASKING_URL", 6379, 1000, "MASKING_PASSWORD");
     }
 
     @Override
     public void execute(Tuple tuple) {
         String roomId = tuple.getStringByField("roomId");
         String noun = tuple.getStringByField("noun");
-        Jedis jedis =  this.pool.getResource();
+        Jedis jedis = this.pool.getResource();
         System.out.println("wc " + roomId + " " + noun);
         jedis.zincrby(roomId, 1, noun);
     }
