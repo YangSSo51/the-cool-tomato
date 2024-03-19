@@ -1,6 +1,6 @@
 -- MySQL dump 10.13  Distrib 5.7.43, for Win64 (x86_64)
 --
--- Host: kpc.chf1yiylcr3s.ap-northeast-2.rds.amazonaws.com    Database: wp
+-- Host: MASKING_URL    Database: wp
 -- ------------------------------------------------------
 -- Server version	8.0.33
 
