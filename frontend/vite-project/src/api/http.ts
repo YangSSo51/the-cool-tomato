@@ -1,7 +1,7 @@
 import axios from "axios";
 import SockJS from "sockjs-client";
 
-const BASEURL = "cool-tomato.duckdns.org";
+const BASEURL = "MASKING_URL";
 const credential = true;
 
 const chatWebSocketUrl = "wss://" + BASEURL + "/v1/chat/ws-stomp/websocket";

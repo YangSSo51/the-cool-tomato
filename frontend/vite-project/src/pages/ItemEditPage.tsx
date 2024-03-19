@@ -29,57 +29,56 @@ import { CloseIcon } from "@chakra-ui/icons";
 import { FaRegEdit } from "react-icons/fa";
 import { useSelector } from "react-redux";
 import { RootState } from "../redux/stores/store";
-
+import { BASEURL } from "../api/http";
 
 export default function ItemEditPage() {
     const accessToken = useSelector((state: RootState) => {
         return state.user.accessToken;
     });
     const editorRef = useRef(null);
-    const { productParams }  = useParams()
+    const { productParams } = useParams();
     const [fileName, setFileName] = useState<UploadImage | undefined>();
     const [previewURL, setPreviewUrl] = useState<string | null>("");
 
-    console.log(productParams)
+    console.log(productParams);
 
     const [values, setValues] = useState<PutItemInterface>({
         categoryId: 0,
-        productName: '',
-        productContent: '',
+        productName: "",
+        productContent: "",
         paymentLink: "https://naver.com",
         price: 0,
         deliveryCharge: 1000,
         quantity: 100,
-        productId : Number(productParams)
-    }
-    );
+        productId: Number(productParams),
+    });
 
     useEffect(() => {
-        ItemOneFetch(Number(productParams)).then((res) => {
-            setValues({
-                categoryId: parseInt(res.categoryId),
-                productName: `${res.productName}`,
-                productContent: `${res.productContent}`,
-                paymentLink: "https://naver.com",
-                price: parseInt(res.price),
-                deliveryCharge: 1000,
-                quantity: 100,
-                productId: Number(productParams)
+        ItemOneFetch(Number(productParams))
+            .then((res) => {
+                setValues({
+                    categoryId: parseInt(res.categoryId),
+                    productName: `${res.productName}`,
+                    productContent: `${res.productContent}`,
+                    paymentLink: "https://naver.com",
+                    price: parseInt(res.price),
+                    deliveryCharge: 1000,
+                    quantity: 100,
+                    productId: Number(productParams),
+                });
             })
-        })
             .catch((err) => {
-                console.log(err)
-            })
-    }, [productParams])
+                console.log(err);
+            });
+    }, [productParams]);
 
-    const
-        config = {
-            editorClass: "custom-class",
-            heightMin: 600,
-            autofocus: true,
-            attribution: false,
-            imageUploadURL: "http://i10a501.p.ssafy.io:8082/v1/products/fileupload"
-        };
+    const config = {
+        editorClass: "custom-class",
+        heightMin: 600,
+        autofocus: true,
+        attribution: false,
+        imageUploadURL: BASEURL + "/v1/products/fileupload",
+    };
 
     const navigate = useNavigate();
     const [TitleInput, setTitleInput] = useState("");
@@ -96,7 +95,6 @@ export default function ItemEditPage() {
             const root = ReactDOM.createRoot(editorRef.current);
             root.render(<FroalaEditorComponent tag="textarea" />);
         }
-
     }, []);
 
     // 입력값
@@ -172,7 +170,7 @@ export default function ItemEditPage() {
 
     const formData = new FormData();
     const onSubmit = async () => {
-        console.log(values)
+        console.log(values);
         if (fileName !== undefined) {
             if (
                 values.price >= 100 &&
@@ -187,7 +185,7 @@ export default function ItemEditPage() {
                     navigate("/v1/items/list/0");
                 } catch (error) {
                     alert("등록 실패했습니다. 상품을 다시 설정해주세요.");
-                    console.log(error)
+                    console.log(error);
                 }
             } else if (!values.price) {
                 alert("가격을 설정해주세요");
@@ -201,7 +199,7 @@ export default function ItemEditPage() {
                 alert("?");
             }
         } else {
-            alert("반드시 사진을 첨부해주세요")
+            alert("반드시 사진을 첨부해주세요");
         }
     };
 
@@ -214,7 +212,7 @@ export default function ItemEditPage() {
                     </Text>
                 </Center>
                 <Center p={"1rem"} display={"block"}>
-                    <Box p={"2rem"} >
+                    <Box p={"2rem"}>
                         <Text fontSize={"2xl"} as={"b"}>
                             상품명
                         </Text>
@@ -280,10 +278,18 @@ export default function ItemEditPage() {
 
                         <Box className="Container">
                             {fileName ? (
-                                <Box border={"1px solid black"} w={"500px"} h={"300px"} borderRadius={"20px"} >
+                                <Box
+                                    border={"1px solid black"}
+                                    w={"500px"}
+                                    h={"300px"}
+                                    borderRadius={"20px"}
+                                >
                                     <Center maxH={"100%"} minH={"100%"}>
                                         {previewURL && (
-                                            <AspectRatio w='256px' ratio={1 / 1}>
+                                            <AspectRatio
+                                                w="256px"
+                                                ratio={1 / 1}
+                                            >
                                                 <Image
                                                     src={previewURL}
                                                     alt="Preview"
@@ -324,7 +330,12 @@ export default function ItemEditPage() {
                                 </Box>
                             ) : (
                                 <>
-                                    <Box border={"1px solid black"} w={"500px"} h={"300px"} borderRadius={"20px"} >
+                                    <Box
+                                        border={"1px solid black"}
+                                        w={"500px"}
+                                        h={"300px"}
+                                        borderRadius={"20px"}
+                                    >
                                         <Center maxH={"100%"} minH={"100%"}>
                                             <Input
                                                 className="Input"
@@ -332,7 +343,9 @@ export default function ItemEditPage() {
                                                 accept="image/jpg, image/jpeg, image/png"
                                                 id="file"
                                                 onChange={fileInputHandler}
-                                                disabled={fileName ? true : false}
+                                                disabled={
+                                                    fileName ? true : false
+                                                }
                                                 style={{ display: "none" }}
                                             />
 
