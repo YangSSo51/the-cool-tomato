@@ -61,7 +61,7 @@ public class UserServiceImpl implements UserService {
 
         // 이메일 중복인 경우 강제 에러 발생
         try {
-            if(userRepository.existsByEmail(addUserRequest.getEmail()))
+            if (userRepository.existsByEmail(addUserRequest.getEmail()))
                 throw new BusinessExceptionHandler(ErrorCode.ALREADY_REGISTERED_EMAIL);
         } catch (Exception e) {
             throw new BusinessExceptionHandler(ErrorCode.ALREADY_REGISTERED_EMAIL); // errorCode : B001
@@ -108,7 +108,8 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public CheckEmailVerificationResponse checkEmailVerification(String email, String code) {
-        EmailCode emailCode = emailCodeRepository.findById(email).orElseThrow(() -> new BusinessExceptionHandler(ErrorCode.NOT_FOUND_SEND_EMAIL)); // errorCode : B009
+        EmailCode emailCode = emailCodeRepository.findById(email)
+                .orElseThrow(() -> new BusinessExceptionHandler(ErrorCode.NOT_FOUND_SEND_EMAIL)); // errorCode : B009
         return CheckEmailVerificationResponse.builder().isVerify(emailCode.getCode().equals(code)).build();
     }
 
@@ -117,15 +118,17 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public LoginResponse login(LoginRequest logInRequest) {
         // 로그인, 패스워드 검사
-        User user = userRepository.findUserByLoginId(logInRequest.getLoginId()).orElseThrow(() -> new BusinessExceptionHandler(ErrorCode.NOT_FOUND_USER_LOGIN_ID)); // errorCode : B002
+        User user = userRepository.findUserByLoginId(logInRequest.getLoginId())
+                .orElseThrow(() -> new BusinessExceptionHandler(ErrorCode.NOT_FOUND_USER_LOGIN_ID)); // errorCode : B002
         try {
-            if(!passwordEncoder.matches(logInRequest.getPassword(), user.getPassword()))
+            if (!passwordEncoder.matches(logInRequest.getPassword(), user.getPassword()))
                 throw new BusinessExceptionHandler(ErrorCode.NOT_VALID_PASSWORD);
         } catch (Exception e) {
             throw new BusinessExceptionHandler(ErrorCode.NOT_VALID_PASSWORD); // errorCode : B003
         }
         // 토큰 발급
-        IssueTokenResponse issueTokenResponse = authClient.issueToken(IssueTokenRequest.builder().userId(user.getId()).auth(user.getAuth()).build());
+        IssueTokenResponse issueTokenResponse = authClient
+                .issueToken(IssueTokenRequest.builder().userId(user.getId()).auth(user.getAuth()).build());
         // 알림을 위한 토큰 Redis 저장
         alarmTokenRepository.save(AlarmToken.builder().id(user.getId()).token(logInRequest.getToken()).build());
         return LoginResponse.builder()
@@ -143,7 +146,8 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public void getLoginIdByEmail(String email) {
         // 이메일로 로그인 아이디 찾기
-        User user = userRepository.findUserByEmail(email).orElseThrow(() -> new BusinessExceptionHandler(ErrorCode.NOT_FOUND_USER_EMAIL)); // errorCode : B005
+        User user = userRepository.findUserByEmail(email)
+                .orElseThrow(() -> new BusinessExceptionHandler(ErrorCode.NOT_FOUND_USER_EMAIL)); // errorCode : B005
         // 이메일 보내기
         StringBuffer sb = new StringBuffer();
         sb.append("안녕하세요. 멋쟁이 토마토 로그인 아이디 안내 관련 이메일입니다.");
@@ -157,7 +161,10 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public void getPasswordByEmail(FindPasswordRequest findPasswordRequest) {
         // 이메일로 회원 정보 찾기
-        User user = userRepository.findUserByLoginIdAndEmail(findPasswordRequest.getLoginId(), findPasswordRequest.getEmail()).orElseThrow(() -> new BusinessExceptionHandler(ErrorCode.NOT_FOUND_USER_LOGIN_ID_EMAIL)); // errorCode : B007
+        User user = userRepository
+                .findUserByLoginIdAndEmail(findPasswordRequest.getLoginId(), findPasswordRequest.getEmail())
+                .orElseThrow(() -> new BusinessExceptionHandler(ErrorCode.NOT_FOUND_USER_LOGIN_ID_EMAIL)); // errorCode
+                                                                                                           // : B007
         // 새로운 임시 비밀번호 설정
         String tempPassword = getTempPassword();
         user.setPassword(passwordEncoder.encode(tempPassword));
@@ -170,7 +177,7 @@ public class UserServiceImpl implements UserService {
     }
 
     // 임시 비밀번호 생성
-    public static String getTempPassword(){
+    public static String getTempPassword() {
         char[] charSet = new char[] { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F',
                 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z' };
 
@@ -195,7 +202,9 @@ public class UserServiceImpl implements UserService {
         // 로그아웃 처리
         authClient.deleteToken(AccessTokenRequest.builder().accessToken(accessToken).build());
         // 회원 정보 추출
-        Map<String, String> infos = authClient.extraction(ExtractionRequest.builder().accessToken(accessToken).infos(List.of("userId")).build()).getInfos();
+        Map<String, String> infos = authClient
+                .extraction(ExtractionRequest.builder().accessToken(accessToken).infos(List.of("userId")).build())
+                .getInfos();
         // 알림을 위한 토큰 Redis 삭제
         alarmTokenRepository.deleteById(Long.valueOf(infos.get("userId")));
     }
@@ -207,30 +216,37 @@ public class UserServiceImpl implements UserService {
         String accessToken = jwtService.resolveAccessToken(httpServletRequest);
         authClient.validateToken(AccessTokenRequest.builder().accessToken(accessToken).build());
         // 회원 정보 추출
-        Map<String, String> infos = authClient.extraction(ExtractionRequest.builder().accessToken(accessToken).infos(List.of("userId")).build()).getInfos();
+        Map<String, String> infos = authClient
+                .extraction(ExtractionRequest.builder().accessToken(accessToken).infos(List.of("userId")).build())
+                .getInfos();
         // 회원 아이디로 회원 정보 추출
-        return userRepository.findUserById(Long.valueOf(infos.get("userId"))).orElseThrow(() -> new BusinessExceptionHandler(ErrorCode.NOT_FOUND_USER_ID));
+        return userRepository.findUserById(Long.valueOf(infos.get("userId")))
+                .orElseThrow(() -> new BusinessExceptionHandler(ErrorCode.NOT_FOUND_USER_ID));
     }
 
     // 개인 회원 정보 수정
     @Override
     @Transactional
-    public ModifyUserResponse modifyUser(HttpServletRequest httpServletRequest, MultipartFile profileImgFile, ModifyUserRequest modifyUserRequest) {
+    public ModifyUserResponse modifyUser(HttpServletRequest httpServletRequest, MultipartFile profileImgFile,
+            ModifyUserRequest modifyUserRequest) {
         // 헤더 Access Token 추출
         String accessToken = jwtService.resolveAccessToken(httpServletRequest);
         authClient.validateToken(AccessTokenRequest.builder().accessToken(accessToken).build());
         String refreshToken = jwtService.resolveRefreshToken(httpServletRequest);
         // 회원 정보 추출
-        Map<String, String> infos = authClient.extraction(ExtractionRequest.builder().accessToken(accessToken).infos(List.of("userId")).build()).getInfos();
+        Map<String, String> infos = authClient
+                .extraction(ExtractionRequest.builder().accessToken(accessToken).infos(List.of("userId")).build())
+                .getInfos();
         // 회원 아이디로 회원 정보 추출
-        User user = userRepository.findById(Long.valueOf(infos.get("userId"))).orElseThrow(() -> new BusinessExceptionHandler(ErrorCode.NOT_FOUND_USER_ID));
+        User user = userRepository.findById(Long.valueOf(infos.get("userId")))
+                .orElseThrow(() -> new BusinessExceptionHandler(ErrorCode.NOT_FOUND_USER_ID));
 
         // 프로필 삭제
-        if(modifyUserRequest.getProfileImg() == null) {
+        if (modifyUserRequest.getProfileImg() == null) {
             user.setProfileImg(null);
         }
         // 프로필 수정
-        else if(profileImgFile != null && !profileImgFile.isEmpty()) {
+        else if (profileImgFile != null && !profileImgFile.isEmpty()) {
             // 파일 업로드
             String imgSrc = s3UploadService.saveFile(profileImgFile);
             user.setProfileImg(imgSrc);
@@ -247,15 +263,16 @@ public class UserServiceImpl implements UserService {
                 .auth(user.getAuth())
                 .build();
         // 비밀번호 수정
-        if(modifyUserRequest.getPassword() != null && modifyUserRequest.getNewPassword() != null) {
+        if (modifyUserRequest.getPassword() != null && modifyUserRequest.getNewPassword() != null) {
             try {
-                if(!passwordEncoder.matches(modifyUserRequest.getPassword(), user.getPassword()))
+                if (!passwordEncoder.matches(modifyUserRequest.getPassword(), user.getPassword()))
                     throw new BusinessExceptionHandler(ErrorCode.NOT_VALID_PASSWORD);
             } catch (Exception e) {
                 throw new BusinessExceptionHandler(ErrorCode.NOT_VALID_PASSWORD); // errorCode : B003
             }
             // 토큰 재발급
-            IssueTokenResponse issueTokenResponse = authClient.reissueToken(TokenRequest.builder().accessToken(accessToken).refreshToken(refreshToken).build());
+            IssueTokenResponse issueTokenResponse = authClient
+                    .reissueToken(TokenRequest.builder().accessToken(accessToken).refreshToken(refreshToken).build());
             modifyUserResponse.setAccessToken(issueTokenResponse.getAccessToken());
             modifyUserResponse.setRefreshToken(issueTokenResponse.getRefreshToken());
             user.setPassword(passwordEncoder.encode(modifyUserRequest.getNewPassword()));
@@ -271,7 +288,9 @@ public class UserServiceImpl implements UserService {
         String accessToken = jwtService.resolveAccessToken(httpServletRequest);
         authClient.validateToken(AccessTokenRequest.builder().accessToken(accessToken).build());
         // 회원 정보 추출
-        Map<String, String> infos = authClient.extraction(ExtractionRequest.builder().accessToken(accessToken).infos(List.of("userId")).build()).getInfos();
+        Map<String, String> infos = authClient
+                .extraction(ExtractionRequest.builder().accessToken(accessToken).infos(List.of("userId")).build())
+                .getInfos();
         // 회원 탈퇴 처리(Refresh Token 삭제)
         authClient.deleteToken(AccessTokenRequest.builder().accessToken(accessToken).build());
         // 회원 탈퇴 처리(DB 삭제)
@@ -285,18 +304,21 @@ public class UserServiceImpl implements UserService {
         String accessToken = jwtService.resolveAccessToken(httpServletRequest);
         authClient.validateToken(AccessTokenRequest.builder().accessToken(accessToken).build());
         // 권한 추출
-        Map<String, String> infos = authClient.extraction(ExtractionRequest.builder().accessToken(accessToken).infos(List.of("auth")).build()).getInfos();
+        Map<String, String> infos = authClient
+                .extraction(ExtractionRequest.builder().accessToken(accessToken).infos(List.of("auth")).build())
+                .getInfos();
         try {
-            if(!infos.get("auth").equals("ADMIN")) {
+            if (!infos.get("auth").equals("ADMIN")) {
                 throw new BusinessExceptionHandler(ErrorCode.FORBIDDEN_ERROR);
             }
-        } catch(Exception e) {
+        } catch (Exception e) {
             throw new BusinessExceptionHandler(ErrorCode.FORBIDDEN_ERROR);
         }
         // 회원 정보 조회
         Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.ASC, "id"));
         Page<User> users = userRepository.findAllByAuthNot(pageable, Auth.ADMIN);
-        return GetUserListResponse.builder().totalPage(users.getTotalPages()).totalSize(users.getTotalElements()).users(users.stream().toList()).build();
+        return GetUserListResponse.builder().totalPage(users.getTotalPages()).totalSize(users.getTotalElements())
+                .users(users.stream().toList()).build();
     }
 
     // 회원 강제 탈퇴
@@ -307,12 +329,14 @@ public class UserServiceImpl implements UserService {
         String accessToken = jwtService.resolveAccessToken(httpServletRequest);
         authClient.validateToken(AccessTokenRequest.builder().accessToken(accessToken).build());
         // 권한 추출
-        Map<String, String> infos = authClient.extraction(ExtractionRequest.builder().accessToken(accessToken).infos(List.of("auth")).build()).getInfos();
+        Map<String, String> infos = authClient
+                .extraction(ExtractionRequest.builder().accessToken(accessToken).infos(List.of("auth")).build())
+                .getInfos();
         try {
-            if(!infos.get("auth").equals("ADMIN")) {
+            if (!infos.get("auth").equals("ADMIN")) {
                 throw new BusinessExceptionHandler(ErrorCode.FORBIDDEN_ERROR);
             }
-        } catch(Exception e) {
+        } catch (Exception e) {
             throw new BusinessExceptionHandler(ErrorCode.FORBIDDEN_ERROR);
         }
         // 회원 탈퇴 처리(Refresh Token 삭제)
@@ -329,7 +353,7 @@ public class UserServiceImpl implements UserService {
         try {
             MimeMessageHelper helper = new MimeMessageHelper(message, false, "UTF-8");
             helper.setTo(email);
-            message.setFrom(new InternetAddress("hyeseung2000@gmail.com", "멋쟁이 토마토"));
+            message.setFrom(new InternetAddress("MASKING_URL", "멋쟁이 토마토"));
             helper.setSubject("[멋쟁이 토마토] " + title + " 안내 이메일입니다.");
             helper.setText(sb.toString());
             javaMailSender.send(message);

@@ -8,10 +8,11 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-@FeignClient(name = "auth", url = "https://cool-tomato.duckdns.org:443/v1/auth", configuration = FeignClientConfig.class)
+@FeignClient(name = "auth", url = "MASKING_URL/v1/auth", configuration = FeignClientConfig.class)
 public interface AuthClient {
     @PostMapping("/validationToken")
     String validateToken(@RequestBody AccessTokenRequest accessTokenRequest);
+
     @PostMapping("/extraction")
     ExtractionResponse extraction(@RequestBody ExtractionRequest extractionRequest);
 }

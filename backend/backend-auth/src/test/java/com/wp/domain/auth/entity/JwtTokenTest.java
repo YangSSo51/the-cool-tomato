@@ -25,7 +25,7 @@ class JwtTokenRepositoryTest {
     @Order(1)
     @Rollback(value = false)
     void save() {
-        jwtToken = JwtToken.builder().id("ssafy@gmail.com").refreshToken("test").build();
+        jwtToken = JwtToken.builder().id("MASKING_EMAIL").refreshToken("test").build();
         JwtToken result = jwtTokenRepository.save(jwtToken);
         assertThat(jwtToken).isEqualTo(result);
     }
@@ -38,7 +38,7 @@ class JwtTokenRepositoryTest {
             JwtToken result = jwtTokenRepository.findById(jwtToken.getId()).orElseThrow();
             assertThat(this.jwtToken).isEqualTo(result);
         } catch (NoSuchElementException e) {
-            jwtToken = JwtToken.builder().id("ssafy@gmail.com").refreshToken("test").build();
+            jwtToken = JwtToken.builder().id("MASKING_EMAIL").refreshToken("test").build();
             jwtTokenRepository.save(jwtToken);
             JwtToken result = jwtTokenRepository.findById(jwtToken.getId()).get();
             assertThat(jwtToken).isEqualTo(result);
@@ -61,6 +61,7 @@ class JwtTokenRepositoryTest {
     @Rollback(value = false)
     void delete() {
         jwtTokenRepository.delete(jwtToken);
-        assertThatThrownBy(() -> jwtTokenRepository.findById(jwtToken.getId()).orElseThrow()).isInstanceOf(NoSuchElementException.class);
+        assertThatThrownBy(() -> jwtTokenRepository.findById(jwtToken.getId()).orElseThrow())
+                .isInstanceOf(NoSuchElementException.class);
     }
 }
