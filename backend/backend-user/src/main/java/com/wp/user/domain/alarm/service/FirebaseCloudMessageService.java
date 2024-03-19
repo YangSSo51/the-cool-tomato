@@ -17,7 +17,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class FirebaseCloudMessageService {
 
-    private String API_URL = "https://fcm.googleapis.com/v1/projects/handsome-potato/messages:send";
+    private String API_URL = "MASKING_URL";
     private final ObjectMapper objectMapper;
 
     public void sendMessageTo(String targetToken, String title, String body) throws IOException {
@@ -41,8 +41,9 @@ public class FirebaseCloudMessageService {
                         .notification(FcmMessage.Notification.builder()
                                 .title(title)
                                 .body(body)
-                                .build()
-                        ).build()).validateOnly(false).build();
+                                .build())
+                        .build())
+                .validateOnly(false).build();
         return this.objectMapper.writeValueAsString(fcmMessage);
     }
 

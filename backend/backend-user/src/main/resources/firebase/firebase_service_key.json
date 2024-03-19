@@ -1,13 +1,13 @@
 {
   "type": "service_account",
   "project_id": "handsome-potato",
-  "private_key_id": "d1824f76087c4ad14fe7e6b7b26b993394c95752",
-  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQC8Un+ArmYPBQwL\nt0JIR3ZSSziYG30W2RaE1NCnWDFLS07behLjnXhxDOemNvPAdM2Cc2WzR6IxktdW\n3OwrIVowgTmwQxG/QeBtdIBLXso8FDlcUH6N93afW79sD+Th4N0HPzLN+DpgMDZ2\nFdZE3Riuo+/0/NrCCxd5Yv2/G/pVqYRMNttUuv5Qcd94+fnJBopYIyXAHp0Lf92r\n2cpAKysd1FwYrPOcdWFUwchvFvqc1XwiqDYp2ZO6l/jn2BCk6yDEdpA0eAETl64O\nQIBJ4a46jDS9hJtr9CDRnpwyJiSMm72IYmRYm5fZK2TG4Or93i5jIc4EzyHIqSLP\nBI1YhtT9AgMBAAECggEACOyiM+d9j8wU3Fb8nbOuZgtkzOdglHQInt9rgZ4YTsiR\nHdIU2xNb4TsKwYraQ2mzUTGOxWHpXlgLFqxrxv0uM9P1CZ3kDETMpCxgnJ94xNXO\nOzf8K+hpGYnm8hZRBUWNj1Ltqo9hcD6hzO7GRdCWvtkU2NxpjOvz7NQhPtE8B7+v\n7fdB6hm2SVFtKxP2Wt3gEIhn9VYbQP9CqTpd0TfM/SDYThHPK//OY8quTel3mdLI\nUEMXHYlzXNxT/rWdFdBHmkXL4jos3QVo1RqUIqiVK6j+PPgaNeep/W/JD7OwRurm\nfbBlViH83JmtF5JpTmWKCvWdfrfUYnmA2VIaLrTLsQKBgQDpIWN8woWUVKS+d473\nXZ0u9HmJ8eNR3a3kYnCfuMz3B+uZmg8XYcsINx+dhixRdot4YG5jQQAb2R2yHwfp\nI/n909gMaQDdiZzJEvEqwccLQWfdErfFHtJ3gUcTlVtMeaKrsgVKhHL/zO84kW41\nL3CtnqdUqShdZer5RHIjSvrImwKBgQDOy9cxzm+Zrwxq6g5uDNvPG+8vX8uc7Y3Y\nXoWlvC1phFqU5R/+y1poRMgBmXllkcSiPesGt6DTEYAL8GM5WwGllEcmrAUV2fXj\n4StvMc0GwzhYfp0kp7IVyyHR2faaiEckoS7VLlIUX1l41dMaWZF/+QaErqFgkyZE\nQDyuqUG2RwKBgG3i8gz9d49KMnkgy7+nXY6jZ6Jw5LBS6ENNbz6qEdqi3heBuXlQ\n/C18JifO9ZbUZLsx4PZhzhZSSaAK5mSrM4vETgLTf7fsxH02s3xu6E5S3w0iZILC\nm3v+8Ky3athqQRXjDIFqWvZd96hXTHY/TUJZFRBfx4n2n0ItVAt0rS7fAoGAKgR4\n4QHU4yESINcVv36VWuuOGc4ZDPWnkIMEHLyzbXEbBo3XhmnDINR43vpUFDMeBOkX\ny/Gbl8dCgSqCvrCjEQWjv1PMZLg4oeiqbplr0yfvVuvC+iOop4zyfjUPSi7OZb7q\nSR50RvdosoifsAbq7Vmn3WWuHHVJnSyAJ+z0ERkCgYEAn32OAfnVJXxkWt6UeAPO\n3mN2QX+G/SEGgKGJ0Z40+jnebKLgHm3vQ1hG8/WWYtFbDgs2a0d5u9YZR7ALf812\nbfixSjLT94VmxPMeHj0SP8M+AKJN4cPmjbMuxTXMGuYUngq5w9kF/MPG8TmlHJuJ\nQ6giKMJU/+4xeYVzRkPwf5A=\n-----END PRIVATE KEY-----\n",
-  "client_email": "firebase-adminsdk-34rne@handsome-potato.iam.gserviceaccount.com",
-  "client_id": "108694719156724130219",
+  "private_key_id": "MASKING_KEY",
+  "private_key": "MASKING_KEY",
+  "client_email": "MASKING_EMAIL",
+  "client_id": "MASKING_ID",
   "auth_uri": "https://accounts.google.com/o/oauth2/auth",
   "token_uri": "https://oauth2.googleapis.com/token",
   "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
-  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-34rne%40handsome-potato.iam.gserviceaccount.com",
+  "client_x509_cert_url": "MASKING_URL",
   "universe_domain": "googleapis.com"
 }

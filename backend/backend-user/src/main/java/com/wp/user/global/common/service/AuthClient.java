@@ -9,18 +9,23 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-@FeignClient(name = "auth", url = "https://cool-tomato.duckdns.org:443/v1/auth", configuration = FeignClientConfig.class)
+@FeignClient(name = "auth", url = "MASKING_URL/v1/auth", configuration = FeignClientConfig.class)
 public interface AuthClient {
     @PostMapping
     IssueTokenResponse issueToken(@RequestBody IssueTokenRequest issueTokenRequest);
+
     @DeleteMapping
     String deleteToken(@RequestBody AccessTokenRequest accessTokenRequest);
+
     @DeleteMapping("/id")
     String deleteTokenByUserId(@RequestBody DeleteTokenRequest deleteTokenRequest);
+
     @PostMapping("/validationToken")
     String validateToken(@RequestBody AccessTokenRequest accessTokenRequest);
+
     @PostMapping("/reissue")
     IssueTokenResponse reissueToken(@RequestBody TokenRequest tokenRequest);
+
     @PostMapping("/extraction")
     ExtractionResponse extraction(@RequestBody ExtractionRequest extractionRequest);
 }

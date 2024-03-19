@@ -3,13 +3,13 @@ importScripts('https://www.gstatic.com/firebasejs/4.8.1/firebase-app.js');
 importScripts('https://www.gstatic.com/firebasejs/4.8.1/firebase-messaging.js');
 // Initialize Firebase
 var config = {
-    apiKey: "AIzaSyBClgyGn-RQOH-NUqD-jcaHt9jd1Cwsfwk",
-    authDomain: "handsome-potato.firebaseapp.com",
+    apiKey: "MASKING_KEY",
+    authDomain: "MASKING_DOMAIN",
     projectId: "handsome-potato",
-    storageBucket: "handsome-potato.appspot.com",
-    messagingSenderId: "837963282020",
-    appId: "1:837963282020:web:75753d7d9926ded9689171",
-    measurementId: "G-7PY800LPHB"
+    storageBucket: "MASKING_BUCKET",
+    messagingSenderId: "MASKING_SENDER_ID",
+    appId: "MASKING_APP_ID",
+    measurementId: "MASKING_MEASUREMENT_ID",
 };
 firebase.initializeApp(config);
 const messaging = firebase.messaging();
